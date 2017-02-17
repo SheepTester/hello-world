@@ -61,5 +61,60 @@
       "Real Axolotls"
     ],
     "desc":"was in JLS, too many ships"
+  },
+  {
+    "full_name":"Steven Xue",
+    "nick":"Steven",
+    "isgirl":false,
+    "race":"Asian",
+    "born":"US",
+    "birthday":[20,5,2003],
+    "aliases":[
+      "MutantKitsune (MC)",
+      "Lexiana (<em>Infinity Chip</em>)"
+    ],
+    "profiles":[
+      "email","mailto:ussa.sxue@gmail.com",
+      "google+","https://plus.google.com/113206751221923366591",
+      "scratch","https://scratch.mit.edu/users/Xenox-/"
+    ],
+    "ships":[],
+    "schools":[
+      "Fairmeadow","K","K",
+      "Hoover",1,5,
+      "JLS",6,8
+    ],
+    "organisations":[
+      "Chubsters","USSA","Ancient Myth","Team Peanut Butter","Pantheria"
+    ],
+    "desc":"vomited in grade 2, was invited to Real Axolotls but declined, wears contacts"
+  },
+  {
+    "full_name":"Sean Yen",
+    "nick":"Sean",
+    "isgirl":false,
+    "race":"Asian",
+    "born":"US",
+    "birthday":[4,9,2003],
+    "aliases":[
+      "Seen","OxySean (Scratch)","SeanICUP (MC)","Sheep_maker (Scratch)","SheepTester (Github, a few other places, and Scratch with underscore)"
+    ],
+    "profiles":[
+      "email","mailto:ussa.say@gmail.com",
+      "google+","https://plus.google.com/+SeanYentheHumansperson",
+      "scratch","https://scratch.mit.edu/users/Sheep_maker/",
+      "tumblr","https://sheep-tester.tumblr.com/"
+    ],
+    "ships":[
+      "Seantonia","x Antonia"
+    ],
+    "schools":[
+      "Hoover","K",5,
+      "JLS",6,8
+    ],
+    "organisations":[
+      "Businessmen","USSA","Ancient Myth","Team Peanut Butter","Pantheria","Businessmen de JLS","Real Axolotls"
+    ],
+    "desc":"wears glasses"
   }
 ]
