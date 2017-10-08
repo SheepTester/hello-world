@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flash Cards</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Roboto', sans-serif;
+        background: #eee;
+      }
+      textarea {
+        font: inherit;
+      }
+      .card {
+        background: white;
+        width: 600px;
+        height: 350px;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        margin: auto;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        opacity: 0;
+      }
+      .card::after {
+        content: "Press SPACE to flip; to continue: LEFT ARROW if wrong, RIGHT ARROW if right";
+        color: rgba(0,0,0,0.5);
+        font-size: 15px;
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        display: block;
+        right: 0;
+        text-align: center;
+      }
+      #word {
+        font-size: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      #def {
+        box-sizing: border-box;
+        padding: 0 40px;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+      }
+      .flipin {
+        opacity: 1;
+        animation: flipin 0.5s cubic-bezier(0,0,0,1) forwards;
+      }
+      @keyframes flipin {
+        0% {
+          transform: perspective(1000px) rotateY(90deg);
+        }
+        50% {
+          transform: perspective(1000px) rotateY(90deg);
+        }
+        100% {
+          transform: perspective(1000px) rotateY(0deg);
+        }
+      }
+      .flipout {
+        opacity: 1;
+        animation: flipout 0.5s cubic-bezier(1,0,1,1) forwards;
+      }
+      @keyframes flipout {
+        0% {
+          transform: perspective(1000px) rotateY(0deg);
+        }
+        50% {
+          transform: perspective(1000px) rotateY(-90deg);
+        }
+        100% {
+          transform: perspective(1000px) rotateY(-90deg);
+        }
+      }
+      .swapout {
+        opacity: 1;
+        animation: swapout 0.2s cubic-bezier(1,0,1,1) forwards;
+      }
+      @keyframes swapout {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-100vw);
+        }
+      }
+      .fadeout {
+        opacity: 1;
+        animation: fadeout 0.2s cubic-bezier(1,0,1,1) forwards;
+      }
+      .fadeout.hidefirst {
+        opacity: 0;
+        animation: none;
+      }
+      @keyframes fadeout {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+      }
+      .swapin {
+        opacity: 1;
+        animation: swapin 0.2s cubic-bezier(0,0,0,1) forwards;
+      }
+      @keyframes swapin {
+        0% {
+          transform: translateX(100vw);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="word" class="card"><span>word</span></div>
+    <div id="def" class="card"><span>definition definition definition definition definition definition definition definition</span></div>
+    <script>
+      var wordelem=document.getElementById('word'),
+      defelem=document.getElementById('def'),
+      json={
+        "cell membrane":"thin, flexible barrier around a cell; <b>regulates what enters and leaves</b> the cell",
+        "cell wall":"(bacteria and <b>plants only</b>) rigid protective coat made of cellulose and some proteins aiding in <b>maintaining shape of cell</b>, can withstand lots of internal water pressure",
+        "centriole":"helps <b>cell division</b>",
+        "chloroplast":"(plants only) contains chlorophyll (green pigment); site of <b>photosynthesis</b>; double membrane and stacks of thylakoid; has own DNA",
+        "cytoplasm":"<b>jellylike</b> material inside the cell surrounding and <b>suspending the organelles</b> composed of water, salts, and organic compounds",
+        "cytoskeleton":"<b>maintains cell structure</b>/shape and aids in movement",
+        "DNA":"nucleic acid that contains the sugar deoxyribose; <b>genetic material</b>",
+        "rough endoplasmic reticulum":"continuation of the nuclear envelope that <b>synthesizes proteins</b>",
+        "smooth endoplasmic reticulum":"continuation of the nuclear envelope that <b>makes lipids</b> and steroid hormones",
+        "Golgi body":"stacked organelle receiving protein from ER modifying and <b>packaging proteins</b> and sending them to intended locations",
+        "lysosome":"contains digestive enzymes that are only active within it; formed from Golgi body; <b>breaks down</b> old and damaged cell parts, food particles (a vesicle)",
+        "mitochondria":"<b>makes energy</b> for cells (ATP); <b>cell respiration</b> occurs here; inherited from mother; have their own DNA; can be used to follow maternal lines",
+        "nucleus":"<b>contains DNA</b>",
+        "nucleolus":"<b>makes ribosomes</b>",
+        "ribosome":"<b>makes proteins</b>; most numerous; composed of nucleic acids and protein subunits; either attached to ER or floating in cytoplasm",
+        "vacuole":"in animals: smaller, helps digest and remove waste; in plants: larger, plays a role in turgor (water) pressure, <b>stores nutrients and wastes</b> (a vesicle)",
+        "vesicle":"membrane-bound sacs <b>moving and delivering</b> cellular secretions from place to place"
+      },
+      cardnum=-1,
+      randomised=[],
+      wrongs=[],
+      flipside=0;
+      function shuffle(array) {
+        // https://bost.ocks.org/mike/shuffle/
+        var m=array.length,t,i;
+        while (m)
+          i=Math.floor(Math.random()*m--),
+          t=array[m],
+          array[m]=array[i],
+          array[i]=t;
+        return array;
+      }
+      randomised=shuffle(Object.keys(json));
+      function cont(iswrong) {
+        if (iswrong&&randomised[cardnum]) wrongs.push(randomised[cardnum]);
+        function doThings() {
+          cardnum++,flipside=0;
+          wordelem.classList.add(iswrong?'swapout':'fadeout');
+          setTimeout(()=>{
+            wordelem.classList.remove('swapout');
+            wordelem.classList.remove('fadeout');
+            if (cardnum>=randomised.length&&wrongs.length) randomised=shuffle(wrongs),wrongs=[],cardnum=0;
+            if (cardnum<randomised.length) {
+              wordelem.style.opacity=1;
+              wordelem.classList.remove('hidefirst');
+              wordelem.classList.add('swapin');
+              wordelem.innerHTML=`<span>${randomised[cardnum]}</span>`;
+              defelem.innerHTML=`<span>${json[randomised[cardnum]]}</span>`;
+              setTimeout(()=>{
+                wordelem.classList.remove('swapin');
+              },200);
+            } else {
+              wordelem.style.opacity=0;
+              defelem.style.opacity=0;
+              wordelem.classList.add('hidefirst');
+            }
+          },200);
+        }
+        if (flipside===1) {
+          defelem.classList.remove('flipin');
+          defelem.classList.add('flipout');
+          wordelem.classList.remove('flipout');
+          wordelem.classList.add('flipin');
+          setTimeout(()=>{
+            doThings();
+            defelem.classList.remove('flipout');
+            wordelem.classList.remove('flipin');
+          },500);
+        } else {
+          defelem.classList.remove('flipout');
+          wordelem.classList.remove('flipin');
+          doThings();
+        }
+      }
+      function flip() {
+        if (flipside===0) {
+          wordelem.classList.remove('flipin');
+          wordelem.classList.add('flipout');
+          defelem.classList.remove('flipout');
+          defelem.classList.add('flipin');
+        } else {
+          defelem.classList.remove('flipin');
+          defelem.classList.add('flipout');
+          wordelem.classList.remove('flipout');
+          wordelem.classList.add('flipin');
+        }
+        flipside=(flipside+1)%2;
+      }
+      wordelem.classList.add('hidefirst');
+      cont(false);
+      document.onkeydown=e=>{
+        if (e.keyCode===37) cont(true);
+        else if (e.keyCode===39) cont(false);
+        else if (e.keyCode===32) flip();
+      };
+    </script>
+  </body>
+</html>
