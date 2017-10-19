@@ -1,0 +1,19 @@
+<svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" fill='#FDFBE6'>
+  <path d="
+    M90 90
+    a50 50 0 0 0 0 100
+    H98.579
+    A150 150 0 1 0 381.421 190
+    H390
+    a50 50 0 0 0 0 -100
+    a50 50 0 1 1 -100 0
+    a50 50 0 1 1 -100 0
+    a50 50 0 1 1 -100 0
+    z
+  "/>
+  <path fill="#6F7B84" d="M160 220h20v20h20v20h-20v20h-20v-20h-20v-20h20z"></path>
+  <circle r="10" cx="330" cy="230" fill="#CC5D41"></circle>
+  <circle r="10" cx="310" cy="250" fill="#CC5D41"></circle>
+  <circle r="10" cx="350" cy="250" fill="#CC5D41"></circle>
+  <circle r="10" cx="330" cy="270" fill="#CC5D41"></circle>
+</svg>
