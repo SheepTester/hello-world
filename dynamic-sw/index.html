@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>dynamic pages w/ service workers test</title>
+    <meta property="og:title" content="dynamic pages w/ service workers test"/>
+    <meta name="twitter:title" content="dynamic pages w/ service workers test"/>
+    <meta name="description" content="A test to see if dynamic pages can be done with service workers."/>
+    <meta property="og:description" content="A test to see if dynamic pages can be done with service workers."/>
+    <meta name="twitter:description" content="A test to see if dynamic pages can be done with service workers."/>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta property="og:type" content="website"/>
+    <meta name="twitter:card" content="summary"/>
+
+    <link rel="stylesheet" type="text/css" href="../../sheep2.css">
+    <script src="../../sheep2.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <button id="on">register service worker</button>
+    <button id="off">unregister service worker</button>
+    <script>
+const on = document.getElementById("on"),
+off = document.getElementById("off");
+on.addEventListener("click", e => {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register('sw.js').then(regis => {
+      console.log('MUAHAHAHAHA I REGISTERED THE SERVICE WORKER! THE SCOPE IS:', regis.scope);
+    }, err => {
+      console.log(':( couldnt register service worker', err);
+    });
+  });
+}, false);
+off.addEventListener("click", e => {
+  navigator.serviceWorker.getRegistrations().then(regis => regis.map(regis => regis.unregister()));
+}, false);
+    </script>
+  </body>
+  <!-- MADE BY SEAN -->
+</html>
