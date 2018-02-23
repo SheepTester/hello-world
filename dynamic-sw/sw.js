@@ -15,7 +15,9 @@ self.addEventListener("fetch", e => {
     <script>
 const off = document.getElementById("off");
 off.addEventListener("click", e => {
+  localStorage.dynamicSW = "off";
   navigator.serviceWorker.getRegistrations().then(regis => regis.map(regis => regis.unregister()));
+  window.location.reload();
 }, false);
     </script>
   </body>
