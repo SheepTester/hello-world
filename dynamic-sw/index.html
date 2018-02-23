@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -20,20 +19,32 @@
   <body>
     <button id="on">register service worker</button>
     <button id="off">unregister service worker</button>
+    <p id="status"></p>
     <script>
 const on = document.getElementById("on"),
-off = document.getElementById("off");
-on.addEventListener("click", e => {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register('sw.js').then(regis => {
-      console.log('MUAHAHAHAHA I REGISTERED THE SERVICE WORKER! THE SCOPE IS:', regis.scope);
-    }, err => {
-      console.log(':( couldnt register service worker', err);
+off = document.getElementById("off"),
+status = document.getElementById("status");
+status.innerHTML = localStorage.dynamicSW === "on" ? "service worker should be registered" : "service worker is off";
+if ("serviceWorker" in navigator) {
+  if (localStorage.dynamicSW === "on") {
+    on.style.display = "none";
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register('sw.js').then(regis => {
+        console.log('MUAHAHAHAHA I REGISTERED THE SERVICE WORKER! THE SCOPE IS:', regis.scope);
+      }, err => {
+        console.log(':( couldnt register service worker', err);
+      });
     });
-  });
+  }
+}
+on.addEventListener("click", e => {
+  localStorage.dynamicSW = "on";
+  window.location.reload();
 }, false);
 off.addEventListener("click", e => {
+  localStorage.dynamicSW = "off";
   navigator.serviceWorker.getRegistrations().then(regis => regis.map(regis => regis.unregister()));
+  window.location.reload();
 }, false);
     </script>
   </body>
