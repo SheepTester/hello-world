@@ -21,7 +21,7 @@ off.addEventListener("click", e => {
 }, false);
     </script>
   </body>
-</html>`, headers: {"Content-Type": "text/html"})));
+</html>`, {headers: {"Content-Type": "text/html"}})));
 });
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys().then(names => Promise.all(names.map(cache => CACHE_NAME !== cache ? caches.delete(cache) : undefined))));
