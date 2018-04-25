@@ -1,0 +1,118 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #eee;
+}
+textarea {
+  font: inherit;
+}
+.card {
+  background: white;
+  width: 600px;
+  height: 350px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  opacity: 0;
+}
+.card::after {
+  content: "Press SPACE to flip; to continue: LEFT ARROW if wrong, RIGHT ARROW if right";
+  color: rgba(0,0,0,0.5);
+  font-size: 15px;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  display: block;
+  right: 0;
+  text-align: center;
+}
+#word {
+  font-size: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+#def {
+  box-sizing: border-box;
+  padding: 0 40px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+.flipin {
+  opacity: 1;
+  animation: flipin 0.5s cubic-bezier(0,0,0,1) forwards;
+}
+@keyframes flipin {
+  0% {
+    transform: perspective(1000px) rotateY(90deg);
+  }
+  50% {
+    transform: perspective(1000px) rotateY(90deg);
+  }
+  100% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+}
+.flipout {
+  opacity: 1;
+  animation: flipout 0.5s cubic-bezier(1,0,1,1) forwards;
+}
+@keyframes flipout {
+  0% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(1000px) rotateY(-90deg);
+  }
+  100% {
+    transform: perspective(1000px) rotateY(-90deg);
+  }
+}
+.swapout {
+  opacity: 1;
+  animation: swapout 0.2s cubic-bezier(1,0,1,1) forwards;
+}
+@keyframes swapout {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100vw);
+  }
+}
+.fadeout {
+  opacity: 1;
+  animation: fadeout 0.2s cubic-bezier(1,0,1,1) forwards;
+}
+.fadeout.hidefirst {
+  opacity: 0;
+  animation: none;
+}
+@keyframes fadeout {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+.swapin {
+  opacity: 1;
+  animation: swapin 0.2s cubic-bezier(0,0,0,1) forwards;
+}
+@keyframes swapin {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
