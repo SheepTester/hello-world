@@ -5,223 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
-    <style>
-      body {
-        font-family: 'Roboto', sans-serif;
-        background: #eee;
-      }
-      textarea {
-        font: inherit;
-      }
-      .card {
-        background: white;
-        width: 600px;
-        height: 350px;
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        margin: auto;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        opacity: 0;
-      }
-      .card::after {
-        content: "Press SPACE to flip; to continue: LEFT ARROW if wrong, RIGHT ARROW if right";
-        color: rgba(0,0,0,0.5);
-        font-size: 15px;
-        position: absolute;
-        bottom: 10px;
-        left: 0;
-        display: block;
-        right: 0;
-        text-align: center;
-      }
-      #word {
-        font-size: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-      }
-      #def {
-        box-sizing: border-box;
-        padding: 0 40px;
-        font-size: 20px;
-        display: flex;
-        align-items: center;
-        text-align: center;
-      }
-      .flipin {
-        opacity: 1;
-        animation: flipin 0.5s cubic-bezier(0,0,0,1) forwards;
-      }
-      @keyframes flipin {
-        0% {
-          transform: perspective(1000px) rotateY(90deg);
-        }
-        50% {
-          transform: perspective(1000px) rotateY(90deg);
-        }
-        100% {
-          transform: perspective(1000px) rotateY(0deg);
-        }
-      }
-      .flipout {
-        opacity: 1;
-        animation: flipout 0.5s cubic-bezier(1,0,1,1) forwards;
-      }
-      @keyframes flipout {
-        0% {
-          transform: perspective(1000px) rotateY(0deg);
-        }
-        50% {
-          transform: perspective(1000px) rotateY(-90deg);
-        }
-        100% {
-          transform: perspective(1000px) rotateY(-90deg);
-        }
-      }
-      .swapout {
-        opacity: 1;
-        animation: swapout 0.2s cubic-bezier(1,0,1,1) forwards;
-      }
-      @keyframes swapout {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-100vw);
-        }
-      }
-      .fadeout {
-        opacity: 1;
-        animation: fadeout 0.2s cubic-bezier(1,0,1,1) forwards;
-      }
-      .fadeout.hidefirst {
-        opacity: 0;
-        animation: none;
-      }
-      @keyframes fadeout {
-        0% {
-          transform: scale(1);
-          opacity: 1;
-        }
-        100% {
-          transform: scale(0.5);
-          opacity: 0;
-        }
-      }
-      .swapin {
-        opacity: 1;
-        animation: swapin 0.2s cubic-bezier(0,0,0,1) forwards;
-      }
-      @keyframes swapin {
-        0% {
-          transform: translateX(100vw);
-        }
-        100% {
-          transform: translateX(0);
-        }
-      }
-    </style>
+    <link href="flashcards.css" rel="stylesheet">
+    <script src="flashcards.js"></script>
   </head>
   <body>
     <div id="word" class="card"><span>word</span></div>
     <div id="def" class="card"><span>definition definition definition definition definition definition definition definition</span></div>
     <script>
-      var wordelem=document.getElementById('word'),
-      defelem=document.getElementById('def'),
-      json={
-        "increases thyoxine": "pituitary &ndash; thyroid gland",
-        "keep water in body": "pituitary  &ndash; kidneys",
-        "grow taller": "pituitary &ndash; most cells",
-        "contractions of uterus, release milk": "pituitary &ndash; uterus/breasts",
-        "increase metabolism": "thyroid gland &ndash; all cells",
-        "turns on \"fight or flight\"": "adrenal &ndash; heart/muscles",
-        "store sugar from blood": "pancreas &ndash; liver, muscles (+ most cells)",
-        "break down stored sugar and put back into blood": "pancreas &ndash; liver",
-        "eggs, female development": "ovaries &ndash; most cells",
-        "increases uterine lining (prepares uterus)": "overies &ndash; uterus",
-        "sperm, male development": "testes &ndash; most cells"
-      },
-      cardnum=-1,
-      randomised=[],
-      wrongs=[],
-      flipside=0;
-      function shuffle(array) {
-        // https://bost.ocks.org/mike/shuffle/
-        var m=array.length,t,i;
-        while (m)
-          i=Math.floor(Math.random()*m--),
-          t=array[m],
-          array[m]=array[i],
-          array[i]=t;
-        return array;
-      }
-      randomised=shuffle(Object.keys(json));
-      function cont(iswrong) {
-        if (iswrong&&randomised[cardnum]) wrongs.push(randomised[cardnum]);
-        function doThings() {
-          cardnum++,flipside=0;
-          wordelem.classList.add(iswrong?'swapout':'fadeout');
-          setTimeout(()=>{
-            wordelem.classList.remove('swapout');
-            wordelem.classList.remove('fadeout');
-            if (cardnum>=randomised.length&&wrongs.length) randomised=shuffle(wrongs),wrongs=[],cardnum=0;
-            if (cardnum<randomised.length) {
-              wordelem.style.opacity=1;
-              wordelem.classList.remove('hidefirst');
-              wordelem.classList.add('swapin');
-              wordelem.innerHTML=`<span>${randomised[cardnum]}</span>`;
-              defelem.innerHTML=`<span>${json[randomised[cardnum]]}</span>`;
-              setTimeout(()=>{
-                wordelem.classList.remove('swapin');
-              },200);
-            } else {
-              wordelem.style.opacity=0;
-              defelem.style.opacity=0;
-              wordelem.classList.add('hidefirst');
-            }
-          },200);
-        }
-        if (flipside===1) {
-          defelem.classList.remove('flipin');
-          defelem.classList.add('flipout');
-          wordelem.classList.remove('flipout');
-          wordelem.classList.add('flipin');
-          setTimeout(()=>{
-            doThings();
-            defelem.classList.remove('flipout');
-            wordelem.classList.remove('flipin');
-          },500);
-        } else {
-          defelem.classList.remove('flipout');
-          wordelem.classList.remove('flipin');
-          doThings();
-        }
-      }
-      function flip() {
-        if (flipside===0) {
-          wordelem.classList.remove('flipin');
-          wordelem.classList.add('flipout');
-          defelem.classList.remove('flipout');
-          defelem.classList.add('flipin');
-        } else {
-          defelem.classList.remove('flipin');
-          defelem.classList.add('flipout');
-          wordelem.classList.remove('flipout');
-          wordelem.classList.add('flipin');
-        }
-        flipside=(flipside+1)%2;
-      }
-      wordelem.classList.add('hidefirst');
-      cont(false);
-      document.onkeydown=e=>{
-        if (e.keyCode===37) cont(true);
-        else if (e.keyCode===39) cont(false);
-        else if (e.keyCode===32) flip();
-      };
+flashCards({
+  "increases thyoxine": "pituitary &ndash; thyroid gland",
+  "keep water in body": "pituitary  &ndash; kidneys",
+  "grow taller": "pituitary &ndash; most cells",
+  "contractions of uterus, release milk": "pituitary &ndash; uterus/breasts",
+  "increase metabolism": "thyroid gland &ndash; all cells",
+  "turns on \"fight or flight\"": "adrenal &ndash; heart/muscles",
+  "store sugar from blood": "pancreas &ndash; liver, muscles (+ most cells)",
+  "break down stored sugar and put back into blood": "pancreas &ndash; liver",
+  "eggs, female development": "ovaries &ndash; most cells",
+  "increases uterine lining (prepares uterus)": "overies &ndash; uterus",
+  "sperm, male development": "testes &ndash; most cells"
+});
     </script>
   </body>
 </html>
