@@ -149,6 +149,12 @@
       randomised=[],
       wrongs=[],
       flipside=0;
+      function flipObject(obj) {
+        let temp = {};
+        Object.keys(obj).forEach(k => temp[obj[k]] = k);
+        return temp;
+      }
+      if (window.location.search === "?flip") json = flipObject(json);
       function shuffle(array) {
         // https://bost.ocks.org/mike/shuffle/
         var m=array.length,t,i;
