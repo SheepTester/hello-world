@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bones & Muscles</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  </head>
+  <body>
+    <p>Where's the <strong id="bone"></strong> bone?</p>
+    <p>Where's the <strong id="muscle"></strong> muscle?</p>
+    <p>(point to it on your body, if you have one)</p>
+    <p>Reload for a new bone/muscle.</p>
+    <script>
+let bones = "carpals, cervical vertebrae, clavicle, femur, fibula, humerus, lumbar vertebrae, mandible, maxilla, metacarpals, patella, pelvis, phalanges, radius, ribs, scapula, skull, sternum, tarsals, thoracic vertebrae, tibia, ulna, zygomatic".split(", "),
+muscles = "achilles tendon, biceps brachii, biceps femoris, deltoid, external oblique, gastrocnemius, gluteus maximus, intercostal, latissimus dorsi, linea alba, masseter, pectoralis major, quadracep femorus, sartorius, hamstring muscles, sternocleidomastoid, tibialis anterior, trapezius, triceps".split(", ");
+document.getElementById("bone").textContent = bones[Math.floor(Math.random() * bones.length)];
+document.getElementById("muscle").textContent = muscles[Math.floor(Math.random() * muscles.length)];
+    </script>
+  </body>
+</html>
