@@ -9,11 +9,12 @@
     <h1>TOUCH ME.</h1>
     <script>
 const h = document.querySelector('h1');
-h.addEventListener('mousedown', e => {
+document.addEventListener('mousedown', e => {
   h.textContent = 'is e.sourceCapabilities a thing? '
     + (e.sourceCapabilities ? 'yes - .firesTouchEvents: '
         + e.sourceCapabilities.firesTouchEvents
-      : 'no')
+      : 'no');
+});
     </script>
   </body>
 </html>
