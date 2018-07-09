@@ -34,17 +34,14 @@ class TestExtension {
               default: 'Bob'
             }
           },
-          func: 'testReporter',
-          
-          colour: '#00BCD4',
-          colourSecondary: '#00ACC1',
-          colourTertiary: '#0097A7'
+          func: 'testReporter'
         }
       ]
     }
   }
 
-  testReporter(args) {
+  testReporter(...otherStuff) {
+    console.log(otherStuff);
     return new Date().toDateString();
   }
 
