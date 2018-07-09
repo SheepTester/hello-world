@@ -45,3 +45,5 @@ class TestExtension {
   }
 
 }
+
+Scratch.extensions.register(new TestExtension());
