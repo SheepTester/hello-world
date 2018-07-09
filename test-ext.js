@@ -2,7 +2,7 @@ class TestExtension {
 
   constructor(runtimeProxy) {
     this.runtime = runtimeProxy;
-    console.log(runtimeProxy);
+    console.log(this);
   }
 
   getInfo() {
