@@ -34,7 +34,11 @@ class TestExtension {
               default: 'Bob'
             }
           },
-          func: 'testReporter'
+          func: 'testReporter',
+          
+          colour: '#00BCD4',
+          colourSecondary: '#00ACC1',
+          colourTertiary: '#0097A7'
         }
       ]
     }
