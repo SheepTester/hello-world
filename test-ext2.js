@@ -38,4 +38,4 @@ TestExtension.prototype.testReporter2 = function(...otherStuff) {
   return new Date().toDateString();
 }
 
-Scratch.extensions.register(new TestExtension());
+Scratch.extensions.registerWithRuntime(new TestExtension());
