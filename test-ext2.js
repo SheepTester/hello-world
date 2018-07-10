@@ -20,7 +20,10 @@ TestExtension.prototype.getInfo = () => ({
       text: 'currentDate',
       arguments: {}
     }
-  ]
+  ],
+  colour: '#00BCD4',
+  colourSecondary: '#00ACC1',
+  colourTertiary: '#0097A7'
 });
 
 TestExtension.prototype.testReporter = (...otherStuff) => {
