@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OC's Basement</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <style>
+      #loading-msg {
+        display: none;
+      }
+      .loading #loading-msg {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        background-color: #202225;
+        font-size: 5vh;
+      }
+      #answer {
+        display: none;
+      }
+      .show-answer #show-answer {
+        display: none;
+      }
+      .show-answer #answer {
+        display: block;
+      }
+      
+      body {
+        font-family: 'Open Sans', sans-serif;
+        color: #dcddde;
+        background-color: #36393F;
+      }
+      hr {
+        border: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      a {
+        color: #0096cf;
+      }
+    </style>
+  </head>
+  <body class="loading">
+    <span id="loading-msg">Fetching element data</span>
+    <p>What is <strong id="elem"></strong>?</p>
+    <button id="show-answer">Reveal answer</button>
+    <p id="answer"></p>
+    <p><button id="new">new element</button></p>
+    <hr>
+    <ul>
+      <li><a href="?range=1-18">Elements 1&ndash;18</a> (<a href="?range=1-18&amp;mode=symbol">by name</a>)</li>
+      <li><a href="?range=1-36">Elements 1&ndash;36</a> (<a href="?range=1-36&amp;mode=symbol">by name</a>)</li>
+      <li><a href="?range=1-38,47,50,53-56">Most elements 1&ndash;56</a> (<a href="?range=1-38,47,50,53-56&amp;mode=symbol">by name</a>)</li>
+      <li><a href="?range=1-38,47,50,53-56,78-80,82,86,92,94">Elements you should know</a> (<a href="?range=1-38,47,50,53-56,78-80,82,86,92,94&amp;mode=symbol">by name</a>)</li>
+      <li><a href="?range=*">All elements</a> (<a href="?range=*&amp;mode=symbol">by name</a>)</li>
+    </ul>
+    <script>
+function getParams(elementCount) {
+  const params = {};
+  const paramString = window.location.search.slice(1);
+  if (paramString) {
+    paramString.split('&').forEach(param => {
+      if (param.includes('=')) {
+        params[param.slice(0, param.indexOf('='))] = param.slice(param.indexOf('=') + 1);
+      }
+    });
+  }
+  const range = [];
+  params.range = params.range === '*' || !params.range ? '1-' + elementCount : params.range;
+  params.range.split(',').forEach(r => {
+    if (r.includes('-')) {
+      const end = +r.slice(r.indexOf('-') + 1);
+      for (let i = +r.slice(0, r.indexOf('-')); i <= end; i++) {
+        range.push(i);
+      }
+    }
+  });
+  return {
+    showNameMode: params.mode === 'symbol',
+    elementRange: range
+  };
+}
+
+fetch('elements.json') // https://sheeptester.github.io/hello-world/elements.json
+    .then(res => res.json())
+    .then(elements => {
+  document.body.classList.remove('loading');
+  
+  const {showNameMode, elementRange} = getParams(elements.length);
+  elements = elements.filter(({number}) => elementRange.includes(number));
+  
+  const question = document.getElementById('elem');
+  const answer = document.getElementById('answer');
+  const answerShower = document.getElementById('show-answer');
+  const newElem = document.getElementById('new');
+  
+  answerShower.addEventListener('click', () => {
+    document.body.classList.add('show-answer');
+  });
+  
+  function generate() {
+    const elem = elements[Math.floor(Math.random() * elements.length)];
+    question.textContent = showNameMode ? elem.name : elem.symbol;
+    answer.textContent = showNameMode ? elem.symbol : elem.name;
+    document.body.classList.remove('show-answer');
+  }
+  newElem.addEventListener('click', generate);
+  generate();
+});
+    </script>
+  </body>
+</html>
