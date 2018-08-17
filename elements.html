@@ -89,6 +89,20 @@ function getParams(elementCount) {
     elementRange: range
   };
 }
+function shuffle(arr) {
+  // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  let currentIndex = arr.length;
+
+  while (0 !== currentIndex) {
+    const randomIndex = Math.floor(Math.random() * currentIndex--);
+    const temporaryValue = arr[currentIndex];
+    arr[currentIndex] = arr[randomIndex];
+    arr[randomIndex] = temporaryValue;
+  }
+
+  return arr;
+}
+
 
 fetch('elements.json') // https://sheeptester.github.io/hello-world/elements.json
     .then(res => res.json())
@@ -107,13 +121,18 @@ fetch('elements.json') // https://sheeptester.github.io/hello-world/elements.jso
     document.body.classList.add('show-answer');
   });
   
+  let queue;
+  function genQueue() {
+    queue = shuffle(JSON.parse(JSON.stringify(elements)));
+  }
   function generate() {
-    const elem = elements[Math.floor(Math.random() * elements.length)];
+    const elem = queue.pop() || (genQueue(), queue.pop());
     question.textContent = showNameMode ? elem.name : elem.symbol;
     answer.textContent = showNameMode ? elem.symbol : elem.name;
     document.body.classList.remove('show-answer');
   }
   newElem.addEventListener('click', generate);
+  genQueue();
   generate();
 });
     </script>
