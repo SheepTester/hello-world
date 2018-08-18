@@ -56,13 +56,19 @@
         border: 1px solid rgba(255, 255, 255, 0.04);
         padding: 5px 10px;
       }
+      body:not(.flipped) #elem {
+        font-family: serif;
+      }
+      .flipped #answer {
+        font-family: serif;
+      }
     </style>
   </head>
   <body class="loading">
     <span id="loading-msg">Fetching element data</span>
     <p>Status: <strong id="status"></strong></p>
     <p>What is <strong id="elem"></strong>?</p>
-    <p><button id="show-answer">reveal answer</button><span id="answer"></span></p>
+    <p><button id="show-answer">reveal answer</button><strong id="answer"></strong></p>
     <p><button id="new">I was right</button> <button id="wrong">I was wrong</button></p>
     <hr>
     <ul>
@@ -70,15 +76,17 @@
       <li><a href="?range=1-36&amp;mode=name">Elements 1&ndash;36</a> (<a href="?range=1-36&amp;mode=symbol">by name</a>)</li>
       <li><a href="?range=1-38,47,50,53-56&amp;mode=name">Most elements 1&ndash;56</a> (<a href="?range=1-38,47,50,53-56&amp;mode=symbol">by name</a>)</li>
       <li><a href="?range=1-38,47,50,53-56,78-80,82,86,92,94&amp;mode=name">Elements you should know</a> (<a href="?range=1-38,47,50,53-56,78-80,82,86,92,94&amp;mode=symbol">by name</a>)</li>
-      <li><a href="?range=1-38,46-56,78-98&amp;mode=name">OC's fetishes</a> (<a href="?range=1-38,46-56,78-98&amp;mode=symbol">by name</a>)</li>
+      <li><a href="?range=1-38,46-56,78-98&amp;mode=name" id="oc-fetish">OC's fetishes</a> (<a href="?range=1-38,46-56,78-98&amp;mode=symbol">by name</a>)</li>
       <li><a href="?range=*&amp;mode=name">All elements</a> (<a href="?range=*&amp;mode=symbol">by name</a>)</li>
     </ul>
     <h3>Keyboard shortcuts</h3>
     <table>
       <tr><th>space</th><td>reveal answer</td></tr>
       <tr><th>F</th><td>I was right/next element</td></tr>
-      <tr><th>J</th><td>I was wrong</td></tr>
+      <tr><th>J</th><td>I was wrong/save for later</td></tr>
+      <tr id="oc-keyboard-shortcut"><th>1</th><td>OC is near me!</td></tr>
     </table>
+    <button id="hide-oc">OC is near me!</button>
     <script>
 function getParams(elementCount) {
   const params = {};
@@ -102,7 +110,8 @@ function getParams(elementCount) {
   });
   return {
     showNameMode: params.mode === 'symbol',
-    elementRange: range
+    elementRange: range,
+    hideOC: params.safe === 'true'
   };
 }
 function shuffle(arr) {
@@ -121,8 +130,10 @@ fetch('elements.json') // https://sheeptester.github.io/hello-world/elements.jso
     .then(elements => {
   document.body.classList.remove('loading');
   
-  const {showNameMode, elementRange} = getParams(elements.length);
+  const {showNameMode, elementRange, hideOC} = getParams(elements.length);
   elements = elements.filter(({number}) => elementRange.includes(number));
+  if (showNameMode) document.body.classList.add('flipped');
+  if (hideOC) deOCify();
   
   const question = document.getElementById('elem');
   const answer = document.getElementById('answer');
@@ -130,6 +141,7 @@ fetch('elements.json') // https://sheeptester.github.io/hello-world/elements.jso
   const newElem = document.getElementById('new');
   const statusIndicator = document.getElementById('status');
   const wasWrong = document.getElementById('wrong');
+  const OCHider = document.getElementById('hide-oc');
   
   answerShower.addEventListener('click', () => {
     document.body.classList.add('show-answer');
@@ -177,8 +189,20 @@ fetch('elements.json') // https://sheeptester.github.io/hello-world/elements.jso
       case 74:
         wasWrong.click();
         break;
+      case 49:
+        if (deOCify) deOCify();
+        break;
     }
   });
+  
+  function deOCify() {
+    OCHider.remove();
+    document.getElementById('oc-keyboard-shortcut').remove();
+    document.getElementById('oc-fetish').textContent = 'A few more everyday elements';
+    document.title = 'Elements';
+    deOCify = null;
+  }
+  OCHider.addEventListener('click', deOCify);
 });
     </script>
   </body>
