@@ -49,22 +49,35 @@
       a {
         color: #0096cf;
       }
+      table {
+        border-collapse: collapse;
+      }
+      th, td {
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        padding: 5px 10px;
+      }
     </style>
   </head>
   <body class="loading">
     <span id="loading-msg">Fetching element data</span>
+    <p>Status: <strong id="status"></strong></p>
     <p>What is <strong id="elem"></strong>?</p>
-    <button id="show-answer">Reveal answer</button>
-    <p id="answer"></p>
-    <p><button id="new">new element</button></p>
+    <p><button id="show-answer">reveal answer</button><span id="answer"></span></p>
+    <p><button id="new">I was right</button> <button id="wrong">I was wrong</button></p>
     <hr>
     <ul>
-      <li><a href="?range=1-18">Elements 1&ndash;18</a> (<a href="?range=1-18&amp;mode=symbol">by name</a>)</li>
-      <li><a href="?range=1-36">Elements 1&ndash;36</a> (<a href="?range=1-36&amp;mode=symbol">by name</a>)</li>
-      <li><a href="?range=1-38,47,50,53-56">Most elements 1&ndash;56</a> (<a href="?range=1-38,47,50,53-56&amp;mode=symbol">by name</a>)</li>
-      <li><a href="?range=1-38,47,50,53-56,78-80,82,86,92,94">Elements you should know</a> (<a href="?range=1-38,47,50,53-56,78-80,82,86,92,94&amp;mode=symbol">by name</a>)</li>
-      <li><a href="?range=*">All elements</a> (<a href="?range=*&amp;mode=symbol">by name</a>)</li>
+      <li><a href="?range=1-18&amp;mode=name">Elements 1&ndash;18</a> (<a href="?range=1-18&amp;mode=symbol">by name</a>)</li>
+      <li><a href="?range=1-36&amp;mode=name">Elements 1&ndash;36</a> (<a href="?range=1-36&amp;mode=symbol">by name</a>)</li>
+      <li><a href="?range=1-38,47,50,53-56&amp;mode=name">Most elements 1&ndash;56</a> (<a href="?range=1-38,47,50,53-56&amp;mode=symbol">by name</a>)</li>
+      <li><a href="?range=1-38,47,50,53-56,78-80,82,86,92,94&amp;mode=name">Elements you should know</a> (<a href="?range=1-38,47,50,53-56,78-80,82,86,92,94&amp;mode=symbol">by name</a>)</li>
+      <li><a href="?range=*&amp;mode=name">All elements</a> (<a href="?range=*&amp;mode=symbol">by name</a>)</li>
     </ul>
+    <h3>Keyboard shortcuts</h3>
+    <table>
+      <tr><th>space</th><td>reveal answer</td></tr>
+      <tr><th>F</th><td>I was right/next element</td></tr>
+      <tr><th>J</th><td>I was wrong</td></tr>
+    </table>
     <script>
 function getParams(elementCount) {
   const params = {};
@@ -94,18 +107,14 @@ function getParams(elementCount) {
 function shuffle(arr) {
   // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   let currentIndex = arr.length;
-
   while (0 !== currentIndex) {
     const randomIndex = Math.floor(Math.random() * currentIndex--);
     const temporaryValue = arr[currentIndex];
     arr[currentIndex] = arr[randomIndex];
     arr[randomIndex] = temporaryValue;
   }
-
   return arr;
 }
-
-
 fetch('elements.json') // https://sheeptester.github.io/hello-world/elements.json
     .then(res => res.json())
     .then(elements => {
@@ -118,24 +127,56 @@ fetch('elements.json') // https://sheeptester.github.io/hello-world/elements.jso
   const answer = document.getElementById('answer');
   const answerShower = document.getElementById('show-answer');
   const newElem = document.getElementById('new');
+  const statusIndicator = document.getElementById('status');
+  const wasWrong = document.getElementById('wrong');
   
   answerShower.addEventListener('click', () => {
     document.body.classList.add('show-answer');
+    newElem.textContent = 'I was right';
+    wasWrong.textContent = 'I was wrong';
   });
   
-  let queue;
-  function genQueue() {
-    queue = shuffle(JSON.parse(JSON.stringify(elements)));
+  let queue = [], queueLength = 0, wrongList = [], currentElem = null,
+  status = 'all';
+  function genQueue(src) {
+    queue = shuffle(JSON.parse(JSON.stringify(src)));
+    queueLength = queue.length;
+    if (src === wrongList) {
+      wrongList = [];
+      status = 'wrong';
+    } else {
+      status = 'all';
+    }
   }
   function generate() {
-    const elem = queue.pop() || (genQueue(), queue.pop());
-    question.textContent = showNameMode ? elem.name : elem.symbol;
-    answer.textContent = showNameMode ? elem.symbol : elem.name;
+    currentElem = queue.pop() || (wrongList.length ? genQueue(wrongList) : genQueue(elements), queue.pop());
+    question.textContent = showNameMode ? currentElem.name : currentElem.symbol;
+    answer.textContent = showNameMode ? currentElem.symbol : currentElem.name;
+    newElem.textContent = 'next element';
+    wasWrong.textContent = 'save for later';
     document.body.classList.remove('show-answer');
+    statusIndicator.textContent = (status === 'all' ? 'All selected elements' : 'Reviewing mistakes') + ' (' + (queueLength - queue.length) + '/' + queueLength + ')';
   }
   newElem.addEventListener('click', generate);
-  genQueue();
+  wasWrong.addEventListener('click', () => {
+    wrongList.push(currentElem);
+    generate();
+  });
   generate();
+  
+  document.addEventListener('keydown', e => {
+    switch (e.keyCode) {
+      case 32:
+        answerShower.click();
+        break;
+      case 70:
+        newElem.click();
+        break;
+      case 74:
+        wasWrong.click();
+        break;
+    }
+  });
 });
     </script>
   </body>
