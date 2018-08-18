@@ -155,7 +155,7 @@ fetch('elements.json') // https://sheeptester.github.io/hello-world/elements.jso
     newElem.textContent = 'next element';
     wasWrong.textContent = 'save for later';
     document.body.classList.remove('show-answer');
-    statusIndicator.textContent = (status === 'all' ? 'All selected elements' : 'Reviewing mistakes') + ' (' + (queueLength - queue.length) + '/' + queueLength + ')';
+    statusIndicator.innerHTML = (status === 'all' ? 'All selected elements' + (wrongList.length ? ' &mdash; ' + wrongList.length + ' marked wrong' : '') : 'Reviewing mistakes') + ' (' + (queueLength - queue.length) + '/' + queueLength + ')';
   }
   newElem.addEventListener('click', generate);
   wasWrong.addEventListener('click', () => {
@@ -168,6 +168,7 @@ fetch('elements.json') // https://sheeptester.github.io/hello-world/elements.jso
     switch (e.keyCode) {
       case 32:
         answerShower.click();
+        e.preventDefault(); // prevent pressing focused button
         break;
       case 70:
         newElem.click();
