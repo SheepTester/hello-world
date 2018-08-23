@@ -133,7 +133,6 @@ fetch('elements.json') // https://sheeptester.github.io/hello-world/elements.jso
   const {showNameMode, elementRange, hideOC} = getParams(elements.length);
   elements = elements.filter(({number}) => elementRange.includes(number));
   if (showNameMode) document.body.classList.add('flipped');
-  if (hideOC) deOCify();
   
   const question = document.getElementById('elem');
   const answer = document.getElementById('answer');
@@ -203,6 +202,7 @@ fetch('elements.json') // https://sheeptester.github.io/hello-world/elements.jso
     deOCify = null;
   }
   OCHider.addEventListener('click', deOCify);
+  if (hideOC) deOCify();
 });
     </script>
   </body>
