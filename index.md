@@ -28,4 +28,6 @@ yay
 
 - [ree open graph  and other meta tags is hard to test](./meta-test.html)
 
+- [count sig figs on number??](./sigfig.html)
+
 - [an htmlified rendition of a img drawned we bsite design for "waflle programming language"?](./waffleconcept.html)
