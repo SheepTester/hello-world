@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -47,18 +46,32 @@
       #highlights {
         font-size: 10vw;
         color: transparent;
+        white-space: pre;
       }
       #highlights span {
         background-color: #4CAF50;
         border-radius: 0.1em;
       }
+      #count {
+        position: fixed;
+        bottom: 10px;
+        left: 0;
+        display: block;
+        width: 100%;
+        font-size: 2vw;
+        color: #666;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
-    <span id="highlights">test</span>
+    <span id="highlights"></span>
+    <span id="count">Type a number</span>
     <input id="number" type="text" autofocus="true">
     <script>
-const sigFigRegex = /^-?0*(?:((?:[1-9][0-9]*)?[1-9])0*|([1-9][0-9]*\.[0-9]*)|\.0*([1-9][0-9]*))$/;
+const sigFigRegex = /^-?0*(?:((?:[1-9][0-9]*)?[1-9])0*|([1-9][0-9]*(?:\.[0-9]+)?)(?:\.)?|\.0*([1-9][0-9]*))$/;
+const sciNote = /((x|\*)\s*10|e)(\s*(\^|\*\*)?\s*[0-9-.]+)?$/i;
+const nonNumbers = /[^0-9-.]/g;
 /* TEST CASES
  * 09
  * 000.003456004000
@@ -70,16 +83,21 @@ const sigFigRegex = /^-?0*(?:((?:[1-9][0-9]*)?[1-9])0*|([1-9][0-9]*\.[0-9]*)|\.0
  */
 
 const highlightWrapper = document.getElementById('highlights');
+const sigFigCount = document.getElementById('count');
 const input = document.getElementById('number');
 input.addEventListener('input', e => {
-  const match = input.value.match(sigFigRegex);
-  if (match === null) highlightWrapper.innerHTML = '';
-  else {
+  const match = input.value.replace(sciNote, '').replace(nonNumbers, '').match(sigFigRegex);
+  if (match === null) {
+    highlightWrapper.innerHTML = '';
+    sigFigCount.textContent = 'No sig fig(s)';
+  } else {
     const matchGroup = match[1] || match[2] || match[3];
     const index = input.value.indexOf(matchGroup);
     highlightWrapper.innerHTML = input.value.slice(0, index)
       + '<span>' + input.value.slice(index, index + matchGroup.length) + '</span>'
       + input.value.slice(index + matchGroup.length);
+    sigFigCount.textContent = matchGroup.replace(/\./g, '').length + ' sig fig(s)';
+    // document.title = matchGroup.replace(/\./g, '').length + ' sig fig(s)';
   }
 });
     </script>
