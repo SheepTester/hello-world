@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sig fig shower</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Highlights the significant figures"/>
+    <meta property="og:title" content="Sig fig shower"/>
+    <meta property="og:description" content="Highlights the significant figures"/>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../sheep2.css">
+    <script src="../sheep2.js" charset="utf-8"></script>
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+      body {
+        font-family: 'Oswald', Impact, sans-serif;
+        background-color: #333;
+        color: #eee;
+        margin: 0;
+        font-size: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      input {
+        -webkit-appearance: none;
+        border: none;
+        background: none;
+        font: inherit;
+        color: inherit;
+        resize: none;
+        padding: 0;
+        
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        font-size: 10vw;
+        text-align: center;
+      }
+      input:focus { /* meh */
+        outline: none;
+      }
+      #highlights {
+        font-size: 10vw;
+        color: transparent;
+      }
+      #highlights span {
+        background-color: #4CAF50;
+        border-radius: 0.1em;
+      }
+    </style>
+  </head>
+  <body>
+    <span id="highlights">test</span>
+    <input id="number" type="text" autofocus="true">
+    <script>
+const sigFigRegex = /^-?0*(?:((?:[1-9][0-9]*)?[1-9])0*|([1-9][0-9]*\.[0-9]*)|\.0*([1-9][0-9]*))$/;
+/* TEST CASES
+ * 09
+ * 000.003456004000
+ * 00234050000
+ * 004304004543500.
+ * 0023400.03
+ * 0
+ * 34565.00
+ */
+
+const highlightWrapper = document.getElementById('highlights');
+const input = document.getElementById('number');
+input.addEventListener('input', e => {
+  const match = input.value.match(sigFigRegex);
+  if (match === null) highlightWrapper.innerHTML = '';
+  else {
+    const matchGroup = match[1] || match[2] || match[3];
+    const index = input.value.indexOf(matchGroup);
+    highlightWrapper.innerHTML = input.value.slice(0, index)
+      + '<span>' + input.value.slice(index, index + matchGroup.length) + '</span>'
+      + input.value.slice(index + matchGroup.length);
+  }
+});
+    </script>
+  </body>
+</html>
