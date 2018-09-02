@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>tree maker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../sheep2.css">
+    <script src="../sheep2.js" charset="utf-8"></script>
+    <style>
+      table {
+        border-collapse: collapse;
+        white-space: nowrap;
+        /*border: 1px solid black;*/
+        /*border-top: none;*/
+        border-bottom: none;
+      }
+      td {
+        padding: 0;
+        text-align: center;
+        vertical-align: top;
+      }
+      svg {
+        width: 100%;
+        height: 20px;
+        margin: -5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div></div>
+    <script>
+const data = {"params":[11,5],"val":4,"calls":[{"params":[11,4],"val":4,"calls":[{"params":[11,3],"val":4,"calls":[{"params":[11,2],"val":3,"calls":[{"params":[11,1],"val":1,"calls":[{"params":[11,0],"val":0},{"params":[10,1],"val":1,"calls":[{"params":[10,0],"val":0},{"params":[9,1],"val":1,"calls":[{"params":[9,0],"val":0},{"params":[8,1],"val":1,"calls":[{"params":[8,0],"val":0},{"params":[7,1],"val":1,"calls":[{"params":[7,0],"val":0},{"params":[6,1],"val":1,"calls":[{"params":[6,0],"val":0},{"params":[5,1],"val":1,"calls":[{"params":[5,0],"val":0},{"params":[4,1],"val":1,"calls":[{"params":[4,0],"val":0},{"params":[3,1],"val":1,"calls":[{"params":[3,0],"val":0},{"params":[2,1],"val":1,"calls":[{"params":[2,0],"val":0},{"params":[1,1],"val":1,"calls":[{"params":[1,0],"val":0},{"params":[0,1],"val":1}]}]}]}]}]}]}]}]}]}]}]},{"params":[6,2],"val":2,"calls":[{"params":[6,1],"val":1,"calls":[{"params":[6,0],"val":0},{"params":[5,1],"val":1,"calls":[{"params":[5,0],"val":0},{"params":[4,1],"val":1,"calls":[{"params":[4,0],"val":0},{"params":[3,1],"val":1,"calls":[{"params":[3,0],"val":0},{"params":[2,1],"val":1,"calls":[{"params":[2,0],"val":0},{"params":[1,1],"val":1,"calls":[{"params":[1,0],"val":0},{"params":[0,1],"val":1}]}]}]}]}]}]},{"params":[1,2],"val":1,"calls":[{"params":[1,1],"val":1,"calls":[{"params":[1,0],"val":0},{"params":[0,1],"val":1}]},{"params":[-4,2],"val":0}]}]}]},{"params":[1,3],"val":1,"calls":[{"params":[1,2],"val":1,"calls":[{"params":[1,1],"val":1,"calls":[{"params":[1,0],"val":0},{"params":[0,1],"val":1}]},{"params":[-4,2],"val":0}]},{"params":[-9,3],"val":0}]}]},{"params":[-14,4],"val":0}]},{"params":[-39,5],"val":0}]};
+
+function makeSplit() {
+  // return `<img class="test" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='4' width='8' stroke='black' stroke-width='0.2' fill='none'%3E%3Cpath d='M0 4L4 2l4 2'/%3E%3C/svg%3E">`
+  return `<svg xmlns='http://www.w3.org/2000/svg' height='20' width='8' stroke='black' stroke-width='0.8' fill='none'><path/></svg>`;
+}
+
+function loopy(ob) {
+  let str = `<table><tr><td colspan="2">(cc ${ob.params.join(' ')})</td></tr>`;
+  if (ob.calls) {
+    str += `<tr><td colspan="2">${makeSplit()}</td></tr>`;
+    str += `<tr><td>${loopy(ob.calls[0])}</td><td>${loopy(ob.calls[1])}</td></tr>`;
+  } else {
+    str += `<tr><td colspan="2">|</td></tr>`;
+    str += `<tr><td colspan="2">${ob.val}</td></tr>`;
+  }
+  str += '</table>';
+  return str;
+}
+document.querySelector('div').innerHTML = loopy(data);
+document.querySelectorAll('path').forEach(p => {
+  const parent = p.parentNode.parentNode.parentNode.previousElementSibling.getBoundingClientRect();
+  const [child1, child2] = Array.from(p.parentNode.parentNode.parentNode.nextElementSibling.children).map(e => e.getBoundingClientRect());
+  p.setAttribute('d', `M${child1.x + child1.width / 2 - parent.x} 20L${parent.width / 2} 0L${child2.x + child2.width / 2 - parent.x} 20`);
+});
+    </script>
+  </body>
+</html>
