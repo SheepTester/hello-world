@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flashcards</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <link href="flashcards.css" rel="stylesheet">
+    <script src="flashcards.js"></script>
+  </head>
+  <body>
+    <div id="word" class="card"><span>word</span></div>
+    <div id="def" class="card"><span>definition definition definition definition definition definition definition definition</span></div>
+    <script>
+fetch(window.location.search.slice(1)).then(res => res.json()).then(flashCards);
+    </script>
+  </body>
+</html>
