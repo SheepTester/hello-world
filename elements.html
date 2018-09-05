@@ -106,6 +106,8 @@ function getParams(elementCount) {
       for (let i = +r.slice(0, r.indexOf('-')); i <= end; i++) {
         range.push(i);
       }
+    } else {
+      range.push(+r);
     }
   });
   return {
