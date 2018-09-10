@@ -12,7 +12,7 @@
     <div id="word" class="card"><span>word</span></div>
     <div id="def" class="card"><span>definition definition definition definition definition definition definition definition</span></div>
     <script>
-fetch(window.location.search.slice(1)).then(res => res.json()).then(flashCards);
+fetch(window.location.hash.slice(1) || window.location.search.slice(1)).then(res => res.json()).then(flashCards);
     </script>
   </body>
 </html>
