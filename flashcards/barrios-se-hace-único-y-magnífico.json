@@ -1,7 +1,7 @@
 {
   "el retrato": "pintura de una persona",
   "el siglo": "cien años",
-  "el fondo": "las cosas menos importantes en una pintura (o en otra forma de arte)",
+  "el fondo": "<b>las cosas menos importantes</b> en una pintura (o en otra forma de arte)",
   "el pincel": "un lápiz para pintar",
   "pararse": "levantarse",
   "destacarse": "hacerse único y magnífico",
@@ -17,6 +17,6 @@
   "el tambor": "un instrumento que tocas con palos o con las manos",
   "el espectáculo": "una actuación de arte grande",
   "la letra": "las palabras de una canción",
-  "el sentimiento": "una reacción de emoción como triste, feliz, o enojado",
+  "el sentimiento": "<b>una reacción de emoción</b> como triste, feliz, o enojado",
   "el primer plano": "las cosas que están en frente de una imagen"
 }
