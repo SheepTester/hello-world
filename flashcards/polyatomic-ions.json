@@ -1,2 +1,10 @@
-"CH<sub>3</sub>COO<sup>-</sup>": "acetate",
-"ClO<sub>3</sub><sup>-</sup>": "
+{
+  "CH<sub>3</sub>COO<sup>-</sup>": "acetate",
+  "ClO<sub>3</sub><sup>-</sup>": "chlorate",
+  "OH<sup>-</sup>": "hydroxide",
+  "NO<sub>3</sub><sup>-</sup>": "nitrate",
+  "CO<sub>3</sub><sup>2-</sup>": "carbonate",
+  "SO<sub>4</sub><sup>2-</sup>": "sulfate",
+  "PO<sub>4</sub><sup>3-</sup>": "phosphate",
+  "NH<sub>4</sub><sup>+</sup>": "ammonium"
+}
