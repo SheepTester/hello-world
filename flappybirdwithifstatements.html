@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>flappy bird</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../sheep2.css">
+    <script src="../sheep2.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="200"></canvas>
+    <p>
+      <textarea id="log" rows="8" cols="60" readonly></textarea>
+    </p>
+    <button id="start">start</button>
+    <button id="stop" disabled>stop</button>
+    <button id="skip">skip 10000</button>
+    <button id="skip-extreme">skip 1000000</button>
+    <script>
+const log = document.getElementById('log');
+
+const INPUTS = 4;
+const HIDDEN_LAYERS = 2;
+const HIDDEN_NODES = 5;
+const OUTPUTS = 1;
+const MUTATE_CHANGE = 0.02;
+const RANDOM_DIFF = 0.1;
+
+const JUMP_VEL = -7;
+class FlappyBird {
+  
+  constructor(weights) {
+    this.weights = weights;
+    
+    this.vel = 0;
+    this.lives = 1;
+  }
+  
+  calculate(inputs) {
+    // console.log(inputs);
+    const weights = this.weights;
+    let lastLayer = inputs;
+    for (let i = 0; i < HIDDEN_LAYERS; i++) {
+      const layer = [];
+      for (let j = 0; j < HIDDEN_NODES; j++) {
+        layer.push(lastLayer.reduce((a, b, k) => a + b * weights[i][j][k], 0));
+      }
+      lastLayer = layer;
+    }
+    const output = [];
+    for (let j = 0; j < OUTPUTS; j++) {
+      output.push(lastLayer.reduce((a, b, k) => a + b * weights[weights.length - 1][j][k], 0));
+    }
+    return output;
+  }
+  
+  mutate() {
+    const child = new FlappyBird(this.weights.map(layers => layers.map(weights => weights.map(weight => weight + Math.sin(Math.random() * Math.PI * 2) * MUTATE_CHANGE))));
+    child.y = this.y;
+    child.lives = Math.max(this.lives / 2, 1);
+    this.lives += 0.75; // CHANGE LIVES HERE
+    return child;
+  }
+  
+  move(nextPipeX, nextPipeY) {
+    const output = this.calculate([this.y, this.vel, nextPipeX, nextPipeY]);
+    if (output[0] > 0) this.vel = JUMP_VEL;
+    else this.vel += 1;
+    this.y += this.vel;
+  }
+  
+}
+document.addEventListener('keydown', e => {
+  if (e.keyCode === 32) manualBird.vel = JUMP_VEL;
+});
+class ManualFlappyBird {
+  
+  constructor() {
+    this.y = (canvas.height - PLAYER_SIZE) / 2;
+    this.vel = 0;
+  }
+  
+  move() {
+    this.vel += 0.5;
+    this.y += this.vel;
+  }
+  
+}
+function randomInstance() {
+  function rand() {
+    // return (lastSign *= -1) * Math.abs(Math.sin(Math.random() * Math.PI * 2) * RANDOM_DIFF);
+    return Math.sin(Math.random() * Math.PI * 2) * RANDOM_DIFF;
+  }
+  let lastSign = -1;
+  const weights = new Array(HIDDEN_LAYERS).fill().map((u, i) => new Array(HIDDEN_NODES).fill().map((u, j) => new Array(i === 0 ? INPUTS : HIDDEN_NODES).fill().map(() => rand())));
+  weights.push(new Array(OUTPUTS).fill().map((u, i) => new Array(HIDDEN_NODES).fill().map(() => rand())));
+  return new FlappyBird(weights);
+}
+const t = new FlappyBird([[[0.01822530478955416,0.07853079032125734,0.08826762767922837,0.09636212138329431],[0.09946295517715094,0.09681684087541664,-0.08934766611655495,-0.08217810988932558],[-0.04846699125088094,-0.0725098496364811,0.008132499896869087,0.01696022009556583],[0.06675840902244014,-0.005148407775196463,-0.08649183353873802,0.06723997900127823],[0.09956421468346882,-0.09183498614318283,0.007326281958141757,-0.013290929818981702]],[[-0.0992182566784603,-0.032339711274456805,-0.05155939304992396,-0.0022877002117481435,0.06778076956227523],[-0.07200891676637515,-0.02107277883653732,-0.09401072399657899,-0.01728390833623307,0.05432819145482929],[-0.09962595409190263,0.09080801180700018,0.033764575572687576,0.049854862311327124,0.0052401657177663825],[0.09205805590190597,0.09380317165826403,-0.0887503356511383,0.004379576005945462,-0.018623790579448202],[0.011293200069394452,0.04499378165321,-0.0941428799738378,-0.06932333430262325,-0.05272379706494407]],[[0.08408072609867893,-0.09473480783782365,-0.005260416780265822,0.01935211203812482,0.02759116497717521]]]);
+t.lives = 3;
+const canvas = document.getElementById('canvas');
+const c = canvas.getContext('2d');
+let camx = 0;
+const pipes = [];
+const CAMERA_SPEED = 2;
+const PIPE_WIDTH = 20;
+const PIPE_GAP = 100;
+const PIPE_DIST = 200;
+const PLAYER_OFFSET = 100;
+const PLAYER_SIZE = 30;
+const AUTO = true;
+const AUTOREGEN = true;
+let nextPipe = 0;
+const instances = [];
+const manualBird = new ManualFlappyBird();
+let maxLives = null;
+let lastMaxLives = 1;
+if (AUTO) {
+  for (let i = 100; i--;) instances.push(randomInstance());
+  instances.push(t);
+  instances.forEach(bird => bird.y = (canvas.height - PLAYER_SIZE) / 2);
+} else {
+  instances.push(manualBird);
+}
+function frame(draw) {
+  if (nextPipe < camx + canvas.width) {
+    pipes.push({x: nextPipe, y: Math.random() * (canvas.height - PIPE_GAP)});
+    nextPipe += PIPE_DIST;
+    if (AUTO) {
+      instances.forEach(bird => {
+        instances.push(bird.mutate());
+        if (instances.length < 500) instances.push(bird.mutate());
+        if (instances.length < 250) instances.push(bird.mutate());
+        if (instances.length < 125) instances.push(bird.mutate());
+        if (bird.lives > lastMaxLives) {
+          maxLives = bird, lastMaxLives = bird.lives;
+          log.value = `Max lives ${lastMaxLives} with weights ${JSON.stringify(bird.weights)}`;
+        }
+      });
+    }
+  }
+  const nextPipeLoc = pipes.find(pipe => pipe.x > camx + PLAYER_OFFSET - PLAYER_SIZE - PIPE_WIDTH);
+  instances.forEach((bird, i) => {
+    bird.move(nextPipeLoc.x - camx - PLAYER_OFFSET, nextPipeLoc.y);
+    if (draw) {
+      c.fillStyle = `hsl(${bird.lives * 10}, 72%, 65%)`;
+      c.fillRect(PLAYER_OFFSET, bird.y, PLAYER_SIZE, PLAYER_SIZE);
+    }
+    if (PLAYER_OFFSET + PLAYER_SIZE + camx > nextPipeLoc.x && PLAYER_OFFSET + camx < nextPipeLoc.x + PIPE_WIDTH) {
+      if (bird.y < nextPipeLoc.y || bird.y + PLAYER_SIZE > nextPipeLoc.y + PIPE_GAP) {
+        bird.lives--;
+        if (bird.lives <= 0) {
+          instances.splice(i, 1);
+          if (maxLives === bird) log.value = '(dead) ' + log.value;
+        }
+        else bird.y = (canvas.height - PLAYER_SIZE) / 2, bird.vel = 0;
+        return;
+      }
+    }
+    if (bird.y < -PLAYER_SIZE || bird.y + PLAYER_SIZE > canvas.height) {
+      bird.lives--;
+      if (bird.lives <= 0) {
+        instances.splice(i, 1);
+        if (maxLives === bird) log.value = '(dead) ' + log.value;
+      }
+      else bird.y = (canvas.height - PLAYER_SIZE) / 2, bird.vel = 0;
+      return;
+    }
+  });
+  if (AUTO && AUTOREGEN && !instances.length) {
+    const forcedBird = randomInstance();
+    forcedBird.y = (canvas.height - PLAYER_SIZE) / 2;
+    instances.push(forcedBird);
+  }
+  camx += CAMERA_SPEED;
+}
+let lastSchedule = null;
+function paint() {
+  c.fillStyle = '#eee';
+  c.fillRect(0, 0, canvas.width, canvas.height);
+  c.fillStyle = '#333';
+  for (let i = 0; i < pipes.length; i++) {
+    if (pipes[i].x + PIPE_WIDTH < camx) pipes.splice(i--, 1);
+    else {
+      c.fillRect(pipes[i].x - camx, 0, PIPE_WIDTH, pipes[i].y);
+      c.fillRect(pipes[i].x - camx, pipes[i].y + PIPE_GAP, PIPE_WIDTH, canvas.height - pipes[i].y - PIPE_GAP);
+    }
+  }
+  frame(true);
+  lastSchedule = window.requestAnimationFrame(paint);
+}
+for (let i = 1, stop = Math.ceil(canvas.width / PIPE_DIST); i < stop; i++) {
+  pipes.push({x: i * PIPE_DIST, y: Math.random() * (canvas.height - PIPE_GAP)});
+  nextPipe = (i + 1) * PIPE_DIST;
+}
+const startBtn = document.getElementById('start');
+const stopBtn = document.getElementById('stop');
+const skipBtn = document.getElementById('skip');
+const skipExtremeBtn = document.getElementById('skip-extreme');
+startBtn.addEventListener('click', e => {
+  stopBtn.disabled = false;
+  startBtn.disabled = true;
+  skipExtremeBtn.disabled = true;
+  paint();
+});
+stopBtn.addEventListener('click', e => {
+  stopBtn.disabled = true;
+  startBtn.disabled = false;
+  skipExtremeBtn.disabled = false;
+  if (lastSchedule !== null) window.cancelAnimationFrame(lastSchedule);
+  lastSchedule = null;
+});
+skipBtn.addEventListener('click', e => {
+  let maxInstances = 0;
+  for (let i = 10000; i--;) {
+    frame(false);
+    if (instances.length > maxInstances)
+      maxInstances = instances.length;
+    if (maxInstances > 1000) {
+      log.value = 'Too many instances!\n' + log.value;
+      throw new Error('too much!');
+    }
+  }
+  log.value = `Skipped; once there were ${maxInstances} instance(s)\n${log.value}`;
+});
+let lastTimeout = null;
+skipExtremeBtn.addEventListener('click', e => {
+  startBtn.disabled = true;
+  skipBtn.disabled = true;
+  skipExtremeBtn.disabled = true;
+  let i = 0, max = 0;
+  function inc() {
+    max += 10000;
+    let maxInstances = 0;
+    for (; i < max; i++) {
+      frame(false);
+      if (instances.length > maxInstances)
+        maxInstances = instances.length;
+    }
+    if (max < 1e6) {
+      lastTimeout = setTimeout(inc, 0);
+      log.value = `${Math.round(max / 1e6 * 1000) / 10}% - At most ${maxInstances} instance(s)\n${log.value}`;
+    } else {
+      startBtn.disabled = false;
+      skipBtn.disabled = false;
+      skipExtremeBtn.disabled = false;
+      log.value = 'done\n' + log.value;
+      lastTimeout = null;
+    }
+  }
+  inc();
+});
+    </script>
+  </body>
+</html>
