@@ -12,7 +12,41 @@
     <div id="word" class="card"><span>word</span></div>
     <div id="def" class="card"><span>definition definition definition definition definition definition definition definition</span></div>
     <script>
-fetch(window.location.hash.slice(1) || window.location.search.slice(1)).then(res => res.json()).then(flashCards);
+// URL parameters
+// src   - where the JSON is
+// flip  - swap the word and definitions
+// range - indices of cards to include (1-indexed)
+const params = {};
+if (window.location.search) {
+  window.location.search.slice(1).split('&').forEach(entry => {
+    const equalSignLoc = entry.indexOf('=');
+    if (~equalSignLoc) {
+      params[entry.slice(0, equalSignLoc)] = entry.slice(equalSignLoc + 1);
+    } else {
+      params[entry] = true;
+    }
+  });
+}
+fetch(params.src).then(res => res.json()).then(json => {
+  if (params.range) {
+    const range = [];
+    params.range = params.range === '*' ? '1-' + elementCount : params.range;
+    params.range.split(',').forEach(r => {
+      if (r.includes('-')) {
+        const end = +r.slice(r.indexOf('-') + 1);
+        for (let i = +r.slice(0, r.indexOf('-')); i <= end; i++) {
+          range.push(i);
+        }
+      } else {
+        range.push(+r);
+      }
+    });
+    Object.keys(json).forEach((key, index) => {
+      if (!range.includes(index + 1)) delete json[key];
+    });
+  }
+  flashCards(json, !!params.flip);
+});
     </script>
   </body>
 </html>
