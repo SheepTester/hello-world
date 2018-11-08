@@ -1,4 +1,4 @@
-function flashCards(json) {
+function flashCards(json, flip) {
   var wordelem = document.getElementById('word'),
   defelem = document.getElementById('def'),
   cardnum = -1,
@@ -10,7 +10,7 @@ function flashCards(json) {
     Object.keys(obj).forEach(k => temp[obj[k]] = k);
     return temp;
   }
-  if (window.location.search === "?flip") json = flipObject(json);
+  if (typeof flip === "boolean" ? flip : window.location.search === "?flip") json = flipObject(json);
   function shuffle(array) {
     // https://bost.ocks.org/mike/shuffle/
     var m = array.length, t, i;
