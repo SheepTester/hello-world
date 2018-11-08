@@ -1,12 +1,13 @@
 body {
   font-family: 'Roboto', sans-serif;
-  background: #eee;
+  background: #212121;
+  color: rgba(255, 255, 255, 0.8);
 }
 textarea {
   font: inherit;
 }
 .card {
-  background: white;
+  background: #333;
   width: 600px;
   height: 350px;
   position: fixed;
@@ -20,7 +21,7 @@ textarea {
 }
 .card::after {
   content: "Press SPACE to flip; to continue: LEFT ARROW if wrong, RIGHT ARROW if right";
-  color: rgba(0,0,0,0.5);
+  color: rgba(255, 255, 255, 0.3);
   font-size: 15px;
   position: absolute;
   bottom: 10px;
