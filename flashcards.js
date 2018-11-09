@@ -1,6 +1,7 @@
 function flashCards(json, flipCards) {
   var wordelem = document.getElementById('word'),
   defelem = document.getElementById('def'),
+  status = document.getElementById('status'),
   cardnum = -1,
   randomised = [],
   wrongs = [],
@@ -40,10 +41,12 @@ function flashCards(json, flipCards) {
           setTimeout(() => {
             wordelem.classList.remove('swapin');
           },200);
+          if (status) status.textContent = `${cardnum + 1}/${randomised.length}` + (wrongs.length ? ` (${wrongs.length} marked wrong)` : '');
         } else {
           wordelem.style.opacity = 0;
           defelem.style.opacity = 0;
           wordelem.classList.add('hidefirst');
+          if (status) status.textContent = 'Done';
         }
       }, 200);
     }
