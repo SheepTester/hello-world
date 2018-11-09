@@ -11,9 +11,10 @@
   <body>
     <div id="word" class="card"><span>word</span></div>
     <div id="def" class="card"><span>definition definition definition definition definition definition definition definition</span></div>
+    <span id="status"></span>
     <script>
 // URL parameters
-// src   - where the JSON is
+// src   - where the JSON is, separated by equal signs
 // flip  - swap the word and definitions
 // range - indices of cards to include (1-indexed)
 const params = {};
@@ -27,7 +28,8 @@ if (window.location.search) {
     }
   });
 }
-fetch(params.src).then(res => res.json()).then(json => {
+Promise.all(params.src.split('=').map(src => fetch(src).then(res => res.json()))).then(jsons => {
+  const json = Object.assign({}, ...jsons);
   if (params.range) {
     const range = [];
     params.range = params.range === '*' ? '1-' + elementCount : params.range;
