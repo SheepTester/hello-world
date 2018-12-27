@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>if [alphabet] equals [numbers 1-26] then...</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="knowledge = 96% and hardwork = 98% but attitude = 100%"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../sheep3.css">
+    <script src="../sheep3.js" charset="utf-8"></script>
+    <style>
+      .letter-wrapper {
+        display: inline-block;
+        text-align: center;
+      }
+      .letter {
+        display: block;
+        font-size: 50px;
+      }
+      .number {
+        display: block;
+        font-size: 20px;
+      }
+      .has-plus {
+        position: relative;
+        margin-left: 50px;
+      }
+      .plus {
+        position: absolute;
+        left: -25px;
+        transform: translate(-50%, -50%);
+      }
+      .plus1 {
+        top: 40%;
+        font-size: 20px;
+      }
+      .plus2 {
+        top: 85%;
+      }
+      .result {
+        font-weight: bold;
+        font-size: 36px;
+        margin-left: 10px;
+      }
+      input {
+        font-size: 30px;
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <p><input type="text" id="input" autofocus></p>
+    <p id="output"></p>
+    <p>"Coincidence or not?" has been reposted and reused a lot; <a href="https://www.reddit.com/r/im14andthisisdeep/comments/a9ojyo/coincidence_or_not/">this post</a> that my friend sent me was the last straw.</p>
+    <script>
+const input = document.getElementById('input');
+const output = document.getElementById('output');
+function calculate() {
+  window.location.hash = input.value;
+  const letters = input.value.toUpperCase().replace(/[^A-Z]/g, '').split('');
+  let sum = 0;
+  output.innerHTML = `${letters.map((l, i) => {
+    const number = l.charCodeAt() - 64;
+    sum += number;
+    return `<span class="letter-wrapper${i !== 0 ? ' has-plus"><span class="plus plus1">+</span><span class="plus plus2">+</span>' : '">'}<span class="letter">${l}</span><span class="number">${number}</span></span>`;
+  }).join('')}<span class="result">= ${sum}%</span>`;
+}
+input.addEventListener('input', calculate);
+input.value = window.location.hash.slice(1) || 'attitude';
+calculate();
+    </script>
+  </body>
+</html>
