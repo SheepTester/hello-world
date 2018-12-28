@@ -55,7 +55,7 @@
 const input = document.getElementById('input');
 const output = document.getElementById('output');
 function calculate() {
-  window.location.hash = input.value;
+  window.location.hash = encodeURIComponent(input.value);
   const letters = input.value.toUpperCase().replace(/[^A-Z]/g, '').split('');
   let sum = 0;
   output.innerHTML = `${letters.map((l, i) => {
