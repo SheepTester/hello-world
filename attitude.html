@@ -65,8 +65,15 @@ function calculate() {
   }).join('')}<span class="result">= ${sum}%</span>`;
 }
 input.addEventListener('input', calculate);
-input.value = window.location.hash.slice(1) || 'attitude';
+input.value = decodeURIComponent(window.location.hash.slice(1)) || 'attitude';
 calculate();
+window.addEventListener('hashchange', e => {
+  const hash = decodeURIComponent(window.location.hash.slice(1));
+  if (hash !== input.value) {
+    input.value = hash;
+    calculate();
+  }
+}
     </script>
   </body>
 </html>
