@@ -1,0 +1,36 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>the VM</title>
+    <link rel="stylesheet" href="./benchmark.css" type="text/css" media="screen">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <div class="run-form">
+      <button class="run" id="green-flag" disabled>start</button>
+      <button class="run" id="stop-all" disabled>stop</button>
+  </div>
+
+  <canvas id="scratch-stage"></canvas><br />
+
+  <div class="loading" id="loading">
+    <label>Loading:</label>
+    <span class="loading-complete">0</span> / <span class="loading-total">0</span>
+  </div>
+
+  <!-- FPS counter, Blocks, Renderer -->
+  <script src="https://llk.github.io/scratch-vm/vendor.js"></script>
+  <!-- Storage module -->
+  <script src="https://llk.github.io/scratch-vm/scratch-storage.js"></script>
+  <!-- Stage rendering -->
+  <script src="https://llk.github.io/scratch-vm/scratch-render.js"></script>
+  <!-- SVG rendering -->
+  <script src="https://llk.github.io/scratch-vm/scratch-svg-renderer.js"></script>
+  <!-- VM -->
+  <script src="https://llk.github.io/scratch-vm/scratch-vm.js"></script>
+  <!-- Playground -->
+  <script src="./benchmark.js"></script>
+</body>
+</html>
