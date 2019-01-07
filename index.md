@@ -31,3 +31,17 @@ yay
 - [count sig figs on number??](./sigfig.html)
 
 - [an htmlified rendition of a img drawned we bsite design for "waflle programming language"?](./waffleconcept.html)
+
+- [being alerted by a FILTHY EMBED????](./alerter.html)
+
+- [knowing what else can get you 100 (other than A + T + T + I + T + U + D + E)?](./attitude.html)
+
+- [ABSTRACT A FLASHCARD PROGRAM??!?!?!?!](./cards.html)
+
+- [witness A I happening in front of your own eyes? (using flappy bird)](./flappybirdwithifstatements.html)
+
+- [get redirected by the. filthy. embed. AGAIN?](./profile-redirector.html)
+
+- [treeify the scheme `count-change` recursion?](./tabletest.html)
+
+- [run 3.0 projects without mr. laggy guiface?](./vm.html)
