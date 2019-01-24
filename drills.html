@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+  <head>
+    <title>Trig Drill Generator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="A drill quiz generator for my trigonometry class.">
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <style>
+      .frac {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 0.5em;
+        margin: 0 0.1em;
+      }
+      .numer {
+        display: table;
+        border-bottom: 0.03em solid currentColor;
+        vertical-align: middle;
+      }
+      .sqrt {
+        margin: 0 0.1em;
+        position: relative;
+      }
+      .sqrt::before {
+        content: '√';
+      }
+      .sqrt::after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0.25em;
+        left: 0.9ch;
+        right: 0;
+        border-top: 0.03em solid currentColor;
+        height: 1px;
+      }
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background-color: #fbfbfb;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0;
+        overflow: hidden;
+        --problem-n: 0;
+      }
+      .show-intro-modal {
+        display: flex;
+      }
+      .intro-modal {
+        box-shadow: 0 3px 20px rgba(0, 0, 0, 0.5);
+        border-radius: 30px;
+        padding: 30px;
+        display: none;
+      }
+      .show-score .score {
+        display: block;
+      }
+      .show-intro-modal .not-score {
+        display: block;
+      }
+      .show-score .not-score {
+        display: none;
+      }
+      h1 {
+        margin: 0;
+        font-weight: normal;
+        margin-bottom: 20px;
+        font-size: 36px;
+      }
+      h2 {
+        margin: 0;
+        font-weight: normal;
+        color: #666;
+        font-size: 16px;
+      }
+      #start, #menu {
+        background: none;
+        background-color: #2092e3;
+        border-radius: 10px;
+        padding: 10px;
+        -webkit-appearance: none;
+        border: none;
+        color: white;
+        width: 100%;
+        font-size: 20px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      .options p {
+        margin: 10px 0;
+        font-size: 16px;
+      }
+      .options label, .options input[type=checkbox] {
+        cursor: pointer;
+      }
+      .problems {
+        padding-top: 40vh;
+        margin-top: calc(var(--problem-n) * -20vh);
+        transition: margin-top .2s;
+      }
+      .show-intro-modal .problems, .show-intro-modal .solutions, .show-intro-modal .clock {
+        display: none;
+      }
+      .problem {
+        font-size: 14vh;
+        font-family: serif;
+        padding: 3vh 3vw;
+        width: 50vw;
+        min-width: 50vh;
+        height: 20vh;
+        border-right: 3px solid rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        text-align: right;
+        opacity: 0.5;
+        position: relative;
+        transition: opacity .2s, color .2s;
+      }
+      .answer {
+        align-items: center;
+        position: absolute;
+        font-size: 0.5em;
+        opacity: 0;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        transition: all .2s;
+      }
+      .current {
+        opacity: 1;
+      }
+      .wrong {
+        color: #d12525;
+      }
+      .wrong .answer {
+        opacity: 1;
+      }
+      .correct {
+        color: #0a530a;
+      }
+      .function {
+        margin-right: 0.1em;
+      }
+      .solutions {
+        width: 50vw;
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100%;
+        display: grid;
+        grid-gap: 20px;
+        place-items: stretch;
+        place-content: stretch;
+        grid-auto-flow: row;
+        padding: 20px;
+        box-sizing: border-box;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
+      .solution {
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 10vh;
+        transition: box-shadow .2s;
+        position: relative;
+      }
+      .solution:hover {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+      .solution:last-child {
+        grid-column: 1 / 5;
+      }
+      /*.solution:nth-child(2) {*/
+      /*  grid-column: 3 / 5;*/
+      /*}*/
+      .solution::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: rgba(0, 0, 0, 0.3);
+        font-size: 2vh;
+        content: attr(data-key);
+        margin: 5px;
+      }
+      @media (max-aspect-ratio: 11/6) {
+        .solutions {
+          width: 100%;
+          bottom: 0;
+          top: auto;
+          height: 50vh;
+          background-image: linear-gradient(0deg, rgba(255, 255, 255, 0.8), transparent);
+        }
+        .solution {
+          font-size: 5vh;
+        }
+        .problems {
+          padding-top: 20vh;
+        }
+        .problem {
+          border-right: none;
+          text-align: center;
+          min-width: 100%;
+        }
+      }
+      .small {
+        font-size: 0.5em;
+      }
+      .clock {
+        position: fixed;
+        top: 5px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 20px;
+        color: rgba(0, 0, 0, 0.5);
+      }
+      #score {
+        font-size: 24px;
+        width: 500px;
+        margin-bottom: 10px;
+        max-width: 70vw;
+      }
+    </style>
+  </head>
+  <body class="show-intro-modal">
+    <div class="intro-modal not-score">
+      <h1>Trig Drill Generator</h1>
+      <h2>Options</h2>
+      <div class="options">
+        <p><input type="checkbox" id="degrees" checked> <label for="degrees">Degrees?</label></p>
+        <p><input type="checkbox" id="radian"> <label for="radian">Radians?</label></p>
+        <!--<p><input type="checkbox" id="tan"> <label for="tan">Include tan problems?</label></p>-->
+        <p><input type="checkbox" id="deg90s" checked> <label for="deg90s">Include 90&deg;-type angles?</label></p>
+        <p><input type="checkbox" id="deg30s" checked> <label for="deg30s">Include 30&deg;- and 60&deg;-type angles?</label></p>
+        <p><input type="checkbox" id="deg45s" checked> <label for="deg45s">Include 45&deg;-type angles?</label></p>
+        <p><input type="checkbox" id="include360" checked> <label for="include360">Include 360&deg;?</label></p>
+        <p><input type="checkbox" id="coterminal"> <label for="coterminal">Include coterminal angles?</label></p>
+        <p><input type="checkbox" id="quadionly"> <label for="quadionly">Limit to quadrant I angles?</label></p>
+      </div>
+      <button id="start">Start</button>
+    </div>
+    <div class="intro-modal score">
+      <div id="score"></div>
+      <button id="menu">Menu</button>
+    </div>
+    <div class="problems" id="problems"></div>
+    <div class="solutions" id="solutions">
+      <!--<div class="solution" data-key="3, 4" data-answer="null"><span class="small">undefined</span></div>-->
+      <div class="solution" data-key="q" data-answer="1/2"><span class="frac"><span class="numer">1</span><span class="denom">2</span></span></div>
+      <div class="solution" data-key="w" data-answer="rt2/2"><span class="frac"><span class="numer"><span class="sqrt">2</span></span><span class="denom">2</span></span></div>
+      <div class="solution" data-key="e" data-answer="rt3/2"><span class="frac"><span class="numer"><span class="sqrt">3</span></span><span class="denom">2</span></span></div>
+      <div class="solution" data-key="r" data-answer="1"><span>1</span></div>
+      <div class="solution" data-key="a" data-answer="-1/2"><span>-<span class="frac"><span class="numer">1</span><span class="denom">2</span></span></span></div>
+      <div class="solution" data-key="s" data-answer="-rt2/2"><span>-<span class="frac"><span class="numer"><span class="sqrt">2</span></span><span class="denom">2</span></span></span></div>
+      <div class="solution" data-key="d" data-answer="-rt3/2"><span>-<span class="frac"><span class="numer"><span class="sqrt">3</span></span><span class="denom">2</span></span></span></div>
+      <div class="solution" data-key="f" data-answer="-1"><span>-1</span></div>
+      <div class="solution" data-key="space" data-answer="0"><span>0</span></div>
+    </div>
+    <div class="clock" id="clock">3:00</div>
+    <script>
+function generateDrill({
+  degrees = true,
+  radians = false,
+  tan: includeTan = false,
+  deg90s = true,
+  deg30s = true,
+  deg45s = true,
+  include360 = true,
+  coterminal = false,
+  quadIOnly = false
+} = {}) {
+  const answers = {
+    0: [0, 1, 0],
+    30: ['1/2', 'rt3/2', 'rt3/3'],
+    45: ['rt2/2', 'rt2/2', 1],
+    60: ['rt3/2', '1/2', 'rt3'],
+    90: [1, 0, null]
+  };
+  function getAnswers(degrees) {
+    degrees = (degrees % 360 + 360) % 360;
+    if (answers[degrees]) return answers[degrees].slice(); // QUADRANT I
+    if (degrees === 180) {
+      const t = answers[0].slice();
+      t[1] = -1;
+      return t;
+    }
+    if (degrees === 270) {
+      const t = answers[90].slice();
+      t[0] = -1;
+      return t;
+    }
+    // QUADRANT II
+    if (degrees > 90 && degrees < 180) {
+      const t = answers[180 - degrees].slice();
+      if (typeof t[0] === 'string') t[0] = '-' +t[0];
+      else if (typeof t[0] === 'number') t[0] *= -1;
+      if (typeof t[2] === 'string') t[2] = '-' +t[2];
+      else if (typeof t[2] === 'number') t[2] *= -1;
+      return t;
+    }
+    // QUADRANT III
+    if (degrees > 180 && degrees < 270) {
+      const t = answers[degrees - 180].slice();
+      if (typeof t[0] === 'string') t[0] = '-' +t[0];
+      else if (typeof t[0] === 'number') t[0] *= -1;
+      if (typeof t[1] === 'string') t[1] = '-' +t[1];
+      else if (typeof t[1] === 'number') t[1] *= -1;
+      return t;
+    }
+    // QUADRANT IV
+    if (degrees > 270 && degrees < 360) {
+      const t = answers[360 - degrees].slice();
+      if (typeof t[1] === 'string') t[1] = '-' +t[1];
+      else if (typeof t[1] === 'number') t[1] *= -1;
+      if (typeof t[2] === 'string') t[2] = '-' +t[2];
+      else if (typeof t[2] === 'number') t[2] *= -1;
+      return t;
+    }
+    throw new Error('wut: ' + degrees);
+  }
+  const problems = [];
+  const radiansMap = {
+     0: [0, 1],  30: [1, 6],  45: [1, 4],  60: [1, 3],
+    90: [1, 2], 120: [2, 3], 135: [3, 4], 150: [5, 6]
+  };
+  function toRadians(degrees) {
+    if (degrees === 0) return 0;
+    const base = (degrees % 180 + 180) % 180;
+    const diff = (degrees - base) / 180;
+    let [numer, denom] = radiansMap[base];
+    numer += denom * diff;
+    return [numer, denom];
+  }
+  function angle(degrees, getCoterminals = true) {
+    const [sin, cos, tan] = getAnswers(degrees);
+    if (getCoterminals && coterminal) {
+      if (degrees !== 360) angle(degrees - 360, false);
+      angle(degrees + 360, false);
+    }
+    if (degrees) {
+      problems.push({fn: 'sin', arg: degrees, type: 'degrees', answer: sin});
+      problems.push({fn: 'cos', arg: degrees, type: 'degrees', answer: cos});
+      if (includeTan) problems.push({fn: 'tan', arg: degrees, type: 'degrees', answer: tan});
+    }
+    if (radians) {
+      problems.push({fn: 'sin', arg: toRadians(degrees), type: 'radians', answer: sin});
+      problems.push({fn: 'cos', arg: toRadians(degrees), type: 'radians', answer: cos});
+      if (includeTan) problems.push({fn: 'tan', arg: toRadians(degrees), type: 'radians', answer: tan});
+    }
+  }
+  if (deg90s) {
+    angle(0);
+    angle(90);
+    if (!quadIOnly) {
+      angle(180);
+      angle(270);
+    }
+  }
+  if (include360) angle(360);
+  if (deg30s) {
+    angle(30);
+    angle(60);
+    if (!quadIOnly) {
+      angle(120);
+      angle(150);
+      angle(210);
+      angle(240);
+      angle(300);
+      angle(330);
+    }
+  }
+  if (deg45s) {
+    angle(45);
+    if (!quadIOnly) {
+      angle(135);
+      angle(225);
+      angle(315);
+    }
+  }
+  return problems;
+}
+function shuffle(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    const index = Math.floor(Math.random() * (arr.length - i)) + i;
+    arr.splice(0, 0, arr.splice(index, 1)[0]);
+  }
+  return arr;
+}
+const checkboxes = {
+  degrees: document.getElementById('degrees'),
+  radian: document.getElementById('radian'),
+  // tan: document.getElementById('tan'),
+  deg90s: document.getElementById('deg90s'),
+  deg30s: document.getElementById('deg30s'),
+  deg45s: document.getElementById('deg45s'),
+  include360: document.getElementById('include360'),
+  coterminal: document.getElementById('coterminal'),
+  quadIOnly: document.getElementById('quadionly')
+};
+const clock = document.getElementById('clock');
+const problemsWrapper = document.getElementById('problems');
+const score = document.getElementById('score');
+let problems, problem, wrongs, rights, startTime, clockStopper = null, playing = false;
+function startClock() {
+  clock.textContent = formatTime(Date.now() - startTime);
+  clockStopper = window.requestAnimationFrame(startClock);
+}
+function formatTime(time) {
+  const minutes = Math.floor(time / 60000);
+  const seconds = Math.floor(time / 1000) % 60;
+  const milliseconds = time % 1000;
+  return minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0') + '.' + milliseconds.toString().padStart(3, '0');
+}
+document.getElementById('start').addEventListener('click', e => {
+  if (playing) return;
+  const options = {};
+  Object.keys(checkboxes).forEach(key => options[key] = checkboxes[key].checked);
+  problems = shuffle(generateDrill(options));
+  let html = '';
+  problems.forEach(({fn, arg, type, answer}) => {
+    html += `<div class="problem"><span class="answer">${solutionHTMLs[answer]}</span><span><span class="fn">${fn}</span>`;
+    if (type === 'degrees') html += arg + '&deg;';
+    else if (arg === 0) html += 0;
+    else if (arg[1] === 1) html += arg[1] + '&pi;';
+    else html += `<span class="frac"><span class="numer">${arg[0]}&pi;</span><span class="denom">${arg[1]}</span></span>`;
+    html += '</span></div>';
+  });
+  problemsWrapper.innerHTML = html;
+  problemsWrapper.children[0].classList.add('current');
+  wrongs = rights = 0;
+  startTime = Date.now();
+  startClock();
+  document.body.style.setProperty('--problem-n', problem = 0);
+  document.body.classList.remove('show-intro-modal');
+  playing = true;
+});
+const keyCodeToAnswer = {
+  // 49: 0, 50: 0, 51: null, 52: null,
+  81: '1/2', 87: 'rt2/2', 69: 'rt3/2', 82: '1',
+  65: '-1/2', 83: '-rt2/2', 68: '-rt3/2', 70: '-1',
+  32: '0'
+};
+document.addEventListener('keydown', e => {
+  if (keyCodeToAnswer[e.keyCode]) submitAnswer(keyCodeToAnswer[e.keyCode]);
+});
+const solutions = document.getElementById('solutions');
+const solutionHTMLs = {};
+Array.from(solutions.children).forEach(solution => {
+  solutionHTMLs[solution.dataset.answer] = solution.innerHTML;
+});
+solutions.addEventListener('click', e => {
+  const solution = e.target.closest('.solution');
+  if (solution) submitAnswer(solution.dataset.answer);
+});
+function submitAnswer(answer) {
+  if (!playing) return;
+  if (answer === '0' || answer === '1' || answer === '-1') answer = +answer;
+  else if (answer === 'null') answer = null;
+  if (answer === problems[problem].answer) {
+    problemsWrapper.children[problem].classList.add('correct');
+    rights++;
+  } else {
+    problemsWrapper.children[problem].classList.add('wrong');
+    wrongs++;
+  }
+  problemsWrapper.children[problem].classList.remove('current');
+  problem++;
+  if (problem >= problems.length) {
+    playing = false;
+    window.cancelAnimationFrame(clockStopper);
+    const time = Date.now() - startTime;
+    score.innerHTML = `It took you <strong>${formatTime(time)}</strong> to get <strong>${rights}</strong> out of ${problems.length} correct. That means it'll take you ${formatTime(Math.round(time / problems.length * 20))} to do 20 problems.`;
+    document.body.classList.add('show-intro-modal');
+    document.body.classList.add('show-score');
+    return;
+  }
+  document.body.style.setProperty('--problem-n', problem);
+  problemsWrapper.children[problem].classList.add('current');
+}
+document.getElementById('menu').addEventListener('click', e => {
+  document.body.classList.remove('show-score');
+});
+    </script>
+  </body>
+</html>
