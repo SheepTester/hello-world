@@ -138,16 +138,16 @@
       .current {
         opacity: 1;
       }
-      .wrong {
+      .show-wrong .wrong {
         color: #d12525;
       }
-      .wrong .answer {
+      .show-correct .wrong .answer {
         opacity: 1;
       }
-      .correct {
+      .show-wrong .correct {
         color: #0a530a;
       }
-      .function {
+      .fn {
         margin-right: 0.1em;
       }
       .solutions {
@@ -228,12 +228,27 @@
         text-align: center;
         font-size: 20px;
         color: rgba(0, 0, 0, 0.5);
+        display: none;
+      }
+      .show-time .clock {
+        display: block;
       }
       #score {
         font-size: 24px;
         width: 500px;
         margin-bottom: 10px;
         max-width: 70vw;
+      }
+      .options {
+        max-height: 50vh;
+        overflow: auto;
+      }
+      @media (max-width: 400px) {
+        .intro-modal {
+          box-shadow: none;
+          border-radius: 0;
+          box-sizing: border-box;
+        }
       }
     </style>
   </head>
@@ -242,8 +257,8 @@
       <h1>Trig Drill Generator</h1>
       <h2>Options</h2>
       <div class="options">
-        <p><input type="checkbox" id="degrees" checked> <label for="degrees">Degrees?</label></p>
-        <p><input type="checkbox" id="radian"> <label for="radian">Radians?</label></p>
+        <p><input type="checkbox" id="degrees"> <label for="degrees">Degrees?</label></p>
+        <p><input type="checkbox" id="radian" checked> <label for="radian">Radians?</label></p>
         <!--<p><input type="checkbox" id="tan"> <label for="tan">Include tan problems?</label></p>-->
         <p><input type="checkbox" id="deg90s" checked> <label for="deg90s">Include 90&deg;-type angles?</label></p>
         <p><input type="checkbox" id="deg30s" checked> <label for="deg30s">Include 30&deg;- and 60&deg;-type angles?</label></p>
@@ -251,6 +266,10 @@
         <p><input type="checkbox" id="include360" checked> <label for="include360">Include 360&deg;?</label></p>
         <p><input type="checkbox" id="coterminal"> <label for="coterminal">Include coterminal angles?</label></p>
         <p><input type="checkbox" id="quadionly"> <label for="quadionly">Limit to quadrant I angles?</label></p>
+        <p><input type="checkbox" id="showcorrectness" checked> <label for="showcorrectness">Show wrong answers?</label></p>
+        <p><input type="checkbox" id="showcorrect" checked> <label for="showcorrect">Show correct answers?</label></p>
+        <p><input type="checkbox" id="showtime" checked> <label for="showtime">Show time?</label></p>
+        <p><input type="checkbox" id="limit20"> <label for="limit20">Limit to twenty problems?</label></p>
       </div>
       <button id="start">Start</button>
     </div>
@@ -274,7 +293,7 @@
     <div class="clock" id="clock">3:00</div>
     <script>
 function generateDrill({
-  degrees = true,
+  useDegrees = true,
   radians = false,
   tan: includeTan = false,
   deg90s = true,
@@ -352,7 +371,7 @@ function generateDrill({
       if (degrees !== 360) angle(degrees - 360, false);
       angle(degrees + 360, false);
     }
-    if (degrees) {
+    if (useDegrees) {
       problems.push({fn: 'sin', arg: degrees, type: 'degrees', answer: sin});
       problems.push({fn: 'cos', arg: degrees, type: 'degrees', answer: cos});
       if (includeTan) problems.push({fn: 'tan', arg: degrees, type: 'degrees', answer: tan});
@@ -402,7 +421,7 @@ function shuffle(arr) {
   return arr;
 }
 const checkboxes = {
-  degrees: document.getElementById('degrees'),
+  useDegrees: document.getElementById('degrees'),
   radians: document.getElementById('radian'),
   // tan: document.getElementById('tan'),
   deg90s: document.getElementById('deg90s'),
@@ -410,7 +429,11 @@ const checkboxes = {
   deg45s: document.getElementById('deg45s'),
   include360: document.getElementById('include360'),
   coterminal: document.getElementById('coterminal'),
-  quadIOnly: document.getElementById('quadionly')
+  quadIOnly: document.getElementById('quadionly'),
+  showCorrectness: document.getElementById('showcorrectness'),
+  showCorrect: document.getElementById('showcorrect'),
+  showTime: document.getElementById('showtime'),
+  limit20: document.getElementById('limit20')
 };
 const clock = document.getElementById('clock');
 const problemsWrapper = document.getElementById('problems');
@@ -431,13 +454,25 @@ document.getElementById('start').addEventListener('click', e => {
   const options = {};
   Object.keys(checkboxes).forEach(key => options[key] = checkboxes[key].checked);
   problems = shuffle(generateDrill(options));
+  if (!problems.length) {
+    alert('Your settings disallow problems of any kind. Make them more lenient please!');
+    return;
+  }
+  if (options.limit20) {
+    problems = problems.slice(0, 20);
+  }
+  if (options.showCorrectness) document.body.classList.add('show-wrong');
+  else document.body.classList.remove('show-wrong');
+  if (options.showCorrect) document.body.classList.add('show-correct');
+  else document.body.classList.remove('show-correct');
+  if (options.showTime) document.body.classList.add('show-time');
   let html = '';
   problems.forEach(({fn, arg, type, answer}) => {
     html += `<div class="problem"><span class="answer">${solutionHTMLs[answer]}</span><span><span class="fn">${fn}</span>`;
     if (type === 'degrees') html += arg + '&deg;';
     else if (arg === 0) html += 0;
-    else if (arg[1] === 1) html += arg[1] + '&pi;';
-    else html += `<span class="frac"><span class="numer">${arg[0]}&pi;</span><span class="denom">${arg[1]}</span></span>`;
+    else if (arg[1] === 1) html += (arg[0] === 1 ? '' : arg[0]) + '&pi;';
+    else html += `<span class="frac"><span class="numer">${arg[0] === 1 ? '' : arg[0]}&pi;</span><span class="denom">${arg[1]}</span></span>`;
     html += '</span></div>';
   });
   problemsWrapper.innerHTML = html;
@@ -487,6 +522,7 @@ function submitAnswer(answer) {
     score.innerHTML = `It took you <strong>${formatTime(time)}</strong> to get <strong>${rights}</strong> out of ${problems.length} correct. That means it'll take you ${formatTime(Math.round(time / problems.length * 20))} to do 20 problems.`;
     document.body.classList.add('show-intro-modal');
     document.body.classList.add('show-score');
+    document.body.classList.remove('show-time');
     return;
   }
   document.body.style.setProperty('--problem-n', problem);
