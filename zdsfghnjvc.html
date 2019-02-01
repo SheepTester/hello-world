@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Untitled document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  </head>
+  <body>
+    <h1 id="output">purely unacceptable!</h1>
+    <script>
+// https://github.com/pointfour/
+function shiftLetter(letter, num) {
+  let trueNum = num % 50;
+  return String.fromCharCode(letter.charCodeAt() + trueNum);
+}
+function decode(q) {
+  let ret = "";
+  let small = 1;
+  let big = 1;
+  for (let i = 0; i < q.length; i++) {
+    [small, big] = [big, small + big];
+    ret += shiftLetter(q[i], -small);
+  }
+  return ret;
+}
+function encode(q) {
+  let ret = "";
+  let small = 1;
+  let big = 1;
+  for (let i = 0; i < q.length; i++) {
+    [small, big] = [big, small + big];
+    ret += shiftLetter(q[i], small);
+  }
+  return ret;
+}
+
+const output = document.getElementById('output');
+const toEncode = new URL(window.location).searchParams.get('encode');
+if (toEncode) {
+  output.textContent = encode(toEncode);
+}
+document.onpaste = e => {
+  e.stopPropagation();
+  e.preventDefault();
+  
+  var paste = e.clipboardData || window.clipboardData; // get paste data
+  output.textContent = decode(paste.getData('Text'));
+};
+    </script>
+  </body>
+</html>
