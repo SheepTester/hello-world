@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>The Quick Brown Fox</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Intended to facilitate making 'quick brown fox'-style sentences."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+      body {
+        font-family: monospace;
+      }
+      .wrapper {
+        font-size: 0;
+        position: relative;
+      }
+      .wrapper .display {
+        font: inherit;
+        font-size: 30px;
+        white-space: pre;
+      }
+      #input {
+        -webkit-appearance: none;
+        border: none;
+        background: none;
+        border-radius: 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #output {
+        color: transparent;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      tr {
+        background-color: #FFCCBC;
+      }
+      tr:nth-child(even) {
+        background-color: #FBE9E7;
+      }
+      .head {
+        background-color: #FFAB91;
+      }
+      .alarming {
+        font-weight: bold;
+        color: #D84315;
+      }
+      td, th {
+        padding: 0 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <span class="display" id="output"></span>
+      <textarea class="display" id="input" autofocus>The quick brown fox jumps over the lazy dog.</textarea>
+    </div>
+    <table>
+      <thead>
+        <tr class="head">
+          <th>Letter</th>
+          <th>Occurences</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <script>
+const output = document.getElementById('output');
+const input = document.getElementById('input');
+const rows = document.getElementById('rows');
+
+const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+function analyze(text) {
+  if (!text.length) {
+    output.innerHTML = 't';
+    rows.innerHTML = '';
+    return;
+  }
+  const frequencies = {};
+  let topFrequency = 0;
+  const letters = text.split('').map(c => {
+    if (/[a-z]/i.test(c)) {
+      let letter = c.toLowerCase();
+      frequencies[letter] = (frequencies[letter] || 0) + 1;
+      if (frequencies[letter] > topFrequency) topFrequency = frequencies[letter];
+      return `<span class="letter l-${letter}">${c}</span>`;
+    } else {
+      return `<span class="letter">${c}</span>`;
+    }
+  }).join('');
+  let rowHTML = '';
+  let styles = '';
+  alphabet.sort((a, b) => (frequencies[b] || 0) - (frequencies[a] || 0)).forEach(letter => {
+    let frequency = frequencies[letter] || 0;
+    styles += `.l-${letter} { background-color: rgba(255, 0, 0, ${100 - frequency * 100 / topFrequency}%); }\n`;
+    rowHTML += `<tr${frequency ? '' : ' class="alarming"'}><td class="letter-col">${letter}</td><td class="occ-col">${frequency}</td></tr>`;
+  });
+  output.innerHTML = `<style>${styles}</style>${letters}&nbsp;`;
+  rows.innerHTML = rowHTML;
+}
+input.addEventListener('input', e => {
+  analyze(input.value);
+});
+analyze(input.value);
+    </script>
+  </body>
+</html>
