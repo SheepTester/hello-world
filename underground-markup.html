@@ -20,12 +20,12 @@
 const output = document.getElementById('output');
 const input = document.getElementById('input');
 
-const markersRegex = /\n\n?|\$([biuxqt$]|#[0-9a-f]{6}|c:.*(?=\n|$))/gi;
+const markersRegex = /\n\n?|\$([biuxqtBIUXQTL$]|#[0-9a-fA-F]{6}|[cC]:.*(?=\n|$))|\$l\(([^)]*)\)/g;
 const headingRegex = /(?:^|\n)\$([1-6])(.*)(?=\n|$)/g;
 function markup(code) {
   code = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   let state = {};
-  return '<p>' + code.replace(headingRegex, '<h$1>$2</h$1>').replace(markersRegex, (m, tag) => {
+  return '<div><p>' + code.replace(headingRegex, '<h$1>$2</h$1>').replace(markersRegex, (m, tag = '', link) => {
     if (state.code) {
       if (tag && state.code === tag.slice(1)) {
         state.code = false;
@@ -46,12 +46,14 @@ function markup(code) {
     if (tag === 'X' && state.strikethrough) { state.strikethrough = false; return '</del>'; }
     if (tag === 't' && !state.text) { state.text = true; return '<code>'; }
     if (tag === 'T' && state.text) { state.text = false; return '</code>'; }
+    if (m[1] === 'l' && !state.link) { state.link = true; return `<a href="${link.replace(/"/g, '&quot;')}">`; }
+    if (tag === 'L' && state.link) { state.link = false; return '</a>'; }
     if (tag === 'q') { state.quoteDepth = (state.quoteDepth || 0) + 1; return '<blockquote>'; }
     if (tag === 'Q' && state.quoteDepth > 0) { state.quoteDepth--; return '</blockquote>'; }
     if (tag[0] === 'c') { state.code = tag.slice(1); return '<pre>'; }
     if (tag[0] === '#') { state.colour = tag; return `<span style="color: ${tag}">`; }
     return m;
-  }) + '</p>';
+  }) + '</p></div>';
 }
 
 input.addEventListener('input', e => {
