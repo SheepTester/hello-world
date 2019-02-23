@@ -20,12 +20,11 @@
 const output = document.getElementById('output');
 const input = document.getElementById('input');
 
-const markersRegex = /\n\n?|\$([biuxqtBIUXQTL$]|#[0-9a-fA-F]{6}|[cC]:.*(?=\n|$))|\$l\(([^)]*)\)/g;
-const headingRegex = /(?:^|\n)\$([1-6])(.*)(?=\n|$)/g;
+const markersRegex = /\n\n?|\$([biuxqtBIUXQTL123456$]|#[0-9a-fA-F]{6}|[cC]:.*(?=\n|$))|\$l\(([^)]*)\)/g;
 function markup(code) {
   code = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   let state = {};
-  return '<div><p>' + code.replace(headingRegex, '<h$1>$2</h$1>').replace(markersRegex, (m, tag = '', link) => {
+  return '<div><p>' + code.replace(markersRegex, (m, tag = '', link) => {
     if (state.code) {
       if (tag && state.code === tag.slice(1)) {
         state.code = false;
@@ -33,7 +32,11 @@ function markup(code) {
       }
       else return m;
     }
-    if (m === '\n\n') return '</p><p>';
+    if (m === '\n\n') {
+      const temp = state.tag || 'p';
+      state.tag = '';
+      return `</${temp}><p>`;
+    }
     else if (m === '\n') return '<br>';
     if (tag === '$') return '$';
     if (tag === 'b' && !state.bold) { state.bold = true; return '<strong>'; }
@@ -52,6 +55,7 @@ function markup(code) {
     if (tag === 'Q' && state.quoteDepth > 0) { state.quoteDepth--; return '</blockquote>'; }
     if (tag[0] === 'c') { state.code = tag.slice(1); return '<pre>'; }
     if (tag[0] === '#') { state.colour = tag; return `<span style="color: ${tag}">`; }
+    if ('123456'.includes(tag)) { state.tag = 'h' + tag; return `<h${tag}>`; }
     return m;
   }) + '</p></div>';
 }
