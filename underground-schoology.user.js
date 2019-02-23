@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Underground Schoology
 // @namespace    https://orbiit.github.io/
-// @version      pre-1.1.15
+// @version      pre-1.1.16
 // @description  A second social media on top of Schoology
 // @author       Anti-SELF revolutionaries
 // @match        https://pausd.schoology.com/home
@@ -122,7 +122,7 @@
       const [uid, portfolioID, pageID, public_hash] = this.id.split('-');
       return Promise.all([
         fetchJSON(`users/${uid}/portfolios/${portfolioID}`, {'X-Csrf-Token': this.csrfToken}, 'PUT',
-          {title: 'Communications', description: 'Your ID: ' + this.id}),
+          {title: 'Underground', description: 'Your ID: ' + this.id}),
         fetchJSON(`users/${this.uid}/portfolios/${portfolioID}/items/${pageID}`,
           {'X-Csrf-Token': this.csrfToken}, 'PUT', {title: 'User data', description: 'Don\'t edit this page!'})
       ]);
@@ -174,6 +174,46 @@
 
   function clone(obj) {
     return JSON.parse(JSON.stringify(obj));
+  }
+
+  const markersRegex = /\n\n?|\$([biuxqtBIUXQTL123456$]|#[0-9a-fA-F]{6}|[cC]:.*(?=\n|$))|\$l\(([^)]*)\)/g;
+  function markup(code) {
+    code = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    let state = {};
+    return '<p>' + code.replace(markersRegex, (m, tag = '', link) => {
+      if (state.code) {
+        if (tag && state.code === tag.slice(1)) {
+          state.code = false;
+          return '</pre>';
+        }
+        else return m;
+      }
+      if (m === '\n\n') {
+        const temp = state.tag || 'p';
+        state.tag = '';
+        return `</${temp}><p>`;
+      }
+      else if (m === '\n') return '<br>';
+      if (tag === '$') return '$';
+      if (tag === 'b' && !state.bold) { state.bold = true; return '<strong>'; }
+      if (tag === 'B' && state.bold) { state.bold = false; return '</strong>'; }
+      if (tag === 'i' && !state.italics) { state.italics = true; return '<em>'; }
+      if (tag === 'I' && state.italics) { state.italics = false; return '</em>'; }
+      if (tag === 'u' && !state.underline) { state.underline = true; return '<ins>'; }
+      if (tag === 'U' && state.underline) { state.underline = false; return '</ins>'; }
+      if (tag === 'x' && !state.strikethrough) { state.strikethrough = true; return '<del>'; }
+      if (tag === 'X' && state.strikethrough) { state.strikethrough = false; return '</del>'; }
+      if (tag === 't' && !state.text) { state.text = true; return '<code>'; }
+      if (tag === 'T' && state.text) { state.text = false; return '</code>'; }
+      if (m[1] === 'l' && !state.link) { state.link = true; return `<a href="${link.replace(/"/g, '&quot;')}">`; }
+      if (tag === 'L' && state.link) { state.link = false; return '</a>'; }
+      if (tag === 'q') { state.quoteDepth = (state.quoteDepth || 0) + 1; return '<blockquote>'; }
+      if (tag === 'Q' && state.quoteDepth > 0) { state.quoteDepth--; return '</blockquote>'; }
+      if (tag[0] === 'c') { state.code = tag.slice(1); return '<pre>'; }
+      if (tag[0] === '#') { state.colour = tag; return `<span style="color: ${tag}">`; }
+      if ('123456'.includes(tag)) { state.tag = 'h' + tag; return `<h${tag}>`; }
+      return m;
+    }) + '</p>';
   }
 
   let ps;
@@ -359,12 +399,12 @@
       <div class="${UG_CSS_PFX}-pfp ${UG_CSS_PFX}-post-pfp" style="background-image: ${pfps[post.author]};"></div>
     </div>
     <div class="edge-main-wrapper">
-      <span class="edge-sentence">
+      <div class="edge-sentence">
         <a ${UG_ATTR_PFX}-user="${post.author}">${escapeHTML(getData(post.author).name)}</a>
         <span class="arrow-right"></span>
         <a>The Underground</a>
-        <span class="update-body s-rte">${escapeHTML(post.content)}</span>
-      </span>
+        <div class="update-body s-rte">${markup(post.content)}</div>
+      </div>
       <div class="edge-footer">
         ${post.edited ? `<span title="${escapeHTML(new Date(post.edited).toLocaleString())}">Edited</span> &middot;` : ''}
         <span class="small gray">${escapeHTML(new Date(post.date).toLocaleString())}</span>
@@ -576,13 +616,15 @@ ${data.following.map(user => `<p><span class="${UG_CSS_PFX}-id gray">${user}</sp
       const pfp = prompt('Set profile picture URL to (leave empty to remove):', userData.pfp);
       setPFP(pfp === null ? userData.pfp : pfp || null);
     } else if (e.target.dataset[UG_ATTR_JS_PFX + 'Edit']) {
+      const editMode = e.target.dataset[UG_ATTR_JS_PFX + 'EditMode'];
       const targetID = e.target.dataset[UG_ATTR_JS_PFX + 'Edit'];
       const targetContent = e.target.parentNode.previousElementSibling.lastElementChild;
-      editor.value = targetContent.textContent;
+      editor.value = editMode === 'comment' ? targetContent.textContent : posts.find(({id}) => id === targetID).content;
       document.body.appendChild(editPopup);
       onedit = () => {
-        (e.target.dataset[UG_ATTR_JS_PFX + 'EditMode'] === 'comment' ? editComment : editPost)(editor.value, e.target.dataset[UG_ATTR_JS_PFX + 'Edit']).then(() => {
-          targetContent.textContent = editor.value;
+        (editMode === 'comment' ? editComment : editPost)(editor.value, targetID).then(() => {
+          if (editMode === 'comment') targetContent.textContent = editor.value;
+          else targetContent.innerHTML = markup(editor.value);
         });
       };
     } else if (e.target.dataset[UG_ATTR_JS_PFX + 'SaveEdit']) {
