@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Underground Schoology
 // @namespace    https://orbiit.github.io/
-// @version      pre-1.1.16
+// @version      pre-1.1.17
 // @description  A second social media on top of Schoology
 // @author       Anti-SELF revolutionaries
 // @match        https://pausd.schoology.com/home
@@ -176,7 +176,12 @@
     return JSON.parse(JSON.stringify(obj));
   }
 
-  const markersRegex = /\n\n?|\$([biuxqtBIUXQTL123456$]|#[0-9a-fA-F]{6}|[cC]:.*(?=\n|$))|\$l\(([^)]*)\)/g;
+  const urlRegex = /\bhttps?:\/\/([\-A-Za-z0-9+@#\/%?=~_|!:,.;]|&amp;)*[\-A-Za-z0-9#\/=_]/g;
+  function addLinks(text) {
+    return escapeHTML(text).replace(urlRegex, '<a href="$&">$&</a>');
+  }
+
+  const markersRegex = /\n\n?|\$([biuxqtBIUXQTL123456$Nn\-]|#[0-9a-fA-F]{6}|[cC]:.*(?=\n|$))|\$l\(([^)]*)\)/g;
   function markup(code) {
     code = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     let state = {};
@@ -188,12 +193,13 @@
         }
         else return m;
       }
-      if (m === '\n\n') {
+      if (m === '\n\n' || tag === 'N') {
         const temp = state.tag || 'p';
         state.tag = '';
         return `</${temp}><p>`;
       }
-      else if (m === '\n') return '<br>';
+      if (m === '\n' || tag === 'n') return '<br>';
+      if (tag === '-') return '<hr>';
       if (tag === '$') return '$';
       if (tag === 'b' && !state.bold) { state.bold = true; return '<strong>'; }
       if (tag === 'B' && state.bold) { state.bold = false; return '</strong>'; }
@@ -436,7 +442,7 @@
   <div class="${UG_CSS_PFX}-pfp ${UG_CSS_PFX}-comment-pfp" style="background-image: ${pfps[comment.author]};"></div>
   <div class="comment-contents comment-comment">
     <span class="comment-author"><a ${UG_ATTR_PFX}-user="${comment.author}">${escapeHTML(getData(comment.author).name)}</a></span>
-    <div>${escapeHTML(comment.content)}</div>
+    <div>${addLinks(comment.content)}</div>
   </div>
   <div class="comment-footer">
     ${comment.edited ? `<span title="${escapeHTML(new Date(comment.edited).toLocaleString())}">Edited</span> &middot;` : ''}
@@ -466,7 +472,7 @@
     return `
 <div class="${UG_CSS_PFX}-vertalign"><div class="${UG_CSS_PFX}-pfp ${UG_CSS_PFX}-user-card-pfp" style="background-image: ${pfps[user]};"></div><strong>${escapeHTML(data.name)}</strong> ${userData.following.includes(user) ? `<span tabindex="0" class="clickable" ${UG_ATTR_PFX}-unfollow="${user}">Unfollow</span>` : ''}</div>
 <p><span class="${UG_CSS_PFX}-id gray">${user}</span></p>
-<p>${escapeHTML(data.bio || '')}</p>
+<div class="s-rte" style="white-space: normal; overflow: visible;">${markup(data.bio || '')}</div>
 <p><strong>Following:</strong></p>
 ${data.following.map(user => `<p><span class="${UG_CSS_PFX}-id gray">${user}</span> ${user === userID ? '(you)' : userData.following.includes(user) ? `${escapeHTML((getData(user) || {name: '[not loaded]'}).name)}` : `<span tabindex="0" class="like-btn clickable schoology-processed" ${UG_ATTR_PFX}-follow="${user}">Follow</span>`}</p>`).join('') || '<p>(no one)</p>'}`;
   }
@@ -563,7 +569,7 @@ ${data.following.map(user => `<p><span class="${UG_CSS_PFX}-id gray">${user}</sp
         display.dataset.likes = likeCount;
       });
     } else if (e.target.dataset[UG_ATTR_JS_PFX + 'Comment']) {
-      const content = e.target.parentNode.previousElementSibling.children[0];
+      const content = e.target.parentNode.previousElementSibling.querySelector('textarea');
       if (content.value) {
         e.target.disabled = true;
         e.target.parentNode.classList.add('disabled');
@@ -578,7 +584,7 @@ ${data.following.map(user => `<p><span class="${UG_CSS_PFX}-id gray">${user}</sp
           });
       }
     } else if (e.target.dataset[UG_ATTR_JS_PFX + 'Post']) {
-      const content = e.target.parentNode.parentNode.previousElementSibling.children[0];
+      const content = e.target.parentNode.parentNode.previousElementSibling.querySelector('textarea');
       if (content.value) {
         e.target.disabled = true;
         e.target.parentNode.classList.add('disabled');
@@ -589,6 +595,7 @@ ${data.following.map(user => `<p><span class="${UG_CSS_PFX}-id gray">${user}</sp
             e.target.parentNode.classList.remove('disabled');
             const html = document.getElementById('new-posts');
             html.outerHTML += postHTML({id, author: userID, content: content.value, date: now, comments: []});
+            posts.splice(0, 0, {id, content: content.value});
             content.value = '';
           });
       }
@@ -619,12 +626,16 @@ ${data.following.map(user => `<p><span class="${UG_CSS_PFX}-id gray">${user}</sp
       const editMode = e.target.dataset[UG_ATTR_JS_PFX + 'EditMode'];
       const targetID = e.target.dataset[UG_ATTR_JS_PFX + 'Edit'];
       const targetContent = e.target.parentNode.previousElementSibling.lastElementChild;
-      editor.value = editMode === 'comment' ? targetContent.textContent : posts.find(({id}) => id === targetID).content;
+      const post = posts.find(({id}) => id === targetID);
+      editor.value = editMode === 'comment' ? targetContent.textContent : post.content;
       document.body.appendChild(editPopup);
       onedit = () => {
         (editMode === 'comment' ? editComment : editPost)(editor.value, targetID).then(() => {
-          if (editMode === 'comment') targetContent.textContent = editor.value;
-          else targetContent.innerHTML = markup(editor.value);
+          if (editMode === 'comment') targetContent.innerHTML = addLinks(editor.value);
+          else {
+            targetContent.innerHTML = markup(editor.value);
+            post.content = editor.value;
+          }
         });
       };
     } else if (e.target.dataset[UG_ATTR_JS_PFX + 'SaveEdit']) {
