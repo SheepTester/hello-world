@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Underground Schoology
 // @namespace    https://orbiit.github.io/
-// @version      pre-1.1.17
+// @version      pre-1.1.18
 // @description  A second social media on top of Schoology
 // @author       Anti-SELF revolutionaries
 // @match        https://pausd.schoology.com/home
@@ -73,6 +73,9 @@
     pointer-events: none;
     opacity: 0.5;
   }
+  .s-rte h2 {
+    display: block !important;
+  }
   `;
   document.head.appendChild(styles);
 
@@ -97,8 +100,9 @@
 
   class PortfolioStorer {
 
-    constructor(id, uid) {
+    constructor(id, uid, desiredName) {
       this.uid = uid || siteNavigationUiProps.props.user.uid;
+      this.desiredName = desiredName;
       this.ready = this.getCSRFToken().then(() => {
         return (this.id = id) || this.createPortfolio()
           .then(ids => this.id = this.uid + '-' + ids.join('-'))
@@ -122,7 +126,7 @@
       const [uid, portfolioID, pageID, public_hash] = this.id.split('-');
       return Promise.all([
         fetchJSON(`users/${uid}/portfolios/${portfolioID}`, {'X-Csrf-Token': this.csrfToken}, 'PUT',
-          {title: 'Underground', description: 'Your ID: ' + this.id}),
+          {title: 'Underground' + (this.desiredName ? ` (${this.desiredName})` : ''), description: 'Your ID: ' + this.id}),
         fetchJSON(`users/${this.uid}/portfolios/${portfolioID}/items/${pageID}`,
           {'X-Csrf-Token': this.csrfToken}, 'PUT', {title: 'User data', description: 'Don\'t edit this page!'})
       ]);
@@ -181,7 +185,7 @@
     return escapeHTML(text).replace(urlRegex, '<a href="$&">$&</a>');
   }
 
-  const markersRegex = /\n\n?|\$([biuxqtBIUXQTL123456$Nn\-]|#[0-9a-fA-F]{6}|[cC]:.*(?=\n|$))|\$l\(([^)]*)\)/g;
+  const markersRegex = /\n\n?|\$([biuxqtBIUXQTL123456$Nn\-]|#[0-9a-fA-F]{6}|#r|[cC]:.*(?=\n|$))|\$l\(([^)]*)\)/g;
   function markup(code) {
     code = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     let state = {};
@@ -216,7 +220,8 @@
       if (tag === 'q') { state.quoteDepth = (state.quoteDepth || 0) + 1; return '<blockquote>'; }
       if (tag === 'Q' && state.quoteDepth > 0) { state.quoteDepth--; return '</blockquote>'; }
       if (tag[0] === 'c') { state.code = tag.slice(1); return '<pre>'; }
-      if (tag[0] === '#') { state.colour = tag; return `<span style="color: ${tag}">`; }
+      if (tag === '#r') { state.colour = null; return '</span>'; }
+      if (tag[0] === '#') { state.colour = tag; return `<span style="color: ${tag};">`; }
       if ('123456'.includes(tag)) { state.tag = 'h' + tag; return `<h${tag}>`; }
       return m;
     }) + '</p>';
@@ -540,12 +545,12 @@ ${data.following.map(user => `<p><span class="${UG_CSS_PFX}-id gray">${user}</sp
     }
     feed.innerHTML = '<li><img src="/sites/all/themes/schoology_theme/images/ajax-loader.gif" class="more-loading"></li>';
     if (!ps) {
-      ps = new PortfolioStorer(userID);
+      ps = new PortfolioStorer(userID, null, desiredName);
       await ps.ready;
       if (!userID) {
         // initialize user data
         localStorage.setItem(STORAGE_KEY, userID = ps.id);
-        await ps.setContent(stringify({name: desiredName, bio: 'I love SELF! All hail the administration!', following: [], posts: [], comments: [], likes: []}));
+        await ps.setContent(stringify({name: desiredName, bio: 'I love SELF! All hail the administration!', following: ['2017219-2779230-7167360-877d548ac808a451845c939014d1067b'], posts: [], comments: [], likes: []}));
       }
       window.ps = ps;
     }
