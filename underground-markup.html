@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Underground markup</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="A Minecraft-like markup language for Underground Schoology"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+      textarea {
+        width: 100%;
+        height: 30vh;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="input"></textarea>
+    <div id="output"></div>
+    <script>
+const output = document.getElementById('output');
+const input = document.getElementById('input');
+
+const markersRegex = /\n\n?|\$([biuxqt$]|#[0-9a-f]{6}|c:.*(?=\n|$))/gi;
+const headingRegex = /(?:^|\n)\$([1-6])(.*)(?=\n|$)/g;
+function markup(code) {
+  code = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  let state = {};
+  return '<p>' + code.replace(headingRegex, '<h$1>$2</h$1>').replace(markersRegex, (m, tag) => {
+    if (state.code) {
+      if (tag && state.code === tag.slice(1)) {
+        state.code = false;
+        return '</pre>';
+      }
+      else return m;
+    }
+    if (m === '\n\n') return '</p><p>';
+    else if (m === '\n') return '<br>';
+    if (tag === '$') return '$';
+    if (tag === 'b' && !state.bold) { state.bold = true; return '<strong>'; }
+    if (tag === 'B' && state.bold) { state.bold = false; return '</strong>'; }
+    if (tag === 'i' && !state.italics) { state.italics = true; return '<em>'; }
+    if (tag === 'I' && state.italics) { state.italics = false; return '</em>'; }
+    if (tag === 'u' && !state.underline) { state.underline = true; return '<ins>'; }
+    if (tag === 'U' && state.underline) { state.underline = false; return '</ins>'; }
+    if (tag === 'x' && !state.strikethrough) { state.strikethrough = true; return '<del>'; }
+    if (tag === 'X' && state.strikethrough) { state.strikethrough = false; return '</del>'; }
+    if (tag === 't' && !state.text) { state.text = true; return '<code>'; }
+    if (tag === 'T' && state.text) { state.text = false; return '</code>'; }
+    if (tag === 'q') { state.quoteDepth = (state.quoteDepth || 0) + 1; return '<blockquote>'; }
+    if (tag === 'Q' && state.quoteDepth > 0) { state.quoteDepth--; return '</blockquote>'; }
+    if (tag[0] === 'c') { state.code = tag.slice(1); return '<pre>'; }
+    if (tag[0] === '#') { state.colour = tag; return `<span style="color: ${tag}">`; }
+    return m;
+  }) + '</p>';
+}
+
+input.addEventListener('input', e => {
+  output.innerHTML = markup(input.value);
+});
+output.innerHTML = markup(input.value);
+    </script>
+  </body>
+</html>
