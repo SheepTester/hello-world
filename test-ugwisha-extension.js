@@ -3,7 +3,7 @@ UgwishaExtensions.register((() => {
     children: [
       createElement('p', {
         html: 'DOWN WITH SELF.'
-      }
+      })
     ]
   });
 
