@@ -11,6 +11,7 @@ UgwishaExtensions.register((() => {
     id: 'test-ugwisha-extension',
     wrapper: wrapper,
     name: 'test',
-    icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flock_of_sheep.jpg/158px-Flock_of_sheep.jpg'
+    icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flock_of_sheep.jpg/158px-Flock_of_sheep.jpg',
+    url: 'https://sheeptester.github.io/hello-world/test-ugwisha-extension.js'
   };
 })());
