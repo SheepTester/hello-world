@@ -5,18 +5,114 @@
     <meta charset="UTF-8">
     <meta name="description" content="The posts on Gunn Confessions"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../sheep3.css">
     <script src="../sheep3.js" charset="utf-8"></script>
+    <style media="screen">
+      body {
+        background-color: #485f62;
+        font-family: 'Inconsolata', monospace;
+        color: rgba(255, 255, 255, 0.5);
+      }
+      .post {
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.05);
+        margin: 20px;
+      }
+      p {
+        white-space: pre-wrap;
+      }
+      .comment {
+        border-left: 5px solid rgba(255, 255, 255, 0.2);
+        padding-left: 10px;
+        margin-top: 10px;
+      }
+      .author {
+        font-weight: bold;
+      }
+      .time {
+        font-size: 0.8em;
+      }
+      strong {
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .disclaimer {
+        font-weight: bold;
+        color: rgba(255, 255, 255, 0.9);
+      }
+    </style>
   </head>
   <body>
-    <div
-      class="fb-like"
-      data-share="true"
-      data-width="450"
-      data-show-faces="true">
-    </div>
-
+    <p class="disclaimer">These posts are currently from a test Facebook page; they will be from the actual Gunn Confessions page one day.</p>
     <script>
+const PAGE = '634679850309851';
+const TOKEN = atob('RUFBamQ2WkNmQVRQY0JBQUxpNEJWbmdBZ1h1b0prdkFzTFNBWkJYZ3BGeng2WVlGa0E2ekhSVmdtb0xPWkNVVnZoR3ZNUFpDV3plN054RlhYajBtNVNEbnZzc1NBbWNvTnZUQkR1MnY1SEl2R1hqZEt4bDhQVE5YU1FWMWp3a2x5Z21mSmlLeW1uTWpSOHVnWW1JWkFaQkF6elRtWGZtd1BueHVDZDhMMHRaQ3NRWkRaRA==');
+const REACTION_TYPES = ['LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY'];
+
+function makeComment(commentData) {
+  const comment = document.createElement('div');
+  comment.classList.add('comment');
+  const author = document.createElement('div');
+  author.classList.add('author');
+  author.textContent = commentData.from.name;
+  comment.appendChild(author);
+  const time = document.createElement('span');
+  time.classList.add('time');
+  time.textContent = new Date(commentData.created_time).toLocaleString();
+  comment.appendChild(time);
+  const content = document.createElement('p');
+  content.classList.add('content');
+  content.textContent = commentData.message;
+  comment.appendChild(content);
+  if (commentData.comments) {
+    commentData.comments.data.forEach(data => comment.appendChild(makeComment(data)));
+  }
+  return comment;
+}
+function createPost(msg) {
+  const div = document.createElement('div');
+  div.classList.add('post');
+  const message = document.createElement('p');
+  message.classList.add('message');
+  message.textContent = msg;
+  div.appendChild(message);
+  const separator = document.createElement('div'); // so reactions are always before comments
+  div.appendChild(separator);
+  document.body.appendChild(div);
+  let hasComments = false, hasReactions = false;
+  return {
+    reactions(reactions) {
+      if (hasReactions) return;
+      hasReactions = true;
+      const rxns = document.createElement('div');
+      rxns.classList.add('reactions');
+      let str = [];
+      REACTION_TYPES.forEach(type => {
+        if (reactions[type]) {
+          str.push(`<strong>${type}</strong> ${reactions[type]}`);
+        }
+      });
+      rxns.innerHTML = str.length ? str.join(' &middot; ') : '<em>No reactions</em>';
+      div.insertBefore(rxns, separator);
+    },
+    comments(comments) {
+      if (hasComments) return;
+      hasComments = true;
+      // do something
+      const cmmts = document.createElement('div');
+      cmmts.classList.add('comments');
+      if (comments.length === 0) {
+        cmmts.innerHTML = '<em>No comments</em>';
+      } else {
+        comments.forEach(comment => {
+          cmmts.appendChild(makeComment(comment));
+        });
+      }
+      div.appendChild(cmmts);
+    }
+  };
+}
+
 window.fbAsyncInit = function() {
   FB.init({
     appId      : '2495805357313271',
@@ -24,6 +120,46 @@ window.fbAsyncInit = function() {
     version    : 'v3.2'
   });
   FB.AppEvents.logPageView();
+// return;
+  const postObjects = {};
+  FB.api(
+    `/${PAGE}/feed?access_token=${TOKEN}&fields=id,message`,
+    ({data: posts, paging}) => {
+      posts.forEach(({id, message}) => {
+        postObjects[id] = createPost(message);
+      });
+      // https://stackoverflow.com/q/36906590
+      FB.api(
+        `/?access_token=${TOKEN}&ids=${posts.map(p => p.id).join(',')}&fields=${REACTION_TYPES.map(type => `reactions.type(${type}).limit(0).summary(total_count).as(${type})`).join(',')}`,
+        reactions => {
+          Object.values(reactions).forEach(reactions => {
+            REACTION_TYPES.forEach(type => reactions[type] = reactions[type].summary.total_count);
+          });
+          Object.keys(reactions).forEach(id => {
+            postObjects[id].reactions(reactions[id]);
+          });
+        }
+      );
+      FB.api(
+        `/?access_token=${TOKEN}&batch=${encodeURIComponent(JSON.stringify(posts.map(p => ({
+          method: 'GET',
+          relative_url: `/${p.id}/comments?fields=message,comments{message,comments,created_time,from{name}},created_time,from{name}`
+        }))))}&include_headers=false`,
+        'post',
+        data => {
+          console.log(data);
+          const comments = {};
+          data.forEach((comment, i) => {
+            const data = JSON.parse(comment.body).data;
+            comments[posts[i].id] = data;
+            postObjects[posts[i].id].comments(data);
+          });
+          console.log(comments);
+        }
+      );
+      console.log(posts);
+    }
+  );
 };
 
 (function(d, s, id){
