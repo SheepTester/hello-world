@@ -44,12 +44,18 @@
   </head>
   <body>
     <p class="disclaimer">These posts are currently from a test Facebook page; they will be from the actual Gunn Confessions page one day.</p>
+    <p><label for="sort">Sort by</label> <select id="sort">
+      <option value="unsorted" disabled selected>unsorted</option>
+      <option value="reactions">reactions</option>
+      <option value="comments">comments</option>
+      <option value="time">time</option>
+    </select></p>
     <script>
 const PAGE = '634679850309851';
 const TOKEN = atob('RUFBamQ2WkNmQVRQY0JBQUxpNEJWbmdBZ1h1b0prdkFzTFNBWkJYZ3BGeng2WVlGa0E2ekhSVmdtb0xPWkNVVnZoR3ZNUFpDV3plN054RlhYajBtNVNEbnZzc1NBbWNvTnZUQkR1MnY1SEl2R1hqZEt4bDhQVE5YU1FWMWp3a2x5Z21mSmlLeW1uTWpSOHVnWW1JWkFaQkF6elRtWGZtd1BueHVDZDhMMHRaQ3NRWkRaRA==');
 const REACTION_TYPES = ['LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY'];
 
-function makeComment(commentData) {
+function makeComment(commentData, inc) {
   const comment = document.createElement('div');
   comment.classList.add('comment');
   const author = document.createElement('div');
@@ -65,11 +71,12 @@ function makeComment(commentData) {
   content.textContent = commentData.message;
   comment.appendChild(content);
   if (commentData.comments) {
-    commentData.comments.data.forEach(data => comment.appendChild(makeComment(data)));
+    commentData.comments.data.forEach(data => comment.appendChild(makeComment(data, inc)));
   }
+  if (inc) inc.val++;
   return comment;
 }
-function createPost(msg) {
+function createPost(msg, time) {
   const div = document.createElement('div');
   div.classList.add('post');
   const message = document.createElement('p');
@@ -80,7 +87,10 @@ function createPost(msg) {
   div.appendChild(separator);
   document.body.appendChild(div);
   let hasComments = false, hasReactions = false;
+  const sortableValues = {time: Date.parse(time), comments: 0, reactions: 0};
   return {
+    wrapper: div,
+    values: sortableValues,
     reactions(reactions) {
       if (hasReactions) return;
       hasReactions = true;
@@ -90,6 +100,7 @@ function createPost(msg) {
       REACTION_TYPES.forEach(type => {
         if (reactions[type]) {
           str.push(`<strong>${type}</strong> ${reactions[type]}`);
+          sortableValues.reactions += reactions[type];
         }
       });
       rxns.innerHTML = str.length ? str.join(' &middot; ') : '<em>No reactions</em>';
@@ -104,9 +115,11 @@ function createPost(msg) {
       if (comments.length === 0) {
         cmmts.innerHTML = '<em>No comments</em>';
       } else {
+        const inc = {val: 0};
         comments.forEach(comment => {
-          cmmts.appendChild(makeComment(comment));
+          cmmts.appendChild(makeComment(comment, inc));
         });
+        sortableValues.comments = inc.val;
       }
       div.appendChild(cmmts);
     }
@@ -123,10 +136,10 @@ window.fbAsyncInit = function() {
 // return;
   const postObjects = {};
   FB.api(
-    `/${PAGE}/feed?access_token=${TOKEN}&fields=id,message`,
+    `/${PAGE}/feed?access_token=${TOKEN}&fields=id,message,created_time`,
     ({data: posts, paging}) => {
-      posts.forEach(({id, message}) => {
-        postObjects[id] = createPost(message);
+      posts.forEach(({id, message, created_time}) => {
+        postObjects[id] = createPost(message, created_time);
       });
       // https://stackoverflow.com/q/36906590
       FB.api(
@@ -160,6 +173,16 @@ window.fbAsyncInit = function() {
       console.log(posts);
     }
   );
+  const sortBy = document.getElementById('sort');
+  sortBy.addEventListener('change', e => {
+    const posts = Object.values(postObjects);
+    posts.forEach(({wrapper}) => document.body.removeChild(wrapper));
+    const fragment = document.createDocumentFragment();
+    posts.sort((a, b) => b.values[sortBy.value] - a.values[sortBy.value]).forEach(({wrapper}) => {
+      fragment.appendChild(wrapper);
+    });
+    document.body.appendChild(fragment);
+  });
 };
 
 (function(d, s, id){
