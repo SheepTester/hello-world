@@ -45,3 +45,13 @@ yay
 - [treeify the scheme `count-change` recursion?](./tabletest.html)
 
 - [run 3.0 projects without mr. laggy guiface?](./vm.html)
+
+- [test thine basic trig anglos?](./drills.html)
+
+- [list random facebook posts to please the api reviewers?](./gunn-confessions.html)
+
+- [make ur own ***P A N G R A M***?](./quick-brown-fox.html)
+
+- [learn the markup SECRETS for the underground?](./underground-markup.html)
+
+- [utilize monsieur lesha's fanciest CRYPTO de fancé?](./zdsfghnjvc.html)
