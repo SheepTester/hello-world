@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>large text</title>
+    <style>
+      html, body {
+        height: 100%;
+        width: 100%;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        margin: 0;
+      }
+      p {
+        font-size: 100px;
+        font-family: sans-serif;
+        padding: 15px;
+        word-break: break-word;
+        background: #eee;
+      }
+      :focus {
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <p contenteditable="">text</p>
+  </body>
+</html>
