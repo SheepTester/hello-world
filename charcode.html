@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>charcodes</title>
+    <meta name="description" content="list of characters by charcode"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../sheep3.css">
+    <script src="../sheep3.js" charset="utf-8"></script>
+    <style>
+      body {
+        margin: 0;
+        display: grid;
+        font-size: 0;
+        grid-template-columns: repeat(16, 1fr);
+        margin-bottom: 1000px;
+        line-height: 1;
+      }
+      .cell {
+        height: 80px;
+        text-align: center;
+        padding: 10px 0;
+        box-sizing: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      .cell:target {
+        background-color: rgba(0, 0, 255, 0.1);
+      }
+      .code {
+        color: #666;
+        font-size: 12px;
+      }
+      .char {
+        color: #333;
+        font-size: 36px;
+        margin-top: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+const ROW_WIDTH = 16; // number of items in row
+const ROW_HEIGHT = 80; // visual height of a cell (px)
+
+let cells;
+function resize() {
+  if (cells) {
+    cells.forEach(c => c.remove());
+  }
+  const rowCount = Math.ceil(window.innerHeight / ROW_HEIGHT) + 1;
+  cells = [];
+  const fragment = document.createDocumentFragment();
+  for (let i = rowCount * ROW_WIDTH; i--;) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    fragment.appendChild(cell);
+    
+    const code = document.createElement('div');
+    code.className = 'code';
+    cell.appendChild(code);
+    
+    const char = document.createElement('div');
+    char.className = 'char';
+    cell.appendChild(char);
+    
+    cells.push({
+      cell,
+      code,
+      char,
+      remove() {
+        document.body.removeChild(cell);
+      }
+    });
+  }
+  document.body.appendChild(fragment);
+  lastRow = null;
+  display();
+}
+
+let lastRow = null;
+function display(row = Math.floor(document.documentElement.scrollTop / ROW_HEIGHT)) {
+  if (lastRow && row === lastRow) return;
+  else lastRow = row;
+  document.body.style.marginTop = row * ROW_HEIGHT + 'px';
+  for (let i = 0; i < cells.length; i++) {
+    const charCode = row * ROW_WIDTH + i;
+    const {cell, code, char} = cells[i];
+    code.textContent = '0x' + (cell.id = charCode.toString(16).toUpperCase().padStart(4, '0'));
+    char.textContent = String.fromCharCode(charCode);
+  }
+}
+
+resize();
+window.addEventListener('resize', () => resize());
+document.addEventListener('scroll', () => display());
+
+if (window.location.hash) {
+  const code = parseInt(window.location.hash.slice(1), 16);
+  if (!isNaN(code)) {
+    const scroll = Math.floor(code / ROW_WIDTH) * ROW_HEIGHT;
+    // super complicated because Chrome so aggressively sets scroll on page load
+    const timeoutID = setInterval(() => {
+      if (document.documentElement.scrollTop === scroll) {
+        clearInterval(timeoutID);
+        return;
+      }
+      document.body.style.marginTop = (scroll + document.documentElement.scrollHeight) + 'px';
+      document.documentElement.scrollTop = scroll;
+    }, 100);
+  }
+}
+    </script>
+  </body>
+</html>
