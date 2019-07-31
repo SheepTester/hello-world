@@ -1,0 +1,14 @@
+{
+  "name": "mumphy",
+  "icons": [
+    {
+      "src": "/images/logo/512.png",
+      "type": "image/png",
+      "sizes": "480x480"
+    }
+  ],
+  "start_url": "./mobile-pwa-test.html",
+  "background_color": "#00ff00",
+  "display": "standalone",
+  "theme_color": "#0000ff"
+}

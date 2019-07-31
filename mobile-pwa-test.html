@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>testing pwa things on mobile</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="yeet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="theme-color" content="#ff0000">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="hahhahaha">
+    <link rel="apple-touch-icon" href="/Sheep_maker.png">
+    <link rel="icon" href="/Sheep_maker.png" id="favicon">
+    <link rel="manifest" href="./manifest.json">
+    <style>
+      .arrow {
+        position: fixed;
+        top: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid #345726;
+        right: 100px;
+        margin-right: -10px;
+      }
+    </style>
+    <script>
+      const ua = navigator.userAgent;
+      let pos = 100;
+    </script>
+  </head>
+  <body>
+    <h3>colours</h3>
+    <p>red: meta theme-color tag</p>
+    <p>green: background colour</p>
+    <p>blue: manfiest theme colour</p>
+    <h3>user agent</h3>
+    <code>
+      <script>document.write(ua)</script>
+    </code>
+    <p>is android chrome? <script>document.write(ua.includes('Android') && ua.includes('Chrome/') ? 'yes' : 'no')</script></p>
+    <p>is ios safari? <script>document.write(/iPad|iPhone|iPod/.test(ua) && ua.includes('Version/') ? 'yes' : 'no')</script></p>
+    <p>is ios chrome? <script>document.write(/iPad|iPhone|iPod/.test(ua) && ua.includes('CriOS/') ? 'yes' : 'no')</script></p>
+    <!-- sorry i am lazy-->
+    <span id=a class=arrow></span>
+    <h3>position recommend: <span id=p>100</span></h3>
+    <button onclick="a.style.right=(p.textContent=++pos) + 'px'">&leftarrow;</button>
+    <button onclick="a.style.right=(p.textContent=--pos) + 'px'">&rightarrow;</button>
+  </body>
+</html>
