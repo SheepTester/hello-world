@@ -40,10 +40,20 @@
     <p>is android chrome? <script>document.write(ua.includes('Android') && ua.includes('Chrome/') ? 'yes' : 'no')</script></p>
     <p>is ios safari? <script>document.write(/iPad|iPhone|iPod/.test(ua) && ua.includes('Version/') ? 'yes' : 'no')</script></p>
     <p>is ios chrome? <script>document.write(/iPad|iPhone|iPod/.test(ua) && ua.includes('CriOS/') ? 'yes' : 'no')</script></p>
+    <p>standalone? <script>document.write(navigator.standalone? 'yes' : 'no')</script></p>
     <!-- sorry i am lazy-->
     <span id=a class=arrow></span>
     <h3>position recommend: <span id=p>100</span></h3>
     <button onclick="a.style.right=(p.textContent=++pos) + 'px'">&leftarrow;</button>
     <button onclick="a.style.right=(p.textContent=--pos) + 'px'">&rightarrow;</button>
+    <h3>notes</h3>
+    <ul>
+      <li>android<ul>
+        <li>red only shows in actual chrome app</li>
+        <li>add to home screen uses mumphy</li>
+        <li>is android chrome? works</li>
+        <li>when added to home screen, splash screen uses green background and blue status bar, but when actual website loads it becomes red status bar</li>
+      </ul></li>
+    </ul>
   </body>
 </html>
