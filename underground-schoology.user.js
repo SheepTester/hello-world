@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Underground Schoology
 // @namespace    https://orbiit.github.io/
-// @version      pre-1.1.18
+// @version      pre-1.1.19
 // @description  A second social media on top of Schoology
 // @author       Anti-SELF revolutionaries
 // @match        https://pausd.schoology.com/home
@@ -73,7 +73,11 @@
     pointer-events: none;
     opacity: 0.5;
   }
-  .s-rte h2 {
+  .${UG_CSS_PFX}-post .s-rte, .${UG_CSS_PFX}-post .comment-contents div {
+    max-height: 1000px;
+    overflow: auto;
+  }
+  .${UG_CSS_PFX}-post .s-rte h2 {
     display: block !important;
   }
   `;
@@ -87,12 +91,9 @@
   function fetchJSON(path, headers, method = 'GET', body = undefined, tolerance = 0) {
     return fetch('https://pausd.schoology.com/portfolios/' + path, {method, headers, body: body && JSON.stringify(body)})
       .then(r => {
-        if (r.status === 500 || r.status === 404) {
-          if (tolerance < 50) return fetchJSON(path, headers, method, body, tolerance + 1);
-          else {
-            console.warn('Gave up fetching ' + path);
-            return Promise.reject(new SyntaxError());
-          }
+        if (!r.ok) {
+          console.warn('Gave up fetching ' + path);
+          return Promise.reject(new SyntaxError());
         }
         return r.json().then(({data}) => data);
       });
@@ -153,7 +154,7 @@
   // https://gist.github.com/gordonbrander/2230317
   const genID = () => Math.random().toString(36).substr(2, 9);
 
-  const defaultUser = {name: '[user failed to load]', bio: "It's possible that my save data got corrupted somehow, or I manually set my name and bio to this.", posts: [], comments: [], following: [], likes: []};
+  const defaultUser = {name: '[user failed to load]', bio: "It's possible that my save data got corrupted somehow, I got deleted, Schoology got really pissed at the Underground loading all this data, or I manually set my name and bio to this.", posts: [], comments: [], following: [], likes: []};
 
   function randomInt(int) {
     return Math.floor(Math.random() * int);
@@ -249,23 +250,28 @@
     if (!userData) window.location.reload();
     else if (userData === true) return;
     followData = {};
-    let lastRender = Date.now();
     render(false);
+    const attempts = Math.ceil(userData.following.length / 6);
+    let failures = userData.following.slice();
     let loaded = 0;
-    document.getElementById(UG_CSS_PFX + '-load-progress').textContent = `${loaded} of ${userData.following.length} people that you follow loaded`;
-    await Promise.all(userData.following.map(userID => ps.getContent(userID).then(parse).catch(() => defaultUser).then(data => {
-      followData[userID] = data;
-      const now = Date.now();
-      if (now - lastRender > 100) {
-        lastRender = now;
-        render(false);
+    for (let i = 0; i < attempts && failures.length; i++) {
+      const failuresAgain = [];
+      for (let j = 0; j < failures.length; j++) {
+        await wait(i * 200);
+        try {
+          const data = await ps.getContent(failures[j]).then(parse);
+          followData[failures[j]] = data;
+          render(false);
+          loaded++;
+          document.getElementById(UG_CSS_PFX + '-load-progress').textContent = `${loaded} of ${userData.following.length} people that you follow loaded (attempt ${i + 1} of ${attempts})`;
+        } catch (e) {
+          failuresAgain.push(failures[j]);
+        }
       }
-      loaded++;
-      document.getElementById(UG_CSS_PFX + '-load-progress').textContent = `${loaded} of ${userData.following.length} people that you follow loaded`;
-    })));
+      failures = failuresAgain;
+    }
+    failures.forEach(userID => followData[userID] = defaultUser);
     render(true);
-
-    return posts;
   }
 
   function render(loaded = true) {
@@ -405,7 +411,7 @@
   function postHTML(post) {
     return `
 <li>
-  <div class="edge-item s-edge-type-update-post">
+  <div class="edge-item s-edge-type-update-post ${UG_CSS_PFX}-post">
     <div class="edge-left">
       <div class="${UG_CSS_PFX}-pfp ${UG_CSS_PFX}-post-pfp" style="background-image: ${pfps[post.author]};"></div>
     </div>
