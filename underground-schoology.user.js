@@ -4,7 +4,7 @@
 // @version      pre-1.1.19
 // @description  A second social media on top of Schoology
 // @author       Anti-SELF revolutionaries
-// @match        https://pausd.schoology.com/home
+// @match        https://*.schoology.com/home
 // @grant        none
 // ==/UserScript==
 
@@ -89,7 +89,7 @@
   }
 
   function fetchJSON(path, headers, method = 'GET', body = undefined, tolerance = 0) {
-    return fetch('https://pausd.schoology.com/portfolios/' + path, {method, headers, body: body && JSON.stringify(body)})
+    return fetch('https://*.schoology.com/portfolios/' + path, {method, headers, body: body && JSON.stringify(body)})
       .then(r => {
         if (!r.ok) {
           console.warn('Gave up fetching ' + path);
