@@ -4,7 +4,7 @@
 // @version      pre-1.1.19
 // @description  A second social media on top of Schoology
 // @author       Anti-SELF revolutionaries
-// @match        https://*.schoology.com/home
+// @match        https://*.schoology.com/*
 // @grant        none
 // ==/UserScript==
 
