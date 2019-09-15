@@ -15,10 +15,10 @@ self.addEventListener('fetch', e => {
         );
       case '/backdoor-sw-test/':
         return fetch(e.request)
-          .then(({text, headers, status, statusText}) => text()
+          .then(res => res.text()
             .then(html => new Response(
               html.replace('hello', 'CHANGE'),
-              {headers, status, statusText}
+              {headers: res.headers, status: res.status, statusText: res.statusText}
             )));
       default:
         return fetch(e.request);
