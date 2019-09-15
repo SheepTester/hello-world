@@ -8,11 +8,18 @@ self.addEventListener('fetch', e => {
     const url = new URL(e.request.url);
     if (url.host !== location.host) return fetch(e.request);
     switch (url.pathname) {
-      case 'backdoor-sw-test':
+      case '/backdoor-sw-test/hello':
         return new Response(
           '<strong>hello</strong>',
           {headers: {'Content-Type': 'text/html'}}
         );
+      case '/backdoor-sw-test/':
+        return fetch(e.request)
+          .then(({text, headers, status, statusText}) => text()
+            .then(html => new Response(
+              html.replace('hello', 'CHANGE'),
+              {headers, status, statusText}
+            )));
       default:
         return fetch(e.request);
     }
