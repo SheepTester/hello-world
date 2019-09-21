@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>scheme interpret</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style> body { background-color: black; } </style>
+  </head>
+  <body>
+    <script>
+
+'use strict';
+
+const Pair = (car = null, cdr = null) => ({car, cdr, pair: true});
+
+const notSymbol = /[\s()']/;
+
+function parse(code) {
+  const mainPair = Pair();
+  let currentPair = mainPair;
+  let parentPairs = null;
+  let mode = 'whitespace', escapeNext;
+  let currentQuote;
+  let currentData = null;
+  for (const char of code) {
+    // console.log(mode, currentData && currentData.data);
+    if (mode === 'string') {
+      currentData.data += char;
+      if (char === '\\') {
+        escapeNext = !escapeNext;
+      } else if (char === '"' && !escapeNext) {
+        currentData.data = JSON.parse(currentData.data);
+        if (currentQuote) {
+          currentQuote.cdr = Pair(currentData);
+          currentQuote = null;
+        }
+        else if (currentPair.car) currentPair = currentPair.cdr = Pair(currentData);
+        else currentPair.car = currentData;
+        mode = 'whitespace';
+      } else {
+        escapeNext = false;
+      }
+    } else if (notSymbol.test(char)) {
+      if (mode !== 'whitespace' && mode !== 'quote') {
+        if (currentQuote) {
+          currentQuote.cdr = Pair(currentData);
+          currentQuote = null;
+        }
+        else if (currentPair.car) currentPair = currentPair.cdr = Pair(currentData);
+        else currentPair.car = currentData;
+        mode = 'whitespace';
+      }
+      if (char === '\'') {
+        if (currentQuote) {
+          currentQuote.cdr = Pair(Pair('quote'));
+          currentQuote = currentQuote.cdr.car;
+        } else {
+          currentQuote = Pair('quote');
+          if (currentPair.car) currentPair = currentPair.cdr = Pair(currentQuote);
+          else currentPair.car = currentQuote;
+        }
+      } else if (char === '(') {
+        let newPair = Pair();
+        if (currentQuote) {
+          currentQuote.cdr = Pair(newPair);
+          currentQuote = null;
+          mode = 'whitespace';
+        } else {
+          if (currentPair.car) {
+            currentPair = currentPair.cdr = Pair(newPair);
+          } else {
+            currentPair.car = newPair;
+          }
+        }
+        parentPairs = Pair(currentPair, parentPairs);
+        currentPair = newPair;
+      } else if (char === ')') {
+        currentPair = parentPairs.car;
+        parentPairs = parentPairs.cdr;
+      }
+    } else if (char === '"') {
+      if (mode === 'whitespace') {
+        mode = 'string';
+        escapeNext = false;
+        currentData = {data: '"', string: true};
+      } else if (mode === 'quote') {
+        mode = 'string';
+        currentData.string = true;
+        currentData.data += char;
+      }
+    } else {
+      if (mode === 'whitespace') {
+        mode = 'symbol';
+        currentData = '';
+      } else if (mode === 'quote') {
+        mode = 'symbol';
+        currentData.symbol = true;
+      }
+      currentData += char;
+    }
+  }
+  if (mode !== 'whitespace' && mode !== 'quote') {
+    if (currentPair.car) currentPair.cdr = Pair(currentData);
+    else currentPair.car = currentData;
+  }
+  return mainPair;
+}
+
+function pairToString(pair) {
+  // console.log(pair);
+  let str = '(';
+  let parentPairs = null;
+  for (; pair; pair = pair.cdr) {
+    if (str[str.length - 1] !== '(') str += ' ';
+    while (pair.car && pair.car.pair) {
+      parentPairs = Pair(pair, parentPairs);
+      pair = pair.car;
+      str += '(';
+    }
+    if (pair.car) {
+      if (pair.car.string) {
+        str += JSON.stringify(pair.car.data);
+      } else if (pair.car.procedure) {
+        str += '#procedure';
+      } else {
+        str += pair.car;
+      }
+    } else {
+      str += '()';
+    }
+    while (!pair.cdr && parentPairs) {
+      pair = parentPairs.car;
+      parentPairs = parentPairs.cdr;
+      str += ')';
+    }
+  }
+  str += ')';
+  return str; // TEMP
+}
+
+console.log(pairToString(parse(`
+apple
+a
+
+((x))
+
+(lambda (x) x)
+
+'''(sheep '(wow))
+
+''z
+
+'''"wowzer\\"s"
+
+#t
+`)));
+
+const functions = {
+  '#t': true,
+  '#f': false,
+  '+': (a, b) => a + b,
+  '-': (a, b) => a - b,
+  '*': (a, b) => a * b,
+  '/': (a, b) => a / b,
+  'remainder': (a, b) => a % b,
+  '=': (a, b) => a === b,
+  '<': (a, b) => a < b,
+  '<=': (a, b) => a <= b,
+  'print': console.log,
+  'time': console.time,
+  'time-end': console.timeEnd
+};
+
+const parent = Symbol('parent');
+
+const exactNum = /^[0-9]+$/;
+const inexactNum = /^[0-9]*\.[0-9]+$/;
+function evalScheme(code, global = {}) {
+  function identify(symbol, env) {
+    while (env && !env.hasOwnProperty(symbol)) env = env[parent];
+    if (env) return env[symbol];
+    else throw new Error(symbol + ' not defined');
+  }
+  function instruction(code, env, returnVals, values) {
+    return Pair(code, Pair(env, Pair(returnVals, Pair(values))));
+  }
+  const mainEnv = {[parent]: global};
+  // instruction: (code env return values)
+  // lambda: (env params . instructions)
+  let evalList = Pair();
+  
+  // adds instructions for each item in codeList, which will all
+  // return to the same pair (overwriting previous), and a final
+  // instruction for executor (type code) to use that value (optional;
+  // if omitted, the items in codeList will return to executor's
+  // execReturnVal directly). if separateReturnVals is on, then
+  // the return values will not overwrite and instead be stored as
+  // items in a list
+  function executeAll(codeList, env, execReturnVal, executor, execEnv, separateReturnVals) {
+    const oldNext = evalList.cdr;
+    const returnVal = executor ? Pair() : execReturnVal; // final return value will be stored in here
+    let pointer = evalList;
+    let item = codeList;
+    let tempReturnVal = returnVal;
+    while (item) {
+      pointer = pointer.cdr = Pair(instruction(item.car, env, tempReturnVal));
+      item = item.cdr;
+      // make next return pair for next instruction
+      if (separateReturnVals && item) tempReturnVal = tempReturnVal.cdr = Pair();
+    }
+    if (executor) {
+      pointer = pointer.cdr = Pair(instruction(executor, execEnv, execReturnVal, returnVal));
+    }
+    pointer.cdr = oldNext;
+  }
+  
+  let lastPair = evalList;
+  let returnVals = Pair();
+  let returnVal = returnVals;
+  while (code) {
+    lastPair.cdr = Pair();
+    lastPair.cdr.car = instruction(code.car, mainEnv, returnVal);
+    lastPair = lastPair.cdr;
+    returnVal = returnVal.cdr = Pair();
+    code = code.cdr;
+  }
+  evalList = evalList.cdr;
+  while (evalList) {
+    const instr = evalList.car;
+    const code = instr.car;
+    const env = instr.cdr.car;
+    const returnVal = instr.cdr.cdr.car;
+    const values = instr.cdr.cdr.cdr.car;
+    // console.log(pairToString(instr), env);
+    
+    if (typeof code === 'string') {
+      // identify
+      if (exactNum.test(code)) {
+        returnVal.car = BigInt(code);
+      } else if (inexactNum.test(code)) {
+        returnVal.car = +code;
+      } else {
+        returnVal.car = identify(code, env);
+      }
+    } else if (code.string) {
+      returnVal.car = code;
+    } else {
+      // see what first symbol is
+      switch (code.car) {
+        case 'lambda':
+          returnVal.car =  {
+            // (lambda . (params . body))
+            params: code.cdr.car,
+            body: code.cdr.cdr,
+            procedure: true,
+            env: env
+          };
+          break;
+        case 'define':
+          if (values) {
+            env[code.cdr.car] = values.car;
+          } else if (code.cdr.car.pair) {
+            env[code.cdr.car.car] = {
+              // (lambda . (params . body))
+              params: code.cdr.car.cdr,
+              body: code.cdr.cdr,
+              procedure: true,
+              env: env
+            };
+          } else {
+            executeAll(code.cdr.cdr, env, returnVal, code, env, false);
+          }
+          break;
+        case 'if':
+          if (values) {
+            if (values.car) executeAll(Pair(code.cdr.cdr.car), env, returnVal);
+            else executeAll(Pair(code.cdr.cdr.cdr.car), env, returnVal);
+          } else {
+            executeAll(Pair(code.cdr.car), env, returnVal, code, env, false);
+          }
+          break;
+        default:
+          if (values) {
+            if (typeof values.car === 'function') {
+              const args = [];
+              let paramVal = values.cdr;
+              while (paramVal) {
+                args.push(paramVal.car);
+                paramVal = paramVal.cdr;
+              }
+              returnVal.car = values.car(...args);
+            } else {
+              const newEnv = {[parent]: values.car.env};
+              let paramName = values.car.params;
+              let paramVal = values.cdr;
+              while (paramVal) {
+                if (paramName.car === '.') {
+                  newEnv[paramName.cdr.car] = paramVal;
+                  break;
+                }
+                newEnv[paramName.car] = paramVal.car;
+                paramName = paramName.cdr;
+                paramVal = paramVal.cdr;
+              }
+              executeAll(values.car.body, newEnv, returnVal);
+            }
+          } else {
+            executeAll(code, env, returnVal, code, env, true);
+          }
+      }
+    }
+    
+    evalList = evalList.cdr;
+  }
+  return returnVals;
+}
+
+console.log(pairToString(evalScheme(parse(`
+(define (square n) (* n n))
+(square 3)
+#t
+
+(print "RECURSIVE")
+(time)
+(define (factorial n)
+  (if (<= n 1) 1
+      (* n (factorial (- n 1)))))
+(factorial 10)
+(time-end)
+
+(print "ITERATIVE")
+(time)
+(define (factorial-iter n)
+  (define (iter n result)
+    (if (<= n 1) result
+        (iter (- n 1) (* result n))))
+  (iter n 1))
+(factorial-iter 10)
+(time-end)
+
+(define (cont-frac n d k)
+  (define (iter i result)
+    (if (< i 1.0) result
+        (iter (- i 1.0) (/ (n i) (+ (d i) result)))))
+  (iter k 0.0))
+
+(cont-frac (lambda (i) 1.0)
+           (lambda (i) 1.0)
+           1000.0)
+
+(+ 2.0 (cont-frac (lambda (i) 1.0)
+                (lambda (i)
+                  (if (= (remainder i 3.0) 2.0)
+                      (* (+ i 1.0) (/ 2.0 3.0))
+                      1.0))
+                10.0))
+`), functions)));
+
+    </script>
+  </body>
+</html>
