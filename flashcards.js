@@ -22,6 +22,7 @@ function flashCards(json, flipCards) {
       array[i] = t;
     return array;
   }
+  console.log(json);
   randomised = shuffle(Object.keys(json));
   function cont(iswrong) {
     if (iswrong && randomised[cardnum]) wrongs.push(randomised[cardnum]);
