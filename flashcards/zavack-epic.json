@@ -1,0 +1,22 @@
+{
+  "end-stopped line": "line ends predictably at the end of a grammatical unit (eg sentence, phrase)",
+  "enjambment": "line ends abruptly in the middle of a grammatical unit",
+  "caesura": "a stop or hard pause in the middle of a line",
+  "slant rhyme": "a near-rhyme of words that almost sound the same",
+  "internal rhyme": "a rhyme involving a word and other word(s) within or at the end of the same line or in the next line",
+  "stressed syllable": "a syllable that we naturally emphasize when speaking (in the context of a sentence)",
+  "unstressed syllable": "a syllable we don't emphasize when speaking",
+  "meter": "the dominant pattern of stressed and unstressed syllables in a poem",
+  "foot": "one unit of the metrical pattern, almost always comprised of two or three syllables",
+  "iamb": "a foot of two syllables in which the metrical pattern is unstressed-stressed",
+  "initial inversion": "in iambic pentameter, when the stressed in the first foot are inverted",
+  "elision": "blending the sounds of two syllables into one",
+  "sonnet": "14-line poem of iambic pentameter with a specific rhyme scheme",
+  "volta": "shift in tone or topic, often speaker's realization or revelation ,usually in third quatrain",
+  "conceit": "central metaphor in a poem (ie most other metaphors are variations of this)",
+  "heroic couplet": "a pair of rhyming lines in iambic pentameter (and the last two lines of a Shakespearean sonnet)",
+  "quatrain": "a four-line stanza, or a unit of four adjacent lines grouped together by a rhyme scheme",
+  "blank verse": "poetry written in unrhymed iambic pentameter often used for epic poetry",
+  "lyric poetry": "a genre of poetry that expresses heightened emotions, often in first person, using highly artistic form and imagery",
+  "parallelism": "using the same grammatical structure for two or more ideas in close proximity"
+}
