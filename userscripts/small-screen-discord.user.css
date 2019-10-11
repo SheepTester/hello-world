@@ -1,18 +1,15 @@
 /* ==UserStyle==
 @name        Friendlier Discord on small screens
 @namespace   sheeptester.github.io
-@version     1.0.0
+@version     1.0.1
 @license     unlicense
 ==/UserStyle== */
 
 @-moz-document domain("discordapp.com") {
 @media (max-width: 1000px) {
 
-  .base-3dtUhz {
-    position: relative;
-  }
-
-  .channels-Ie2l6A {
+    /* make sidebar go to left */
+  .sidebar-2K8pFh {
     position: absolute;
     top: 0;
     left: -240px;
@@ -21,7 +18,9 @@
     transition: left .2s;
   }
 
-  .channels-Ie2l6A:hover, .wrapper-1Rf91z:hover ~ * .channels-Ie2l6A {
+
+    /* reveal sidebar when left hovered */
+  .sidebar-2K8pFh:hover, .wrapper-1Rf91z:hover ~ * .sidebar-2K8pFh {
     left: 0;
   }
 
@@ -34,12 +33,12 @@
   .members-1998pB {
     position: absolute;
     top: 0;
-    right: -188px;
+    right: -194px;
     height: 100%;
     transition: right .2s;
   }
 
-  .member-3W1lQa {
+  .member-3-YXUe {
     margin-left: 0;
     transition: margin-left .2s;
   }
@@ -55,7 +54,7 @@
     right: 0;
   }
 
-  .membersWrap-2h-GB4:hover .member-3W1lQa {
+  .membersWrap-2h-GB4:hover .member-3-YXUe {
     margin-left: 8px;
   }
 
