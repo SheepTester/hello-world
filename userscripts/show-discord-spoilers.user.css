@@ -1,0 +1,25 @@
+/* ==UserStyle==
+@name        Discord spoiler shower
+@namespace   sheeptester.github.io
+@version     1.0.0
+@license     unlicense
+==/UserStyle== */
+
+@-moz-document domain("discordapp.com") {
+/*
+-- EXPENSIVE ATTRIBUTE SELECTORS
+.theme-dark [class*='spoilerText-'][class*='hidden-'] {
+  background-color: hsla(0, 0%, 100%, 0.1);
+}
+[class*='spoilerText-'][class*='hidden-'] [class*='inlineContent-'] {
+  opacity: 1;
+}
+-- UNSTABLE CLASS SELECTORS
+.theme-dark .spoilerText-3p6IlD.hidden-HHr2R9 {
+  background-color: hsla(0, 0%, 100%, 0.1);
+}
+*/
+.spoilerText-3p6IlD.hidden-HHr2R9 .inlineContent-3ZjPuv {
+  opacity: 1;
+}
+}

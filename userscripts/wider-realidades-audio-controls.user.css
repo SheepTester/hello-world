@@ -1,0 +1,12 @@
+/* ==UserStyle==
+@name        Wider Realidades audio controls
+@namespace   sheeptester.github.io
+@version     1.0.0
+@license     unlicense
+==/UserStyle== */
+
+@-moz-document url-prefix("http://media.pearsonschool.com/realidades/mp3s/") {
+video {
+  width: 1000px;
+}
+}

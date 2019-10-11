@@ -1,0 +1,305 @@
+/* ==UserStyle==
+@name        Schoology dark theme
+@namespace   sheeptester.github.io
+@version     1.0.0
+@license     unlicense
+==/UserStyle== */
+
+@-moz-document domain("pausd.schoology.com") {
+html {
+  --very-dark: #202225;
+  --dark: #2F3136;
+  --darkish: #36393F;
+
+  --selected: #f6f6f7;
+  --unselected-hover: #b9bbbe;
+  --unselected: #72767d;
+
+  --color: #dcddde;
+  --date: rgba(255, 255, 255, 0.2);
+  --link: #0096cf;
+  --line: rgba(255, 255, 255, 0.04);
+
+  --selected-back: rgba(79, 84, 92, 0.6);
+  --unselected-hover-back: rgba(255, 255, 255, 0.04);
+
+  --input-back: rgba(114, 118, 125, 0.3);
+  --input-placeholder: rgba(255, 255, 255, 0.3);
+  --input-text: rgba(255, 255, 255, 0.7);
+}
+
+
+
+._1SIMq, #header.new-site-navigation {
+  background-color: var(--very-dark);
+}
+#header {
+  border-bottom: none;
+}
+._2kpZl:focus:not(:active), ._2W23R:active, ._3OAXJ:hover:not(:active), ._1k0yk:hover:not(:active), ._3JcU2:active, ._3VHSs:focus:not(:active) {
+  background-color: var(--unselected-hover-back);
+}
+body, #main, .s-enable-course-dashboard.theme-2016-layout #main {
+  background-color: var(--dark) !important;
+  color: var(--color);
+}
+
+#home-feed-container, .theme-2016-layout #main, .theme-2016-layout #right-column-inner>div:not(:empty) {
+  background-color: var(--darkish) !important;
+}
+
+.sgy-tabbed-navigation li.active {
+  border-color: var(--selected);
+}
+.sgy-tabbed-navigation li.active a {
+  color: var(--selected);
+}
+.sgy-tabbed-navigation li a {
+  color: var(--unselected);
+}
+.sgy-tabbed-navigation li a:hover, .sgy-tabbed-navigation li a:active {
+  color: var(--unselected-hover);
+}
+.sgy-tabbed-navigation, #home-feed-container #smart-box {
+  border-bottom-color: var(--line);
+}
+
+a, .clickable, .theme-2016 #right-column a, .smart-box .filter-block li .smartbox-boxtab, .smart-box .filter-block li .personal-blog a {
+  color: var(--link);
+}
+.theme-2016 #right-column h3, .theme-2016 .date-header h4 {
+  color: var(--color);
+  border-bottom-color: var(--line);
+}
+
+.s-edge-feed li {
+  border-top-color: var(--line);
+}
+.s-edge-type-update-post .update-body, .s-edge-type-update-poll .update-body {
+  color: var(--color);
+}
+.update-body * {
+  color: var(--color) !important;
+  background-color: transparent !important;
+}
+.gray {
+  color: var(--date);
+}
+.feed-comments {
+  background: none;
+}
+.s-like-sentence {
+  color: inherit;
+}
+
+._1Z0RM {
+  background-color: var(--darkish);
+}
+
+._2T2dA {
+  background-color: var(--darkish);
+}
+._11FnQ, ._3skcp {
+  border-color: var(--line);
+}
+._1ui-c {
+  border-top-width: 1px;
+}
+
+._3U8Br {
+  color: var(--unselected);
+}
+._2UdSL {
+  border: none;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.Card-card-1Qd8e:focus, .Card-card-1Qd8e:hover {
+  outline: none;
+  background-color: var(--unselected-hover-back);
+}
+.Card-card-1Qd8e ._1Z0RM {
+  background: none;
+}
+.Card-card-1Qd8e:focus ._3U8Br, .Card-card-1Qd8e:hover ._3U8Br {
+  color: var(--unselected-hover);
+}
+
+._1wP6w, ._2pDDZ:hover:not(:active), ._3senP:focus:not(:active), .wL3MX:active {
+  color: var(--color);
+}
+.util-hover-background-color-cloud-grey-wHghL:hover {
+  background-color: var(--unselected-hover-back);
+}
+._2wOCj {
+  color: var(--date);
+}
+
+#main-content-wrapper, .has-right-col #center-top {
+  border: none;
+  background: none;
+}
+.info-tab .profile-header, #event-selector .active {
+  color: var(--color);
+}
+.info-tab th {
+  color: var(--unselected);
+}
+.info-tab td, .info-tab th, .info-tab .profile-header, #right-column h3 {
+  border-color: var(--line);
+}
+.has-right-col #center-inner {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1" height="2"><path d="M0 0h1v2H0z" fill="rgba(255, 255, 255, 0.04)"/></svg>');
+}
+.badge-size-small.badge-shape-circle-blank {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50" height="50"><circle cx="25" cy="25" r="22.5" fill="#36393F" stroke-width="1" stroke-dasharray="5,5" stroke="#72767d" stroke-linejoin="miter" stroke-linecap="round" stroke-miterlimit="3"/></svg>');
+}
+
+#sidebar-left li a:hover {
+  color: var(--unselected-hover);
+  background-color: var(--unselected-hover-back) !important;
+  border-radius: 3px;
+}
+#left-nav #menu-s-main .menu .menu a.active, #sidebar-left .menu .expanded.active-trail a.active, #sidebar-left #left-nav .menu .expanded.active-trail .active-trail-dist-1 a, #sidebar-left #left-nav .menu .expanded.active-trail .menu .active-trail-dist-2 a {
+  color: var(--selected);
+  border: none;
+  background: var(--selected-back) !important;
+  border-radius: 3px;
+}
+
+body .fc-widget-header, body .fc-widget-content {
+  border-color: var(--line);
+}
+.fc-view-month td:hover {
+  background: var(--unselected-hover-back);
+}
+body .fc-grid .fc-day-number {
+  color: var(--unselected);
+}
+body .fc-grid.fc-view-month td:hover .fc-day-number {
+  color: var(--unselected-hover);
+}
+.fc-state-highlight, .fc-view-month .fc-state-highlight:hover {
+  background: var(--selected-back);
+}
+body .fc-grid .fc-state-highlight .fc-day-number {
+  color: var(--selected);
+}
+
+.page-title a, .action-links-unfold {
+  color: var(--color) !important;
+}
+.materials-top, #folder-contents-table .folder-contents-cell {
+  border-color: var(--line);
+}
+.action-links-unfold, .action-links-unfold-text {
+  background: none !important;
+  border: none !important;
+}
+.materials-filter-wrapper {
+  background: var(--dark) !important;
+  border: none !important;
+}
+
+.gradebook-course, .attendance-course, .gradebook-course.hierarchical-grading-report .period-row .td-content-wrapper, .gradebook-course.hierarchical-grading-report .final-row .td-content-wrapper, .gradebook-course.hierarchical-grading-report .td-content-wrapper, .gradebook-course.hierarchical-grading-report .item-row .td-content-wrapper, .left-block-wrapper h3, .view-file-popup, .view-btn-disabled, .edit-external-tool-attachment {
+  border-color: var(--line);
+}
+#center-top {
+  border: none;
+}
+.gradebook-course.hierarchical-grading-report .category-row .title-column .title, .gradebook-course.hierarchical-grading-report .summary-course .course-grade-wrapper .course-grade-text {
+  color: var(--color);
+}
+.gradebook-course.hierarchical-grading-report .title-column .due-date {
+  color: var(--date);
+}
+.gradebook-course.hierarchical-grading-report .summary-course {
+  background: none;
+  border-color: var(--line);
+}
+
+.comment, .feed-comments-viewall-container, .s-like-sentence {
+  border-color: var(--line);
+}
+[placeholder="Search"], input, textarea, .container-inline-date input.form-text {
+  background-color: var(--input-back);
+  color: var(--input-text);
+}
+::placeholder {
+  color: var(--input-placeholder);
+}
+.s-comments-post-form .form-textarea {
+  color: var(--input-text);
+  background-color: var(--input-back);
+  border: none;
+}
+
+.has-folder-player #center-top .content-top-upper, .has-materials-player #center-top .content-top-upper {
+  background: none;
+  border: none;
+}
+body ul.primary, .with-tabs #center-top, .has-right-col .with-tabs #center-top {
+  background: none;
+  border-color: var(--line);
+}
+.s_grade_item_assessment .assessment-status-wrapper, .grade-title, .received-grade, .grading-grade .max-points, .not-editable .score-grade-score span {
+  color: var(--color);
+}
+#assessment-instructions, #assessment-status {
+  border-color: var(--line);
+}
+
+.popups-body, #popups-loading div {
+  background-color: var(--darkish);
+  border: none;
+}
+.update-comments-pagenation, .popups-body .submit-buttons, .popups-buttons-inner {
+  background-color: var(--dark);
+  border: none;
+}
+.update-comments-popup #s-comments-post-comment-form, .listing .course-item.list-item, #s-js-student-mastery-report-view .gradebook-course-title, .info-tab, .calendar-popup-preview .template-wrapper .template-fields th, .parent-template .template-fields td, .calendar-popup-preview .template-wrapper .template-fields {
+  border-color: var(--line);
+}
+#popups-overlay {
+  background: black;
+}
+.popups-title {
+  background-color: var(--very-dark);
+  border: none;
+}
+body input[type=password], body input[type=text], body input[type=textbox], body input[type=time], body textarea, select, input[id$="-datepicker-popup-0"], #edit-due-date-wrapper .form-item input, #edit-external-tool-grading-due-date-wrapper .form-item input {
+  border: none;
+  color: var(--input-text);
+}
+
+body .defaultSkin table.mceLayout td.mceToolbar, .s-tme-attachments #attachment-selector {
+  background-color: var(--dark);
+  border-color: var(--line);
+  border-style: solid;
+}
+body .defaultSkin .mceIframeContainer, body .defaultSkin table.mceLayout {
+  border: none;
+}
+body .defaultSkin .mceSplitButton span.mceAction, body .defaultSkin span.mceIcon {
+  filter: invert(1);
+}
+body .defaultSkin #edit-body_removeformat, body .defaultSkin #edit-comment_removeformat, body .defaultSkin #edit-description_removeformat, body .defaultSkin #edit-reply_removeformat, body .defaultSkin .mceButton.mce_removeformat, body .defaultSkin .mceListBox, body .defaultSkin a.mceSplitButton, body .defaultSkin a.mce_formatting, body .defaultSkin a.mce_insert_content, body .defaultSkin a.mce_justifyright, body .defaultSkin a.mce_numlist, body .defaultSkin a.mce_outdent, body .defaultSkin a.mce_s_link, body .defaultSkin a.mce_spellchecker, body .defaultSkin a.mce_table, body .defaultSkin a.mce_underline, body .defaultSkin .mceSplitButton, #attachment-selector li {
+  border-right-style: solid !important;
+  border-right-color: var(--line) !important;
+}
+body .defaultSkin .mceSplitButton a.mceOpen.mce_backcolor, body .defaultSkin .mceSplitButton a.mceOpen.mce_forecolor {
+  border-left-style: solid !important;
+  border-left-color: var(--line) !important;
+}
+body .defaultSkin table.mceLayout td.mceToolbar {
+  background-image: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0;
+}
+.info-tab td {
+  border-bottom-color: var(--line);
+}
+body .info-tab, .no-comments p, .s-comments-post-form, #right-column .course-counter, .group-counter {
+  border-color: var(--line);
+}
+}

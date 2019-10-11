@@ -1,0 +1,11 @@
+/* ==UserStyle==
+@name        Scratch forums long signatures and Scratchblocks scrollablifier
+@namespace   sheeptester.github.io
+@version     1.0.0
+@license     unlicense
+==/UserStyle== */
+
+@-moz-document url-prefix("https://scratch.mit.edu/discuss") {
+/* makes long signatures and Scratchblocks on the Scratch forums scrollable */
+.postsignature { overflow: auto; } .scratchblocks { overflow-x: auto; overflow-y: hidden; }
+}

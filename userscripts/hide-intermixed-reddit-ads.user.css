@@ -1,0 +1,12 @@
+/* ==UserStyle==
+@name        Old Reddit intermixed ad hider
+@namespace   sheeptester.github.io
+@version     1.0.0
+@license     unlicense
+==/UserStyle== */
+
+@-moz-document domain("reddit.com") {
+.promotedlink {
+  display: none;
+}
+}

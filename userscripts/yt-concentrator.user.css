@@ -1,0 +1,16 @@
+/* ==UserStyle==
+@name        YouTube suggestions hider
+@namespace   sheeptester.github.io
+@version     1.0.0
+@license     unlicense
+==/UserStyle== */
+
+@-moz-document url-prefix("https://www.youtube.com/") {
+#related, .ytp-player-content, [page-subtype="home"], .ytp-pause-overlay, #google_companion_ad_div, .adDisplay, .wide-overlay-ad {
+  visibility: hidden !important;
+}
+paper-dialog {
+  display: none;
+}
+
+}

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Helpful userscripts and userstyles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/sheep3.css">
+    <script src="/sheep3.js" charset="utf-8"></script>
+    <style>
+      body {
+        margin: 0;
+        background-color: #00695C;
+        color: white;
+        font-family: 'Raleway', sans-serif;
+        font-size: 0;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      a:focus {
+        outline: none;
+      }
+      .max-width {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .install-extensions {
+        background-color: #009688;
+        padding: 10px 0;
+      }
+      h1 {
+        margin: 0;
+        padding: 10px 20px;
+        font-size: 28px;
+        font-weight: normal;
+      }
+      .extensions {
+        padding: 0 10px;
+      }
+      .extension {
+        display: inline-block;
+        background-color: #eee;
+        color: #333;
+        padding: 10px;
+        margin: 10px;
+        width: 150px;
+        text-align: center;
+        transition: box-shadow .2s;
+      }
+      .extension:hover,
+      .extension:focus {
+        box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.3);
+      }
+      img {
+        display: block;
+        width: 48px;
+        margin: 0 auto;
+        margin-bottom: 5px;
+      }
+      .extension .name {
+        display: block;
+        font-weight: bold;
+        font-size: 16px;
+      }
+      .extension .desc {
+        display: block;
+        font-size: 14px;
+      }
+      .warning {
+        font-size: 14px;
+        margin: 0;
+        padding: 10px 20px;
+      }
+
+      .userxs {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 10px;
+      }
+      .userx {
+        display: inline-block;
+        position: relative;
+        background-color: #eee;
+        color: #333;
+        margin: 10px;
+        padding: 10px;
+        padding-left: 20px;
+        z-index: 1;
+        transition: box-shadow .2s;
+      }
+      .userx:hover,
+      .userx:focus {
+        box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3);
+      }
+      .featured {
+        padding-left: 10px;
+        padding-top: 20px;
+        width: 150px;
+      }
+      .userx::before {
+        font-size: 10px;
+        font-weight: bold;
+        padding: 5px;
+        background-color: #333;
+        color: #eee;
+        margin-right: 10px;
+        margin-left: -15px;
+        vertical-align: middle;
+        display: inline-block;
+      }
+      .featured::before {
+        margin: 0;
+        margin-top: -15px;
+      }
+      .script::before {
+        content: 'SCRIPT';
+      }
+      .style::before {
+        content: 'STYLE';
+      }
+      .userx::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 10px;
+        z-index: -1;
+      }
+      .featured::after {
+        width: 100%;
+        height: 10px;
+      }
+      .script::after {
+        background-image: linear-gradient(120deg, #FFD54F, #FFB300);
+      }
+      .style::after {
+        background-image: linear-gradient(120deg, #BA68C8, #8E24AA);
+      }
+      .userx .name {
+        font-size: 16px;
+        font-weight: bold;
+        vertical-align: middle;
+      }
+      .userx .desc {
+        font-size: 14px;
+        margin-left: 10px;
+        vertical-align: middle;
+      }
+      .featured .name {
+        display: block;
+        margin-top: 5px;
+      }
+      .featured .desc {
+        display: block;
+        margin-left: 0;
+        margin-top: 5px;
+      }
+
+      h2 {
+        font-size: 14px;
+        margin: 0 20px;
+        margin-top: 20px;
+      }
+      .other {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="install-extensions">
+      <div class="max-width">
+        <h1>You need extensions to install userscripts and userstyles.</h1>
+        <div class="extensions">
+          <a class="extension" href="https://www.tampermonkey.net/">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c0/Tampermonkey_logo.svg">
+            <span class="name">Tampermonkey</span>
+            <span class="desc">For userscripts</span>
+          </a>
+          <a class="extension" href="https://github.com/openstyles/stylus#readme">
+            <img src="https://raw.githubusercontent.com/openstyles/stylus/master/images/icon/48.png">
+            <span class="name">Stylus</span>
+            <span class="desc">For userstyles</span>
+          </a>
+        </div>
+        <p class="warning"><strong>WARNING</strong>: Stylish, another extension for userstyles, has had some privacy issues, so it is best to avoid it.</p>
+      </div>
+    </div>
+    <div class="max-width">
+      <div class="userxs">
+        <a class="userx style featured" href="./hide-intermixed-reddit-ads.user.css">
+          <span class="name">Old Reddit intermixed ad hider</span>
+        </a>
+        <a class="userx script featured" href="./story-stealer.user.js">
+          <span class="name">Instagram story stealer</span>
+          <span class="desc">(ctrl/cmmd) + M when viewing an Instagram story to open the video/image in new tab</span>
+        </a>
+        <a class="userx script featured" href="./yt-skip-ad.user.js">
+          <span class="name">YouTube skip ad</span>
+          <span class="desc">Press alt + s to skip or close ad</span>
+        </a>
+        <a class="userx style featured" href="./small-screen-discord.user.css">
+          <span class="name">Friendlier Discord on small screens</span>
+        </a>
+        <a class="userx style featured" href="./rickroll-exposer.user.css">
+          <span class="name">Rickroll exposer</span>
+        </a>
+        <a class="userx style featured" href="./scratch-forums.user.css">
+          <span class="name">Scratch forums long signatures and Scratchblocks scrollablifier</span>
+        </a>
+      </div>
+      <h2>OTHER</h2>
+      <div class="other">
+        <a class="userx style" href="./yt-concentrator.user.css">
+          <span class="name">YouTube suggestions hider</span>
+        </a>
+        <a class="userx style" href="./ic-face-hider.user.css">
+          <span class="name">Infinite Campus student photo hider</span>
+        </a>
+        <a class="userx script" href="./schoology-commenter.user.js">
+          <span class="name">Schoology commenter</span>
+          <span class="desc">ctrl/cmmd + click to open comments page to bypass comment restrictions</span>
+        </a>
+        <a class="userx style" href="./dark-schoology.user.css">
+          <span class="name">Schoology dark theme</span>
+        </a>
+        <a class="userx style" href="./wider-realidades-audio-controls.user.css">
+          <span class="name">Wider Realidades audio controls</span>
+        </a>
+        <a class="userx style" href="./show-discord-spoilers.user.css">
+          <span class="name">Discord spoiler shower</span>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

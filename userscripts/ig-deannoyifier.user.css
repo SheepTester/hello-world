@@ -1,0 +1,23 @@
+/* ==UserStyle==
+@name        App download dialog hider and right click -> open image ability on posts
+@namespace   sheeptester.github.io
+@version     1.0.1
+@license     unlicense
+==/UserStyle== */
+@-moz-document domain("instagram.com") {
+    /* Hides app download dialog */
+    .pLTDo {
+        display: none;
+    }
+
+    /* Allows posts to be right clicked > open image in new tab */
+    ._9AhH0 {
+        display: none;
+    }
+
+    /* Lower video play button so video behind can be accessed */
+    .QvAa1,
+    .oujXn {
+        top: 50%;
+    }
+}

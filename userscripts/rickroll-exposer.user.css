@@ -1,0 +1,14 @@
+/* ==UserStyle==
+@name        Rickroll exposer
+@namespace   sheeptester.github.io
+@version     1.0.0
+@license     unlicense
+==/UserStyle== */
+
+[href*="dQw4w9WgXcQ" i] {
+  outline: 3px solid red;
+}
+[href*="dQw4w9WgXcQ" i]::after {
+  content: 'WARNING: rickroll';
+  color: red;
+}

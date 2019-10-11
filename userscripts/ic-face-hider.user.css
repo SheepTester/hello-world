@@ -1,0 +1,12 @@
+/* ==UserStyle==
+@name        Infinite Campus student photo hider
+@namespace   sheeptester.github.io
+@version     1.0.1
+@license     unlicense
+==/UserStyle== */
+
+@-moz-document domain("pausdca.infinitecampus.org") {
+.studentPic, .today__student-picture {
+  display: none;
+}
+}
