@@ -1,11 +1,11 @@
 /* ==UserStyle==
 @name        Schoology dark theme
 @namespace   sheeptester.github.io
-@version     1.0.0
+@version     1.0.1
 @license     unlicense
 ==/UserStyle== */
 
-@-moz-document domain("pausd.schoology.com") {
+@-moz-document domain("schoology.com") {
 html {
   --very-dark: #202225;
   --dark: #2F3136;

@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Underground Schoology
 // @namespace    https://orbiit.github.io/
-// @version      pre-1.1.19
+// @version      pre-1.1.20
 // @description  A second social media on top of Schoology
 // @author       Anti-SELF revolutionaries
-// @match        https://pausd.schoology.com/home
+// @match        *://*.schoology.com/*
 // @grant        none
 // ==/UserScript==
 
@@ -89,7 +89,7 @@
   }
 
   function fetchJSON(path, headers, method = 'GET', body = undefined, tolerance = 0) {
-    return fetch('https://pausd.schoology.com/portfolios/' + path, {method, headers, body: body && JSON.stringify(body)})
+    return fetch('/portfolios/' + path, {method, headers, body: body && JSON.stringify(body)})
       .then(r => {
         if (!r.ok) {
           console.warn('Gave up fetching ' + path);

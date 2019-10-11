@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Schoology commenter
-// @version      1
+// @version      1.1
 // @description  ctrl/cmmd + click to open comments page to bypass comment restrictions
 // @author       sheep
-// @match        *://pausd.schoology.com/*
+// @match        *://*.schoology.com/*
 // @grant        none
 // ==/UserScript==
 
