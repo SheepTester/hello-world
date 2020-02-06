@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YouTube skip ad
 // @namespace    https://sheeptester.github.io
-// @version      0.1
+// @version      0.2
 // @description  Press alt + s to skip or close ad
 // @author       SheepTester
 // @match        *://www.youtube.com/*
@@ -17,7 +17,7 @@
           const video = document.querySelector('video');
           video.currentTime = video.getDuration();
         }
-        Array.from(document.querySelectorAll('.ytp-ad-overlay-close-button, .ytp-ad-skip-button'), btn => btn.click());
+        Array.from(document.querySelectorAll('.ytp-ad-overlay-close-button, .ytp-ad-skip-button, .ytp-ad-survey-interstitial-action-button'), btn => btn.click());
       }
     });
 })();
