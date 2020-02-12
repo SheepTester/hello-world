@@ -1,12 +1,18 @@
 // ==UserScript==
 // @name         Request all courses as alternates
 // @namespace    https://sheeptester.github.io/
-// @version      1.0
-// @description  "SO - if there's a chance you might want to take a class but aren't sure - put it as an ALTERNATE. You have nothing to lose by doing so and we won't consider the class in August if it is not listed on your alternates. Do two alternates minimum!"
+// @version      1.1
+// @description  Buttons are available on the course registration page (https://pausdca.infinitecampus.org/campus/nav-wrapper/student/portal/student/general-info/course-registration)
 // @author       SheepTester
-// @match        *://*.infinitecampus.org/campus/apps/portal/student/general-info/course-registration/*
+// @match        *://*.infinitecampus.org/campus/apps/portal/student/*
 // @grant        none
 // ==/UserScript==
+
+// "SO - if there's a chance you might want to take a class but aren't
+// sure - put it as an ALTERNATE. You have nothing to lose by doing so
+// and we won't consider the class in August if it is not listed on
+// your alternates. Do two alternates minimum!"
+//   - Gunn Counseling
 
 (async () => {
   'use strict';
