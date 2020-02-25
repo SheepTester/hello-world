@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>microphone frequency</title>
+    <meta name="description" content="get audio frequencies in microphone input"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="/sheep3.css">
+    <script src="/sheep3.js" charset="utf-8"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background-color: black;
+        font-size: 0;
+      }
+      #canvas {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+const canvas = document.getElementById('canvas')
+const c = canvas.getContext('2d')
+
+let width, height
+function resize () {
+  width = window.innerWidth
+  height = window.innerHeight
+  const dpr = window.devicePixelRatio
+  canvas.width = width * dpr
+  canvas.height = height * dpr
+  c.scale(dpr, dpr)
+}
+window.addEventListener('resize', resize)
+resize()
+
+navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(stream => {
+    const audioCtx = new AudioContext()
+    const analyser = audioCtx.createAnalyser()
+    const source = audioCtx.createMediaStreamSource(stream)
+    source.connect(analyser)
+    
+    analyser.fftSize = 2048
+    const frequencies = new Uint8Array(analyser.frequencyBinCount)
+    console.log(frequencies)
+    function draw () {
+      c.clearRect(0, 0, width, height)
+      c.lineWidth = 1
+      c.strokeStyle = '#02fda5'
+      c.fillStyle = 'rgba(2, 253, 165, 0.2)'
+      
+      analyser.getByteFrequencyData(frequencies)
+      
+      const spacing = width / (frequencies.length - 1)
+      c.beginPath()
+      for (let i = 0; i < frequencies.length; i++) {
+        const dataHeight = (1 - frequencies[i] / 255) * height
+        if (i === 0) {
+          c.moveTo(0, dataHeight)
+        } else {
+          c.lineTo(i * spacing, dataHeight)
+        }
+      }
+      c.stroke()
+      c.lineTo(width, height)
+      c.lineTo(0, height)
+      c.closePath()
+      c.fill()
+      window.requestAnimationFrame(draw)
+    }
+    draw()
+  })
+    </script>
+  </body>
+</html>
