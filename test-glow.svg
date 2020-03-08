@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+
+	<defs>
+
+	<filter id="sofGlow" height="300%" width="300%" x="-75%" y="-75%">
+		<!-- Thicken out the original shape -->
+		<feMorphology operator="dilate" radius="4" in="SourceAlpha" result="thicken" />
+
+		<!-- Use a gaussian blur to create the soft blurriness of the glow -->
+		<feGaussianBlur stdDeviation="10" result="blurred" />
+
+		<!-- Change the colour -->
+		<feFlood flood-color="rgb(0,186,255)" result="glowColor" />
+
+		<!-- Color in the glows -->
+		<feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
+
+		<!--	Layer the effects together -->
+		<feMerge>
+			<feMergeNode in="softGlow_colored"/>
+			<feMergeNode in="SourceGraphic"/>
+		</feMerge>
+
+	</filter>
+	
+	<filter id="dropshadow" height="130%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="3"/> <!-- stdDeviation is how much to blur -->
+  <feOffset dx="2" dy="2" result="offsetblur"/> <!-- how much to offset -->
+  <feComponentTransfer>
+    <feFuncA type="linear" slope="0.5"/> <!-- slope is the opacity of the shadow -->
+  </feComponentTransfer>
+  <feMerge>
+    <feMergeNode/> <!-- this contains the offset blurred image -->
+    <feMergeNode in="SourceGraphic"/> <!-- this contains the element that the filter is applied to -->
+  </feMerge>
+</filter>
+
+<filter id="glow">
+    <feGaussianBlur stdDeviation="10" result="coloredBlur"/>
+		<feFlood flood-color="rgb(0,186,255)" result="glowColor" />
+		<feComposite in="glowColor" in2="coloredBlur" operator="in" result="softGlow_colored" />
+    <feMerge>
+        <feMergeNode in="softGlow_colored"/>
+        <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+</filter>
+
+</defs>
+<rect x="0" y="0" width="500" height="500" fill="black"/>
+			
+	<rect x="25%" y="37.25%" width="50%" height="25%" fill="white" filter="url(#sofGlow)" />
+	<rect x="25%" y="50%" width="50%" height="25%" fill="white" filter="url(#dropshadow)" />
+	<rect x="25%" y="70%" width="50%" height="25%" fill="red" filter="url(#glow)" />
+
+</svg>

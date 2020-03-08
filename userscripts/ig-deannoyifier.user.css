@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name        App download dialog hider and right click -> open image ability on posts
 @namespace   sheeptester.github.io
-@version     1.0.1
+@version     1.0.2
 @license     unlicense
 ==/UserStyle== */
 @-moz-document domain("instagram.com") {
@@ -17,7 +17,9 @@
 
     /* Lower video play button so video behind can be accessed */
     .QvAa1,
-    .oujXn {
+    .oujXn,
+    .PyenC,
+    .fXIG0 {
         top: 50%;
     }
 }

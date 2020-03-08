@@ -231,7 +231,7 @@ function evalScheme(code, global = {}) {
     const env = instr.cdr.car;
     const returnVal = instr.cdr.cdr.car;
     const values = instr.cdr.cdr.cdr.car;
-    // console.log(pairToString(instr), env);
+    console.log(pairToString(instr), env);
     
     if (typeof code === 'string') {
       // identify
@@ -278,6 +278,9 @@ function evalScheme(code, global = {}) {
           } else {
             executeAll(Pair(code.cdr.car), env, returnVal, code, env, false);
           }
+          break;
+        case 'quote':
+          returnVal.car = code.cdr.car;
           break;
         default:
           if (values) {
@@ -338,6 +341,7 @@ console.log(pairToString(evalScheme(parse(`
 (factorial-iter 10)
 (time-end)
 
+'(
 (define (cont-frac n d k)
   (define (iter i result)
     (if (< i 1.0) result
@@ -354,6 +358,7 @@ console.log(pairToString(evalScheme(parse(`
                       (* (+ i 1.0) (/ 2.0 3.0))
                       1.0))
                 10.0))
+)
 `), functions)));
 
     </script>

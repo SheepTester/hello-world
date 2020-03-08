@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+    <title>ugwa views</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+    html,
+    body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      display: flex;
+      background-color: black;
+    }
+    #canvas {
+      flex: auto;
+    }
+    </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+<script>
+  const params = new URL(window.location).searchParams
+  const proms = []
+  const end = new Date()
+  const date = params.get('start') ? new Date(params.get('start')) : new Date()
+  if (!params.get('start')) {
+    date.setHours(date.getHours() - 4)
+  }
+  let max = 0
+  function getViews (date, i) {
+    const time = date.getHours() + ':' + date.getMinutes().toString().padStart(2, '0')
+    const request = `https://sheep.thingkingland.app/counter/UGWA_${
+      date.toISOString().slice(0, 15)
+    }/`
+    return fetch(request).then(r => r.text()).then(num => {
+      num = +num
+      if (num > max) max = num
+      return { num, time, i, request }
+    })
+  }
+  let i = 0
+  for (; date <= end; date.setMinutes(date.getMinutes() + 10), i++) {
+    proms.push(getViews(date, i))
+  }
+  date.setMinutes(date.getMinutes() - 10)
+  i--
+  const canvas = document.getElementById('canvas')
+  const c = canvas.getContext('2d')
+  const width = window.innerWidth
+  const height = window.innerHeight
+  const dpr = window.devicePixelRatio
+  canvas.width = width * dpr
+  canvas.height = height * dpr
+  c.scale(dpr, dpr)
+  const padding = 40
+  function wait (time) {
+    return new Promise(resolve => setTimeout(resolve, time))
+  }
+  Promise.all(proms).then(graph => {
+    function render () {
+      c.clearRect(0, 0, width, height)
+      const col = (width - 2 * padding) / (graph.length - 1)
+      c.strokeStyle = '#e91e63'
+      c.lineWidth = 2
+      c.textAlign = 'center'
+      c.font = '10px monospace'
+      c.textBaseline = 'bottom'
+      c.beginPath()
+      for (const { num, time, i } of graph) {
+        const x = i * col + padding
+        const y = height - padding - num / max * (height - 2 * padding)
+        if (i === 0) {
+          c.moveTo(x, y)
+        } else {
+          c.lineTo(x, y)
+        }
+        c.fillStyle = 'white'
+        c.fillText(num, x, y)
+        c.fillStyle = 'rgba(255, 255, 255, 0.5)'
+        c.fillText(time, x, height - padding + (i % 2 === 0 ? 20 : 30))
+      }
+      c.stroke()
+      c.fillStyle = 'rgba(233, 30, 99, 0.2)'
+      c.beginPath()
+      c.moveTo(width - padding, height - padding)
+      c.lineTo(padding, height - padding)
+      for (const { num, i } of graph) {
+        const x = i * col + padding
+        const y = height - padding - num / max * (height - 2 * padding)
+        c.lineTo(x, y)
+      }
+      c.closePath()
+      c.fill()
+      console.log('rendered')
+    }
+    render()
+    ;(async () => {
+      while (true) {
+        await wait(1000)
+        if (date + 10 <= end) {
+          date.setMinutes(date.getMinutes() + 10)
+          i++
+        }
+        await getViews(date, i)
+          .then(data => {
+            graph[i] = data
+          })
+        render()
+      }
+    })()
+  })
+</script>
+</body>
+</html>
