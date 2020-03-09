@@ -5,8 +5,8 @@ Gives a random item to each player (each player gets a different item). The item
 You can change how often it gives the item. After enabling the datapack, run
 
 ```mcfunction
-/scoreboard players set Interval random_board [delay]
-/reload
+scoreboard players set Interval random_board [delay]
+reload
 ```
 
 where `[delay]` is the time between each item in ticks (1 second = 20 ticks). By default it is 600 ticks (30 seconds).
