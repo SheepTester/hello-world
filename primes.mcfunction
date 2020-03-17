@@ -1,4 +1,11 @@
 # Recursively calculates and prints prime numbers until a given point
+# After loading the datapack, you can run
+# /scoreboard players set max vars <value>
+# to set the upper limit to which prime numbers will be tested
+# (so it'll test integers between 2 and `value`). Then run
+# /function primes:calculate-primes
+# This assumes the datapack is set up properly, but I don't
+# feel like specifying how here.
 
 #= load.mcfunction
 # Initialize the `vars` scoreboard
@@ -7,7 +14,7 @@
 scoreboard objectives add vars
 scoreboard players set max vars 100
 
-#= primes.mcfunction
+#= calculate-primes.mcfunction
 # Begin recursively testing each number from 2 to `max`
 
 scoreboard players set n vars 2
