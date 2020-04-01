@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>make</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <style media="screen">
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        font-size: 0;
+        background-color: black;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Montserrat', sans-serif;
+      }
+      canvas {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="1920" height="1080"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.2.2/jszip.min.js" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+const descriptions = {
+  'An awesome recording.mp3': 'Timothy makes music in a voice call',
+  'An awesome recording.wav': 'So hum clapping',
+  'british don\'t do ae -_ euh before n.mp3': 'American accent changes "ah" to an "eh-uh" before an n (and some other consonants)',
+  'caaspp music by timothy.mp3': 'Timothy plays the CAASPP audio test sound',
+  'clap clap clap, clap cla-cla-clap.wav': 'So hum clapping but milder',
+  'comparación.mp3': 'AP Spanish cultural comparison practice',
+  'conversación.mp3': 'AP Spanish conversation practice',
+  'english conjugations pronunciation.mp3': 'Proposed more complex English conjugations',
+  'henry-may-i-have-your-attention-please.mp3': 'Henry\'s epic piece',
+  'k\'poguil.wav': '',
+  'seaucques.mp3': 'eau from plateau, cques from Jacques',
+  'self-announcement.mp3': 'Morning SELF on some Fridays?',
+  'sound effects.wav': 'Audio editor sound effects, stolen from Scratch',
+  'subscribe to gamepro5.mp3': 'Reverse, reverb, reverse',
+  'there are two problems here.wav': 'Gamepro5 speaks',
+  'tree.mp3': 'If our American accent didn\'t fuss with the t',
+  'tts.mp3': 'From Baidu\'s dictionary\'s text to speech',
+  'unintuitive windows surface.mp3': 'Comparison with Chromebook microphone in Canada',
+  'voiced bilabial fricative.wav': '[β]',
+  '𝕨 reverb.mp3': '',
+  '𝕨.wav': 'Timothy spams 𝕨 in Discord with /tts on his Mac'
+}
+
+const canvas = document.getElementById('canvas')
+const c = canvas.getContext('2d')
+const radius = Math.hypot(canvas.width, canvas.height) / 2
+function makeImage (filename, description) {
+  const angle = Math.random() * 2 * Math.PI
+  const gradient = c.createLinearGradient(
+    canvas.width / 2 + Math.cos(angle) * radius,
+    canvas.height / 2 + Math.sin(angle) * radius,
+    canvas.width / 2 - Math.cos(angle) * radius,
+    canvas.height / 2 - Math.sin(angle) * radius
+  )
+  gradient.addColorStop(0, '#' + Math.floor(Math.random() * 0x1000000).toString(16).padStart(6, '0'))
+  gradient.addColorStop(1, '#' + Math.floor(Math.random() * 0x1000000).toString(16).padStart(6, '0'))
+  c.fillStyle = gradient
+  c.fillRect(0, 0, canvas.width, canvas.height)
+  c.textAlign = 'center'
+  c.textBaseline = 'middle'
+  c.fillStyle = 'white'
+  c.strokeStyle = 'rgba(0, 0, 0, 0.2)'
+  c.lineWidth = canvas.height * 0.005
+  c.font = `${canvas.height * 0.1}px "Montserrat", sans-serif`
+  c.strokeText(filename, canvas.width / 2, canvas.height / 3, canvas.width)
+  c.fillText(filename, canvas.width / 2, canvas.height / 3, canvas.width)
+  c.font = `${canvas.height * 0.05}px "Montserrat", sans-serif`
+  c.strokeText(description, canvas.width / 2, 2 * canvas.height / 3, canvas.width)
+  c.fillText(description, canvas.width / 2, 2 * canvas.height / 3, canvas.width)
+  return canvas.toDataURL().slice('data:image/png;base64,'.length)
+}
+
+function wait (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+async function main () {
+  const zip = new JSZip()
+  for (const [filename, description] of Object.entries(descriptions)) {
+    zip.file(filename + '.png', makeImage(filename, description), { base64: true })
+    await wait(100)
+  }
+  saveAs(await zip.generateAsync({ type: 'blob' }), 'thumbnails.zip')
+}
+
+main()
+    </script>
+  </body>
+</html>
