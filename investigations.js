@@ -65,7 +65,7 @@ class Investigations {
 
   delayReport ({ DELAY, REPORT }) {
     return new Promise(resolve => {
-      setTimeout(() => resolve(REPORT), DELAY * 1000
+      setTimeout(() => resolve(REPORT), DELAY * 1000)
     })
   }
 
