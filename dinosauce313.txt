@@ -1,0 +1,1 @@
+If the submit button does nothing, reload the page. Ignore the warnings.
