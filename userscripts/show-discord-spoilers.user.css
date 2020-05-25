@@ -1,11 +1,11 @@
 /* ==UserStyle==
 @name        Discord spoiler shower
 @namespace   sheeptester.github.io
-@version     1.0.0
+@version     1.0.1
 @license     unlicense
 ==/UserStyle== */
 
-@-moz-document domain("discordapp.com") {
+@-moz-document domain("discordapp.com"), domain("discord.com") {
 /*
 -- EXPENSIVE ATTRIBUTE SELECTORS
 .theme-dark [class*='spoilerText-'][class*='hidden-'] {
