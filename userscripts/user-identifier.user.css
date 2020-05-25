@@ -1,11 +1,11 @@
 /* ==UserStyle==
 @name        Discord user identifier
 @namespace   sheeptester.github.io
-@version     1.0.0
+@version     1.0.1
 @license     unlicense
 ==/UserStyle== */
 
-@-moz-document domain("discordapp.com") {
+@-moz-document domain("discordapp.com"), domain("discord.com") {
 div[class^=image-][class*=large-] {
   position: relative;
 }
