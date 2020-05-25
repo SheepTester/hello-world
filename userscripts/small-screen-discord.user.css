@@ -5,7 +5,7 @@
 @license     unlicense
 ==/UserStyle== */
 
-@-moz-document domain("discordapp.com") {
+@-moz-document domain("discordapp.com"), domain("discord.com") {
 @media (max-width: 1000px) {
 
     /* make sidebar go to left */
