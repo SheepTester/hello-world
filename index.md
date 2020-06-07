@@ -55,3 +55,35 @@ yay
 - [learn the markup SECRETS for the underground?](./underground-markup.html)
 
 - [utilize monsieur lesha's fanciest CRYPTO de fancé?](./zdsfghnjvc.html)
+
+- [make thumbnails for random audio files in my downloads folder?](./audio-to-video/)
+
+- [blank page?](./blank-tags.html)
+
+- [even more b l a n c page? (I was investigating why `<body>` was height 100% turned out it was because it was contenteditable I think)](./blank.html)
+
+- [character char codes? (made this on vacation in canada visiting mom's old classmate. her son was teaching my brother how to play fortnite)](./charcode.html)
+
+- [clicker game? (code golf for scratch)](./code-golf-boomer01-clicker-game.html)
+
+- [u/dinosauce313, is that you?](./dinosauce313.txt)
+
+- [markdown in meta tags? (because twitter embed supports markdown)](./discord-website-embed.html)
+
+- [graph ugwa usage? (probably not very useful by now... ugwa was tracking usage when I tested server capacity lol)](./graph.html)
+
+- [sour throat and not coronavirus? need to speak? type BIG! (made this years ago but was only in chromebook downloads and gp5 needed)](./largetext.html)
+
+- [observe FREQUENCIAS???](./micfreq.html)
+
+- [test how mobile browsers deal with pwa stuff?](./mobile-pwa-test.html)
+
+- [send to schoology calendar because home page is dangerous?](./redirect-top.html)
+
+- [interpret SCHEME???](./scheme-interpret.html)
+
+- [shy test? (think this is from scrathc server)](./shy.html)
+
+- [USERSCRIPTS??? and userstyles??? illegal on scratch yes](./userscripts/)
+
+- [phrase weird flex but ok better? weird flex, but ok](./weird-flex.html)
