@@ -14,7 +14,8 @@
 **Infinite Campus student photo hider**
 
 [`ig-deannoyifier.user.css`](./ig-deannoyifier.user.css)
-**App download dialog hider and right click -> open image ability on posts**
+**Less annoying Instagram web experience**
+Hides app download dialog and allows right clicking to save images and vidoes on posts
 
 [`ig-signed-out-deannoy.user.css`](./ig-signed-out-deannoy.user.css)
 **Signed out Instagram deannoyifier**

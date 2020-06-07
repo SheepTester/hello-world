@@ -1,7 +1,8 @@
 /* ==UserStyle==
-@name        App download dialog hider and right click -> open image ability on posts
+@name        Less annoying Instagram web experience
+@description Hides app download dialog and allows right clicking to save images and vidoes on posts
 @namespace   sheeptester.github.io
-@version     1.0.2
+@version     1.0.3
 @license     unlicense
 ==/UserStyle== */
 @-moz-document domain("instagram.com") {
@@ -20,6 +21,6 @@
     .oujXn,
     .PyenC,
     .fXIG0 {
-        top: 50%;
+        bottom: 50%;
     }
 }
