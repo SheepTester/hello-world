@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+    <title>I embed</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<style>
+iframe {
+  outline: 1px solid red;
+}
+</style>
+</head>
+
+<body>
+  <p>I embed!</p>
+  <button id="open">Open iframe</button>
+  <button id="open-proj">Open project</button>
+  <div id="frames"></div>
+  <script>
+    const frames = document.getElementById('frames');
+    document.getElementById('open').onclick = e => {
+      frames.innerHTML = `<iframe mozallowfullscreen="true" allow="autoplay; fullscreen; geolocation; microphone; camera; midi" frameborder="0" src="./project.html" msallowfullscreen="true" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true" allowtransparency="true" width="500" height="600"></iframe>`;
+      //frames.querySelector('iframe').focus()
+      return;
+
+      const iframe = document.createElement('iframe');
+      iframe.src = './embedee.html';
+      iframe.width = 500;
+      iframe.height = 600;
+      document.body.appendChild(iframe);
+      iframe.focus();
+    };
+document.getElementById('open-proj').onclick = e => {
+      const iframe = document.createElement('iframe');
+      iframe.src = './project.html';
+      iframe.width = 500;
+      iframe.height = 600;
+      document.body.appendChild(iframe);
+      iframe.focus();
+    };
+
+  </script>
+</body>
+</html>

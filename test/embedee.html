@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+    <title>I am embedded</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+
+<body>
+  <p>I am embedded!</p>
+  <script>
+    setTimeout(() => {
+
+      document.addEventListener('keydown', e => {
+    const p = document.createElement('div');
+      p.textContent = e.key;
+      document.body.appendChild(p);
+
+    e.preventDefault();
+  });
+    }, 300)
+     </script>
+</body>
+</html>

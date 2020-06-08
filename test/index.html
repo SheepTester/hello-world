@@ -1,0 +1,10 @@
+<script src="https://unpkg.com/awesome-new-gunn-schedule-package@1/dist/awesome-new-gunn-schedule-package.min.js" charset="utf-8"></script>
+  <script>
+    (async () => {
+      const { apiKey } = await fetch('./api-key.json').then(r => r.json())
+      const schedule = new GunnSchedule(apiKey)
+      const year = schedule.year('2019-08-13', '2020-06-04')
+      await year.update()
+      console.log(year.get('2019-11-21').periods)
+    })()
+  </script>
