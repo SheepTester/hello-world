@@ -1,0 +1,16 @@
+/* ==UserStyle==
+@name           TikTok easier access to <video>
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    Moves their play button to the top half so that one can right click > show controls and use it on the bottom half.
+@author         SheepTester
+==/UserStyle== */
+
+@-moz-document domain("www.tiktok.com") {
+  .event-delegate-mask {
+    height: 50% !important;
+  }
+  .play-button {
+    bottom: 50% !important;
+  }
+}
