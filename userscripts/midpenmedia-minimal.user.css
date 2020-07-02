@@ -1,0 +1,79 @@
+/* ==UserStyle==
+@name           Midpen Media Centre minimalist Watch Now page
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    To maximize screen space for Don
+@author         SheepTester
+==/UserStyle== */
+
+@-moz-document url-prefix("https://midpenmedia.org/local-tv/watch-now/") {
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    background-color: black;
+    overflow: hidden;
+  }
+  body,
+  .innerpage,
+  .container,
+  #primary,
+  .row,
+  #content,
+  #wrapper,
+  .tab-wrapper {
+    display: flex;
+    flex: auto;
+  }
+  header,
+  article,
+  #secondary-left,
+  .topshadow,
+  footer,
+  .video-option,
+  .watch-now-page-link,
+  .mm-page,
+  .arrow_left {
+    display: none;
+  }
+  .container,
+  .row,
+  #primary,
+  #video-con,
+  .innerpage {
+    width: auto !important;
+    flex: auto;
+  }
+  #primary,
+  .container,
+  .row,
+  .tab-wrapper,
+  .innerpage {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .tab-wrapper {
+    border-radius: 0;
+    border: none;
+  }
+  #main_video_container {
+    flex: auto;
+    width: auto !important;
+    height: auto !important;
+  }
+  #main-content-section,
+  #primary {
+    background: none;
+  }
+  #video-con,
+  .tabs-right {
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+  }
+  .tab-head {
+    margin: 0;
+    border: none;
+  }
+}
