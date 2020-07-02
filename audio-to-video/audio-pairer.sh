@@ -2,7 +2,7 @@
 
 mkdir parts
 
-for file in {./*.mp3,./*.wav}
+for file in *.{mp3,wav}
 do
   filename=$(basename "$file")
   thumbnail="thumbnails/${filename}.png"
