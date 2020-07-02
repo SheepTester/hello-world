@@ -1,0 +1,17 @@
+# Audio files to be converted into video
+/*.mp3
+/*.wav
+
+# Audio file names
+/audio.txt
+
+# Thumbnail images
+/thumbnails.zip
+/thumbnails/
+
+# Video parts
+/parts/
+
+# Final output video
+/output.mp4
+
