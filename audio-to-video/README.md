@@ -2,19 +2,23 @@
 
 See how to get this code and install the necessary dependencies for this to work in the [preparation section](#preparation) below.
 
-3. Place all the audio files in this folder.
+1. Place all the audio files in this folder.
 
-    If there are no .wav files, you'll need to change `audio-pairer.sh`'s `{./*.mp3,./*.wav}` to simply `./*mp3`. This is because if there are no .wav files, `./*.wav` will instead look for a file called `*.wav`. Similar process for if there are no .mp3 files.
+    If there are no .wav files, you'll need to change `audio-pairer.sh`'s `{./*.mp3,./*.wav}` to simply `./*mp3`. This is because if there are no .wav files, the `./*.wav` pattern will instead look for a file called `*.wav`. Similar process for if there are no .mp3 files.
 
 5. Run `./list-audio`. This produces a list of file names in `audio.txt`.
 
-6. Edit `index.html`'s `descriptions` object in the `<script>` tag to map the audio file names (in `audio.txt`) to descriptions.
+6. Edit `index.html`'s `descriptions` object to add descriptions for each audio file name in `audio.txt`.
 
-7. Open `index.html` in the browser, and it'll autodownload `thumbnails.zip` containing nice thumbnails for each audio file. Unzip it here, so there should be a new folder called `thumbnails` containing the thumbnails.
+7. Open `index.html` in the browser, and it'll autodownload `thumbnails.zip` containing thumbnails for each audio file. Unzip it here, so there should be a new folder called `thumbnails` containing the thumbnails.
 
-10. Run `./audio-pairer.sh` and hope it works! It's pretty slow so you can AFK while it's working. Many things can go wrong here though.
+10. Run `./audio-pairer` and hope it works!
 
-11. If everything's good, an `output.mp4` should be created in this directory. From my experience, sometimes some parts have no audio. I just upload them separately to YouTube from the `parts` folder.
+    This step is pretty slow, but many things can go wrong here.
+
+11. If everything's good, an `output.mp4` should be created in this directory.
+
+    Sometimes some parts have no audio. You can just upload them separately to YouTube from the `parts` folder or attempt rejoining everything again using `./video-joiner`.
 
 ## Preparation
 
