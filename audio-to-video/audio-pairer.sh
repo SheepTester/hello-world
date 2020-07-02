@@ -13,5 +13,5 @@ do
   ffmpeg -loop 1 -y -i "$thumbnail" -i "$file" -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest "$output"
 done
 
-./video-joiner
+./video-joiner.sh
 
