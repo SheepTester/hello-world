@@ -29,33 +29,8 @@
     <canvas id="canvas" width="1920" height="1080"></canvas>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.2.2/jszip.min.js" charset="utf-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js" charset="utf-8"></script>
+    <script src="./audio-list.js"></script>
     <script type="text/javascript">
-const descriptions = {
-  'a su alrededor partes.mp3': 'Cutting up Barrios\'s syllables',
-  'after brandon rejoins 2.mp3': 'Spanish conversation',
-  'attempting to say विष.wav': 'TFor Tim: /ˈʋi.ʂɐ/',
-  'board meeting.wav': 'A concerned parent at a PAUSD board meeting.',
-  'comparacionísima.mp3': 'Cultural comparison practice for AP Spanish',
-  'conversacionnnn.wav': 'Simulated conversation practice for AP Spanish',
-  'cut off.wav': 'A concerned parent took too long to speak their passion.',
-  'desafortunado.wav': 'What it would sound like if it were an English word.',
-  'gamepro5.wav': 'Parody of "makes me go YES"',
-  'henry.mp3': 'Henry speaks against Zoom at the board meeting',
-  'i yield my time.wav': 'Joshua yields his time with one second left',
-  'mass spectrometer.mp3': 'Brandon diligently works on his chem assignment',
-  'nikki etc.wav': 'Nikki ensures her microphone is of an appropriate volume',
-  'no.mp3': 'Edmund says no',
-  'output.wav': 'Intense chord',
-  'outside trumpet.wav': 'Someone practices their trumpet outside at night',
-  'pausd is rather quiet.wav': 'A different PAUSD meeting? June 4th.',
-  'private schools.mp3': 'A concerned parent talks of private schools to PAUSD.',
-  'reverb be YES.wav': 'Reverb makes me go',
-  'unnamed_person_in_esperanto.mp3': 'From Steven, from Google Translate',
-  'vīrus and ἰός maybe.wav': 'Attempting to say words for Timothy from IPA',
-  'what\'s up.mp3': 'Brandon joins',
-  'yang.wav': 'Joshua Yang makes his case at a PAUSD board meeting'
-}
-
 const canvas = document.getElementById('canvas')
 const c = canvas.getContext('2d')
 const radius = Math.hypot(canvas.width, canvas.height) / 2

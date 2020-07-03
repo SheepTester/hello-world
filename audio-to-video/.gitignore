@@ -4,6 +4,7 @@
 
 # Audio file names
 /audio.txt
+/audio-list.js
 
 # Thumbnail images
 /thumbnails.zip
@@ -11,6 +12,7 @@
 
 # Video parts
 /parts/
+/videos.txt
 
 # Final output video
 /output.mp4
