@@ -21,7 +21,7 @@ async function main () {
   for (const period of classes) {
     const {
       periods: [{ name }],
-      terms: [{ termName }]
+      terms: [{ termName: term1 }, { termName: term2 = '' } = {}]
     } = await fetch(
       `/campus/resources/portal/section/${period.sectionID}?_expand=course-school&_expand=terms&_expand=periods-periodSchedule&_expand=teacherPreference&_expand=room&_expand=teachers`,       {
         headers: {
@@ -32,10 +32,12 @@ async function main () {
         .then(r => r.json())
     delete period.sectionID
     period.period = name
-    period.semester = termName
+    const semesters = term1 + term2
+    period.semester = semesters === 'S1S2' ? '  ' : semesters
   }
   return classes
-    .sort((a, b) => +a.period - +b.period)
+    .sort((a, b) => +a.period - +b.period ||
+      +a.semester[1] - +b.semester[1])
     .map(({ period, semester, course, teacher }) => `${semester} ${period}: ${teacher} / ${course}`)
     .join('\n')
 }
