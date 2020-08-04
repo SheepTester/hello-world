@@ -41,4 +41,7 @@ async function main () {
 }
 
 main()
-  .then(console.log)
+  .then(output => {
+    console.log(output)
+    alert(output)
+  })
