@@ -44,6 +44,7 @@ async function main () {
 
 main()
   .then(output => {
+    output += '\n\nIf you\'re a Gunn student, join the server: https://discord.gg/hq64nRE'
     console.log(output)
     alert(output)
   })
