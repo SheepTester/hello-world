@@ -39,7 +39,8 @@ async function main () {
     .sort((a, b) => +a.period - +b.period ||
       +a.semester[1] - +b.semester[1])
     .map(({ period, semester, course, teacher }) => `${semester} ${period}: ${teacher} / ${course}`)
-    .join('\n')
+    .join('\n') ||
+      'You don\'t seem to be in any classes for some reason?? Weird.'
 }
 
 main()
