@@ -28,7 +28,8 @@ async function getSection (id) {
       description,
       gpaWeight,
       honorsCode,
-      stateCode
+      stateCode,
+      transcript
     } = {},
     periods,
     teachers,
@@ -55,7 +56,8 @@ async function getSection (id) {
       description,
       gpaWeight,
       honorsCode,
-      stateCode
+      stateCode,
+      transcript
     },
     periods: periods.map(({
       endTime,
