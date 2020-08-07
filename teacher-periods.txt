@@ -1,0 +1,1231 @@
+Ames
+1 | US Hist    | US Hist
+2 | Span/Span1 | Span/Span1
+3 | SpCiv/CulH | SpCiv/CulH
+4 | Spanish 3  | Spanish 3
+5 | Spanish 3  | Spanish 3
+6 | US Govt    | ContWld 11
+7 | US Hist    | US Hist
+SELF ⭕ | Counseling ❌
+
+Anderson
+1 | PE 9 | PE 9
+2 |      | 
+3 |      | 
+4 | PE 9 | PE 9
+5 | PE 9 | PE 9
+6 | PE 9 | PE 9
+7 | PE 9 | PE 9
+SELF ⭕ | Counseling ❌
+
+Argumedo
+No classes
+SELF ⭕ | Counseling ❌
+
+Aro
+1 | US Hist              | US Hist
+2 | Wld Hist             | Wld Hist
+3 | Therapeutic Elective | Therapeutic Elective
+4 |                      | 
+5 |                      | 
+6 | Wld Hist             | Wld Hist
+7 | US Hist              | US Hist
+SELF ⭕ | Counseling ❌
+
+Arteaga
+1 | Wld Hist   | Wld Hist
+2 |            | 
+3 | USGovtLL   | ContWld LL
+4 | WldHist LL | WldHist LL
+5 | Wld Hist   | Wld Hist
+6 |            | 
+7 | USGovtLL   | ContWld LL
+SELF ❌ | Counseling ❌
+
+Aston
+1 | Bio SLC          | Bio SLC
+2 | Biology          | Biology
+3 | Biology          | Biology
+4 | Biology          | Biology
+5 |                  | 
+6 |                  | 
+7 | Focus on Success | Focus on Success
+SELF ❌ | Counseling ❌
+
+Barba-Medina
+1 | Spanish 2 | Spanish 2
+2 | Spanish 3 | Spanish 3
+3 | Spanish 3 | Spanish 3
+4 |           | 
+5 | Spanish 2 | Spanish 2
+6 | Spanish 2 | Spanish 2
+7 |           | 
+SELF ❌ | Counseling ❌
+
+Bautista
+1 | APCompSci A    | APCompSci A
+2 | APCompSci A    | APCompSci A
+3 |                | 
+4 |                | 
+5 | AP Calculus AB | AP Calculus AB
+6 | AP Calculus AB | AP Calculus AB
+7 | AP Calculus AB | AP Calculus AB
+SELF ⭕ | Counseling ❌
+
+Bisbee
+1 | US Govt  | ContWld 11
+2 | Wld Hist | Wld Hist
+3 | Wld Hist | Wld Hist
+4 | US Govt  | ContWld 11
+5 |          | 
+6 | Wld Hist | Wld Hist
+7 | US Govt  | ContWld 11
+SELF ⭕ | Counseling ❌
+
+Bissegger
+1 |               | 
+2 | Acad Planning | Acad Planning
+3 | Lit Style     | Lit Style
+4 | Acad Planning | Lit Style
+5 | Lit Style     | Lit Style
+6 |               | 
+7 |               | Lit Style
+SELF ⭕ | Counseling ❌
+
+Blackburn
+1 | Beginning Journalism | AmerLit
+2 | MLM GraphPubH        | MLM GraphPubH
+3 | AmerLit              | AmerLit
+4 |                      | 
+5 |                      | 
+6 | AmerLit              | AmerLit
+7 |                      | 
+SELF ⭕ | Counseling ❌
+
+Boissevain
+1 |             | 
+2 |             | 
+3 | Art Spec 1  | Art Spec 1
+4 | Art Spec 1  | Art Spec 1
+5 |             | 
+6 |             | 
+7 | Adv Photo H | Adv Photo H
+SELF ❌ | Counseling ❌
+
+Brown
+1 | Am Clas11H | Am Clas11H
+2 | Film Lit   | Film Lit
+3 |            | 
+4 | Film Lit   | Film Lit
+5 | Am Clas11H | Am Clas11H
+6 |            | 
+7 |            | 
+SELF ❌ | Counseling ❌
+
+Bueno
+No classes
+SELF ❌ | Counseling ⭕
+
+Camicia
+1 |        | 
+2 | Auto 1 | Auto 1
+3 | Auto 2 | Auto 2
+4 | Auto 1 | Auto 1
+5 |        | 
+6 | Auto 1 | Auto 1
+7 | Auto 2 | Auto 2
+SELF ⭕ | Counseling ❌
+
+Carlomagno
+1 | Conceptual Physics | Conceptual Physics
+2 |                    | 
+3 | Conceptual Physics | Conceptual Physics
+4 |                    | 
+5 |                    | 
+6 |                    | 
+7 |                    | 
+SELF ⭕ | Counseling ❌
+
+Castil
+No classes
+SELF ⭕ | Counseling ❌
+
+Catalano
+1 |             | 
+2 |             | 
+3 | Chemistry H | Chemistry H
+4 | Chemistry H | Chemistry H
+5 | Chemistry   | Chemistry
+6 | Chemistry   | Chemistry
+7 | Chemistry   | Chemistry
+SELF ⭕ | Counseling ❌
+
+Celis
+No classes
+SELF ⭕ | Counseling ❌
+
+Chavez
+No classes
+SELF ❌ | Counseling ⭕
+
+Chen
+1 |            | 
+2 | Geom A     | Geom A
+3 | Alg2/Trg A | Alg2/Trg A
+4 | Alg2/Trg A | Alg2/Trg A
+5 |            | 
+6 |            | 
+7 | Geom A     | Geom A
+SELF ❌ | Counseling ❌
+
+Cismas Florea
+1 |        | 
+2 | Geom H | Geom H
+3 | Geom H | Geom H
+4 |        | 
+5 |        | 
+6 |        | 
+7 |        | 
+SELF ❌ | Counseling ❌
+
+Cohn
+1 | Physics | Physics
+2 | Physics | Physics
+3 | Physics | Physics
+4 |         | 
+5 | Physics | Physics
+6 |         | 
+7 | Physics | Physics
+SELF ⭕ | Counseling ❌
+
+Collier
+1 | Psych 11      | Psych 11
+2 |               | 
+3 | AP Psychology | AP Psychology
+4 | AP Psychology | AP Psychology
+5 |               | 
+6 | AP Psychology | AP Psychology
+7 | AP Psychology | AP Psychology
+SELF ❌ | Counseling ❌
+
+Congress
+1 | Alg2/Trg A    | Alg2/Trg A
+2 | Alg2/Trg A    | Alg2/Trg A
+3 |               | 
+4 | AP Statistics | AP Statistics
+5 | AP Statistics | AP Statistics
+6 |               | 
+7 | Alg2/Trg A    | Alg2/Trg A
+SELF ⭕ | Counseling ❌
+
+Conklin
+1 | Voc Trng             | Voc Trng
+2 | Voc Trng             | Voc Trng
+3 |                      | 
+4 | Acad Enhancement SAI | Acad Enhancement SAI
+5 |                      | 
+6 | Voc Trng             | Voc Trng
+7 | Voc Trng             | Voc Trng
+SELF ❌ | Counseling ❌
+
+Corpuz
+1 | BroadJourn           | BroadJourn
+2 | AdvDigiFilm          | AdvDigiFilm
+3 | Adv Video H          | Adv Video H
+4 |                      | 
+5 |                      | 
+6 |                      | 
+7 | Adv Audio/Music Prod | Adv Audio/Music Prod
+SELF ❌ | Counseling ❌
+
+Creighton
+1 | PE 10 | PE 10
+2 |       | 
+3 |       | 
+4 | PE 10 | PE 10
+5 | PE 10 | PE 10
+6 | PE 10 | PE 10
+7 | PE 10 | PE 10
+SELF ❌ | Counseling ❌
+
+Deggeller
+1 |            | 
+2 |            | 
+3 | Analysis H | Analysis H
+4 | Analysis H | Analysis H
+5 | Alg2/Trg A | Alg2/Trg A
+6 | Alg2/Trg A | Alg2/Trg A
+7 |            | 
+SELF ❌ | Counseling ❌
+
+Derrick-Navarro
+1 | US Hist             | US Hist
+2 | Focus on Success    | Focus on Success
+3 |                     | Psych 11
+4 | Positive Psychology | Positive Psychology
+5 |                     | 
+6 |                     | 
+7 |                     | 
+SELF ❌ | Counseling ❌
+
+Dion
+1 | AP Calculus AB | AP Calculus AB
+2 |                | 
+3 | AP Calculus AB | AP Calculus AB
+4 | AP Calculus AB | AP Calculus AB
+5 | Alg2/TrigH     | Alg2/TrigH
+6 | Alg2/TrigH     | Alg2/TrigH
+7 |                | 
+SELF ⭕ | Counseling ❌
+
+Dungan
+1 |        | 
+2 |        | 
+3 |        | 
+4 |        | 
+5 |        | 
+6 |        | 
+7 |        | 
+8 | Jazz B | Jazz B
+SELF ❌ | Counseling ❌
+
+Dunlap
+1 | AP English Lit & Comp | AP English Lit & Comp
+2 | AP English Lit & Comp | AP English Lit & Comp
+3 |                       | 
+4 |                       | 
+5 |                       | WritCr 11
+6 | DramLtPerf            | Cont Herit
+7 |                       | 
+SELF ❌ | Counseling ❌
+
+Durquet
+1 |         | 
+2 |         | 
+3 |         | 
+4 | Photo 1 | Photo 1
+5 | Photo 1 | Photo 1
+6 | Photo 1 | Photo 1
+7 |         | 
+SELF ❌ | Counseling ❌
+
+Ellington
+1 |            | 
+2 |            | 
+3 |            | 
+4 |            | 
+5 |            | 
+6 |            | 
+7 |            | 
+8 | Stage Tech | Stage Tech
+SELF ❌ | Counseling ❌
+
+Fidani
+No classes
+SELF ❌ | Counseling ⭕
+
+Firenzi
+1 |  | 
+2 |  | 
+3 |  | USFor Pol H
+4 |  | 
+5 |  | 
+6 |  | 
+7 |  | 
+SELF ⭕ | Counseling ❌
+
+Fitzhugh
+1 |            | 
+2 |            | 
+3 |            | 
+4 |            | 
+5 |            | 
+6 |            | 
+7 | Conc Choir | Conc Choir
+SELF ❌ | Counseling ❌
+
+Garger
+1 |                       | 
+2 | Spanish 2             | Spanish 2
+3 | AP Spanish Literature | AP Spanish Literature
+4 |                       | 
+5 | AP Spanish Language   | AP Spanish Language
+6 | AP Spanish Language   | AP Spanish Language
+7 | AP Spanish Language   | AP Spanish Language
+SELF ⭕ | Counseling ❌
+
+Gill
+No classes
+SELF ⭕ | Counseling ❌
+
+Gleason
+1 |            | 
+2 |            | 
+3 | Pre Calc   | Pre Calc
+4 |            | 
+5 | Analysis H | Analysis H
+6 | Analysis H | Analysis H
+7 | Analysis H | Analysis H
+SELF ❌ | Counseling ❌
+
+Gleason
+1 |                      | 
+2 |                      | 
+3 | GraphDes             | GraphDes
+4 | Adv Gr Des           | Adv Gr Des
+5 | Gprd/Yrbk            | Gprd/Yrbk
+6 | Digital Art Spectrum | Digital Art Spectrum
+7 | Digital Art Spectrum | Digital Art Spectrum
+SELF ❌ | Counseling ❌
+
+Gonzalez Barrios
+1 | Spanish 3 | Spanish 3
+2 |           | 
+3 | Spanish 1 | Spanish 1
+4 |           | 
+5 |           | 
+6 | Spanish 3 | Spanish 3
+7 | Spanish 3 | Spanish 3
+SELF ❌ | Counseling ❌
+
+Gordon
+No classes
+SELF ⭕ | Counseling ❌
+
+Granlund-Moyer
+1 | Prnc Of Engr H PLTW | Prnc Of Engr H PLTW
+2 | Int Engr Des PLTW H | Int Engr Des PLTW H
+3 |                     | 
+4 |                     | 
+5 | Engn Tech           | Engn Tech
+6 | Engn Tech           | Engn Tech
+7 |                     | 
+SELF ⭕ | Counseling ❌
+
+Hall
+1 | Stu Govt  | Stu Govt
+2 | Lit Style | Lit Style
+3 |           | 
+4 |           | 
+5 |           | 
+6 |           | 
+7 |           | 
+SELF ❌ | Counseling ❌
+
+Halter
+1 | Cont Herit | Lit Style
+2 | Lit Style  | Cont Herit
+3 | Lit Style  | Lit Style
+4 |            | 
+5 | Cont Herit | Cont Herit
+6 |            | 
+7 | Lit Style  | Lit Style
+SELF ⭕ | Counseling ❌
+
+Hawes
+1 | IntrAnl/Calc | IntrAnl/Calc
+2 | Alg2/TrigH   | Alg2/TrigH
+3 |              | 
+4 | IntrAnl/Calc | IntrAnl/Calc
+5 |              | 
+6 | IntrAnl/Calc | IntrAnl/Calc
+7 | Alg2/TrigH   | Alg2/TrigH
+SELF ❌ | Counseling ❌
+
+Helbing
+1 | EL 28    | EL 28
+2 | EL 28    | EL 28
+3 |          | 
+4 |          | 
+5 | Eng LL 2 | Eng LL 2
+6 | Eng LL 2 | Eng LL 2
+7 |          | 
+SELF ⭕ | Counseling ❌
+
+Hernandez
+1 | Film Lit              | Film Lit
+2 |                       | 
+3 | Film Lit              | Am Clas11H
+4 | Am Clas11H            | Am Clas11H
+5 | AP English Lit & Comp | AP English Lit & Comp
+6 | AP English Lit & Comp | AP English Lit & Comp
+7 |                       | 
+SELF ⭕ | Counseling ❌
+
+Hexsel
+1 |                     | 
+2 | Geom                | Geom
+3 |                     | 
+4 | Geom                | Geom
+5 | AP Comp. Sci. Princ | AP Comp. Sci. Princ
+6 | AP Comp. Sci. Princ | AP Comp. Sci. Princ
+7 |                     | 
+SELF ⭕ | Counseling ❌
+
+Holdener
+1 | Cont Herit | Cont Herit
+2 | Cont Herit | Cont Herit
+3 | Cont Herit | Cont Herit
+4 | Cont Herit | Cont Herit
+5 | Lit Style  | Lit Style
+6 |            | 
+7 |            | 
+SELF ❌ | Counseling ❌
+
+Holmes
+1 | Law 1     | Law 1
+2 |           | 
+3 | US Govt   | ContWld 11
+4 | US Govt   | ContWld 11
+5 |           | 
+6 | CR/CivLaw | CR/CivLaw
+7 | Law 1     | Law 1
+SELF ⭕ | Counseling ❌
+
+Howard
+1 | Wld Hist      | Wld Hist
+2 |               | 
+3 | Wld Hist      | Wld Hist
+4 | AP US History | AP US History
+5 | AP US History | AP US History
+6 |               | 
+7 | AP US History | AP US History
+SELF ⭕ | Counseling ❌
+
+Ichikawa
+1 | Lit Style             | Lit Style
+2 | Yoga                  | Yoga
+3 |                       | 
+4 | AP English Lit & Comp | AP English Lit & Comp
+5 |                       | 
+6 | Lit Style             | Lit Style
+7 | Lit Style             | Lit Style
+SELF ❌ | Counseling ❌
+
+Igler
+1 | Class Myth | 
+2 | Escape Lit | Am Clas11H
+3 |            | Am Clas11H
+4 | Escape Lit | Class Myth
+5 |            | 
+6 | Class Myth | Am Clas11H
+7 |            | 
+SELF ❌ | Counseling ❌
+
+Ja
+1 |            | 
+2 |            | 
+3 | Lit Style  | Cont Herit
+4 | Cont Herit | Lit Style
+5 | Lit Style  | Lit Style
+6 | Lit Style  | Lit Style
+7 | Cont Herit | 
+SELF ❌ | Counseling ❌
+
+Jamison
+1 | AP Statistics | AP Statistics
+2 | AP Statistics | AP Statistics
+3 |               | 
+4 | Geom H        | Geom H
+5 | Geom H        | Geom H
+6 |               | 
+7 | Geom H        | Geom H
+SELF ⭕ | Counseling ❌
+
+Johanson
+No classes
+SELF ❌ | Counseling ⭕
+
+Johnson
+1 | AP US History | AP US History
+2 | AP US History | AP US History
+3 | AP US History | AP US History
+4 | Wld Hist      | Wld Hist
+5 | Wld Hist      | Wld Hist
+6 |               | 
+7 |               | 
+SELF ❌ | Counseling ❌
+
+Kaneko
+1 | Funct Object Or Prog | Funct Object Or Prog
+2 | Funct Object Or Prog | Funct Object Or Prog
+3 | Funct Object Or Prog | Funct Object Or Prog
+4 |                      | 
+5 |                      | 
+6 | IntrAnl/Calc         | IntrAnl/Calc
+7 | IntrAnl/Calc         | IntrAnl/Calc
+SELF ⭕ | Counseling ❌
+
+Karas
+1 | Pre Calc       | Pre Calc
+2 |                | 
+3 | AP Calculus BC | AP Calculus BC
+4 | AP Calculus BC | AP Calculus BC
+5 | Pre Calc       | Pre Calc
+6 |                | 
+7 | AP Calculus BC | AP Calculus BC
+SELF ❌ | Counseling ❌
+
+Kaufman
+1 | French 2 | French 2
+2 |          | 
+3 |          | 
+4 |          | 
+5 | French 2 | French 2
+6 | French 1 | French 1
+7 | French 2 | French 2
+SELF ⭕ | Counseling ❌
+
+King
+1 | Art Spec 1  | Art Spec 1
+2 | Art Spec 1  | Art Spec 1
+3 | ArtStu3D AP | ArtStu3D AP
+4 |             | 
+5 | Art Spec 1  | Art Spec 1
+6 |             | 
+7 | Ceramics 1  | Ceramics 1
+SELF ❌ | Counseling ❌
+
+Kinyanjui
+1 | Wld Hist           | Wld Hist
+2 |                    | 
+3 | Wld Hist           | Wld Hist
+4 | Wld Hist           | Wld Hist
+5 |                    | 
+6 | AP Human Geography | AP Human Geography
+7 | Wld Hist           | Wld Hist
+SELF ⭕ | Counseling ❌
+
+Kitada
+1 |              | 
+2 |              | 
+3 | Visual Story | Visual Story
+4 | Lit Style    | Lit Style
+5 | Cont Herit   | Lit Style
+6 | Lit Style    | Lit Style
+7 | Cont Herit   | Visual Story
+SELF ⭕ | Counseling ❌
+
+Kneebone
+1 |            | 
+2 | Band       | Band
+3 | Wind Ens   | Wind Ens
+4 |            | 
+5 |            | 
+6 | Symph Band | Symph Band
+7 |            | 
+SELF ❌ | Counseling ❌
+
+Kompella
+1 | AP Physics 1 | AP Physics 1
+2 | AP Physics 1 | AP Physics 1
+3 | AP Physics C | AP Physics C
+4 |              | 
+5 | AP Physics 1 | AP Physics 1
+6 | AP Physics 1 | AP Physics 1
+7 |              | 
+SELF ⭕ | Counseling ❌
+
+La Place
+No classes
+SELF ⭕ | Counseling ❌
+
+Ledgerwood
+1 |                          | 
+2 |                          | 
+3 | Chemistry                | Chemistry
+4 | Chemistry                | Chemistry
+5 | AP Environmental Science | AP Environmental Science
+6 | AP Environmental Science | AP Environmental Science
+7 | AP Environmental Science | AP Environmental Science
+SELF ⭕ | Counseling ❌
+
+Lee
+1 | AP Biology | AP Biology
+2 | AP Biology | AP Biology
+3 |            | 
+4 |            | 
+5 |            | 
+6 | Biology    | Biology
+7 | Biology    | Biology
+SELF ❌ | Counseling ❌
+
+Leftwich
+No classes
+SELF ❌ | Counseling ⭕
+
+Lewis
+1 | Orchstr | Orchstr
+2 |         | 
+3 |         | 
+4 | Orchstr | Orchstr
+5 | Orchstr | Orchstr
+6 |         | 
+7 |         | 
+SELF ❌ | Counseling ❌
+
+Liberatore
+1 |                 | 
+2 | AP Music Theory | AP Music Theory
+3 | Treb Choir      | Treb Choir
+4 |                 | 
+5 |                 | 
+6 |                 | 
+7 | Conc Choir      | Conc Choir
+8 | Adv Vocal       | Adv Vocal
+SELF ⭕ | Counseling ❌
+
+Limburg
+1 |            | 
+2 | Alg2/TrigH | Alg2/TrigH
+3 | Alg2/TrigH | Alg2/TrigH
+4 | Alg2/TrigH | Alg2/TrigH
+5 | Alg 1A     | Alg 1A
+6 | Alg 1A     | Alg 1A
+7 |            | 
+SELF ⭕ | Counseling ❌
+
+Linsdell
+1 | Econ AP | Econ AP
+2 |         | 
+3 | Econ AP | Econ AP
+4 |         | 
+5 | Econ AP | Econ AP
+6 | Econ AP | Econ AP
+7 | Econ AP | Econ AP
+SELF ⭕ | Counseling ❌
+
+Little
+1 | Biology H | Biology H
+2 | Biology H | Biology H
+3 | Biology H | Biology H
+4 | Biology H | Biology H
+5 |           | 
+6 | Biology H | Biology H
+7 |           | 
+SELF ⭕ | Counseling ❌
+
+Lizundia
+1 | French 3           | French 3
+2 | French 3           | French 3
+3 | AP French Language | AP French Language
+4 |                    | 
+5 | French 3           | French 3
+6 | AP French Language | AP French Language
+7 |                    | 
+SELF ⭕ | Counseling ❌
+
+Lo
+1 |               | 
+2 |               | 
+3 | Theatre 1     | Theatre 1
+4 |               | 
+5 |               | 
+6 |               | 
+7 |               | 
+8 | Stage Tech 2D | Stage Tech 2D
+SELF ❌ | Counseling ❌
+
+Lopez
+No classes
+SELF ⭕ | Counseling ❌
+
+Lorey
+1 | AP Physics C: Mechanics | AP Physics C: E&M
+2 | AP Physics C: Mechanics | AP Physics C: E&M
+3 | AP Physics 1            | AP Physics 1
+4 |                         | 
+5 | AP Physics C: Mechanics | AP Physics C: E&M
+6 |                         | 
+7 | AP Physics 1            | AP Physics 1
+SELF ⭕ | Counseling ❌
+
+Lyons
+1 | Econ AP | Econ AP
+2 | Econ AP | Econ AP
+3 |         | 
+4 |         | 
+5 | Econ AP | Econ AP
+6 | US Hist | US Hist
+7 |         | 
+SELF ❌ | Counseling ❌
+
+Matta
+1 |         | 
+2 | US Hist | US Hist
+3 |         | 
+4 |         | 
+5 |         | 
+6 |         | 
+7 |         | 
+SELF ❌ | Counseling ❌
+
+McGinn
+1 | PE 9 | PE 9
+2 | PE 9 | PE 9
+3 | PE 9 | PE 9
+4 |      | 
+5 | PE 9 | PE 9
+6 | PE 9 | PE 9
+7 |      | 
+SELF ❌ | Counseling ❌
+
+McGinn
+1 |          | 
+2 |          | 
+3 |          | 
+4 |          | 
+5 |          | 
+6 |          | 
+7 |          | 
+8 | Jazz Ens | Jazz Ens
+SELF ❌ | Counseling ❌
+
+Mellows
+1 |              | 
+2 |              | 
+3 | Astrophysics | Astrophysics
+4 | Astrophysics | Astrophysics
+5 | Chemistry H  | Chemistry H
+6 | Chemistry H  | Chemistry H
+7 | Chemistry H  | Chemistry H
+SELF ❌ | Counseling ❌
+
+Menache
+1 | Focus on Success | Focus on Success
+2 |                  | 
+3 | BasCollSk        | BasCollSk
+4 |                  | 
+5 |                  | 
+6 | Focus on Success | Focus on Success
+7 |                  | 
+SELF ❌ | Counseling ❌
+
+Merchant
+1 | Bio Tech  | Bio Tech
+2 | Bio Tech  | Bio Tech
+3 | Bio Tech  | Bio Tech
+4 |           | 
+5 |           | 
+6 | Biology H | Biology H
+7 | Biology H | Biology H
+SELF ⭕ | Counseling ❌
+
+Messinger
+1 | Pt/Dr 1                 | Pt/Dr 1
+2 |                         | 
+3 | Adv.Draw/Painting H     | Adv.Draw/Painting H
+4 | AP Studio Art - Drawing | AP Studio Art - Drawing
+5 |                         | 
+6 |                         | 
+7 |                         | 
+SELF ❌ | Counseling ❌
+
+Metzler
+1 | Biology                 | Biology
+2 | Biology                 | Biology
+3 | Wld Hist                | Wld Hist
+4 |                         | 
+5 |                         | 
+6 | Academic Communications | Academic Communications
+7 | Academic Communications | Academic Communications
+SELF ⭕ | Counseling ❌
+
+Miguel
+1 | US Govt           | ContWld 11
+2 | US Govt           | ContWld 11
+3 | World History-SLC | World History-SLC
+4 | US Govt           | ContWld 11
+5 |                   | 
+6 | US Govt           | ContWld 11
+7 |                   | 
+SELF ⭕ | Counseling ❌
+
+Miller
+1 | US Govt  | ContWld 11
+2 | US Govt  | ContWld 11
+3 | US Govt  | ContWld 11
+4 | Wld Hist | Wld Hist
+5 | Wld Hist | Wld Hist
+6 | Wld Hist | Wld Hist
+7 |          | 
+SELF ⭕ | Counseling ❌
+
+Moyer
+1 | Lit Style | Lit Style
+2 | Lit Style | Lit Style
+3 |           | 
+4 |           | 
+5 |           | 
+6 |           | 
+7 |           | 
+SELF ❌ | Counseling ❌
+
+Munger
+1 | Inter Comp   | Inter Comp
+2 | Cont Herit   | Cont Herit
+3 | ReadBetLines | ReadBetLines
+4 |              | 
+5 | ReadBetLines | Cont Herit
+6 | ERWC         | ERWC
+7 |              | 
+SELF ⭕ | Counseling ❌
+
+Nino Oliva
+1 | AP Spanish Language | AP Spanish Language
+2 | Spanish 1           | Spanish 1
+3 | AP Spanish Language | AP Spanish Language
+4 |                     | 
+5 | Spanish 1           | Spanish 1
+6 | Spanish 1           | Spanish 1
+7 |                     | 
+SELF ❌ | Counseling ❌
+
+O'Connell
+1 | Chemistry H | Chemistry H
+2 |             | 
+3 |             | 
+4 | Chemistry   | Chemistry
+5 | Chemistry   | Chemistry
+6 | Chemistry   | Chemistry
+7 | Chemistry H | Chemistry H
+SELF ⭕ | Counseling ❌
+
+Ou
+1 | Orchstr | Orchstr
+2 |         | 
+3 |         | 
+4 |         | 
+5 | Orchstr | Orchstr
+6 |         | 
+7 |         | 
+SELF ❌ | Counseling ❌
+
+Owen
+1 |                           | 
+2 | Contemporary Heritage SLC | Literary Style SLC
+3 | Focus on Success          | Focus on Success
+4 | Focus on Success          | Focus on Success
+5 |                           | 
+6 |                           | Cont Herit
+7 |                           | 
+SELF ⭕ | Counseling ❌
+
+Paley
+1 |                      | 
+2 |                      | 
+3 | APCompSci A          | APCompSci A
+4 | APCompSci A          | APCompSci A
+5 | Funct Object Or Prog | Funct Object Or Prog
+6 | Funct Object Or Prog | Funct Object Or Prog
+7 | CS Capstone          | CS Capstone
+SELF ❌ | Counseling ❌
+
+Paronable
+1 | Contemporary Heritage | Cont Herit
+2 | Contemporary Heritage | Cont Herit
+3 |                       | 
+4 | Lit Style             | Lit Style
+5 | Lit Style             | Lit Style
+6 |                       | 
+7 | Lit Style             | Cont Herit
+SELF ⭕ | Counseling ❌
+
+Patrick
+1 |         | 
+2 | Econ 11 | Econ 11
+3 | Econ 11 | Econ 11
+4 |         | 
+5 | Econ 11 | Econ 11
+6 |         | 
+7 |         | 
+SELF ⭕ | Counseling ❌
+
+Pennington
+1 | Conceptual Physics | Conceptual Physics
+2 | Conceptual Physics | Conceptual Physics
+3 | Conceptual Physics | Conceptual Physics
+4 |                    | 
+5 |                    | 
+6 | Physics            | Physics
+7 |                    | 
+SELF ⭕ | Counseling ❌
+
+Perkins
+1 | AP Psychology | AP Psychology
+2 | AP Psychology | AP Psychology
+3 |               | 
+4 | US Hist       | US Hist
+5 | US Hist       | US Hist
+6 |               | 
+7 | US Hist       | US Hist
+SELF ⭕ | Counseling ❌
+
+Peters
+1 |                              | 
+2 | Fiber Arts                   | Interior11
+3 | Ind Study                    | SportsNutr
+4 | Culinary Arts - Introduction | Culinary Arts - International
+5 | Culinary Arts - Introduction | Culinary Arts - International
+6 | Ind Study                    | Ind Study
+7 |                              | 
+SELF ⭕ | Counseling ❌
+
+Pinkston
+1 |              | 
+2 | IntrAnl/Calc | IntrAnl/Calc
+3 | IntrAnl/Calc | IntrAnl/Calc
+4 | Alg 1A       | Alg 1A
+5 |              | 
+6 | Geom         | Geom
+7 | Alg 1A       | Alg 1A
+SELF ⭕ | Counseling ❌
+
+Powell
+1 | Biology    | Biology
+2 | Biology    | Biology
+3 |            | 
+4 | AP Biology | AP Biology
+5 |            | 
+6 | AP Biology | AP Biology
+7 | AP Biology | AP Biology
+SELF ❌ | Counseling ❌
+
+Redfield
+1 |                | 
+2 | Applied Math   | Applied Math
+3 |                | 
+4 |                | 
+5 | AP Calculus BC | AP Calculus BC
+6 | AP Calculus BC | AP Calculus BC
+7 |                | 
+SELF ❌ | Counseling ❌
+
+Renazco
+1 |                     | 
+2 | Alg2                | Alg2
+3 | Alg2                | Alg2
+4 | AP Comp. Sci. Princ | AP Comp. Sci. Princ
+5 |                     | 
+6 |                     | 
+7 |                     | 
+SELF ⭕ | Counseling ❌
+
+Reyes
+No classes
+SELF ❌ | Counseling ⭕
+
+Ross
+No classes
+SELF ❌ | Counseling ⭕
+
+Sabbag
+1 | PE 10 | PE 10
+2 | PE 10 | PE 10
+3 | PE 10 | PE 10
+4 |       | 
+5 |       | 
+6 | PE 10 | PE 10
+7 | PE 10 | PE 10
+SELF ⭕ | Counseling ❌
+
+Saxena
+1 | Geom A | Geom A
+2 |        | 
+3 |        | 
+4 |        | 
+5 | Geom A | Geom A
+6 | Geom A | Geom A
+7 |        | 
+SELF ⭕ | Counseling ❌
+
+Schroeppel
+1 | GermanLangAP | GermanLangAP
+2 | German 3     | German 3
+3 |              | 
+4 |              | 
+5 | German 1     | German 1
+6 | German 2     | German 2
+7 |              | 
+SELF ⭕ | Counseling ❌
+
+Shelby
+1 | Theatre 2 | Theatre 2
+2 | Theatre 1 | Theatre 1
+3 | Theatre 1 | Theatre 1
+4 |           | 
+5 | Theatre 3 | Theatre 3
+6 |           | 
+7 |           | 
+SELF ⭕ | Counseling ❌
+
+Sims
+1 |               | 
+2 |               | 
+3 | Cont Herit    | Cont Herit
+4 | Cont Herit    | Acad Planning
+5 | Cont Herit    | Cont Herit
+6 | Acad Planning | Acad Planning
+7 | Cont Herit    | 
+SELF ⭕ | Counseling ❌
+
+Stone
+1 |         | 
+2 |         | 
+3 |         | 
+4 |         | 
+5 | US Hist | US Hist
+6 |         | 
+7 |         | 
+SELF ❌ | Counseling ❌
+
+Summers
+1 |            | 
+2 | Band       | Band
+3 | Wind Ens   | Wind Ens
+4 |            | 
+5 |            | 
+6 | Symph Band | Symph Band
+7 |            | 
+SELF ❌ | Counseling ❌
+
+Tabares Ruiz
+1 | Spanish 2  | Spanish 2
+2 | Span/Span2 | Span/Span2
+3 | Spanish 2  | Spanish 2
+4 |            | 
+5 | Spanish 2  | Spanish 2
+6 |            | 
+7 | Spanish 2  | Spanish 2
+SELF ⭕ | Counseling ❌
+
+Tabuchi
+1 |            | 
+2 | Escape Lit | Film Lit
+3 | AmerLit    | AmerLit
+4 | Escape Lit | Film Lit
+5 | Econ 11    | 
+6 | AmerLit    | AmerLit
+7 |            | 
+SELF ⭕ | Counseling ❌
+
+Tantod
+1 | Analysis H | Analysis H
+2 | Analysis H | Analysis H
+3 |            | 
+4 |            | 
+5 |            | 
+6 |            | 
+7 |            | 
+SELF ❌ | Counseling ❌
+
+Tucker
+1 | Liv Skill | 
+2 | Liv Skill | Ind Study
+3 | Liv Skill | Liv Skill
+4 |           | Liv Skill
+5 |           | 
+6 | Liv Skill | Liv Skill
+7 | Liv Skill | Liv Skill
+SELF ⭕ | Counseling ❌
+
+Tuomy
+1 |          | 
+2 |          | 
+3 |          | 
+4 |          | 
+5 |          | 
+6 | Wld Hist | Wld Hist
+7 | Wld Hist | Wld Hist
+SELF ❌ | Counseling ❌
+
+Vrudny
+1 | Chinese 1   | Chinese 1
+2 | ChLangCulAP | ChLangCulAP
+3 | Chinese 3   | Chinese 3
+4 | Chinese 2   | Chinese 2
+5 | Chinese 3   | Chinese 3
+6 |             | 
+7 |             | 
+SELF ❌ | Counseling ❌
+
+Wang
+1 |        | 
+2 |        | 
+3 | Geom A | Geom A
+4 | Geom A | Geom A
+5 | Alg2   | Alg2
+6 | Alg2   | Alg2
+7 | Geom A | Geom A
+SELF ⭕ | Counseling ❌
+
+Wells
+1 | AmerLit    | AmerLit
+2 | Philos Lit | Philos Lit
+3 | Philos Lit | Philos Lit
+4 |            | 
+5 | AmerLit    | AmerLit
+6 |            | 
+7 | AmerLit    | AmerLit
+SELF ❌ | Counseling ❌
+
+Whichard
+1 | AVID       | AVID
+2 | AVID       | AVID
+3 | Cont Herit | Cont Herit
+4 |            | 
+5 | Cont Herit | Cont Herit
+6 | AVID       | AVID
+7 |            | 
+SELF ⭕ | Counseling ❌
+
+Wilson
+1 |             | 
+2 |             | 
+3 |             | 
+4 |             | 
+5 |             | 
+6 |             | 
+7 | WritCr 11   | WritCr 11
+8 | ExplExp-AAR | ExplExp-AAR
+SELF ⭕ | Counseling ❌
+
+Woznicki
+1 | Marine Biology | Marine Biology
+2 | Marine Biology | Marine Biology
+3 |                | 
+4 | Biology        | Biology
+5 |                | 
+6 | Biology        | Biology
+7 | Biology        | Biology
+SELF ❌ | Counseling ❌
+
+Yun
+1 | Geom H         | Geom H
+2 |                | 
+3 | Princ of Bus B | Princ of Bus B
+4 | Princ of Bus B | Princ of Bus B
+5 |                | 
+6 | Geom H         | Geom H
+7 | BEAM           | BEAM
+SELF ⭕ | Counseling ❌
+
+Zavack
+1 | Cont Herit    | Literary Style
+2 | Am Clas11H SJ | Literary Style
+3 |               | 
+4 | Am Clas11H    | Am Clas11H
+5 | Am Clas11H    | Am Clas11H
+6 |               | 
+7 |               | Am Clas11H
+SELF ⭕ | Counseling ❌
+
+Zizmor
+1 | Chemistry    | Chemistry
+2 |              | 
+3 | Chemistry    | Chemistry
+4 |              | 
+5 | AP Chemistry | AP Chemistry
+6 | AP Chemistry | AP Chemistry
+7 | AP Chemistry | AP Chemistry
+SELF ❌ | Counseling ❌
