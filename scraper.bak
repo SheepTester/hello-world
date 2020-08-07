@@ -1,0 +1,14 @@
+#lang racket
+
+; Setup a json-request using SSL and pointed at httpbin.org
+(define httpbin-org
+  (update-headers
+    (update-ssl
+      (update-host json-requester "httpbin.org") #t)
+   '("Authorization: 8675309")))
+ 
+; Query params for the request
+(define params '((foo . "12") (bar . "hello")))
+ 
+; Make a GET to https://httpbin.org/get?foo=12&bar=hello
+(define response (get httpbin-org "/get" #:params params))
