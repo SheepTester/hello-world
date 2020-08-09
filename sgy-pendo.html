@@ -14,7 +14,7 @@ function tellPendo (type, data = {}) {
     type,
     apiKey: "9d267eb0-c5a6-41fb-786d-8ec2c4e691cc",
     ...data
-  }))
+  }), '*')
 }
 window.addEventListener('message', e => {
   console.log(JSON.parse(e.data))
