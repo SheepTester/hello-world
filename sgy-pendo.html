@@ -1,0 +1,22 @@
+<script>
+// frame:parentloaded
+// frame:startpreview
+// frame:restartpreview
+// frame:stoppreview
+// frame:load
+// frame:unload
+// frame:guidelist
+// frame:guideshown
+// frame:guidehidden
+// frame:showguide
+function tellPendo (type, data = {}) {
+  window.top.postMessage(JSON.stringify({
+    type,
+    apiKey: "9d267eb0-c5a6-41fb-786d-8ec2c4e691cc",
+    ...data
+  }), '*')
+}
+window.addEventListener('message', e => {
+  console.log(JSON.parse(e.data))
+})
+</script>
