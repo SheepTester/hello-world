@@ -2,7 +2,7 @@ const util = require('util')
 const fs = require('fs/promises')
 
 // See ic-scrape-sections.js
-const sections = Object.values(require('../../test/sections.json'))
+const sections = Object.values(require('../../test/sections-3.json'))
 
 function analyseFrequency (key, value, freqTarget) {
   if (typeof value === 'object' && value !== null) {
@@ -150,7 +150,7 @@ function toTeacher ({
     firstName,
     middleName,
     lastName,
-    email,
+    email: email && email.replace('@pausd.org', ' etc'),
     workPhone,
     workPhoneUri
   }

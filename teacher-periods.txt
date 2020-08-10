@@ -1,11 +1,11 @@
 Ames
-1 | US Hist    | US Hist
-2 | Span/Span1 | Span/Span1
-3 | SpCiv/CulH | SpCiv/CulH
-4 | Spanish 3  | Spanish 3
-5 | Spanish 3  | Spanish 3
-6 | US Govt    | ContWld 11
-7 | US Hist    | US Hist
+1 | US Hist       | US Hist
+2 | Span/Span1    | Span/Span1
+3 | SpCiv/CulH    | SpCiv/CulH
+4 | Spanish 3     | Spanish 3
+5 | Spanish 3     | Spanish 3
+6 | Acad Planning | Acad Planning
+7 | US Hist       | US Hist
 SELF ⭕ | Counseling ❌
 
 Anderson
@@ -52,6 +52,16 @@ Aston
 7 | Focus on Success | Focus on Success
 SELF ❌ | Counseling ❌
 
+Axelrod
+1 |               | 
+2 | Alg2          | Alg2
+3 | Alg2          | Alg2
+4 | Alg 1A        | Alg 1A
+5 | Academic Math | Academic Math
+6 |               | 
+7 | Alg 1A        | Alg 1A
+SELF ❌ | Counseling ❌
+
 Barba-Medina
 1 | Spanish 2 | Spanish 2
 2 | Spanish 3 | Spanish 3
@@ -89,7 +99,7 @@ Bissegger
 4 | Acad Planning | Lit Style
 5 | Lit Style     | Lit Style
 6 |               | 
-7 |               | Lit Style
+7 | Lit Style     | Lit Style
 SELF ⭕ | Counseling ❌
 
 Blackburn
@@ -107,7 +117,7 @@ Boissevain
 2 |             | 
 3 | Art Spec 1  | Art Spec 1
 4 | Art Spec 1  | Art Spec 1
-5 |             | 
+5 | Pt/Dr 1     | Pt/Dr 1
 6 |             | 
 7 | Adv Photo H | Adv Photo H
 SELF ❌ | Counseling ❌
@@ -183,8 +193,8 @@ Cismas Florea
 2 | Geom H | Geom H
 3 | Geom H | Geom H
 4 |        | 
-5 |        | 
-6 |        | 
+5 | Geom A | Geom A
+6 | Geom A | Geom A
 7 |        | 
 SELF ❌ | Counseling ❌
 
@@ -248,14 +258,24 @@ Creighton
 7 | PE 10 | PE 10
 SELF ❌ | Counseling ❌
 
+Cuevas Ceja
+1 | Voc Trng | Voc Trng
+2 |          | 
+3 |          | 
+4 | Voc Trng | Voc Trng
+5 | Voc Trng | Voc Trng
+6 | Voc Trng | Voc Trng
+7 | Voc Trng | Voc Trng
+SELF ❌ | Counseling ❌
+
 Deggeller
-1 |            | 
-2 |            | 
-3 | Analysis H | Analysis H
-4 | Analysis H | Analysis H
-5 | Alg2/Trg A | Alg2/Trg A
-6 | Alg2/Trg A | Alg2/Trg A
-7 |            | 
+1 |                | 
+2 |                | 
+3 | AP Calculus BC | AP Calculus BC
+4 | AP Calculus BC | AP Calculus BC
+5 | Alg2/Trg A     | Alg2/Trg A
+6 | Alg2/Trg A     | Alg2/Trg A
+7 |                | 
 SELF ❌ | Counseling ❌
 
 Derrick-Navarro
@@ -354,6 +374,10 @@ Garger
 7 | AP Spanish Language   | AP Spanish Language
 SELF ⭕ | Counseling ❌
 
+Garibay Diaz
+No classes
+SELF ⭕ | Counseling ❌
+
 Gill
 No classes
 SELF ⭕ | Counseling ❌
@@ -361,8 +385,8 @@ SELF ⭕ | Counseling ❌
 Gleason
 1 |            | 
 2 |            | 
-3 | Pre Calc   | Pre Calc
-4 |            | 
+3 |            | 
+4 | Analysis H | Analysis H
 5 | Analysis H | Analysis H
 6 | Analysis H | Analysis H
 7 | Analysis H | Analysis H
@@ -400,6 +424,16 @@ Granlund-Moyer
 5 | Engn Tech           | Engn Tech
 6 | Engn Tech           | Engn Tech
 7 |                     | 
+SELF ⭕ | Counseling ❌
+
+Hall
+1 |            | 
+2 | Japanes 2  | Japanes 2
+3 |            | 
+4 | Japanes 1  | Japanes 1
+5 | Japanes 3  | Japanes 3
+6 | JapnLangAP | JapnLangAP
+7 | Japanes 2  | Japanes 2
 SELF ⭕ | Counseling ❌
 
 Hall
@@ -476,8 +510,8 @@ Holmes
 1 | Law 1     | Law 1
 2 |           | 
 3 | US Govt   | ContWld 11
-4 | US Govt   | ContWld 11
-5 |           | 
+4 |           | 
+5 | US Govt   | ContWld 11
 6 | CR/CivLaw | CR/CivLaw
 7 | Law 1     | Law 1
 SELF ⭕ | Counseling ❌
@@ -546,6 +580,16 @@ Johnson
 7 |               | 
 SELF ❌ | Counseling ❌
 
+Kaci
+1 |             | 
+2 |             | 
+3 |             | 
+4 | ExplExp-AAR | ExplExp-AAR
+5 |             | 
+6 |             | 
+7 |             | 
+SELF ❌ | Counseling ❌
+
 Kaneko
 1 | Funct Object Or Prog | Funct Object Or Prog
 2 | Funct Object Or Prog | Funct Object Or Prog
@@ -556,16 +600,6 @@ Kaneko
 7 | IntrAnl/Calc         | IntrAnl/Calc
 SELF ⭕ | Counseling ❌
 
-Karas
-1 | Pre Calc       | Pre Calc
-2 |                | 
-3 | AP Calculus BC | AP Calculus BC
-4 | AP Calculus BC | AP Calculus BC
-5 | Pre Calc       | Pre Calc
-6 |                | 
-7 | AP Calculus BC | AP Calculus BC
-SELF ❌ | Counseling ❌
-
 Kaufman
 1 | French 2 | French 2
 2 |          | 
@@ -575,6 +609,16 @@ Kaufman
 6 | French 1 | French 1
 7 | French 2 | French 2
 SELF ⭕ | Counseling ❌
+
+Kim
+1 |            | 
+2 |            | 
+3 |            | 
+4 |            | 
+5 | Cont Herit | Cont Herit
+6 | Cont Herit | Cont Herit
+7 | Cont Herit | Cont Herit
+SELF ❌ | Counseling ❌
 
 King
 1 | Art Spec 1  | Art Spec 1
@@ -718,7 +762,7 @@ SELF ⭕ | Counseling ❌
 Lo
 1 |               | 
 2 |               | 
-3 | Theatre 1     | Theatre 1
+3 | Theatre 1     | 
 4 |               | 
 5 |               | 
 6 |               | 
@@ -727,7 +771,13 @@ Lo
 SELF ❌ | Counseling ❌
 
 Lopez
-No classes
+1 |               | 
+2 | Geom          | Geom
+3 |               | 
+4 | Geom          | Geom
+5 | Acad Planning | Acad Planning
+6 | Geom          | Geom
+7 | Acad Planning | Acad Planning
 SELF ⭕ | Counseling ❌
 
 Lorey
@@ -744,7 +794,7 @@ Lyons
 1 | Econ AP | Econ AP
 2 | Econ AP | Econ AP
 3 |         | 
-4 |         | 
+4 | Econ AP | Econ AP
 5 | Econ AP | Econ AP
 6 | US Hist | US Hist
 7 |         | 
@@ -907,7 +957,7 @@ Owen
 3 | Focus on Success          | Focus on Success
 4 | Focus on Success          | Focus on Success
 5 |                           | 
-6 |                           | Cont Herit
+6 | Cont Herit                | Cont Herit
 7 |                           | 
 SELF ⭕ | Counseling ❌
 
@@ -935,7 +985,7 @@ Patrick
 1 |         | 
 2 | Econ 11 | Econ 11
 3 | Econ 11 | Econ 11
-4 |         | 
+4 | US Govt | ContWld 11
 5 | Econ 11 | Econ 11
 6 |         | 
 7 |         | 
@@ -998,7 +1048,7 @@ Redfield
 4 |                | 
 5 | AP Calculus BC | AP Calculus BC
 6 | AP Calculus BC | AP Calculus BC
-7 |                | 
+7 | AP Calculus BC | AP Calculus BC
 SELF ❌ | Counseling ❌
 
 Renazco
@@ -1007,7 +1057,7 @@ Renazco
 3 | Alg2                | Alg2
 4 | AP Comp. Sci. Princ | AP Comp. Sci. Princ
 5 |                     | 
-6 |                     | 
+6 | Alg2                | Alg2
 7 |                     | 
 SELF ⭕ | Counseling ❌
 
@@ -1030,13 +1080,13 @@ Sabbag
 SELF ⭕ | Counseling ❌
 
 Saxena
-1 | Geom A | Geom A
-2 |        | 
-3 |        | 
-4 |        | 
-5 | Geom A | Geom A
-6 | Geom A | Geom A
-7 |        | 
+1 | Pre Calc | Pre Calc
+2 |          | 
+3 | Pre Calc | Pre Calc
+4 |          | 
+5 |          | 
+6 |          | 
+7 |          | 
 SELF ⭕ | Counseling ❌
 
 Schroeppel
@@ -1052,7 +1102,7 @@ SELF ⭕ | Counseling ❌
 Shelby
 1 | Theatre 2 | Theatre 2
 2 | Theatre 1 | Theatre 1
-3 | Theatre 1 | Theatre 1
+3 |           | 
 4 |           | 
 5 | Theatre 3 | Theatre 3
 6 |           | 
@@ -1066,7 +1116,7 @@ Sims
 4 | Cont Herit    | Acad Planning
 5 | Cont Herit    | Cont Herit
 6 | Acad Planning | Acad Planning
-7 | Cont Herit    | 
+7 | Cont Herit    | Cont Herit
 SELF ⭕ | Counseling ❌
 
 Stone
@@ -1104,7 +1154,7 @@ Tabuchi
 2 | Escape Lit | Film Lit
 3 | AmerLit    | AmerLit
 4 | Escape Lit | Film Lit
-5 | Econ 11    | 
+5 | Econ 11    | Econ 11
 6 | AmerLit    | AmerLit
 7 |            | 
 SELF ⭕ | Counseling ❌
@@ -1112,7 +1162,7 @@ SELF ⭕ | Counseling ❌
 Tantod
 1 | Analysis H | Analysis H
 2 | Analysis H | Analysis H
-3 |            | 
+3 | Analysis H | Analysis H
 4 |            | 
 5 |            | 
 6 |            | 
@@ -1139,6 +1189,16 @@ Tuomy
 7 | Wld Hist | Wld Hist
 SELF ❌ | Counseling ❌
 
+Van Zandt
+1 |         | 
+2 | US Govt | ContWld 11
+3 |         | 
+4 |         | 
+5 | US Govt | ContWld 11
+6 |         | 
+7 | US Govt | ContWld 11
+SELF ❌ | Counseling ❌
+
 Vrudny
 1 | Chinese 1   | Chinese 1
 2 | ChLangCulAP | ChLangCulAP
@@ -1150,12 +1210,12 @@ Vrudny
 SELF ❌ | Counseling ❌
 
 Wang
-1 |        | 
+1 | Geom A | Geom A
 2 |        | 
 3 | Geom A | Geom A
 4 | Geom A | Geom A
 5 | Alg2   | Alg2
-6 | Alg2   | Alg2
+6 |        | 
 7 | Geom A | Geom A
 SELF ⭕ | Counseling ❌
 
@@ -1200,6 +1260,16 @@ Woznicki
 7 | Biology        | Biology
 SELF ❌ | Counseling ❌
 
+Yonkers
+1 | US Hist | US Hist
+2 | US Govt | ContWld 11
+3 | US Hist | US Hist
+4 |         | 
+5 | US Govt | ContWld 11
+6 |         | 
+7 | US Govt | ContWld 11
+SELF ❌ | Counseling ❌
+
 Yun
 1 | Geom H         | Geom H
 2 |                | 
@@ -1217,7 +1287,7 @@ Zavack
 4 | Am Clas11H    | Am Clas11H
 5 | Am Clas11H    | Am Clas11H
 6 |               | 
-7 |               | Am Clas11H
+7 | Am Clas11H    | Am Clas11H
 SELF ⭕ | Counseling ❌
 
 Zizmor
