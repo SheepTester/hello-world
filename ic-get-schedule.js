@@ -40,12 +40,12 @@ async function main () {
       +a.semester[1] - +b.semester[1])
     .map(({ period, semester, course, teacher }) => `${semester} ${period}: ${teacher} / ${course}`)
     .join('\n') ||
-      'You don\'t seem to be in any classes for some reason?? Weird.'
+      'You don\'t seem to be in any classes for some reason?? Maybe your school didn\'t generate a schedule for you or something.'
 }
 
 main()
   .then(output => {
-    // output += '\n\nIf you\'re a Gunn student, join the server: https://discord.gg/TuCwwQ2'
+    // output += '\n\nIf you\'re a Gunn student, join the server: https://discord.gg/Cx5DQSu'
     console.log(output)
     alert(output)
   })
