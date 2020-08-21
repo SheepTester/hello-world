@@ -1,6 +1,6 @@
 const fs = require('fs/promises')
 
-const { sections } = require('./sections-simplified.json')
+const [{ teachers: teacherData }, ...sections] = require('./sections-simplified.json')
 
 const periods = [...'12345678', 'SELF', 'Meetings']
 
@@ -11,28 +11,31 @@ function createNewSchedule () {
 const teachers = {}
 
 function noteTeacher (teacher, period, course, semester) {
-  if (!teachers[teacher.email]) {
-    teachers[teacher.email] = {
+  // Some teachers don't have emails
+  const teacherId = teacher.email || teacher.lastName
+  if (!teachers[teacherId]) {
+    teachers[teacherId] = {
       ...teacher,
       semester1: createNewSchedule(),
       semester2: createNewSchedule()
     }
   }
   if (semester & 0b01) {
-    teachers[teacher.email].semester1[period] = course
+    teachers[teacherId].semester1[period] = course
   }
   if (semester & 0b10) {
-    teachers[teacher.email].semester2[period] = course
+    teachers[teacherId].semester2[period] = course
   }
 }
 
 for (const {
-  teacher,
-  coteacher,
-  period: { name: period },
+  teachers: teacherDisplay,
+  periods: [periodStr],
   name: course,
   semester
 } of sections) {
+  const [period] = periodStr.split(' / ')
+  const { teacher, coteacher } = teacherData[teacherDisplay] || {}
   const sem = (semester.includes('S1') ? 0b01 : 0) | (semester.includes('S2') ? 0b10 : 0)
   if (teacher) noteTeacher(teacher, period, course, sem)
   if (coteacher) noteTeacher(coteacher, period, course, sem)

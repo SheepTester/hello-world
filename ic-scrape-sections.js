@@ -32,6 +32,7 @@ async function getSection (id) {
       transcript
     } = {},
     periods,
+    room: { name } = {},
     teachers,
     terms
   } = await res.json()
@@ -80,6 +81,7 @@ async function getSection (id) {
       periodSchedule: { name: periodScheduleName },
       startTime
     })),
+    room: name,
     teachers: teachers.map(({
       courseAdvisory,
       email,

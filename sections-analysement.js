@@ -2,7 +2,7 @@ const util = require('util')
 const fs = require('fs/promises')
 
 // See ic-scrape-sections.js
-const sections = Object.values(require('../../test/sections-3.json'))
+const sections = Object.values(require('../../test/sections-4.json'))
 
 function analyseFrequency (key, value, freqTarget) {
   if (typeof value === 'object' && value !== null) {
@@ -136,6 +136,19 @@ console.log(
       )
     )
 )
+console.log(
+  '> period.name is different for\n' +
+    sampling(
+      sections.filter(
+        section => {
+          for (const { name } of section.periods.slice(1)) {
+            if (name !== section.periods[0].name) return true
+          }
+          return false
+        }
+      )
+    )
+)
 
 const outPath = './sections-simplified.json'
 function toTeacher ({
@@ -151,11 +164,11 @@ function toTeacher ({
     middleName,
     lastName,
     email: email && email.replace('@pausd.org', ' etc'),
-    workPhone,
-    workPhoneUri
+    workPhone
   }
 }
 const descriptions = {}
+const teacherMap = {}
 const simplified = sections.map(({
   id,
   // courseAttendance,
@@ -169,17 +182,7 @@ const simplified = sections.map(({
     honorsCode,
     transcript
   },
-  periods: [
-    {
-      endTime,
-      // isNonInstructional,
-      lunchMinutes,
-      name,
-      passingMinutes,
-      periodMinutes,
-      startTime
-    }
-  ],
+  periods,
   teachers,
   terms: [
     { termName: termName1 },
@@ -188,9 +191,20 @@ const simplified = sections.map(({
 }) => {
   const [primary, secondary] = [...teachers]
     .sort((a, b) => b.isPrimaryTeacher - a.isPrimaryTeacher)
+  if (primary || secondary) {
+    const data = {
+      teacher: primary ? toTeacher(primary) : undefined,
+      coteacher: secondary ? toTeacher(secondary) : undefined,
+    }
+    if (teachers[teacherDisplay] && JSON.stringify(teachers[teacherDisplay]) !== JSON.stringify(data)) {
+      console.warn(`Multiple teacher data for ${courseNumber} (${teacherDisplay}):`, teachers[teacherDisplay], data)
+    } else {
+      teacherMap[teacherDisplay] = data
+    }
+  }
   if (descriptions[courseNumber]) {
     if (descriptions[courseNumber] !== description) {
-      console.log(`Multiple descriptions for ${courseNumber}:\n> ${descriptions[courseNumber]}\n> ${description}\n`);
+      console.log(`Multiple descriptions for ${courseNumber}:\n> ${descriptions[courseNumber]}\n> ${description}\n`)
     }
   } else {
     descriptions[courseNumber] = description
@@ -199,22 +213,35 @@ const simplified = sections.map(({
     sectionID: id,
     name: courseName,
     courseNumber,
-    honorsCode,
-    transcript,
-    mysteriousNumber: number,
-    teacherDisplay,
-    teacher: primary ? toTeacher(primary) : null,
-    coteacher: secondary ? toTeacher(secondary) : null,
-    period: { name, startTime, endTime },
-    semester: termName1 + termName2
+    teachers: teacherDisplay,
+    periods: periods.map(({
+      endTime,
+      // isNonInstructional,
+      // isStandardDay,
+      lunchMinutes,
+      name,
+      passingMinutes,
+      periodMinutes,
+      periodSchedule: { name: periodSchedule },
+      startTime
+    }) => `${name} / ${startTime}–${endTime} / ${periodSchedule}`),
+    semester: termName1 + termName2,
+    other: [
+      'HC: ' + (honorsCode || '-'),
+      'T? ' + (transcript ? 'Y' : 'N'),
+      'N: ' + number
+    ].join(' | ')
   }
 })
 fs.writeFile(
   outPath,
-  JSON.stringify({
-    descriptions,
-    sections: simplified
-  }, null, '\t') + '\n'
+  JSON.stringify([
+    {
+      descriptions,
+      teachers: teacherMap
+    },
+    ...simplified
+  ], null, '\t') + '\n'
 ).then(() => {
   console.log(`Wrote to ${outPath}`)
 })
