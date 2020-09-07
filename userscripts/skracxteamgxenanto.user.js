@@ -16,7 +16,7 @@
   await import('https://unpkg.com/js-md5@0.7.3/build/md5.min.js')
   const { md5, jQuery: $ } = globalThis
 
-  const TAMAÑO_MÁXIMO = 10 * 1000 * 1000 // 10 mb
+  const TAMAÑO_MÁXIMO = 10 * 1000 * 1000 - 1 // menos de 10 mb
   const SERVIDOR = 'https://assets.scratch.mit.edu/'
 
   async function subir (archivo, progreso = null) {
