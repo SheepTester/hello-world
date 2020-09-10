@@ -1,0 +1,22 @@
+<head>
+<style>
+body {
+  background-color: #eee;
+div {
+  background-color: white;
+  margin: 20px;
+  padding: 20px;
+  width: 10px;
+  height: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+</style>
+</head>
+<body>
+<p>Add <code>?</code> followed by the number of "pages" (elements) you want to generate. can you get to 10 million?</p>
+<script>
+if (window.location.search) {
+  document.body.innerHTML = '<div></div>'.repeat(+window.location.search.slice(1))
+}
+</script>
+</body>
