@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <title>alexander graham bell</title>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style type="text/css">
+  body {
+    background-color: darkblue;
+    color: white;
+  }
+  </style>
+</head>
+
+<body>
+  <p>click to play BELL</p>
+  <p>(thanks to matthew for the tone and timothy for the timing)</p>
+  <script>
+  async function main () {
+    await new Promise(resolve => document.addEventListener('click', resolve, { once: true }))
+    document.body.textContent = 'the bell does not dismiss you!'
+    
+    // https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode#Examples
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+
+    // create Oscillator node
+    const oscillator = audioCtx.createOscillator()
+    
+    oscillator.type = 'square'
+    // https://en.wikipedia.org/wiki/E_(musical_note)#Designation_by_octave
+    oscillator.frequency.setValueAtTime(659.255, audioCtx.currentTime) // value in hertz
+    oscillator.connect(audioCtx.destination)
+    oscillator.start()
+    await new Promise(resolve => setTimeout(resolve, 5000))
+    oscillator.stop()
+  }
+  main()
+  </script>
+</body>
+</html>
