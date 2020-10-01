@@ -2,7 +2,7 @@ const util = require('util')
 const fs = require('fs/promises')
 
 // See ic-scrape-sections.js
-const sections = Object.values(require('../../test/sections-4.json'))
+const sections = Object.values(require('../../test/sections-5.json'))
 
 function analyseFrequency (key, value, freqTarget) {
   if (typeof value === 'object' && value !== null) {
@@ -103,12 +103,12 @@ console.log(
 console.log(
   // Counseling
   '> isNonInstructional is true for\n' +
-    sampling(sections.filter(section => section.periods[0].isNonInstructional))
+    sampling(sections.filter(section => section.periods[0]?.isNonInstructional))
 )
 console.log(
   // A variety of classes, presumably co-taught
   '> lunchMinutes is 30 for\n' +
-    sampling(sections.filter(section => section.periods[0].lunchMinutes === 30))
+    sampling(sections.filter(section => section.periods[0]?.lunchMinutes === 30))
 )
 console.log(
   // In reality, most of the above classes are actually taught by a single
@@ -116,7 +116,7 @@ console.log(
   '> lunchMinutes is 30 and teachers.length is 1 for\n' +
     sampling(
       sections.filter(
-        section => section.periods[0].lunchMinutes === 30 &&
+        section => section.periods[0]?.lunchMinutes === 30 &&
           section.teachers.length === 1
       )
     )
@@ -149,6 +149,14 @@ console.log(
       )
     )
 )
+console.log(
+  '> periods.length is 0 for\n' +
+    sampling(
+      sections.filter(
+        section => section.periods.length === 0
+      )
+    )
+)
 
 const outPath = './sections-simplified.json'
 function toTeacher ({
@@ -169,6 +177,7 @@ function toTeacher ({
 }
 const descriptions = {}
 const teacherMap = {}
+const periodTimes = {}
 const simplified = sections.map(({
   id,
   // courseAttendance,
@@ -185,7 +194,7 @@ const simplified = sections.map(({
   periods,
   teachers,
   terms: [
-    { termName: termName1 },
+    { termName: termName1 } = {},
     { termName: termName2 = '' } = {}
   ]
 }) => {
@@ -203,28 +212,43 @@ const simplified = sections.map(({
     }
   }
   if (descriptions[courseNumber]) {
-    if (descriptions[courseNumber] !== description) {
+    if (description && descriptions[courseNumber] !== description) {
       console.log(`Multiple descriptions for ${courseNumber}:\n> ${descriptions[courseNumber]}\n> ${description}\n`)
     }
   } else {
     descriptions[courseNumber] = description
+  }
+  const periodNames = new Set()
+  for (const {
+    endTime,
+    // isNonInstructional,
+    // isStandardDay,
+    lunchMinutes,
+    name,
+    passingMinutes,
+    periodMinutes,
+    periodSchedule: { name: periodSchedule },
+    startTime
+  } of periods) {
+    const obj = { startTime, endTime, periodMinutes, passingMinutes, lunchMinutes }
+    if (!periodTimes[name]) {
+      periodTimes[name] = {}
+    }
+    if (periodTimes[name][periodSchedule]) {
+      if (JSON.stringify(periodTimes[name][periodSchedule]) !== JSON.stringify(obj)) {
+        console.warn(`Period info is different from ${courseNumber} (old, new):`, periodTimes[name][periodSchedule], obj)
+      }
+    } else {
+      periodTimes[name][periodSchedule] = obj
+    }
+    periodNames.add(name)
   }
   return {
     sectionID: id,
     name: courseName,
     courseNumber,
     teachers: teacherDisplay,
-    periods: periods.map(({
-      endTime,
-      // isNonInstructional,
-      // isStandardDay,
-      lunchMinutes,
-      name,
-      passingMinutes,
-      periodMinutes,
-      periodSchedule: { name: periodSchedule },
-      startTime
-    }) => `${name} / ${startTime}–${endTime} / ${periodSchedule}`),
+    periods: [...periodNames].join(' / '),
     semester: termName1 + termName2,
     other: [
       'HC: ' + (honorsCode || '-'),
@@ -238,7 +262,8 @@ fs.writeFile(
   JSON.stringify([
     {
       descriptions,
-      teachers: teacherMap
+      teachers: teacherMap,
+      periods: periodTimes
     },
     ...simplified
   ], null, '\t') + '\n'

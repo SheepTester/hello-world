@@ -5,7 +5,7 @@ const [{ teachers: teacherData }, ...sections] = require('./sections-simplified.
 const periods = [...'12345678', 'SELF', 'Meetings']
 
 function createNewSchedule () {
-  return Object.fromEntries(periods.map(p => [p, null]))
+  return Object.fromEntries(periods.map(p => [p, []]))
 }
 
 const teachers = {}
@@ -21,16 +21,16 @@ function noteTeacher (teacher, period, course, semester) {
     }
   }
   if (semester & 0b01) {
-    teachers[teacherId].semester1[period] = course
+    teachers[teacherId].semester1[period].push(course)
   }
   if (semester & 0b10) {
-    teachers[teacherId].semester2[period] = course
+    teachers[teacherId].semester2[period].push(course)
   }
 }
 
 for (const {
   teachers: teacherDisplay,
-  periods: [periodStr],
+  periods: periodStr,
   name: course,
   semester
 } of sections) {
@@ -39,6 +39,15 @@ for (const {
   const sem = (semester.includes('S1') ? 0b01 : 0) | (semester.includes('S2') ? 0b10 : 0)
   if (teacher) noteTeacher(teacher, period, course, sem)
   if (coteacher) noteTeacher(coteacher, period, course, sem)
+}
+
+for (const teacher of Object.values(teachers)) {
+  for (const sem of ['semester1', 'semester2']) {
+    const semester = teacher[sem]
+    for (const period of Object.keys(semester)) {
+      semester[period] = semester[period].join(', ') || null
+    }
+  }
 }
 
 fs.writeFile(

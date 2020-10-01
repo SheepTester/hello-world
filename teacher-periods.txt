@@ -96,30 +96,30 @@ Bissegger
 1 |               | 
 2 | Acad Planning | Acad Planning
 3 | Lit Style     | Lit Style
-4 | Acad Planning | Acad Planning
+4 | Acad Planning | Lit Style, Acad Planning
 5 | Lit Style     | Lit Style
 6 |               | 
 7 | Lit Style     | Lit Style
 SELF ⭕ | Counseling ❌
 
 Blackburn
-1 | Beginning Journalism | AmerLit
-2 | MLM GraphPub         | MLM GraphPub
-3 | AmerLit              | AmerLit
-4 |                      | 
-5 |                      | 
-6 | AmerLit              | AmerLit
-7 |                      | 
+1 | Beginning Journalism                   | AmerLit
+2 | Adv Journ, MLM GraphPubH, MLM GraphPub | Adv Journ, MLM GraphPubH, MLM GraphPub
+3 | AmerLit                                | AmerLit
+4 |                                        | 
+5 |                                        | 
+6 | AmerLit                                | AmerLit
+7 |                                        | 
 SELF ⭕ | Counseling ❌
 
 Boissevain
-1 |             | 
-2 |             | 
-3 | Art Spec 1  | Art Spec 1
-4 | Art Spec 1  | Art Spec 1
-5 | Pt/Dr 1     | Pt/Dr 1
-6 |             | 
-7 | Adv Photo H | Adv Photo H
+1 |                                     | 
+2 |                                     | 
+3 | Art Spec 1                          | Art Spec 1
+4 | Art Spec 1                          | Art Spec 1
+5 | Pt/Dr 1                             | Pt/Dr 1
+6 |                                     | 
+7 | AP Stud Art, Adv Photo, Adv Photo H | AP Stud Art, Adv Photo, Adv Photo H
 SELF ❌ | Counseling ❌
 
 Brown
@@ -229,23 +229,23 @@ Congress
 SELF ⭕ | Counseling ❌
 
 Conklin
-1 | Voc Trng             | Voc Trng
-2 | Voc Trng             | Voc Trng
+1 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
+2 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
 3 |                      | 
 4 | Acad Enhancement SAI | Acad Enhancement SAI
 5 |                      | 
-6 | Voc Trng             | Voc Trng
-7 | Voc Trng             | Voc Trng
+6 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
+7 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
 SELF ❌ | Counseling ❌
 
 Corpuz
-1 | BroadJourn           | BroadJourn
-2 | AdvDigiFilm          | AdvDigiFilm
-3 | Adv Video H          | Adv Video H
-4 |                      | 
-5 |                      | 
-6 |                      | 
-7 | Adv Audio/Music Prod | Adv Audio/Music Prod
+1 | BroadJourn                            | BroadJourn
+2 | Video Prod, AdvDigiFilm               | Video Prod, AdvDigiFilm
+3 | Video Prod, Adv Video H               | Video Prod, Adv Video H
+4 |                                       | 
+5 |                                       | 
+6 |                                       | 
+7 | Audio/MusicProd, Adv Audio/Music Prod | Audio/MusicProd, Adv Audio/Music Prod
 SELF ❌ | Counseling ❌
 
 Creighton
@@ -259,13 +259,13 @@ Creighton
 SELF ❌ | Counseling ❌
 
 Cuevas Ceja
-1 | Voc Trng | Voc Trng
-2 |          | 
-3 |          | 
-4 | Voc Trng | Voc Trng
-5 | Voc Trng | Voc Trng
-6 | Voc Trng | Voc Trng
-7 | Voc Trng | Voc Trng
+1 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
+2 |                      | 
+3 |                      | 
+4 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
+5 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
+6 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
+7 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
 SELF ❌ | Counseling ❌
 
 Deggeller
@@ -330,14 +330,14 @@ Durquet
 SELF ❌ | Counseling ❌
 
 Ellington
-1 |               | 
-2 |               | 
-3 |               | 
-4 |               | 
-5 |               | 
-6 |               | 
-7 |               | 
-8 | Stage Tech 2D | Stage Tech 2D
+1 |                                         | 
+2 |                                         | 
+3 |                                         | 
+4 |                                         | 
+5 |                                         | 
+6 |                                         | 
+7 |                                         | 
+8 | Stage Tech, Stage Tech 2, Stage Tech 2D | Stage Tech, Stage Tech 2, Stage Tech 2D
 SELF ❌ | Counseling ❌
 
 Fidani
@@ -396,7 +396,7 @@ Gleason
 1 |                      | 
 2 |                      | 
 3 | GraphDes             | GraphDes
-4 | Adv Gr Des           | Adv Gr Des
+4 | GraphDes, Adv Gr Des | GraphDes, Adv Gr Des
 5 | Gprd/Yrbk            | Gprd/Yrbk
 6 | Digital Art Spectrum | Digital Art Spectrum
 7 | Digital Art Spectrum | Digital Art Spectrum
@@ -417,23 +417,23 @@ No classes
 SELF ⭕ | Counseling ❌
 
 Granlund-Moyer
-1 | Prnc Of Engr H PLTW | Prnc Of Engr H PLTW
-2 | Int Engr Des PLTW H | Int Engr Des PLTW H
-3 |                     | 
-4 |                     | 
-5 | Engn Tech           | Engn Tech
-6 | Engn Tech           | Engn Tech
-7 |                     | 
+1 | Prnc Of Engr PLTW, Prnc Of Engr H PLTW | Prnc Of Engr PLTW, Prnc Of Engr H PLTW
+2 | Int Engr Des PLTW, Int Engr Des PLTW H | Int Engr Des PLTW, Int Engr Des PLTW H
+3 |                                        | 
+4 |                                        | 
+5 | Engn Tech                              | Engn Tech
+6 | Engn Tech                              | Engn Tech
+7 |                                        | 
 SELF ⭕ | Counseling ❌
 
 Hall
-1 |            | 
-2 | Japanes 2  | Japanes 2
-3 |            | 
-4 | Japanes 1  | Japanes 1
-5 | Japanes 3  | Japanes 3
-6 | JapnLangAP | JapnLangAP
-7 | Japanes 2  | Japanes 2
+1 |                        | 
+2 | Japanes 2              | Japanes 2
+3 |                        | 
+4 | Japanes 1              | Japanes 1
+5 | Japanes 3              | Japanes 3
+6 | Japanes 4H, JapnLangAP | Japanes 4H, JapnLangAP
+7 | Japanes 2              | Japanes 2
 SELF ⭕ | Counseling ❌
 
 Hall
@@ -467,13 +467,13 @@ Hawes
 SELF ❌ | Counseling ❌
 
 Helbing
-1 | EL 28    | EL 28
-2 | EL 28    | EL 28
-3 |          | 
-4 |          | 
-5 | Eng LL 2 | Eng LL 2
-6 | Eng LL 2 | Eng LL 2
-7 |          | 
+1 | EL 28              | EL 28
+2 | EL 28              | EL 28
+3 |                    | 
+4 |                    | 
+5 | Eng LL 1, Eng LL 2 | Eng LL 1, Eng LL 2
+6 | Eng LL 1, Eng LL 2 | Eng LL 1, Eng LL 2
+7 |                    | 
 SELF ⭕ | Counseling ❌
 
 Hernandez
@@ -591,14 +591,14 @@ Johnson
 SELF ❌ | Counseling ❌
 
 Kaci
-1 |             | 
-2 |             | 
-3 |             | 
-4 | ExplExp-AAR | ExplExp-AAR
-5 |             | 
-6 |             | 
-7 |             | 
-8 | Gen Weep11  | Gen Weep11
+1 |                        | 
+2 |                        | 
+3 |                        | 
+4 | ExplExp-AAR            | ExplExp-AAR
+5 |                        | 
+6 |                        | 
+7 |                        | 
+8 | Expl Exp12, Gen Weep11 | Gen Weep11
 SELF ❌ | Counseling ❌
 
 Kaneko
@@ -632,13 +632,13 @@ Kim
 SELF ❌ | Counseling ❌
 
 King
-1 | Art Spec 1  | Art Spec 1
-2 | Art Spec 1  | Art Spec 1
-3 | ArtStu3D AP | ArtStu3D AP
-4 |             | 
-5 | Art Spec 1  | Art Spec 1
-6 |             | 
-7 | Ceramics 1  | Ceramics 1
+1 | Art Spec 1                                            | Art Spec 1
+2 | Art Spec 1                                            | Art Spec 1
+3 | Advanced Ceramics 1, Advanced Ceramics 2, ArtStu3D AP | Advanced Ceramics 1, Advanced Ceramics 2, ArtStu3D AP
+4 |                                                       | 
+5 | Art Spec 1                                            | Art Spec 1
+6 |                                                       | 
+7 | Ceramics 1                                            | Ceramics 1
 SELF ❌ | Counseling ❌
 
 Kinyanjui
@@ -686,6 +686,16 @@ Ledgerwood
 SELF ⭕ | Counseling ❌
 
 Lee
+1 |                      | 
+2 |                      | 
+3 | Therapeutic Elective | Therapeutic Elective
+4 |                      | 
+5 |                      | 
+6 |                      | 
+7 |                      | 
+SELF ⭕ | Counseling ❌
+
+Lee
 1 | AP Biology | AP Biology
 2 | AP Biology | AP Biology
 3 |            | 
@@ -700,13 +710,13 @@ No classes
 SELF ❌ | Counseling ⭕
 
 Lewis
-1 | Orchstr    | Orchstr
-2 | Band       | Band
-3 |            | 
-4 | Orchstr    | Orchstr
-5 | Orchstr    | Orchstr
-6 | Symph Band | Symph Band
-7 |            | 
+1 | SchServ 11, Orchstr, Prep, Prep 11 | Orchstr, Prep, Prep 12
+2 | SchServ 11, Band                   | Band
+3 | SchServ 11                         | 
+4 | SchServ 11, Prep, Prep 11          | Prep, Prep 12
+5 | SchServ 11, Orchstr, Prep, Prep 11 | Orchstr, Prep, Prep 12
+6 | SchServ 11, Symph Band             | Symph Band
+7 | SchServ 11, Prep, Prep 11          | Prep, Prep 12
 SELF ❌ | Counseling ❌
 
 Liberatore
@@ -761,14 +771,14 @@ Lizundia
 SELF ⭕ | Counseling ❌
 
 Lo
-1 | Theatre 2     | Theatre 2
-2 | Theatre 1     | Theatre 1
-3 | Theatre 1     | 
-4 |               | 
-5 | Theatre 3     | Theatre 3
-6 |               | 
-7 |               | 
-8 | Stage Tech 2D | Stage Tech 2D
+1 | Theatre 2                               | Theatre 2
+2 | Theatre 1                               | Theatre 1
+3 | Theatre 1                               | 
+4 |                                         | 
+5 | Theatre 4, Theatre 3                    | Theatre 4, Theatre 3
+6 |                                         | 
+7 |                                         | 
+8 | Stage Tech, Stage Tech 2, Stage Tech 2D | Stage Tech, Stage Tech 2, Stg Tech11, Stage Tech 2D
 SELF ⭕ | Counseling ❌
 
 Lopez
@@ -877,13 +887,13 @@ Merchant
 SELF ⭕ | Counseling ❌
 
 Messinger
-1 | Pt/Dr 1                 | Pt/Dr 1
-2 |                         | 
-3 | Adv.Draw/Painting H     | Adv.Draw/Painting H
-4 | AP Studio Art - Drawing | AP Studio Art - Drawing
-5 |                         | 
-6 |                         | 
-7 |                         | 
+1 | Pt/Dr 1                                                    | Pt/Dr 1
+2 |                                                            | 
+3 | Adv.Draw/Painting H                                        | Adv.Draw/Painting H
+4 | AP Stud Art, Adv.Draw/Painting II, AP Studio Art - Drawing | AP Stud Art, Adv.Draw/Painting II, AP Studio Art - Drawing
+5 |                                                            | 
+6 |                                                            | 
+7 |                                                            | 
 SELF ❌ | Counseling ❌
 
 Metzler
@@ -961,13 +971,13 @@ No classes
 SELF ⭕ | Counseling ❌
 
 Ou
-1 | Orchstr | Orchstr
-2 |         | 
-3 |         | 
-4 | Orchstr | Orchstr
-5 | Orchstr | Orchstr
-6 |         | 
-7 |         | 
+1 | SchServ 11, Orchstr, Prep, Prep 11 | Orchstr, Prep, Prep 12
+2 | SchServ 11                         | 
+3 | SchServ 11                         | 
+4 | SchServ 11, Prep, Prep 11          | Prep, Prep 12
+5 | SchServ 11, Orchstr, Prep, Prep 11 | Orchstr, Prep, Prep 12
+6 | SchServ 11                         | 
+7 | SchServ 11, Prep, Prep 11          | Prep, Prep 12
 SELF ❌ | Counseling ❌
 
 Owen
@@ -1119,24 +1129,24 @@ Schroeppel
 SELF ⭕ | Counseling ❌
 
 Shelby
-1 | Theatre 2 | Theatre 2
-2 | Theatre 1 | Theatre 1
-3 | Theatre 1 | 
-4 |           | 
-5 | Theatre 3 | Theatre 3
-6 |           | 
-7 |           | 
-8 |           | Stg Tech11
+1 | Theatre 2            | Theatre 2
+2 | Theatre 1            | Theatre 1
+3 | Theatre 1            | 
+4 |                      | 
+5 | Theatre 4, Theatre 3 | Theatre 4, Theatre 3
+6 |                      | 
+7 |                      | 
+8 |                      | Stg Tech11
 SELF ⭕ | Counseling ❌
 
 Shinh
-1 |               | 
-2 |               | 
-3 |               | 
-4 |               | 
-5 |               | 
-6 | Acad Planning | Acad Planning
-7 |               | 
+1 | Funct Acad, Voc Trng                                         | Funct Acad, Voc Trng
+2 | Funct Acad, Voc Trng                                         | Funct Acad, Voc Trng
+3 |                                                              | 
+4 | Acad Enhancement SAI                                         | Acad Enhancement SAI
+5 |                                                              | 
+6 | Academic Communications, Funct Acad, Voc Trng, Acad Planning | Academic Communications, Funct Acad, Voc Trng, Acad Planning
+7 | Academic Communications, Funct Acad, Voc Trng                | Academic Communications, Funct Acad, Voc Trng
 SELF ⭕ | Counseling ❌
 
 Sims
@@ -1230,13 +1240,13 @@ Van Zandt
 SELF ❌ | Counseling ❌
 
 Vrudny
-1 | Chinese 1   | Chinese 1
-2 | ChLangCulAP | ChLangCulAP
-3 | Chinese 3   | Chinese 3
-4 | Chinese 2   | Chinese 2
-5 | Chinese 3   | Chinese 3
-6 |             | 
-7 |             | 
+1 | Chinese 1                        | Chinese 1
+2 | ChineseCiv&CultureH, ChLangCulAP | ChineseCiv&CultureH, ChLangCulAP
+3 | Chinese 3                        | Chinese 3
+4 | Chinese 2                        | Chinese 2
+5 | Chinese 3                        | Chinese 3
+6 |                                  | 
+7 |                                  | 
 SELF ❌ | Counseling ❌
 
 Wang
@@ -1321,13 +1331,13 @@ Yun
 SELF ⭕ | Counseling ❌
 
 Zavack
-1 | Cont Herit    | Literary Style
-2 | Am Clas11H SJ | Literary Style
-3 |               | 
-4 | Am Clas11H    | Am Clas11H
-5 | Am Clas11H    | Am Clas11H
-6 |               | 
-7 | Am Clas11H    | Am Clas11H
+1 | Cont Herit                | Literary Style
+2 | AmerLit 11, Am Clas11H SJ | Literary Style
+3 |                           | 
+4 | Am Clas11H                | Am Clas11H
+5 | Am Clas11H                | Am Clas11H
+6 |                           | 
+7 | Am Clas11H                | Am Clas11H
 SELF ⭕ | Counseling ❌
 
 Zizmor
