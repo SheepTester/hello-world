@@ -1,21 +1,21 @@
 Ames
-1 |      | 
-2 | Yoga | Yoga
-3 | Yoga | Yoga
-4 | PE 9 | PE 9
-5 | Yoga | Yoga
-6 |      | 
-7 | PE 9 | PE 9
+1 |                | 
+2 | Yoga (V-17)    | Yoga (V-17)
+3 | Yoga (V-17)    | Yoga (V-17)
+4 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
+5 | Yoga (V-17)    | Yoga (V-17)
+6 |                | 
+7 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
 SELF ⭕ | Counseling ❌
 
 Anderson
-1 | PE 9 | PE 9
-2 | PE 9 | PE 9
-3 |      | 
-4 | PE 9 | PE 9
-5 | PE 9 | PE 9
-6 | PE 9 | PE 9
-7 | PE 9 | PE 9
+1 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
+2 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
+3 |                | 
+4 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
+5 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
+6 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
+7 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
 SELF ⭕ | Counseling ❌
 
 Argumedo
@@ -23,113 +23,113 @@ No classes
 SELF ⭕ | Counseling ❌
 
 Aro
-1 | US Hist              | US Hist
-2 | Wld Hist             | Wld Hist
-3 | Therapeutic Elective | Therapeutic Elective
-4 |                      | 
-5 |                      | 
-6 | Wld Hist             | Wld Hist
-7 | US Hist              | US Hist
+1 | US Hist (V-26)                | US Hist (V-26)
+2 | Wld Hist (V-25)               | Wld Hist (V-25)
+3 | Therapeutic Elective (K - 10) | Therapeutic Elective (K - 10)
+4 |                               | 
+5 |                               | 
+6 | Wld Hist (V-25)               | Wld Hist (V-25)
+7 | US Hist (V-26)                | US Hist (V-26)
 SELF ⭕ | Counseling ❌
 
 Arteaga
-1 | Wld Hist   | Wld Hist
-2 |            | 
-3 | USGovtLL   | ContWld LL
-4 | WldHist LL | WldHist LL
-5 | Wld Hist   | Wld Hist
-6 |            | 
-7 | USGovtLL   | ContWld LL
+1 | Wld Hist (G - 06)   | Wld Hist (G - 06)
+2 |                     | 
+3 | USGovtLL (G - 06)   | ContWld LL (G - 06)
+4 | WldHist LL (G - 06) | WldHist LL (G - 06)
+5 | Wld Hist (G - 06)   | Wld Hist (G - 06)
+6 |                     | 
+7 | USGovtLL (G - 06)   | ContWld LL (G - 06)
 SELF ❌ | Counseling ❌
 
 Aston
-1 | Bio SLC          | Bio SLC
-2 | Biology          | Biology
-3 | Biology          | Biology
-4 | Biology          | Biology
-5 |                  | 
-6 |                  | 
-7 | Focus on Success | Focus on Success
+1 | Bio SLC (V-01)            | Bio SLC (V-01)
+2 | Biology (V-01)            | Biology (V-01)
+3 | Biology (V-01)            | Biology (V-01)
+4 | Biology (V-01)            | Biology (V-01)
+5 |                           | 
+6 |                           | 
+7 | Focus on Success (K - 14) | Focus on Success (K - 14)
 SELF ❌ | Counseling ❌
 
 Axelrod
-1 |               | 
-2 | Alg2          | Alg2
-3 | Alg2          | Alg2
-4 | Alg 1A        | Alg 1A
-5 | Academic Math | Academic Math
-6 |               | 
-7 | Alg 1A        | Alg 1A
+1 |                        | 
+2 | Alg2 (N - 213)         | Alg2 (N - 213)
+3 | Alg2 (N - 213)         | Alg2 (N - 213)
+4 | Alg 1A (N - 202)       | Alg 1A (N - 202)
+5 | Academic Math (K - 09) | Academic Math (K - 09)
+6 |                        | 
+7 | Alg 1A (N - 202)       | Alg 1A (N - 202)
 SELF ❌ | Counseling ❌
 
 Barba-Medina
-1 | Spanish 2 | Spanish 2
-2 | Spanish 3 | Spanish 3
-3 | Spanish 3 | Spanish 3
-4 |           | 
-5 | Spanish 2 | Spanish 2
-6 | Spanish 2 | Spanish 2
-7 |           | 
+1 | Spanish 2 (G - 02) | Spanish 2 (G - 02)
+2 | Spanish 3 (G - 02) | Spanish 3 (G - 02)
+3 | Spanish 3 (G - 02) | Spanish 3 (G - 02)
+4 |                    | 
+5 | Spanish 2 (G - 02) | Spanish 2 (G - 02)
+6 | Spanish 2 (G - 02) | Spanish 2 (G - 02)
+7 |                    | 
 SELF ❌ | Counseling ❌
 
 Bautista
-1 | APCompSci A    | APCompSci A
-2 | APCompSci A    | APCompSci A
-3 |                | 
-4 |                | 
-5 | AP Calculus AB | AP Calculus AB
-6 | AP Calculus AB | AP Calculus AB
-7 | AP Calculus AB | AP Calculus AB
+1 | APCompSci A (N-215 Lab)  | APCompSci A (N-215 Lab)
+2 | APCompSci A (N-215 Lab)  | APCompSci A (N-215 Lab)
+3 |                          | 
+4 |                          | 
+5 | AP Calculus AB (N - 203) | AP Calculus AB (N - 203)
+6 | AP Calculus AB (N - 203) | AP Calculus AB (N - 203)
+7 | AP Calculus AB (N - 203) | AP Calculus AB (N - 203)
 SELF ⭕ | Counseling ❌
 
 Bisbee
-1 | US Govt  | ContWld 11
-2 | Wld Hist | Wld Hist
-3 | Wld Hist | Wld Hist
-4 | US Govt  | ContWld 11
-5 |          | 
-6 | Wld Hist | Wld Hist
-7 | US Govt  | ContWld 11
+1 | US Govt (V-25)  | ContWld 11 (V-25)
+2 | Wld Hist (V-25) | Wld Hist (V-25)
+3 | Wld Hist (V-25) | Wld Hist (V-25)
+4 | US Govt (V-25)  | ContWld 11 (V-25)
+5 |                 | 
+6 | Wld Hist (V-25) | Wld Hist (V-25)
+7 | US Govt (V-25)  | ContWld 11 (V-25)
 SELF ⭕ | Counseling ❌
 
 Bissegger
-1 |               | 
-2 | Acad Planning | Acad Planning
-3 | Lit Style     | Lit Style
-4 | Acad Planning | Lit Style, Acad Planning
-5 | Lit Style     | Lit Style
-6 |               | 
-7 | Lit Style     | Lit Style
+1 |                        | 
+2 | Acad Planning (K - 15) | Acad Planning (K - 15)
+3 | Lit Style (V-04)       | Lit Style (V-04)
+4 | Acad Planning (K - 15) | Lit Style (N - 104), Acad Planning (K - 15)
+5 | Lit Style (N - 104)    | Lit Style (N - 104)
+6 |                        | 
+7 | Lit Style (V-04)       | Lit Style (V-04)
 SELF ⭕ | Counseling ❌
 
 Blackburn
-1 | Beginning Journalism                   | AmerLit
-2 | Adv Journ, MLM GraphPubH, MLM GraphPub | Adv Journ, MLM GraphPubH, MLM GraphPub
-3 | AmerLit                                | AmerLit
-4 |                                        | 
-5 |                                        | 
-6 | AmerLit                                | AmerLit
-7 |                                        | 
+1 | Beginning Journalism (P-117)                                   | AmerLit (N - 106)
+2 | Adv Journ (P-117), MLM GraphPubH (P-117), MLM GraphPub (P-117) | Adv Journ (P-117), MLM GraphPubH (P-117), MLM GraphPub (P-117)
+3 | AmerLit (N - 106)                                              | AmerLit (N - 106)
+4 |                                                                | 
+5 |                                                                | 
+6 | AmerLit (N - 106)                                              | AmerLit (N - 106)
+7 |                                                                | 
 SELF ⭕ | Counseling ❌
 
 Boissevain
-1 |                                     | 
-2 |                                     | 
-3 | Art Spec 1                          | Art Spec 1
-4 | Art Spec 1                          | Art Spec 1
-5 | Pt/Dr 1                             | Pt/Dr 1
-6 |                                     | 
-7 | AP Stud Art, Adv Photo, Adv Photo H | AP Stud Art, Adv Photo, Adv Photo H
+1 |                                                                | 
+2 |                                                                | 
+3 | Art Spec 1 (M - 05)                                            | Art Spec 1 (M - 05)
+4 | Art Spec 1 (M - 05)                                            | Art Spec 1 (M - 05)
+5 | Pt/Dr 1 (M - 04)                                               | Pt/Dr 1 (M - 04)
+6 |                                                                | 
+7 | AP Stud Art (M - 01), Adv Photo (M - 01), Adv Photo H (M - 01) | AP Stud Art (M - 01), Adv Photo (M - 01), Adv Photo H (M - 01)
 SELF ❌ | Counseling ❌
 
 Brown
-1 | Am Clas11H | Am Clas11H
-2 | Film Lit   | Film Lit
-3 |            | 
-4 | Film Lit   | Film Lit
-5 | Am Clas11H | Am Clas11H
-6 |            | 
-7 |            | 
+1 | Am Clas11H (N - 106) | Am Clas11H (N - 106)
+2 | Film Lit (N - 106)   | Film Lit (N - 106)
+3 |                      | 
+4 | Film Lit (N - 106)   | Film Lit (N - 106)
+5 | Am Clas11H (N - 106) | Am Clas11H (N - 106)
+6 |                      | 
+7 |                      | 
 SELF ❌ | Counseling ❌
 
 Bueno
@@ -137,23 +137,23 @@ No classes
 SELF ❌ | Counseling ⭕
 
 Camicia
-1 |        | 
-2 | Auto 1 | Auto 1
-3 | Auto 2 | Auto 2
-4 | Auto 1 | Auto 1
-5 |        | 
-6 | Auto 1 | Auto 1
-7 | Auto 2 | Auto 2
+1 |               | 
+2 | Auto 1 (L-08) | Auto 1 (L-08)
+3 | Auto 2 (L-08) | Auto 2 (L-08)
+4 | Auto 1 (L-08) | Auto 1 (L-08)
+5 |               | 
+6 | Auto 1 (L-08) | Auto 1 (L-08)
+7 | Auto 2 (L-08) | Auto 2 (L-08)
 SELF ⭕ | Counseling ❌
 
 Carlomagno
-1 | Conceptual Physics | Conceptual Physics
-2 |                    | 
-3 | Conceptual Physics | Conceptual Physics
-4 |                    | 
-5 |                    | 
-6 |                    | 
-7 |                    | 
+1 | Conceptual Physics (L-01) | Conceptual Physics (L-01)
+2 |                           | 
+3 | Conceptual Physics (L-01) | Conceptual Physics (L-01)
+4 |                           | 
+5 |                           | 
+6 |                           | 
+7 |                           | 
 SELF ⭕ | Counseling ❌
 
 Castil
@@ -161,13 +161,13 @@ No classes
 SELF ⭕ | Counseling ❌
 
 Catalano
-1 |             | 
-2 |             | 
-3 | Chemistry H | Chemistry H
-4 | Chemistry H | Chemistry H
-5 | Chemistry   | Chemistry
-6 | Chemistry   | Chemistry
-7 | Chemistry   | Chemistry
+1 |                      | 
+2 |                      | 
+3 | Chemistry H (J - 08) | Chemistry H (J - 08)
+4 | Chemistry H (J - 08) | Chemistry H (J - 08)
+5 | Chemistry (J - 08)   | Chemistry (J - 08)
+6 | Chemistry (L-01)     | Chemistry (L-01)
+7 | Chemistry (L-01)     | Chemistry (L-01)
 SELF ⭕ | Counseling ❌
 
 Celis
@@ -179,165 +179,165 @@ No classes
 SELF ❌ | Counseling ⭕
 
 Chen
-1 |            | 
-2 | Geom A     | Geom A
-3 | Alg2/Trg A | Alg2/Trg A
-4 | Alg2/Trg A | Alg2/Trg A
-5 |            | 
-6 |            | 
-7 | Geom A     | Geom A
+1 |                      | 
+2 | Geom A (N - 203)     | Geom A (N - 203)
+3 | Alg2/Trg A (N - 203) | Alg2/Trg A (N - 203)
+4 | Alg2/Trg A (N - 203) | Alg2/Trg A (N - 203)
+5 |                      | 
+6 |                      | 
+7 | Geom A (N - 204)     | Geom A (N - 204)
 SELF ❌ | Counseling ❌
 
 Cismas Florea
-1 |        | 
-2 | Geom H | Geom H
-3 | Geom H | Geom H
-4 |        | 
-5 | Geom A | Geom A
-6 | Geom A | Geom A
-7 |        | 
+1 |                  | 
+2 | Geom H (N - 208) | Geom H (N - 208)
+3 | Geom H (N - 208) | Geom H (N - 208)
+4 |                  | 
+5 | Geom A (N - 208) | Geom A (N - 208)
+6 | Geom A (N - 208) | Geom A (N - 208)
+7 |                  | 
 SELF ❌ | Counseling ❌
 
 Cohn
-1 | Physics | Physics
-2 | Physics | Physics
-3 | Physics | Physics
-4 |         | 
-5 | Physics | Physics
-6 |         | 
-7 | Physics | Physics
+1 | Physics (J - 05) | Physics (J - 05)
+2 | Physics (J - 05) | Physics (J - 05)
+3 | Physics (J - 05) | Physics (J - 05)
+4 |                  | 
+5 | Physics (J - 05) | Physics (J - 05)
+6 |                  | 
+7 | Physics (J - 05) | Physics (J - 05)
 SELF ⭕ | Counseling ❌
 
 Collier
-1 | Psych 11      | Psych 11
-2 |               | 
-3 | AP Psychology | AP Psychology
-4 | AP Psychology | AP Psychology
-5 |               | 
-6 | AP Psychology | AP Psychology
-7 | AP Psychology | AP Psychology
+1 | Psych 11 (C-02)      | Psych 11 (C-02)
+2 |                      | 
+3 | AP Psychology (C-02) | AP Psychology (C-02)
+4 | AP Psychology (C-02) | AP Psychology (C-02)
+5 |                      | 
+6 | AP Psychology (C-02) | AP Psychology (C-02)
+7 | AP Psychology (C-02) | AP Psychology (C-02)
 SELF ❌ | Counseling ❌
 
 Congress
-1 | Alg2/Trg A    | Alg2/Trg A
-2 | Alg2/Trg A    | Alg2/Trg A
-3 |               | 
-4 | AP Statistics | AP Statistics
-5 | AP Statistics | AP Statistics
-6 |               | 
-7 | Alg2/Trg A    | Alg2/Trg A
+1 | Alg2/Trg A (N - 201)    | Alg2/Trg A (N - 201)
+2 | Alg2/Trg A (N - 201)    | Alg2/Trg A (N - 201)
+3 |                         | 
+4 | AP Statistics (N - 201) | AP Statistics (N - 201)
+5 | AP Statistics (N - 201) | AP Statistics (N - 201)
+6 |                         | 
+7 | Alg2/Trg A (N - 204)    | Alg2/Trg A (N - 204)
 SELF ⭕ | Counseling ❌
 
 Conklin
-1 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
-2 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
-3 |                      | 
-4 | Acad Enhancement SAI | Acad Enhancement SAI
-5 |                      | 
-6 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
-7 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
+1 | Funct Acad (F - 02), Voc Trng (F - 02) | Funct Acad (F - 02), Voc Trng (F - 02)
+2 | Funct Acad (F - 02), Voc Trng (F - 02) | Funct Acad (F - 02), Voc Trng (F - 02)
+3 |                                        | 
+4 | Acad Enhancement SAI (K - 09)          | Acad Enhancement SAI (K - 09)
+5 |                                        | 
+6 | Funct Acad (F - 02), Voc Trng (F - 02) | Funct Acad (F - 02), Voc Trng (F - 02)
+7 | Funct Acad (F - 02), Voc Trng (F - 02) | Funct Acad (F - 02), Voc Trng (F - 02)
 SELF ❌ | Counseling ❌
 
 Corpuz
-1 | BroadJourn                            | BroadJourn
-2 | Video Prod, AdvDigiFilm               | Video Prod, AdvDigiFilm
-3 | Video Prod, Adv Video H               | Video Prod, Adv Video H
-4 |                                       | 
-5 |                                       | 
-6 |                                       | 
-7 | Audio/MusicProd, Adv Audio/Music Prod | Audio/MusicProd, Adv Audio/Music Prod
+1 | BroadJourn (L-06 )                                    | BroadJourn (L-06 )
+2 | Video Prod (L-06 ), AdvDigiFilm (L-06 )               | Video Prod (L-06 ), AdvDigiFilm (L-06 )
+3 | Video Prod (L-06 ), Adv Video H (L-06 )               | Video Prod (L-06 ), Adv Video H (L-06 )
+4 |                                                       | 
+5 |                                                       | 
+6 |                                                       | 
+7 | Audio/MusicProd (L-06 ), Adv Audio/Music Prod (L-06 ) | Audio/MusicProd (L-06 ), Adv Audio/Music Prod (L-06 )
 SELF ❌ | Counseling ❌
 
 Creighton
-1 | PE 10 | PE 10
-2 |       | 
-3 | PE 9  | PE 9
-4 | PE 10 | PE 10
-5 | PE 10 | PE 10
-6 | PE 10 | PE 10
-7 | PE 10 | PE 10
+1 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
+2 |                 | 
+3 | PE 9 (Bow GYM)  | PE 9 (Bow GYM)
+4 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
+5 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
+6 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
+7 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
 SELF ❌ | Counseling ❌
 
 Cuevas Ceja
-1 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
-2 |                      | 
-3 |                      | 
-4 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
-5 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
-6 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
-7 | Funct Acad, Voc Trng | Funct Acad, Voc Trng
+1 | Funct Acad (K - 12), Voc Trng (K - 12) | Funct Acad (K - 12), Voc Trng (K - 12)
+2 |                                        | 
+3 |                                        | 
+4 | Funct Acad (K - 12), Voc Trng (K - 12) | Funct Acad (K - 12), Voc Trng (K - 12)
+5 | Funct Acad (K - 12), Voc Trng (K - 12) | Funct Acad (K - 12), Voc Trng (K - 12)
+6 | Funct Acad (K - 12), Voc Trng (K - 12) | Funct Acad (K - 12), Voc Trng (K - 12)
+7 | Funct Acad (K - 12), Voc Trng (K - 12) | Funct Acad (K - 12), Voc Trng (K - 12)
 SELF ❌ | Counseling ❌
 
 Deggeller
-1 |                | 
-2 |                | 
-3 | AP Calculus BC | AP Calculus BC
-4 | AP Calculus BC | AP Calculus BC
-5 | Alg2/Trg A     | Alg2/Trg A
-6 | Alg2/Trg A     | Alg2/Trg A
-7 |                | 
+1 |                          | 
+2 |                          | 
+3 | AP Calculus BC (N - 204) | AP Calculus BC (N - 204)
+4 | AP Calculus BC (N - 204) | AP Calculus BC (N - 204)
+5 | Alg2/Trg A (N - 204)     | Alg2/Trg A (N - 204)
+6 | Alg2/Trg A (N - 204)     | Alg2/Trg A (N - 204)
+7 |                          | 
 SELF ❌ | Counseling ❌
 
 Derrick-Navarro
-1 | US Hist             | US Hist
-2 | Focus on Success    | Focus on Success
-3 |                     | Psych 11
-4 | Positive Psychology | Positive Psychology
-5 |                     | 
-6 |                     | 
-7 |                     | 
+1 | US Hist (K - 08)             | US Hist (K - 08)
+2 | Focus on Success (K - 14)    | Focus on Success (K - 14)
+3 |                              | Psych 11 (K - 08)
+4 | Positive Psychology (K - 08) | Positive Psychology (K - 08)
+5 |                              | 
+6 |                              | 
+7 |                              | 
 SELF ❌ | Counseling ❌
 
 Dion
-1 | AP Calculus AB | AP Calculus AB
-2 |                | 
-3 | AP Calculus AB | AP Calculus AB
-4 | AP Calculus AB | AP Calculus AB
-5 | Alg2/TrigH     | Alg2/TrigH
-6 | Alg2/TrigH     | Alg2/TrigH
-7 |                | 
+1 | AP Calculus AB (N - 212) | AP Calculus AB (N - 212)
+2 |                          | 
+3 | AP Calculus AB (N - 212) | AP Calculus AB (N - 212)
+4 | AP Calculus AB (N - 212) | AP Calculus AB (N - 212)
+5 | Alg2/TrigH (N - 212)     | Alg2/TrigH (N - 212)
+6 | Alg2/TrigH (N - 212)     | Alg2/TrigH (N - 212)
+7 |                          | 
 SELF ⭕ | Counseling ❌
 
 Dungan
-1 |        | 
-2 |        | 
-3 |        | 
-4 |        | 
-5 |        | 
-6 |        | 
-7 |        | 
-8 | Jazz B | Jazz B
+1 |                | 
+2 |                | 
+3 |                | 
+4 |                | 
+5 |                | 
+6 |                | 
+7 |                | 
+8 | Jazz B (S-102) | Jazz B (S-102)
 SELF ❌ | Counseling ❌
 
 Dunlap
-1 | AP English Lit & Comp | AP English Lit & Comp
-2 | AP English Lit & Comp | AP English Lit & Comp
-3 |                       | 
-4 |                       | 
-5 |                       | WritCr 11
-6 |                       | Cont Herit
-7 |                       | 
+1 | AP English Lit & Comp (N - 114) | AP English Lit & Comp (N - 114)
+2 | AP English Lit & Comp (N - 114) | AP English Lit & Comp (N - 114)
+3 |                                 | 
+4 |                                 | 
+5 |                                 | WritCr 11 (N - 114)
+6 |                                 | Cont Herit (N - 114)
+7 |                                 | 
 SELF ❌ | Counseling ❌
 
 Durquet
-1 |         | 
-2 |         | 
-3 |         | 
-4 | Photo 1 | Photo 1
-5 | Photo 1 | Photo 1
-6 | Photo 1 | Photo 1
-7 |         | 
+1 |                  | 
+2 |                  | 
+3 |                  | 
+4 | Photo 1 (M - 01) | Photo 1 (M - 01)
+5 | Photo 1 (M - 01) | Photo 1 (M - 01)
+6 | Photo 1 (M - 03) | Photo 1 (M - 03)
+7 |                  | 
 SELF ❌ | Counseling ❌
 
 Ellington
-1 |                                         | 
-2 |                                         | 
-3 |                                         | 
-4 |                                         | 
-5 |                                         | 
-6 |                                         | 
-7 |                                         | 
-8 | Stage Tech, Stage Tech 2, Stage Tech 2D | Stage Tech, Stage Tech 2, Stage Tech 2D
+1 |                                                              | 
+2 |                                                              | 
+3 |                                                              | 
+4 |                                                              | 
+5 |                                                              | 
+6 |                                                              | 
+7 |                                                              | 
+8 | Stage Tech (S-01), Stage Tech 2 (S-01), Stage Tech 2D (S-01) | Stage Tech (S-01), Stage Tech 2 (S-01), Stage Tech 2D (S-01)
 SELF ❌ | Counseling ❌
 
 Fidani
@@ -347,7 +347,7 @@ SELF ❌ | Counseling ⭕
 Firenzi
 1 |  | 
 2 |  | 
-3 |  | USFor Pol H
+3 |  | USFor Pol H (C-04)
 4 |  | 
 5 |  | 
 6 |  | 
@@ -355,23 +355,23 @@ Firenzi
 SELF ⭕ | Counseling ❌
 
 Fitzhugh
-1 |            | 
-2 |            | 
-3 |            | 
-4 |            | 
-5 |            | 
-6 |            | 
-7 | Conc Choir | Conc Choir
+1 |                    | 
+2 |                    | 
+3 |                    | 
+4 |                    | 
+5 |                    | 
+6 |                    | 
+7 | Conc Choir (S-121) | Conc Choir (S-121)
 SELF ❌ | Counseling ❌
 
 Garger
-1 |                       | 
-2 | Spanish 2             | Spanish 2
-3 | AP Spanish Literature | AP Spanish Literature
-4 |                       | 
-5 | AP Spanish Language   | AP Spanish Language
-6 | AP Spanish Language   | AP Spanish Language
-7 | AP Spanish Language   | AP Spanish Language
+1 |                                | 
+2 | Spanish 2 (G - 04)             | Spanish 2 (G - 04)
+3 | AP Spanish Literature (G - 04) | AP Spanish Literature (G - 04)
+4 |                                | 
+5 | AP Spanish Language (G - 04)   | AP Spanish Language (G - 04)
+6 | AP Spanish Language (G - 04)   | AP Spanish Language (G - 04)
+7 | AP Spanish Language (G - 04)   | AP Spanish Language (G - 04)
 SELF ⭕ | Counseling ❌
 
 Garibay Diaz
@@ -383,33 +383,33 @@ No classes
 SELF ⭕ | Counseling ❌
 
 Gleason
-1 |            | 
-2 |            | 
-3 |            | 
-4 | Analysis H | Analysis H
-5 | Analysis H | Analysis H
-6 | Analysis H | Analysis H
-7 | Analysis H | Analysis H
+1 |                      | 
+2 |                      | 
+3 |                      | 
+4 | Analysis H (N - 206) | Analysis H (N - 206)
+5 | Analysis H (N - 206) | Analysis H (N - 206)
+6 | Analysis H (N - 206) | Analysis H (N - 206)
+7 | Analysis H (N - 206) | Analysis H (N - 206)
 SELF ❌ | Counseling ❌
 
 Gleason
-1 |                      | 
-2 |                      | 
-3 | GraphDes             | GraphDes
-4 | GraphDes, Adv Gr Des | GraphDes, Adv Gr Des
-5 | Gprd/Yrbk            | Gprd/Yrbk
-6 | Digital Art Spectrum | Digital Art Spectrum
-7 | Digital Art Spectrum | Digital Art Spectrum
+1 |                                      | 
+2 |                                      | 
+3 | GraphDes (P-117)                     | GraphDes (P-117)
+4 | GraphDes (P-117), Adv Gr Des (P-117) | GraphDes (P-117), Adv Gr Des (P-117)
+5 | Gprd/Yrbk (P-117)                    | Gprd/Yrbk (P-117)
+6 | Digital Art Spectrum (P-117)         | Digital Art Spectrum (P-117)
+7 | Digital Art Spectrum (P-117)         | Digital Art Spectrum (P-117)
 SELF ❌ | Counseling ❌
 
 Gonzalez Barrios
-1 | Spanish 3 | Spanish 3
-2 |           | 
-3 | Spanish 1 | Spanish 1
-4 |           | 
-5 |           | 
-6 | Spanish 3 | Spanish 3
-7 | Spanish 3 | Spanish 3
+1 | Spanish 3 (H-05) | Spanish 3 (H-05)
+2 |                  | 
+3 | Spanish 1 (H-05) | Spanish 1 (H-05)
+4 |                  | 
+5 |                  | 
+6 | Spanish 3 (H-05) | Spanish 3 (H-05)
+7 | Spanish 3 (H-05) | Spanish 3 (H-05)
 SELF ❌ | Counseling ❌
 
 Gordon
@@ -417,163 +417,163 @@ No classes
 SELF ⭕ | Counseling ❌
 
 Granlund-Moyer
-1 | Prnc Of Engr PLTW, Prnc Of Engr H PLTW | Prnc Of Engr PLTW, Prnc Of Engr H PLTW
-2 | Int Engr Des PLTW, Int Engr Des PLTW H | Int Engr Des PLTW, Int Engr Des PLTW H
-3 |                                        | 
-4 |                                        | 
-5 | Engn Tech                              | Engn Tech
-6 | Engn Tech                              | Engn Tech
-7 |                                        | 
+1 | Prnc Of Engr PLTW (F - 04 Lab), Prnc Of Engr H PLTW (F - 04 Lab) | Prnc Of Engr PLTW (F - 04 Lab), Prnc Of Engr H PLTW (F - 04 Lab)
+2 | Int Engr Des PLTW (F - 04 Lab), Int Engr Des PLTW H (F - 04 Lab) | Int Engr Des PLTW (F - 04 Lab), Int Engr Des PLTW H (F - 04 Lab)
+3 |                                                                  | 
+4 |                                                                  | 
+5 | Engn Tech (L-05)                                                 | Engn Tech (L-05)
+6 | Engn Tech (L-05)                                                 | Engn Tech (L-05)
+7 |                                                                  | 
 SELF ⭕ | Counseling ❌
 
 Hall
-1 |                        | 
-2 | Japanes 2              | Japanes 2
-3 |                        | 
-4 | Japanes 1              | Japanes 1
-5 | Japanes 3              | Japanes 3
-6 | Japanes 4H, JapnLangAP | Japanes 4H, JapnLangAP
-7 | Japanes 2              | Japanes 2
+1 |                                      | 
+2 | Japanes 2 (H-03)                     | Japanes 2 (H-03)
+3 |                                      | 
+4 | Japanes 1 (H-03)                     | Japanes 1 (H-03)
+5 | Japanes 3 (H-03)                     | Japanes 3 (H-03)
+6 | Japanes 4H (H-03), JapnLangAP (H-03) | Japanes 4H (H-03), JapnLangAP (H-03)
+7 | Japanes 2 (H-03)                     | Japanes 2 (H-03)
 SELF ⭕ | Counseling ❌
 
 Hall
-1 | Stu Govt  | Stu Govt
-2 | Lit Style | Lit Style
-3 |           | 
-4 |           | 
-5 |           | 
-6 |           | 
-7 |           | 
+1 | Stu Govt (P-105)  | Stu Govt (P-105)
+2 | Lit Style (P-105) | Lit Style (P-105)
+3 |                   | 
+4 |                   | 
+5 |                   | 
+6 |                   | 
+7 |                   | 
 SELF ❌ | Counseling ❌
 
 Halter
-1 | Cont Herit | Lit Style
-2 | Lit Style  | Cont Herit
-3 | Lit Style  | Lit Style
-4 |            | 
-5 | Cont Herit | Cont Herit
-6 |            | 
-7 | Lit Style  | Lit Style
+1 | Cont Herit (V-04) | Lit Style (V-04)
+2 | Lit Style (V-04)  | Cont Herit (V-04)
+3 | Lit Style (V-04)  | Lit Style (V-04)
+4 |                   | 
+5 | Cont Herit (V-04) | Cont Herit (V-04)
+6 |                   | 
+7 | Lit Style (V-04)  | Lit Style (V-04)
 SELF ⭕ | Counseling ❌
 
 Hawes
-1 | IntrAnl/Calc | IntrAnl/Calc
-2 | Alg2/TrigH   | Alg2/TrigH
-3 |              | 
-4 | IntrAnl/Calc | IntrAnl/Calc
-5 |              | 
-6 | IntrAnl/Calc | IntrAnl/Calc
-7 | Alg2/TrigH   | Alg2/TrigH
+1 | IntrAnl/Calc (N - 209) | IntrAnl/Calc (N - 209)
+2 | Alg2/TrigH (N - 209)   | Alg2/TrigH (N - 209)
+3 |                        | 
+4 | IntrAnl/Calc (N - 209) | IntrAnl/Calc (N - 209)
+5 |                        | 
+6 | IntrAnl/Calc (N - 209) | IntrAnl/Calc (N - 209)
+7 | Alg2/TrigH (N - 209)   | Alg2/TrigH (N - 209)
 SELF ❌ | Counseling ❌
 
 Helbing
-1 | EL 28              | EL 28
-2 | EL 28              | EL 28
-3 |                    | 
-4 |                    | 
-5 | Eng LL 1, Eng LL 2 | Eng LL 1, Eng LL 2
-6 | Eng LL 1, Eng LL 2 | Eng LL 1, Eng LL 2
-7 |                    | 
+1 | EL 28 (K - 04)                       | EL 28 (K - 04)
+2 | EL 28 (K - 04)                       | EL 28 (K - 04)
+3 |                                      | 
+4 |                                      | 
+5 | Eng LL 1 (K - 04), Eng LL 2 (K - 04) | Eng LL 1 (K - 04), Eng LL 2 (K - 04)
+6 | Eng LL 1 (K - 04), Eng LL 2 (K - 04) | Eng LL 1 (K - 04), Eng LL 2 (K - 04)
+7 |                                      | 
 SELF ⭕ | Counseling ❌
 
 Hernandez
-1 | Film Lit              | Film Lit
-2 |                       | 
-3 | Film Lit              | Am Clas11H
-4 | Am Clas11H            | Am Clas11H
-5 | AP English Lit & Comp | AP English Lit & Comp
-6 | AP English Lit & Comp | AP English Lit & Comp
-7 |                       | 
+1 | Film Lit (N - 105)              | Film Lit (N - 105)
+2 |                                 | 
+3 | Film Lit (N - 105)              | Am Clas11H (N - 105)
+4 | Am Clas11H (N - 105)            | Am Clas11H (N - 105)
+5 | AP English Lit & Comp (N - 105) | AP English Lit & Comp (N - 105)
+6 | AP English Lit & Comp (N - 105) | AP English Lit & Comp (N - 105)
+7 |                                 | 
 SELF ⭕ | Counseling ❌
 
 Hexsel
-1 |                     | 
-2 | Geom                | Geom
-3 |                     | 
-4 | Geom                | Geom
-5 | AP Comp. Sci. Princ | AP Comp. Sci. Princ
-6 | AP Comp. Sci. Princ | AP Comp. Sci. Princ
-7 |                     | 
+1 |                                  | 
+2 | Geom (N - 206)                   | Geom (N - 206)
+3 |                                  | 
+4 | Geom (N - 206)                   | Geom (N - 206)
+5 | AP Comp. Sci. Princ (N -115 Lab) | AP Comp. Sci. Princ (N -115 Lab)
+6 | AP Comp. Sci. Princ (N -115 Lab) | AP Comp. Sci. Princ (N -115 Lab)
+7 |                                  | 
 SELF ⭕ | Counseling ❌
 
 Holdener
-1 | Cont Herit | Cont Herit
-2 | Cont Herit | Cont Herit
-3 | Cont Herit | Cont Herit
-4 | Cont Herit | Cont Herit
-5 | Lit Style  | Lit Style
-6 |            | 
-7 |            | 
+1 | Cont Herit (N - 103) | Cont Herit (N - 103)
+2 | Cont Herit (N - 103) | Cont Herit (N - 103)
+3 | Cont Herit (N - 103) | Cont Herit (N - 103)
+4 | Cont Herit (N - 103) | Cont Herit (N - 103)
+5 | Lit Style (N - 103)  | Lit Style (N - 103)
+6 |                      | 
+7 |                      | 
 SELF ❌ | Counseling ❌
 
 Holmes
-1 | Law 1     | Law 1
-2 |           | 
-3 | US Govt   | ContWld 11
-4 |           | 
-5 | US Govt   | ContWld 11
-6 | CR/CivLaw | CR/CivLaw
-7 | Law 1     | Law 1
+1 | Law 1 (F - 06)     | Law 1 (F - 06)
+2 |                    | 
+3 | US Govt (F - 06)   | ContWld 11 (F - 06)
+4 |                    | 
+5 | US Govt (F - 06)   | ContWld 11 (F - 06)
+6 | CR/CivLaw (F - 06) | CR/CivLaw (F - 06)
+7 | Law 1 (F - 06)     | Law 1 (F - 06)
 SELF ⭕ | Counseling ❌
 
 Howard
-1 | Wld Hist      | Wld Hist
-2 |               | 
-3 | Wld Hist      | Wld Hist
-4 | AP US History | AP US History
-5 | AP US History | AP US History
-6 |               | 
-7 | AP US History | AP US History
+1 | Wld Hist (C-07)      | Wld Hist (C-07)
+2 |                      | 
+3 | Wld Hist (C-07)      | Wld Hist (C-07)
+4 | AP US History (C-07) | AP US History (C-07)
+5 | AP US History (C-07) | AP US History (C-07)
+6 |                      | 
+7 | AP US History (C-07) | AP US History (C-07)
 SELF ⭕ | Counseling ❌
 
 Ichikawa
-1 | Lit Style             | Lit Style
-2 | Yoga                  | Yoga
-3 |                       | 
-4 | AP English Lit & Comp | AP English Lit & Comp
-5 |                       | 
-6 | Lit Style             | Lit Style
-7 | Lit Style             | Lit Style
+1 | Lit Style (N - 112)             | Lit Style (N - 112)
+2 | Yoga (V-17)                     | Yoga (V-17)
+3 |                                 | 
+4 | AP English Lit & Comp (N - 112) | AP English Lit & Comp (N - 112)
+5 |                                 | 
+6 | Lit Style (N - 112)             | Lit Style (N - 112)
+7 | Lit Style (N - 112)             | Lit Style (N - 112)
 SELF ❌ | Counseling ❌
 
 Igler
-1 | Class Myth | 
-2 | Escape Lit | Am Clas11H
-3 |            | Am Clas11H
-4 | Escape Lit | Class Myth
-5 |            | 
-6 | Class Myth | Am Clas11H
-7 |            | 
+1 | Class Myth (N - 107) | 
+2 | Escape Lit (N - 107) | Am Clas11H (N - 107)
+3 |                      | Am Clas11H (N - 107)
+4 | Escape Lit (N - 107) | Class Myth (N - 107)
+5 |                      | 
+6 | Class Myth (N - 107) | Am Clas11H (N - 105)
+7 |                      | 
 SELF ❌ | Counseling ❌
 
 Ja
-1 |            | 
-2 |            | 
-3 | Lit Style  | Cont Herit
-4 | Cont Herit | Lit Style
-5 | Lit Style  | Lit Style
-6 | Lit Style  | Lit Style
-7 | Cont Herit | Cont Herit
+1 |                      | 
+2 |                      | 
+3 | Lit Style (N - 113)  | Cont Herit (N - 113)
+4 | Cont Herit (N - 113) | Lit Style (N - 113)
+5 | Lit Style (N - 113)  | Lit Style (N - 113)
+6 | Lit Style (N - 113)  | Lit Style (N - 113)
+7 | Cont Herit (N - 113) | Cont Herit (N - 113)
 SELF ❌ | Counseling ❌
 
 Jamison
-1 | AP Statistics | AP Statistics
-2 | AP Statistics | AP Statistics
-3 |               | 
-4 | Geom H        | Geom H
-5 | Geom H        | Geom H
-6 |               | 
-7 | Geom H        | Geom H
+1 | AP Statistics (N - 210) | AP Statistics (N - 210)
+2 | AP Statistics (N - 210) | AP Statistics (N - 210)
+3 |                         | 
+4 | Geom H (N - 210)        | Geom H (N - 210)
+5 | Geom H (N - 210)        | Geom H (N - 210)
+6 |                         | 
+7 | Geom H (N - 210)        | Geom H (N - 210)
 SELF ⭕ | Counseling ❌
 
 Johansen
-1 |       | 
-2 |       | 
-3 |       | 
-4 |       | 
-5 | PE 10 | PE 10
-6 | PE 10 | PE 10
-7 |       | 
+1 |                 | 
+2 |                 | 
+3 |                 | 
+4 |                 | 
+5 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
+6 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
+7 |                 | 
 SELF ❌ | Counseling ❌
 
 Johanson
@@ -581,94 +581,94 @@ No classes
 SELF ❌ | Counseling ⭕
 
 Johnson
-1 | AP US History | AP US History
-2 | AP US History | AP US History
-3 | AP US History | AP US History
-4 | Wld Hist      | Wld Hist
-5 | Wld Hist      | Wld Hist
-6 |               | 
-7 |               | 
+1 | AP US History (C-03) | AP US History (C-03)
+2 | AP US History (C-03) | AP US History (C-03)
+3 | AP US History (C-03) | AP US History (C-03)
+4 | Wld Hist (C-01)      | Wld Hist (C-01)
+5 | Wld Hist (C-01)      | Wld Hist (C-01)
+6 |                      | 
+7 |                      | 
 SELF ❌ | Counseling ❌
 
 Kaci
-1 |                        | 
-2 |                        | 
-3 |                        | 
-4 | ExplExp-AAR            | ExplExp-AAR
-5 |                        | 
-6 |                        | 
-7 |                        | 
-8 | Expl Exp12, Gen Weep11 | Gen Weep11
+1 |                                           | 
+2 |                                           | 
+3 |                                           | 
+4 | ExplExp-AAR (V-04)                        | ExplExp-AAR (V-04)
+5 |                                           | 
+6 |                                           | 
+7 |                                           | 
+8 | Expl Exp12 (undefined), Gen Weep11 (V-04) | Gen Weep11 (V-04)
 SELF ❌ | Counseling ❌
 
 Kaneko
-1 | Funct Object Or Prog | Funct Object Or Prog
-2 | Funct Object Or Prog | Funct Object Or Prog
-3 | Funct Object Or Prog | Funct Object Or Prog
-4 |                      | 
-5 |                      | 
-6 | IntrAnl/Calc         | IntrAnl/Calc
-7 | IntrAnl/Calc         | IntrAnl/Calc
+1 | Funct Object Or Prog (N -115 Lab) | Funct Object Or Prog (N -115 Lab)
+2 | Funct Object Or Prog (N -115 Lab) | Funct Object Or Prog (N -115 Lab)
+3 | Funct Object Or Prog (N -115 Lab) | Funct Object Or Prog (N -115 Lab)
+4 |                                   | 
+5 |                                   | 
+6 | IntrAnl/Calc (N - 205)            | IntrAnl/Calc (N - 205)
+7 | IntrAnl/Calc (N - 205)            | IntrAnl/Calc (N - 205)
 SELF ⭕ | Counseling ❌
 
 Kaufman
-1 | French 2 | French 2
-2 |          | 
-3 |          | 
-4 |          | 
-5 | French 2 | French 2
-6 | French 1 | French 1
-7 | French 2 | French 2
+1 | French 2 (G - 03) | French 2 (G - 03)
+2 |                   | 
+3 |                   | 
+4 |                   | 
+5 | French 2 (G - 03) | French 2 (G - 03)
+6 | French 1 (G - 03) | French 1 (G - 03)
+7 | French 2 (G - 03) | French 2 (G - 03)
 SELF ⭕ | Counseling ❌
 
 Kim
-1 |            | 
-2 |            | 
-3 |            | 
-4 |            | 
-5 | Cont Herit | Cont Herit
-6 | Cont Herit | Cont Herit
-7 | Cont Herit | Cont Herit
+1 |                        | 
+2 |                        | 
+3 |                        | 
+4 |                        | 
+5 | Cont Herit (undefined) | Cont Herit (undefined)
+6 | Cont Herit (undefined) | Cont Herit (undefined)
+7 | Cont Herit (undefined) | Cont Herit (undefined)
 SELF ❌ | Counseling ❌
 
 King
-1 | Art Spec 1                                            | Art Spec 1
-2 | Art Spec 1                                            | Art Spec 1
-3 | Advanced Ceramics 1, Advanced Ceramics 2, ArtStu3D AP | Advanced Ceramics 1, Advanced Ceramics 2, ArtStu3D AP
-4 |                                                       | 
-5 | Art Spec 1                                            | Art Spec 1
-6 |                                                       | 
-7 | Ceramics 1                                            | Ceramics 1
+1 | Art Spec 1 (M - 03)                                                              | Art Spec 1 (M - 03)
+2 | Art Spec 1 (M - 03)                                                              | Art Spec 1 (M - 03)
+3 | Advanced Ceramics 1 (M - 03), Advanced Ceramics 2 (M - 03), ArtStu3D AP (M - 03) | Advanced Ceramics 1 (M - 03), Advanced Ceramics 2 (M - 03), ArtStu3D AP (M - 03)
+4 |                                                                                  | 
+5 | Art Spec 1 (M - 03)                                                              | Art Spec 1 (M - 03)
+6 |                                                                                  | 
+7 | Ceramics 1 (M - 03)                                                              | Ceramics 1 (M - 03)
 SELF ❌ | Counseling ❌
 
 Kinyanjui
-1 | Wld Hist           | Wld Hist
-2 |                    | 
-3 | Wld Hist           | Wld Hist
-4 | Wld Hist           | Wld Hist
-5 |                    | 
-6 | AP Human Geography | AP Human Geography
-7 | Wld Hist           | Wld Hist
+1 | Wld Hist (E-02)           | Wld Hist (E-02)
+2 |                           | 
+3 | Wld Hist (E-02)           | Wld Hist (E-02)
+4 | Wld Hist (E-02)           | Wld Hist (E-02)
+5 |                           | 
+6 | AP Human Geography (E-02) | AP Human Geography (E-02)
+7 | Wld Hist (E-02)           | Wld Hist (E-02)
 SELF ⭕ | Counseling ❌
 
 Kitada
-1 |              | 
-2 |              | 
-3 | Visual Story | Visual Story
-4 | Lit Style    | Lit Style
-5 | Cont Herit   | Lit Style
-6 | Lit Style    | Lit Style
-7 | Cont Herit   | Visual Story
+1 |                        | 
+2 |                        | 
+3 | Visual Story (N - 108) | Visual Story (N - 108)
+4 | Lit Style (N - 108)    | Lit Style (N - 108)
+5 | Cont Herit (N - 108)   | Lit Style (N - 108)
+6 | Lit Style (N - 108)    | Lit Style (N - 108)
+7 | Cont Herit (N - 108)   | Visual Story (N - 108)
 SELF ⭕ | Counseling ❌
 
 Kompella
-1 | AP Physics 1 | AP Physics 1
-2 | AP Physics 1 | AP Physics 1
-3 | AP Physics C | AP Physics C
-4 |              | 
-5 | AP Physics 1 | AP Physics 1
-6 | AP Physics 1 | AP Physics 1
-7 |              | 
+1 | AP Physics 1 (J - 10) | AP Physics 1 (J - 10)
+2 | AP Physics 1 (J - 10) | AP Physics 1 (J - 10)
+3 | AP Physics C (J - 09) | AP Physics C (J - 09)
+4 |                       | 
+5 | AP Physics 1 (J - 10) | AP Physics 1 (J - 10)
+6 | AP Physics 1 (J - 10) | AP Physics 1 (J - 10)
+7 |                       | 
 SELF ⭕ | Counseling ❌
 
 La Place
@@ -676,33 +676,33 @@ No classes
 SELF ⭕ | Counseling ❌
 
 Ledgerwood
-1 |                          | 
-2 |                          | 
-3 | Chemistry                | Chemistry
-4 | Chemistry                | Chemistry
-5 | AP Environmental Science | AP Environmental Science
-6 | AP Environmental Science | AP Environmental Science
-7 | AP Environmental Science | AP Environmental Science
+1 |                                   | 
+2 |                                   | 
+3 | Chemistry (J - 06)                | Chemistry (J - 06)
+4 | Chemistry (J - 06)                | Chemistry (J - 06)
+5 | AP Environmental Science (J - 03) | AP Environmental Science (J - 03)
+6 | AP Environmental Science (J - 03) | AP Environmental Science (J - 03)
+7 | AP Environmental Science (J - 03) | AP Environmental Science (J - 03)
 SELF ⭕ | Counseling ❌
 
 Lee
-1 |                      | 
-2 |                      | 
-3 | Therapeutic Elective | Therapeutic Elective
-4 |                      | 
-5 |                      | 
-6 |                      | 
-7 |                      | 
+1 |                               | 
+2 |                               | 
+3 | Therapeutic Elective (K - 10) | Therapeutic Elective (K - 10)
+4 |                               | 
+5 |                               | 
+6 |                               | 
+7 |                               | 
 SELF ⭕ | Counseling ❌
 
 Lee
-1 | AP Biology | AP Biology
-2 | AP Biology | AP Biology
-3 |            | 
-4 |            | 
-5 |            | 
-6 | Biology    | Biology
-7 | Biology    | Biology
+1 | AP Biology (J - 02) | AP Biology (J - 02)
+2 | AP Biology (J - 02) | AP Biology (J - 02)
+3 |                     | 
+4 |                     | 
+5 |                     | 
+6 | Biology (J - 04)    | Biology (J - 04)
+7 | Biology (J - 04)    | Biology (J - 04)
 SELF ❌ | Counseling ❌
 
 Leftwich
@@ -710,105 +710,105 @@ No classes
 SELF ❌ | Counseling ⭕
 
 Lewis
-1 | SchServ 11, Orchstr, Prep, Prep 11 | Orchstr, Prep, Prep 12
-2 | SchServ 11, Band                   | Band
-3 | SchServ 11                         | 
-4 | SchServ 11, Prep, Prep 11          | Prep, Prep 12
-5 | SchServ 11, Orchstr, Prep, Prep 11 | Orchstr, Prep, Prep 12
-6 | SchServ 11, Symph Band             | Symph Band
-7 | SchServ 11, Prep, Prep 11          | Prep, Prep 12
+1 | SchServ 11 (undefined), Orchstr (S-102), Prep (undefined), Prep 11 (undefined) | Orchstr (S-102), Prep (undefined), Prep 12 (undefined)
+2 | SchServ 11 (undefined), Band (S-102)                                           | Band (S-102)
+3 | SchServ 11 (undefined)                                                         | 
+4 | SchServ 11 (undefined), Prep (undefined), Prep 11 (undefined)                  | Prep (undefined), Prep 12 (undefined)
+5 | SchServ 11 (undefined), Orchstr (S-102), Prep (undefined), Prep 11 (undefined) | Orchstr (S-102), Prep (undefined), Prep 12 (undefined)
+6 | SchServ 11 (undefined), Symph Band (S-102)                                     | Symph Band (S-102)
+7 | SchServ 11 (undefined), Prep (undefined), Prep 11 (undefined)                  | Prep (undefined), Prep 12 (undefined)
 SELF ❌ | Counseling ❌
 
 Liberatore
-1 |                 | 
-2 | AP Music Theory | AP Music Theory
-3 | Treb Choir      | Treb Choir
-4 |                 | 
-5 |                 | 
-6 |                 | 
-7 | Conc Choir      | Conc Choir
-8 | Adv Vocal       | Adv Vocal
+1 |                         | 
+2 | AP Music Theory (S-121) | AP Music Theory (S-121)
+3 | Treb Choir (S-121)      | Treb Choir (S-121)
+4 |                         | 
+5 |                         | 
+6 |                         | 
+7 | Conc Choir (S-121)      | Conc Choir (S-121)
+8 | Adv Vocal (S-121)       | Adv Vocal (S-121)
 SELF ⭕ | Counseling ❌
 
 Limburg
-1 |            | 
-2 | Alg2/TrigH | Alg2/TrigH
-3 | Alg2/TrigH | Alg2/TrigH
-4 | Alg2/TrigH | Alg2/TrigH
-5 | Alg 1A     | Alg 1A
-6 | Alg 1A     | Alg 1A
-7 |            | 
+1 |                      | 
+2 | Alg2/TrigH (N - 207) | Alg2/TrigH (N - 207)
+3 | Alg2/TrigH (N - 207) | Alg2/TrigH (N - 207)
+4 | Alg2/TrigH (N - 207) | Alg2/TrigH (N - 207)
+5 | Alg 1A (N - 207)     | Alg 1A (N - 207)
+6 | Alg 1A (N - 207)     | Alg 1A (N - 207)
+7 |                      | 
 SELF ⭕ | Counseling ❌
 
 Linsdell
-1 | Econ AP | Econ AP
-2 |         | 
-3 | Econ AP | Econ AP
-4 |         | 
-5 | Econ AP | Econ AP
-6 | Econ AP | Econ AP
-7 | Econ AP | Econ AP
+1 | Econ AP (E-01) | Econ AP (E-01)
+2 |                | 
+3 | Econ AP (E-01) | Econ AP (E-01)
+4 |                | 
+5 | Econ AP (E-01) | Econ AP (E-01)
+6 | Econ AP (E-01) | Econ AP (E-01)
+7 | Econ AP (E-01) | Econ AP (E-01)
 SELF ⭕ | Counseling ❌
 
 Little
-1 | Biology H | Biology H
-2 | Biology H | Biology H
-3 | Biology H | Biology H
-4 | Biology H | Biology H
-5 |           | 
-6 | Biology H | Biology H
-7 |           | 
+1 | Biology H (V-02) | Biology H (V-02)
+2 | Biology H (V-02) | Biology H (V-02)
+3 | Biology H (V-02) | Biology H (V-02)
+4 | Biology H (V-02) | Biology H (V-02)
+5 |                  | 
+6 | Biology H (V-02) | Biology H (V-02)
+7 |                  | 
 SELF ⭕ | Counseling ❌
 
 Lizundia
-1 | French 3           | French 3
-2 | French 3           | French 3
-3 | AP French Language | AP French Language
-4 |                    | 
-5 | French 3           | French 3
-6 | AP French Language | AP French Language
-7 |                    | 
+1 | French 3 (H-01)           | French 3 (H-01)
+2 | French 3 (H-01)           | French 3 (H-01)
+3 | AP French Language (H-01) | AP French Language (H-01)
+4 |                           | 
+5 | French 3 (H-01)           | French 3 (H-01)
+6 | AP French Language (H-01) | AP French Language (H-01)
+7 |                           | 
 SELF ⭕ | Counseling ❌
 
 Lo
-1 | Theatre 2                               | Theatre 2
-2 | Theatre 1                               | Theatre 1
-3 | Theatre 1                               | 
-4 |                                         | 
-5 | Theatre 4, Theatre 3                    | Theatre 4, Theatre 3
-6 |                                         | 
-7 |                                         | 
-8 | Stage Tech, Stage Tech 2, Stage Tech 2D | Stage Tech, Stage Tech 2, Stg Tech11, Stage Tech 2D
+1 | Theatre 2 (S-147)                                            | Theatre 2 (S-147)
+2 | Theatre 1 (S-147)                                            | Theatre 1 (S-147)
+3 | Theatre 1 (S-147)                                            | 
+4 |                                                              | 
+5 | Theatre 4 (S-147), Theatre 3 (S-147)                         | Theatre 4 (S-147), Theatre 3 (S-147)
+6 |                                                              | 
+7 |                                                              | 
+8 | Stage Tech (S-01), Stage Tech 2 (S-01), Stage Tech 2D (S-01) | Stage Tech (S-01), Stage Tech 2 (S-01), Stg Tech11 (undefined), Stage Tech 2D (S-01)
 SELF ⭕ | Counseling ❌
 
 Lopez
-1 |               | 
-2 | Geom          | Geom
-3 |               | 
-4 | Geom          | Geom
-5 | Acad Planning | Acad Planning
-6 | Geom          | Geom
-7 | Acad Planning | Acad Planning
+1 |                        | 
+2 | Geom (N - 206)         | Geom (N - 206)
+3 |                        | 
+4 | Geom (N - 206)         | Geom (N - 206)
+5 | Acad Planning (K - 15) | Acad Planning (K - 15)
+6 | Geom (N - 202)         | Geom (N - 202)
+7 | Acad Planning (K - 15) | Acad Planning (K - 15)
 SELF ⭕ | Counseling ❌
 
 Lorey
-1 | AP Physics C: Mechanics | AP Physics C: E&M
-2 | AP Physics C: Mechanics | AP Physics C: E&M
-3 | AP Physics 1            | AP Physics 1
-4 |                         | 
-5 | AP Physics C: Mechanics | AP Physics C: E&M
-6 |                         | 
-7 | AP Physics 1            | AP Physics 1
+1 | AP Physics C: Mechanics (J - 09) | AP Physics C: E&M (J - 09)
+2 | AP Physics C: Mechanics (J - 09) | AP Physics C: E&M (J - 09)
+3 | AP Physics 1 (J - 10)            | AP Physics 1 (J - 10)
+4 |                                  | 
+5 | AP Physics C: Mechanics (J - 09) | AP Physics C: E&M (J - 09)
+6 |                                  | 
+7 | AP Physics 1 (J - 10)            | AP Physics 1 (J - 10)
 SELF ⭕ | Counseling ❌
 
 Lyons
-1 | Econ AP | Econ AP
-2 | Econ AP | Econ AP
-3 |         | 
-4 | Econ AP | Econ AP
-5 | Econ AP | Econ AP
-6 | US Hist | US Hist
-7 |         | 
+1 | Econ AP (F - 01) | Econ AP (F - 01)
+2 | Econ AP (F - 01) | Econ AP (F - 01)
+3 |                  | 
+4 | Econ AP (F - 01) | Econ AP (F - 01)
+5 | Econ AP (F - 01) | Econ AP (F - 01)
+6 | US Hist (F - 01) | US Hist (F - 01)
+7 |                  | 
 SELF ❌ | Counseling ❌
 
 Main
@@ -816,154 +816,154 @@ No classes
 SELF ⭕ | Counseling ❌
 
 Matchett
-1 |            | 
-2 | Span/Span1 | Span/Span1
-3 | SpCiv/CulH | SpCiv/CulH
-4 | Spanish 3  | Spanish 3
-5 | Spanish 3  | Spanish 3
-6 |            | 
-7 |            | 
+1 |                     | 
+2 | Span/Span1 (H-05)   | Span/Span1 (H-05)
+3 | SpCiv/CulH (G - 03) | SpCiv/CulH (G - 03)
+4 | Spanish 3 (H-05)    | Spanish 3 (H-05)
+5 | Spanish 3 (H-05)    | Spanish 3 (H-05)
+6 |                     | 
+7 |                     | 
 SELF ⭕ | Counseling ❌
 
 Matta
-1 |         | 
-2 | US Hist | US Hist
-3 |         | 
-4 |         | 
-5 |         | 
-6 |         | 
-7 |         | 
+1 |                | 
+2 | US Hist (E-02) | US Hist (E-02)
+3 |                | 
+4 |                | 
+5 |                | 
+6 |                | 
+7 |                | 
 SELF ❌ | Counseling ❌
 
 McGinn
-1 | PE 9 | PE 9
-2 | PE 9 | PE 9
-3 | PE 9 | PE 9
-4 |      | 
-5 | PE 9 | PE 9
-6 | PE 9 | PE 9
-7 |      | 
+1 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
+2 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
+3 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
+4 |                | 
+5 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
+6 | PE 9 (Bow GYM) | PE 9 (Bow GYM)
+7 |                | 
 SELF ❌ | Counseling ❌
 
 McGinn
-1 |          | 
-2 |          | 
-3 |          | 
-4 |          | 
-5 |          | 
-6 |          | 
-7 |          | 
-8 | Jazz Ens | Jazz Ens
+1 |                  | 
+2 |                  | 
+3 |                  | 
+4 |                  | 
+5 |                  | 
+6 |                  | 
+7 |                  | 
+8 | Jazz Ens (S-102) | Jazz Ens (S-102)
 SELF ❌ | Counseling ❌
 
 Mellows
-1 |              | 
-2 |              | 
-3 | Astrophysics | Astrophysics
-4 | Astrophysics | Astrophysics
-5 | Chemistry H  | Chemistry H
-6 | Chemistry H  | Chemistry H
-7 | Chemistry H  | Chemistry H
+1 |                       | 
+2 |                       | 
+3 | Astrophysics (J - 03) | Astrophysics (J - 03)
+4 | Astrophysics (J - 03) | Astrophysics (J - 03)
+5 | Chemistry H (J - 08)  | Chemistry H (J - 08)
+6 | Chemistry H (J - 08)  | Chemistry H (J - 08)
+7 | Chemistry H (J - 08)  | Chemistry H (J - 08)
 SELF ❌ | Counseling ❌
 
 Menache
-1 | Focus on Success | Focus on Success
-2 |                  | 
-3 | BasCollSk        | BasCollSk
-4 |                  | 
-5 |                  | 
-6 | Focus on Success | Focus on Success
-7 |                  | 
+1 | Focus on Success (K - 14) | Focus on Success (K - 14)
+2 |                           | 
+3 | BasCollSk (N - 102)       | BasCollSk (N - 102)
+4 |                           | 
+5 |                           | 
+6 | Focus on Success (K - 14) | Focus on Success (K - 14)
+7 |                           | 
 SELF ❌ | Counseling ❌
 
 Merchant
-1 | Bio Tech  | Bio Tech
-2 | Bio Tech  | Bio Tech
-3 | Bio Tech  | Bio Tech
-4 |           | 
-5 |           | 
-6 | Biology H | Biology H
-7 | Biology H | Biology H
+1 | Bio Tech (L-02)  | Bio Tech (L-02)
+2 | Bio Tech (L-02)  | Bio Tech (L-02)
+3 | Bio Tech (L-02)  | Bio Tech (L-02)
+4 |                  | 
+5 |                  | 
+6 | Biology H (L-02) | Biology H (L-02)
+7 | Biology H (L-02) | Biology H (L-02)
 SELF ⭕ | Counseling ❌
 
 Messinger
-1 | Pt/Dr 1                                                    | Pt/Dr 1
-2 |                                                            | 
-3 | Adv.Draw/Painting H                                        | Adv.Draw/Painting H
-4 | AP Stud Art, Adv.Draw/Painting II, AP Studio Art - Drawing | AP Stud Art, Adv.Draw/Painting II, AP Studio Art - Drawing
-5 |                                                            | 
-6 |                                                            | 
-7 |                                                            | 
+1 | Pt/Dr 1 (M - 04)                                                                      | Pt/Dr 1 (M - 04)
+2 |                                                                                       | 
+3 | Adv.Draw/Painting H (M - 04)                                                          | Adv.Draw/Painting H (M - 04)
+4 | AP Stud Art (M - 04), Adv.Draw/Painting II (M - 04), AP Studio Art - Drawing (M - 04) | AP Stud Art (M - 04), Adv.Draw/Painting II (M - 04), AP Studio Art - Drawing (M - 04)
+5 |                                                                                       | 
+6 |                                                                                       | 
+7 |                                                                                       | 
 SELF ❌ | Counseling ❌
 
 Metzler
-1 | Biology                 | Biology
-2 | Biology                 | Biology
-3 | Wld Hist                | Wld Hist
-4 |                         | 
-5 |                         | 
-6 | Academic Communications | Academic Communications
-7 | Academic Communications | Academic Communications
+1 | Biology (J - 04)                 | Biology (J - 04)
+2 | Biology (J - 04)                 | Biology (J - 04)
+3 | Wld Hist (V-25)                  | Wld Hist (V-25)
+4 |                                  | 
+5 |                                  | 
+6 | Academic Communications (K - 09) | Academic Communications (K - 09)
+7 | Academic Communications (K - 09) | Academic Communications (K - 09)
 SELF ⭕ | Counseling ❌
 
 Miguel
-1 | US Govt           | ContWld 11
-2 | US Govt           | ContWld 11
-3 | World History-SLC | World History-SLC
-4 | US Govt           | ContWld 11
-5 |                   | 
-6 | US Govt           | ContWld 11
-7 |                   | 
+1 | US Govt (C-06)           | ContWld 11 (C-06)
+2 | US Govt (C-06)           | ContWld 11 (C-06)
+3 | World History-SLC (C-06) | World History-SLC (C-06)
+4 | US Govt (C-06)           | ContWld 11 (C-06)
+5 |                          | 
+6 | US Govt (C-06)           | ContWld 11 (C-06)
+7 |                          | 
 SELF ⭕ | Counseling ❌
 
 Miller
-1 | US Govt  | ContWld 11
-2 | US Govt  | ContWld 11
-3 | US Govt  | ContWld 11
-4 | Wld Hist | Wld Hist
-5 | Wld Hist | Wld Hist
-6 | Wld Hist | Wld Hist
-7 |          | 
+1 | US Govt (C-03)  | ContWld 11 (C-03)
+2 | US Govt (C-03)  | ContWld 11 (C-03)
+3 | US Govt (C-03)  | ContWld 11 (C-03)
+4 | Wld Hist (C-03) | Wld Hist (C-03)
+5 | Wld Hist (C-03) | Wld Hist (C-03)
+6 | Wld Hist (C-03) | Wld Hist (C-03)
+7 |                 | 
 SELF ⭕ | Counseling ❌
 
 Moyer
-1 | Lit Style | Lit Style
-2 | Lit Style | Lit Style
-3 |           | 
-4 |           | 
-5 |           | 
-6 |           | 
-7 |           | 
-SELF ❌ | Counseling ❌
-
-Munger
-1 | Inter Comp   | Inter Comp
-2 | Cont Herit   | Cont Herit
-3 | ReadBetLines | ReadBetLines
-4 |              | 
-5 | ReadBetLines | Cont Herit
-6 | ERWC         | ERWC
-7 |              | 
-SELF ⭕ | Counseling ❌
-
-Nino Oliva
-1 | AP Spanish Language | AP Spanish Language
-2 | Spanish 1           | Spanish 1
-3 | AP Spanish Language | AP Spanish Language
+1 | Lit Style (N - 113) | Lit Style (N - 113)
+2 | Lit Style (N - 113) | Lit Style (N - 113)
+3 |                     | 
 4 |                     | 
-5 | Spanish 1           | Spanish 1
-6 | Spanish 1           | Spanish 1
+5 |                     | 
+6 |                     | 
 7 |                     | 
 SELF ❌ | Counseling ❌
 
+Munger
+1 | Inter Comp (N - 111)   | Inter Comp (N - 111)
+2 | Cont Herit (N - 111)   | Cont Herit (N - 111)
+3 | ReadBetLines (N - 111) | ReadBetLines (N - 111)
+4 |                        | 
+5 | ReadBetLines (N - 111) | Cont Herit (N - 111)
+6 | ERWC (N - 111)         | ERWC (N - 111)
+7 |                        | 
+SELF ⭕ | Counseling ❌
+
+Nino Oliva
+1 | AP Spanish Language (G - 01) | AP Spanish Language (G - 01)
+2 | Spanish 1 (G - 01)           | Spanish 1 (G - 01)
+3 | AP Spanish Language (G - 01) | AP Spanish Language (G - 01)
+4 |                              | 
+5 | Spanish 1 (G - 01)           | Spanish 1 (G - 01)
+6 | Spanish 1 (G - 01)           | Spanish 1 (G - 01)
+7 |                              | 
+SELF ❌ | Counseling ❌
+
 O'Connell
-1 | Chemistry H | Chemistry H
-2 |             | 
-3 |             | 
-4 | Chemistry   | Chemistry
-5 | Chemistry   | Chemistry
-6 | Chemistry   | Chemistry
-7 | Chemistry H | Chemistry H
+1 | Chemistry H (J - 06) | Chemistry H (J - 06)
+2 |                      | 
+3 |                      | 
+4 | Chemistry (L-01)     | Chemistry (L-01)
+5 | Chemistry (J - 06)   | Chemistry (J - 06)
+6 | Chemistry (J - 06)   | Chemistry (J - 06)
+7 | Chemistry H (J - 06) | Chemistry H (J - 06)
 SELF ⭕ | Counseling ❌
 
 Ordonez
@@ -971,123 +971,123 @@ No classes
 SELF ⭕ | Counseling ❌
 
 Ou
-1 | SchServ 11, Orchstr, Prep, Prep 11 | Orchstr, Prep, Prep 12
-2 | SchServ 11                         | 
-3 | SchServ 11                         | 
-4 | SchServ 11, Prep, Prep 11          | Prep, Prep 12
-5 | SchServ 11, Orchstr, Prep, Prep 11 | Orchstr, Prep, Prep 12
-6 | SchServ 11                         | 
-7 | SchServ 11, Prep, Prep 11          | Prep, Prep 12
+1 | SchServ 11 (undefined), Orchstr (S-102), Prep (undefined), Prep 11 (undefined) | Orchstr (S-102), Prep (undefined), Prep 12 (undefined)
+2 | SchServ 11 (undefined)                                                         | 
+3 | SchServ 11 (undefined)                                                         | 
+4 | SchServ 11 (undefined), Prep (undefined), Prep 11 (undefined)                  | Prep (undefined), Prep 12 (undefined)
+5 | SchServ 11 (undefined), Orchstr (S-102), Prep (undefined), Prep 11 (undefined) | Orchstr (S-102), Prep (undefined), Prep 12 (undefined)
+6 | SchServ 11 (undefined)                                                         | 
+7 | SchServ 11 (undefined), Prep (undefined), Prep 11 (undefined)                  | Prep (undefined), Prep 12 (undefined)
 SELF ❌ | Counseling ❌
 
 Owen
-1 |                           | 
-2 | Contemporary Heritage SLC | Literary Style SLC
-3 | Focus on Success          | Focus on Success
-4 | Focus on Success          | Focus on Success
-5 |                           | 
-6 | Cont Herit                | Cont Herit
-7 |                           | 
+1 |                                     | 
+2 | Contemporary Heritage SLC (N - 110) | Literary Style SLC (N - 110)
+3 | Focus on Success (K - 14)           | Focus on Success (K - 14)
+4 | Focus on Success (K - 14)           | Focus on Success (K - 14)
+5 |                                     | 
+6 | Cont Herit (N - 110)                | Cont Herit (N - 110)
+7 |                                     | 
 SELF ⭕ | Counseling ❌
 
 Paley
-1 |                      | 
-2 |                      | 
-3 | APCompSci A          | APCompSci A
-4 | APCompSci A          | APCompSci A
-5 | Funct Object Or Prog | Funct Object Or Prog
-6 | Funct Object Or Prog | Funct Object Or Prog
-7 | CS Capstone          | CS Capstone
+1 |                                  | 
+2 |                                  | 
+3 | APCompSci A (N-215 Lab)          | APCompSci A (N-215 Lab)
+4 | APCompSci A (N-215 Lab)          | APCompSci A (N-215 Lab)
+5 | Funct Object Or Prog (N-215 Lab) | Funct Object Or Prog (N-215 Lab)
+6 | Funct Object Or Prog (N-215 Lab) | Funct Object Or Prog (N-215 Lab)
+7 | CS Capstone (N-215 Lab)          | CS Capstone (N-215 Lab)
 SELF ❌ | Counseling ❌
 
 Paronable
-1 | Contemporary Heritage | Cont Herit
-2 | Contemporary Heritage | Cont Herit
-3 |                       | 
-4 | Lit Style             | Lit Style
-5 | Lit Style             | Lit Style
-6 |                       | 
-7 | Lit Style             | Lit Style
+1 | Contemporary Heritage (N - 104) | Cont Herit (N - 104)
+2 | Contemporary Heritage (N - 104) | Cont Herit (N - 104)
+3 |                                 | 
+4 | Lit Style (N - 104)             | Lit Style (N - 104)
+5 | Lit Style (N - 104)             | Lit Style (N - 104)
+6 |                                 | 
+7 | Lit Style (N - 104)             | Lit Style (N - 104)
 SELF ⭕ | Counseling ❌
 
 Patrick
-1 |         | 
-2 | Econ 11 | Econ 11
-3 | Econ 11 | Econ 11
-4 | US Govt | ContWld 11
-5 | Econ 11 | Econ 11
-6 |         | 
-7 |         | 
+1 |                | 
+2 | Econ 11 (C-08) | Econ 11 (C-08)
+3 | Econ 11 (C-08) | Econ 11 (C-08)
+4 | US Govt (C-08) | ContWld 11 (C-08)
+5 | Econ 11 (C-08) | Econ 11 (C-08)
+6 |                | 
+7 |                | 
 SELF ⭕ | Counseling ❌
 
 Pennington
-1 | Conceptual Physics | Conceptual Physics
-2 | Conceptual Physics | Conceptual Physics
-3 | Conceptual Physics | Conceptual Physics
-4 |                    | 
-5 |                    | 
-6 | Physics            | Physics
-7 |                    | 
+1 | Conceptual Physics (L-01) | Conceptual Physics (L-01)
+2 | Conceptual Physics (L-01) | Conceptual Physics (L-01)
+3 | Conceptual Physics (L-01) | Conceptual Physics (L-01)
+4 |                           | 
+5 |                           | 
+6 | Physics (J - 05)          | Physics (J - 05)
+7 |                           | 
 SELF ⭕ | Counseling ❌
 
 Perkins
-1 | AP Psychology | AP Psychology
-2 | AP Psychology | AP Psychology
-3 |               | 
-4 | US Hist       | US Hist
-5 | US Hist       | US Hist
-6 |               | 
-7 | US Hist       | US Hist
+1 | AP Psychology (C-04) | AP Psychology (C-04)
+2 | AP Psychology (C-04) | AP Psychology (C-04)
+3 |                      | 
+4 | US Hist (C-04)       | US Hist (C-04)
+5 | US Hist (C-04)       | US Hist (C-04)
+6 |                      | 
+7 | US Hist (C-04)       | US Hist (C-04)
 SELF ⭕ | Counseling ❌
 
 Peters
-1 |                              | 
-2 | Fiber Arts                   | Interior11
-3 | Ind Study                    | SportsNutr
-4 | Culinary Arts - Introduction | Culinary Arts - International
-5 | Culinary Arts - Introduction | Culinary Arts - International
-6 | Ind Study                    | Ind Study
-7 |                              | 
+1 |                                       | 
+2 | Fiber Arts (K - 03)                   | Interior11 (K - 03)
+3 | Ind Study (undefined)                 | SportsNutr (K - 05)
+4 | Culinary Arts - Introduction (K - 05) | Culinary Arts - International (K - 05)
+5 | Culinary Arts - Introduction (K - 05) | Culinary Arts - International (K - 05)
+6 | Ind Study (undefined)                 | Ind Study (undefined)
+7 |                                       | 
 SELF ⭕ | Counseling ❌
 
 Pinkston
-1 |              | 
-2 | IntrAnl/Calc | IntrAnl/Calc
-3 | IntrAnl/Calc | IntrAnl/Calc
-4 | Alg 1A       | Alg 1A
-5 |              | 
-6 | Geom         | Geom
-7 | Alg 1A       | Alg 1A
+1 |                        | 
+2 | IntrAnl/Calc (N - 202) | IntrAnl/Calc (N - 202)
+3 | IntrAnl/Calc (N - 202) | IntrAnl/Calc (N - 202)
+4 | Alg 1A (N - 202)       | Alg 1A (N - 202)
+5 |                        | 
+6 | Geom (N - 202)         | Geom (N - 202)
+7 | Alg 1A (N - 202)       | Alg 1A (N - 202)
 SELF ⭕ | Counseling ❌
 
 Powell
-1 | Biology    | Biology
-2 | Biology    | Biology
-3 |            | 
-4 | AP Biology | AP Biology
-5 |            | 
-6 | AP Biology | AP Biology
-7 | AP Biology | AP Biology
+1 | Biology (J - 04)    | Biology (J - 04)
+2 | Biology (J - 04)    | Biology (J - 04)
+3 |                     | 
+4 | AP Biology (J - 02) | AP Biology (J - 02)
+5 |                     | 
+6 | AP Biology (J - 02) | AP Biology (J - 02)
+7 | AP Biology (J - 02) | AP Biology (J - 02)
 SELF ❌ | Counseling ❌
 
 Redfield
-1 |                | 
-2 | Applied Math   | Applied Math
-3 |                | 
-4 |                | 
-5 | AP Calculus BC | AP Calculus BC
-6 | AP Calculus BC | AP Calculus BC
-7 | AP Calculus BC | AP Calculus BC
+1 |                          | 
+2 | Applied Math (N - 212)   | Applied Math (N - 212)
+3 |                          | 
+4 |                          | 
+5 | AP Calculus BC (N - 208) | AP Calculus BC (N - 208)
+6 | AP Calculus BC (N - 208) | AP Calculus BC (N - 208)
+7 | AP Calculus BC (N - 208) | AP Calculus BC (N - 208)
 SELF ❌ | Counseling ❌
 
 Renazco
-1 |                     | 
-2 | Alg2                | Alg2
-3 | Alg2                | Alg2
-4 | AP Comp. Sci. Princ | AP Comp. Sci. Princ
-5 |                     | 
-6 | Alg2                | Alg2
-7 |                     | 
+1 |                                 | 
+2 | Alg2 (N - 213)                  | Alg2 (N - 213)
+3 | Alg2 (N - 213)                  | Alg2 (N - 213)
+4 | AP Comp. Sci. Princ (undefined) | AP Comp. Sci. Princ (undefined)
+5 |                                 | 
+6 | Alg2 (N - 213)                  | Alg2 (N - 213)
+7 |                                 | 
 SELF ⭕ | Counseling ❌
 
 Reyes
@@ -1099,253 +1099,253 @@ No classes
 SELF ❌ | Counseling ⭕
 
 Sabbag
-1 | PE 10 | PE 10
-2 | PE 10 | PE 10
-3 | PE 10 | PE 10
-4 | PE 10 | PE 10
-5 |       | 
-6 | PE 10 | PE 10
-7 | PE 10 | PE 10
+1 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
+2 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
+3 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
+4 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
+5 |                 | 
+6 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
+7 | PE 10 (Bow GYM) | PE 10 (Bow GYM)
 SELF ⭕ | Counseling ❌
 
 Saxena
-1 | Pre Calc | Pre Calc
-2 |          | 
-3 | Pre Calc | Pre Calc
-4 |          | 
-5 |          | 
-6 |          | 
-7 |          | 
+1 | Pre Calc (N - 213) | Pre Calc (N - 213)
+2 |                    | 
+3 | Pre Calc (N - 213) | Pre Calc (N - 213)
+4 |                    | 
+5 |                    | 
+6 |                    | 
+7 |                    | 
 SELF ⭕ | Counseling ❌
 
 Schroeppel
-1 | GermanLangAP | GermanLangAP
-2 | German 3     | German 3
-3 |              | 
-4 |              | 
-5 | German 1     | German 1
-6 | German 2     | German 2
-7 |              | 
+1 | GermanLangAP (H-02) | GermanLangAP (H-02)
+2 | German 3 (H-02)     | German 3 (H-02)
+3 |                     | 
+4 |                     | 
+5 | German 1 (H-02)     | German 1 (H-02)
+6 | German 2 (H-02)     | German 2 (H-02)
+7 |                     | 
 SELF ⭕ | Counseling ❌
 
 Shelby
-1 | Theatre 2            | Theatre 2
-2 | Theatre 1            | Theatre 1
-3 | Theatre 1            | 
-4 |                      | 
-5 | Theatre 4, Theatre 3 | Theatre 4, Theatre 3
-6 |                      | 
-7 |                      | 
-8 |                      | Stg Tech11
+1 | Theatre 2 (S-147)                    | Theatre 2 (S-147)
+2 | Theatre 1 (S-147)                    | Theatre 1 (S-147)
+3 | Theatre 1 (S-147)                    | 
+4 |                                      | 
+5 | Theatre 4 (S-147), Theatre 3 (S-147) | Theatre 4 (S-147), Theatre 3 (S-147)
+6 |                                      | 
+7 |                                      | 
+8 |                                      | Stg Tech11 (undefined)
 SELF ⭕ | Counseling ❌
 
 Shinh
-1 | Funct Acad, Voc Trng                                         | Funct Acad, Voc Trng
-2 | Funct Acad, Voc Trng                                         | Funct Acad, Voc Trng
-3 |                                                              | 
-4 | Acad Enhancement SAI                                         | Acad Enhancement SAI
-5 |                                                              | 
-6 | Academic Communications, Funct Acad, Voc Trng, Acad Planning | Academic Communications, Funct Acad, Voc Trng, Acad Planning
-7 | Academic Communications, Funct Acad, Voc Trng                | Academic Communications, Funct Acad, Voc Trng
+1 | Funct Acad (F - 02), Voc Trng (F - 02)                                                           | Funct Acad (F - 02), Voc Trng (F - 02)
+2 | Funct Acad (F - 02), Voc Trng (F - 02)                                                           | Funct Acad (F - 02), Voc Trng (F - 02)
+3 |                                                                                                  | 
+4 | Acad Enhancement SAI (K - 09)                                                                    | Acad Enhancement SAI (K - 09)
+5 |                                                                                                  | 
+6 | Academic Communications (K - 09), Funct Acad (F - 02), Voc Trng (F - 02), Acad Planning (K - 10) | Academic Communications (K - 09), Funct Acad (F - 02), Voc Trng (F - 02), Acad Planning (K - 10)
+7 | Academic Communications (K - 09), Funct Acad (F - 02), Voc Trng (F - 02)                         | Academic Communications (K - 09), Funct Acad (F - 02), Voc Trng (F - 02)
 SELF ⭕ | Counseling ❌
 
 Sims
-1 |               | 
-2 |               | 
-3 | Cont Herit    | Cont Herit
-4 | Cont Herit    | Acad Planning
-5 | Cont Herit    | Cont Herit
-6 | Acad Planning | Acad Planning
-7 | Cont Herit    | Cont Herit
+1 |                        | 
+2 |                        | 
+3 | Cont Herit (N - 109)   | Cont Herit (N - 109)
+4 | Cont Herit (N - 113)   | Acad Planning (K - 15)
+5 | Cont Herit (N - 109)   | Cont Herit (N - 109)
+6 | Acad Planning (K - 15) | Acad Planning (K - 15)
+7 | Cont Herit (N - 113)   | Cont Herit (N - 113)
 SELF ⭕ | Counseling ❌
 
 Stone
-1 |         | 
-2 |         | 
-3 |         | 
-4 |         | 
-5 | US Hist | US Hist
-6 |         | 
-7 |         | 
+1 |                  | 
+2 |                  | 
+3 |                  | 
+4 |                  | 
+5 | US Hist (K - 02) | US Hist (K - 02)
+6 |                  | 
+7 |                  | 
 SELF ❌ | Counseling ❌
 
 Summers
-1 |            | 
-2 | Band       | Band
-3 | Wind Ens   | Wind Ens
-4 |            | 
-5 |            | 
-6 | Symph Band | Symph Band
-7 |            | 
+1 |                    | 
+2 | Band (S-102)       | Band (S-102)
+3 | Wind Ens (S-102)   | Wind Ens (S-102)
+4 |                    | 
+5 |                    | 
+6 | Symph Band (S-102) | Symph Band (S-102)
+7 |                    | 
 SELF ❌ | Counseling ❌
 
 Tabares Ruiz
-1 | Spanish 2  | Spanish 2
-2 | Span/Span2 | Span/Span2
-3 | Spanish 2  | Spanish 2
-4 |            | 
-5 | Spanish 2  | Spanish 2
-6 |            | 
-7 | Spanish 2  | Spanish 2
+1 | Spanish 2 (G - 07)  | Spanish 2 (G - 07)
+2 | Span/Span2 (G - 07) | Span/Span2 (G - 07)
+3 | Spanish 2 (G - 07)  | Spanish 2 (G - 07)
+4 |                     | 
+5 | Spanish 2 (G - 07)  | Spanish 2 (G - 07)
+6 |                     | 
+7 | Spanish 2 (G - 07)  | Spanish 2 (G - 07)
 SELF ⭕ | Counseling ❌
 
 Tabuchi
-1 |            | 
-2 | Escape Lit | Film Lit
-3 | AmerLit    | AmerLit
-4 | Escape Lit | Film Lit
-5 | Econ 11    | Econ 11
-6 | AmerLit    | AmerLit
-7 |            | 
+1 |                      | 
+2 | Escape Lit (N - 107) | Film Lit (N - 106)
+3 | AmerLit (N - 106)    | AmerLit (N - 106)
+4 | Escape Lit (N - 107) | Film Lit (N - 106)
+5 | Econ 11 (C-08)       | Econ 11 (C-08)
+6 | AmerLit (N - 106)    | AmerLit (N - 106)
+7 |                      | 
 SELF ⭕ | Counseling ❌
 
 Tantod
-1 | Analysis H | Analysis H
-2 | Analysis H | Analysis H
-3 | Analysis H | Analysis H
-4 |            | 
-5 |            | 
-6 |            | 
-7 |            | 
+1 | Analysis H (N - 205) | Analysis H (N - 205)
+2 | Analysis H (N - 205) | Analysis H (N - 205)
+3 | Analysis H (N - 205) | Analysis H (N - 205)
+4 |                      | 
+5 |                      | 
+6 |                      | 
+7 |                      | 
 SELF ❌ | Counseling ❌
 
 Tucker
-1 | Liv Skill | 
-2 | Liv Skill | Ind Study
-3 | Liv Skill | Liv Skill
-4 |           | Liv Skill
-5 |           | 
-6 | Liv Skill | Liv Skill
-7 | Liv Skill | Liv Skill
+1 | Liv Skill (V-03) | 
+2 | Liv Skill (V-03) | Ind Study (undefined)
+3 | Liv Skill (V-03) | Liv Skill (V-03)
+4 |                  | Liv Skill (V-03)
+5 |                  | 
+6 | Liv Skill (V-03) | Liv Skill (V-03)
+7 | Liv Skill (V-03) | Liv Skill (V-03)
 SELF ⭕ | Counseling ❌
 
 Tuomy
-1 |          | 
-2 |          | 
-3 |          | 
-4 |          | 
-5 |          | 
-6 | Wld Hist | Wld Hist
-7 | Wld Hist | Wld Hist
+1 |                   | 
+2 |                   | 
+3 |                   | 
+4 |                   | 
+5 |                   | 
+6 | Wld Hist (K - 02) | Wld Hist (K - 02)
+7 | Wld Hist (K - 02) | Wld Hist (K - 02)
 SELF ❌ | Counseling ❌
 
 Van Zandt
-1 | Acad Planning | Acad Planning
-2 | US Govt       | ContWld 11
-3 | Acad Planning | Acad Planning
-4 |               | 
-5 | US Govt       | ContWld 11
-6 |               | 
-7 | US Govt       | ContWld 11
+1 | Acad Planning (K - 15) | Acad Planning (K - 15)
+2 | US Govt (K - 01)       | ContWld 11 (K - 01)
+3 | Acad Planning (K - 15) | Acad Planning (K - 15)
+4 |                        | 
+5 | US Govt (K - 01)       | ContWld 11 (K - 01)
+6 |                        | 
+7 | US Govt (K - 01)       | ContWld 11 (K - 01)
 SELF ❌ | Counseling ❌
 
 Vrudny
-1 | Chinese 1                        | Chinese 1
-2 | ChineseCiv&CultureH, ChLangCulAP | ChineseCiv&CultureH, ChLangCulAP
-3 | Chinese 3                        | Chinese 3
-4 | Chinese 2                        | Chinese 2
-5 | Chinese 3                        | Chinese 3
-6 |                                  | 
-7 |                                  | 
+1 | Chinese 1 (H-04)                               | Chinese 1 (H-04)
+2 | ChineseCiv&CultureH (H-04), ChLangCulAP (H-04) | ChineseCiv&CultureH (H-04), ChLangCulAP (H-04)
+3 | Chinese 3 (H-04)                               | Chinese 3 (H-04)
+4 | Chinese 2 (H-04)                               | Chinese 2 (H-04)
+5 | Chinese 3 (H-04)                               | Chinese 3 (H-04)
+6 |                                                | 
+7 |                                                | 
 SELF ❌ | Counseling ❌
 
 Wang
-1 | Geom A | Geom A
-2 |        | 
-3 | Geom A | Geom A
-4 | Geom A | Geom A
-5 | Alg2   | Alg2
-6 |        | 
-7 | Geom A | Geom A
+1 | Geom A (N - 211) | Geom A (N - 211)
+2 |                  | 
+3 | Geom A (N - 211) | Geom A (N - 211)
+4 | Geom A (N - 203) | Geom A (N - 203)
+5 | Alg2 (N - 211)   | Alg2 (N - 211)
+6 |                  | 
+7 | Geom A (N - 211) | Geom A (N - 211)
 SELF ⭕ | Counseling ❌
 
 Weisman
-1 | US Hist | US Hist
-2 | US Govt | ContWld 11
-3 |         | 
-4 | US Hist | US Hist
-5 |         | 
-6 | US Govt | ContWld 11
-7 | US Hist | US Hist
+1 | US Hist (V-26) | US Hist (V-26)
+2 | US Govt (V-26) | ContWld 11 (V-26)
+3 |                | 
+4 | US Hist (V-26) | US Hist (V-26)
+5 |                | 
+6 | US Govt (V-26) | ContWld 11 (V-26)
+7 | US Hist (V-26) | US Hist (V-26)
 SELF ❌ | Counseling ❌
 
 Wells
-1 | AmerLit    | AmerLit
-2 | Philos Lit | Philos Lit
-3 | Philos Lit | Philos Lit
-4 |            | 
-5 | AmerLit    | AmerLit
-6 |            | 
-7 | AmerLit    | AmerLit
+1 | AmerLit (N - 101)    | AmerLit (N - 101)
+2 | Philos Lit (N - 101) | Philos Lit (N - 101)
+3 | Philos Lit (N - 101) | Philos Lit (N - 101)
+4 |                      | 
+5 | AmerLit (N - 101)    | AmerLit (N - 101)
+6 |                      | 
+7 | AmerLit (N - 101)    | AmerLit (N - 101)
 SELF ❌ | Counseling ❌
 
 Whichard
-1 | AVID       | AVID
-2 | AVID       | AVID
-3 | Cont Herit | Cont Herit
-4 |            | 
-5 | Cont Herit | Cont Herit
-6 | AVID       | AVID
-7 |            | 
+1 | AVID (N - 109)       | AVID (N - 109)
+2 | AVID (N - 109)       | AVID (N - 109)
+3 | Cont Herit (N - 109) | Cont Herit (N - 109)
+4 |                      | 
+5 | Cont Herit (N - 109) | Cont Herit (N - 109)
+6 | AVID (N - 109)       | AVID (N - 109)
+7 |                      | 
 SELF ⭕ | Counseling ❌
 
 Wilson
-1 |             | 
-2 |             | 
-3 |             | 
-4 |             | 
-5 |             | 
-6 |             | 
-7 | WritCr 11   | WritCr 11
-8 | ExplExp-AAR | ExplExp-AAR
+1 |                       | 
+2 |                       | 
+3 |                       | 
+4 |                       | 
+5 |                       | 
+6 |                       | 
+7 | WritCr 11 (N - 101)   | WritCr 11 (N - 101)
+8 | ExplExp-AAR (N - 101) | ExplExp-AAR (N - 101)
 SELF ⭕ | Counseling ❌
 
 Woznicki
-1 | Marine Biology | Marine Biology
-2 | Marine Biology | Marine Biology
-3 |                | 
-4 | Biology        | Biology
-5 |                | 
-6 | Biology        | Biology
-7 | Biology        | Biology
+1 | Marine Biology (J - 01) | Marine Biology (J - 01)
+2 | Marine Biology (J - 01) | Marine Biology (J - 01)
+3 |                         | 
+4 | Biology (J - 01)        | Biology (J - 01)
+5 |                         | 
+6 | Biology (J - 01)        | Biology (J - 01)
+7 | Biology (J - 01)        | Biology (J - 01)
 SELF ❌ | Counseling ❌
 
 Yonkers
-1 | US Hist | US Hist
-2 | US Govt | ContWld 11
-3 | US Hist | US Hist
-4 |         | 
-5 | US Govt | ContWld 11
-6 |         | 
-7 | US Govt | ContWld 11
+1 | US Hist (K - 01) | US Hist (K - 01)
+2 | US Govt (K - 01) | ContWld 11 (K - 01)
+3 | US Hist (K - 01) | US Hist (K - 01)
+4 |                  | 
+5 | US Govt (K - 01) | ContWld 11 (K - 01)
+6 |                  | 
+7 | US Govt (K - 01) | ContWld 11 (K - 01)
 SELF ❌ | Counseling ❌
 
 Yun
-1 | Geom H         | Geom H
-2 |                | 
-3 | Princ of Bus B | Princ of Bus B
-4 | Princ of Bus B | Princ of Bus B
-5 |                | 
-6 | Geom H         | Geom H
-7 | BEAM           | BEAM
+1 | Geom H (N - 204)           | Geom H (N - 204)
+2 |                            | 
+3 | Princ of Bus B (undefined) | Princ of Bus B (undefined)
+4 | Princ of Bus B (undefined) | Princ of Bus B (undefined)
+5 |                            | 
+6 | Geom H (N - 210)           | Geom H (N - 210)
+7 | BEAM (N - 205)             | BEAM (N - 205)
 SELF ⭕ | Counseling ❌
 
 Zavack
-1 | Cont Herit                | Literary Style
-2 | AmerLit 11, Am Clas11H SJ | Literary Style
-3 |                           | 
-4 | Am Clas11H                | Am Clas11H
-5 | Am Clas11H                | Am Clas11H
-6 |                           | 
-7 | Am Clas11H                | Am Clas11H
+1 | Cont Herit (N - 110)                          | Literary Style (N - 110)
+2 | AmerLit 11 (N - 110), Am Clas11H SJ (N - 110) | Literary Style (N - 110)
+3 |                                               | 
+4 | Am Clas11H (N - 110)                          | Am Clas11H (N - 110)
+5 | Am Clas11H (N - 110)                          | Am Clas11H (N - 110)
+6 |                                               | 
+7 | Am Clas11H (N - 110)                          | Am Clas11H (N - 110)
 SELF ⭕ | Counseling ❌
 
 Zizmor
-1 | Chemistry    | Chemistry
-2 |              | 
-3 | Chemistry    | Chemistry
-4 |              | 
-5 | AP Chemistry | AP Chemistry
-6 | AP Chemistry | AP Chemistry
-7 | AP Chemistry | AP Chemistry
+1 | Chemistry (J - 07)    | Chemistry (J - 07)
+2 |                       | 
+3 | Chemistry (J - 07)    | Chemistry (J - 07)
+4 |                       | 
+5 | AP Chemistry (J - 07) | AP Chemistry (J - 07)
+6 | AP Chemistry (J - 07) | AP Chemistry (J - 07)
+7 | AP Chemistry (J - 07) | AP Chemistry (J - 07)
 SELF ❌ | Counseling ❌

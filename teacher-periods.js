@@ -10,7 +10,7 @@ function createNewSchedule () {
 
 const teachers = {}
 
-function noteTeacher (teacher, period, course, semester) {
+function noteTeacher (teacher, period, room, course, semester) {
   // Some teachers don't have emails
   const teacherId = teacher.email || teacher.lastName
   if (!teachers[teacherId]) {
@@ -21,15 +21,16 @@ function noteTeacher (teacher, period, course, semester) {
     }
   }
   if (semester & 0b01) {
-    teachers[teacherId].semester1[period].push(course)
+    teachers[teacherId].semester1[period].push(`${course} (${room})`)
   }
   if (semester & 0b10) {
-    teachers[teacherId].semester2[period].push(course)
+    teachers[teacherId].semester2[period].push(`${course} (${room})`)
   }
 }
 
 for (const {
   teachers: teacherDisplay,
+  room,
   periods: periodStr,
   name: course,
   semester
@@ -37,8 +38,8 @@ for (const {
   const [period] = periodStr.split(' / ')
   const { teacher, coteacher } = teacherData[teacherDisplay] || {}
   const sem = (semester.includes('S1') ? 0b01 : 0) | (semester.includes('S2') ? 0b10 : 0)
-  if (teacher) noteTeacher(teacher, period, course, sem)
-  if (coteacher) noteTeacher(coteacher, period, course, sem)
+  if (teacher) noteTeacher(teacher, period, room, course, sem)
+  if (coteacher) noteTeacher(coteacher, period, room, course, sem)
 }
 
 for (const teacher of Object.values(teachers)) {

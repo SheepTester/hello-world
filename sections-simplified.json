@@ -2332,6 +2332,7 @@
 		"name": "Contemporary Heritage",
 		"courseNumber": "1191SJ",
 		"teachers": "Paronable, Marjorie",
+		"room": "N - 104",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -2341,6 +2342,7 @@
 		"name": "Contemporary Heritage",
 		"courseNumber": "1191SJ",
 		"teachers": "Paronable, Marjorie",
+		"room": "N - 104",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -2395,6 +2397,7 @@
 		"name": "SELF",
 		"courseNumber": "SELF",
 		"teachers": "Granlund-Moyer, Kristina",
+		"room": "L-05",
 		"periods": "SELF",
 		"semester": "S1S2",
 		"other": "HC: - | T? N | N: 6"
@@ -2413,6 +2416,7 @@
 		"name": "SELF",
 		"courseNumber": "SELF",
 		"teachers": "Holmes, Patricia A",
+		"room": "F - 06",
 		"periods": "SELF",
 		"semester": "S1S2",
 		"other": "HC: - | T? N | N: 8"
@@ -2422,6 +2426,7 @@
 		"name": "SELF",
 		"courseNumber": "SELF",
 		"teachers": "Kaneko, Takeshi",
+		"room": "N - 205",
 		"periods": "SELF",
 		"semester": "S1S2",
 		"other": "HC: - | T? N | N: 9"
@@ -2503,6 +2508,7 @@
 		"name": "SELF",
 		"courseNumber": "SELF",
 		"teachers": "Wilson, Melinda T",
+		"room": "N - 101",
 		"periods": "SELF",
 		"semester": "S1S2",
 		"other": "HC: - | T? N | N: 18"
@@ -2539,6 +2545,7 @@
 		"name": "SELF",
 		"courseNumber": "SELF",
 		"teachers": "Blackburn, Kristy L",
+		"room": "P-117",
 		"periods": "SELF",
 		"semester": "S1S2",
 		"other": "HC: - | T? N | N: 22"
@@ -2692,6 +2699,7 @@
 		"name": "SELF",
 		"courseNumber": "SELF",
 		"teachers": "Camicia, Michael A",
+		"room": "L-08",
 		"periods": "SELF",
 		"semester": "S1S2",
 		"other": "HC: - | T? N | N: 39"
@@ -2719,6 +2727,7 @@
 		"name": "SELF",
 		"courseNumber": "SELF",
 		"teachers": "Halter, Ethan",
+		"room": "V-04",
 		"periods": "SELF",
 		"semester": "S1S2",
 		"other": "HC: - | T? N | N: 42"
@@ -2728,6 +2737,7 @@
 		"name": "SELF",
 		"courseNumber": "SELF",
 		"teachers": "Hexsel, Jessica",
+		"room": "N -115 Lab",
 		"periods": "SELF",
 		"semester": "S1S2",
 		"other": "HC: - | T? N | N: 43"
@@ -2800,6 +2810,7 @@
 		"name": "SELF",
 		"courseNumber": "SELF",
 		"teachers": "Owen, Kristen B",
+		"room": "N - 110",
 		"periods": "SELF",
 		"semester": "S1S2",
 		"other": "HC: - | T? N | N: 51"
@@ -2863,6 +2874,7 @@
 		"name": "SELF",
 		"courseNumber": "SELF",
 		"teachers": "Bautista, Michael",
+		"room": "N - 203",
 		"periods": "SELF",
 		"semester": "S1S2",
 		"other": "HC: - | T? N | N: 58"
@@ -2971,6 +2983,7 @@
 		"name": "SELF",
 		"courseNumber": "SELF",
 		"teachers": "Merchant, Angela C",
+		"room": "L-02",
 		"periods": "SELF",
 		"semester": "S1S2",
 		"other": "HC: - | T? N | N: 70"
@@ -3313,6 +3326,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Brown, Justin D",
+		"room": "N - 106",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 39 | T? Y | N: 1"
@@ -3322,6 +3336,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Hernandez, Mark M",
+		"room": "N - 105",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: 39 | T? Y | N: 2"
@@ -3331,6 +3346,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Zavack, Kate",
+		"room": "N - 110",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: 39 | T? Y | N: 3"
@@ -3340,6 +3356,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Brown, Justin D",
+		"room": "N - 106",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 39 | T? Y | N: 4"
@@ -3349,6 +3366,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Zavack, Kate",
+		"room": "N - 110",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 39 | T? Y | N: 5"
@@ -3358,6 +3376,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Zavack, Kate",
+		"room": "N - 110",
 		"periods": "7",
 		"semester": "S1",
 		"other": "HC: 39 | T? Y | N: 6"
@@ -3367,6 +3386,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Brown, Justin D",
+		"room": "N - 106",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 39 | T? Y | N: 7"
@@ -3376,6 +3396,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Igler, Marc",
+		"room": "N - 107",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 39 | T? Y | N: 8"
@@ -3385,6 +3406,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Hernandez, Mark M",
+		"room": "N - 105",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 39 | T? Y | N: 9"
@@ -3394,6 +3416,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Igler, Marc",
+		"room": "N - 107",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 39 | T? Y | N: 10"
@@ -3403,6 +3426,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Hernandez, Mark M",
+		"room": "N - 105",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 39 | T? Y | N: 11"
@@ -3412,6 +3436,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Zavack, Kate",
+		"room": "N - 110",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 39 | T? Y | N: 12"
@@ -3421,6 +3446,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Brown, Justin D",
+		"room": "N - 106",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 39 | T? Y | N: 13"
@@ -3430,6 +3456,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Zavack, Kate",
+		"room": "N - 110",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 39 | T? Y | N: 14"
@@ -3439,6 +3466,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Igler, Marc",
+		"room": "N - 105",
 		"periods": "6",
 		"semester": "S2",
 		"other": "HC: 39 | T? Y | N: 15"
@@ -3448,6 +3476,7 @@
 		"name": "Am Clas11H",
 		"courseNumber": "1309",
 		"teachers": "Zavack, Kate",
+		"room": "N - 110",
 		"periods": "7",
 		"semester": "S2",
 		"other": "HC: 39 | T? Y | N: 16"
@@ -3457,6 +3486,7 @@
 		"name": "Literary Style",
 		"courseNumber": "1193SJ",
 		"teachers": "Zavack, Kate",
+		"room": "N - 110",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -3466,6 +3496,7 @@
 		"name": "Literary Style",
 		"courseNumber": "1193SJ",
 		"teachers": "Zavack, Kate",
+		"room": "N - 110",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -3475,6 +3506,7 @@
 		"name": "AmerLit",
 		"courseNumber": "1263",
 		"teachers": "Wells, Jordan T",
+		"room": "N - 101",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: - | T? Y | N: 1"
@@ -3484,6 +3516,7 @@
 		"name": "AmerLit",
 		"courseNumber": "1263",
 		"teachers": "Blackburn/Tabuchi Co-taught",
+		"room": "N - 106",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: - | T? Y | N: 2"
@@ -3493,6 +3526,7 @@
 		"name": "AmerLit",
 		"courseNumber": "1263",
 		"teachers": "Wells, Jordan T",
+		"room": "N - 101",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: - | T? Y | N: 3"
@@ -3502,6 +3536,7 @@
 		"name": "AmerLit",
 		"courseNumber": "1263",
 		"teachers": "Blackburn/Tabuchi Co-taught",
+		"room": "N - 106",
 		"periods": "6",
 		"semester": "S1",
 		"other": "HC: - | T? Y | N: 4"
@@ -3511,6 +3546,7 @@
 		"name": "AmerLit",
 		"courseNumber": "1263",
 		"teachers": "Wells, Jordan T",
+		"room": "N - 101",
 		"periods": "7",
 		"semester": "S1",
 		"other": "HC: - | T? Y | N: 5"
@@ -3520,6 +3556,7 @@
 		"name": "AmerLit",
 		"courseNumber": "1263",
 		"teachers": "Blackburn, Kristy L",
+		"room": "N - 106",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: - | T? Y | N: 6"
@@ -3529,6 +3566,7 @@
 		"name": "AmerLit",
 		"courseNumber": "1263",
 		"teachers": "Wells, Jordan T",
+		"room": "N - 101",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: - | T? Y | N: 7"
@@ -3538,6 +3576,7 @@
 		"name": "AmerLit",
 		"courseNumber": "1263",
 		"teachers": "Blackburn/Tabuchi Co-taught",
+		"room": "N - 106",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: - | T? Y | N: 8"
@@ -3547,6 +3586,7 @@
 		"name": "AmerLit",
 		"courseNumber": "1263",
 		"teachers": "Wells, Jordan T",
+		"room": "N - 101",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: - | T? Y | N: 9"
@@ -3556,6 +3596,7 @@
 		"name": "AmerLit",
 		"courseNumber": "1263",
 		"teachers": "Blackburn/Tabuchi Co-taught",
+		"room": "N - 106",
 		"periods": "6",
 		"semester": "S2",
 		"other": "HC: - | T? Y | N: 10"
@@ -3565,6 +3606,7 @@
 		"name": "AmerLit",
 		"courseNumber": "1263",
 		"teachers": "Wells, Jordan T",
+		"room": "N - 101",
 		"periods": "7",
 		"semester": "S2",
 		"other": "HC: - | T? Y | N: 11"
@@ -3574,6 +3616,7 @@
 		"name": "Contemporary Heritage SLC",
 		"courseNumber": "9409",
 		"teachers": "Owen, Kristen B",
+		"room": "N - 110",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: - | T? Y | N: 1"
@@ -3583,6 +3626,7 @@
 		"name": "Literary Style SLC",
 		"courseNumber": "9410",
 		"teachers": "Owen, Kristen B",
+		"room": "N - 110",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: - | T? Y | N: 1"
@@ -3592,6 +3636,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Ichikawa, Diane M",
+		"room": "N - 112",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -3601,6 +3646,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Moyer, Virginia L",
+		"room": "N - 113",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -3610,6 +3656,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Hall, Lisa A",
+		"room": "P-105",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -3619,6 +3666,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Halter, Ethan",
+		"room": "V-04",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -3628,6 +3676,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Moyer, Virginia L",
+		"room": "N - 113",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -3637,6 +3686,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Halter/Bissegger Co-taught",
+		"room": "V-04",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -3646,6 +3696,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Ja, Katherine",
+		"room": "N - 113",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -3655,6 +3706,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Kitada, Terence",
+		"room": "N - 108",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -3664,6 +3716,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Paronable, Marjorie",
+		"room": "N - 104",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 9"
@@ -3673,6 +3726,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Holdener, Shaina",
+		"room": "N - 103",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 10"
@@ -3682,6 +3736,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Ja, Katherine",
+		"room": "N - 113",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 11"
@@ -3691,6 +3746,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Paronable/ Bissegger Co-taught",
+		"room": "N - 104",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 12"
@@ -3700,6 +3756,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Ichikawa, Diane M",
+		"room": "N - 112",
 		"periods": "6",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 13"
@@ -3709,6 +3766,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Ja, Katherine",
+		"room": "N - 113",
 		"periods": "6",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 14"
@@ -3718,6 +3776,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Kitada, Terence",
+		"room": "N - 108",
 		"periods": "6",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 15"
@@ -3727,6 +3786,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Halter/Bissegger  Co-taught",
+		"room": "V-04",
 		"periods": "7",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 16"
@@ -3736,6 +3796,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Ichikawa, Diane M",
+		"room": "N - 112",
 		"periods": "7",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 17"
@@ -3745,6 +3806,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Paronable, Marjorie",
+		"room": "N - 104",
 		"periods": "7",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 18"
@@ -3754,6 +3816,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Halter, Ethan",
+		"room": "V-04",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 19"
@@ -3763,6 +3826,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Ichikawa, Diane M",
+		"room": "N - 112",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 20"
@@ -3772,6 +3836,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Moyer, Virginia L",
+		"room": "N - 113",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 21"
@@ -3781,6 +3846,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Hall, Lisa A",
+		"room": "P-105",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 22"
@@ -3790,6 +3856,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Moyer, Virginia L",
+		"room": "N - 113",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 23"
@@ -3799,6 +3866,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Halter/Bissegger Co-taught",
+		"room": "V-04",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 24"
@@ -3808,6 +3876,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Ja, Katherine",
+		"room": "N - 113",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 25"
@@ -3817,6 +3886,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Kitada, Terence",
+		"room": "N - 108",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 26"
@@ -3826,6 +3896,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Paronable/Bissegger Co-taught",
+		"room": "N - 104",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 27"
@@ -3835,6 +3906,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Holdener, Shaina",
+		"room": "N - 103",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 28"
@@ -3844,6 +3916,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Ja, Katherine",
+		"room": "N - 113",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 29"
@@ -3853,6 +3926,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Kitada, Terence",
+		"room": "N - 108",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 30"
@@ -3862,6 +3936,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Paronable/Bissegger Co-taught",
+		"room": "N - 104",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 31"
@@ -3871,6 +3946,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Ichikawa, Diane M",
+		"room": "N - 112",
 		"periods": "6",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 32"
@@ -3880,6 +3956,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Ja, Katherine",
+		"room": "N - 113",
 		"periods": "6",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 33"
@@ -3889,6 +3966,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Kitada, Terence",
+		"room": "N - 108",
 		"periods": "6",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 34"
@@ -3898,6 +3976,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Paronable, Marjorie",
+		"room": "N - 104",
 		"periods": "7",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 35"
@@ -3907,6 +3986,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Halter/Bissegger Co-taught",
+		"room": "V-04",
 		"periods": "7",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 36"
@@ -3916,6 +3996,7 @@
 		"name": "Lit Style",
 		"courseNumber": "1193",
 		"teachers": "Ichikawa, Diane M",
+		"room": "N - 112",
 		"periods": "7",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 37"
@@ -3925,6 +4006,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Halter, Ethan",
+		"room": "V-04",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -3934,6 +4016,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Holdener, Shaina",
+		"room": "N - 103",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -3943,6 +4026,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Zavack, Kate",
+		"room": "N - 110",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -3952,6 +4036,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Holdener, Shaina",
+		"room": "N - 103",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -3961,6 +4046,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Munger, Julie G",
+		"room": "N - 111",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -3970,6 +4056,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Holdener, Shaina",
+		"room": "N - 103",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -3979,6 +4066,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Whichard/Sims Co-taught",
+		"room": "N - 109",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -3988,6 +4076,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Holdener, Shaina",
+		"room": "N - 103",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -3997,6 +4086,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Ja/Sims Co-taught",
+		"room": "N - 113",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 9"
@@ -4015,6 +4105,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Halter, Ethan",
+		"room": "V-04",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 11"
@@ -4024,6 +4115,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Kitada, Terence",
+		"room": "N - 108",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 12"
@@ -4033,6 +4125,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Whichard/Sims Co-taught",
+		"room": "N - 109",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 13"
@@ -4051,6 +4144,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Owen, Kristen B",
+		"room": "N - 110",
 		"periods": "6",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 15"
@@ -4069,6 +4163,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Ja/Sims Co-taught",
+		"room": "N - 113",
 		"periods": "7",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 17"
@@ -4078,6 +4173,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Kitada, Terence",
+		"room": "N - 108",
 		"periods": "7",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 18"
@@ -4087,6 +4183,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Holdener, Shaina",
+		"room": "N - 103",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 19"
@@ -4096,6 +4193,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Paronable, Marjorie",
+		"room": "N - 104",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 20"
@@ -4105,6 +4203,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Halter, Ethan",
+		"room": "V-04",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 21"
@@ -4114,6 +4213,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Holdener, Shaina",
+		"room": "N - 103",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 22"
@@ -4123,6 +4223,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Munger, Julie G",
+		"room": "N - 111",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 23"
@@ -4132,6 +4233,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Paronable, Marjorie",
+		"room": "N - 104",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 24"
@@ -4141,6 +4243,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Holdener, Shaina",
+		"room": "N - 103",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 25"
@@ -4150,6 +4253,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Ja, Katherine",
+		"room": "N - 113",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 26"
@@ -4159,6 +4263,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Whichard/Sims Co-taught",
+		"room": "N - 109",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 27"
@@ -4168,6 +4273,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Holdener, Shaina",
+		"room": "N - 103",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 28"
@@ -4177,6 +4283,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Halter, Ethan",
+		"room": "V-04",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 29"
@@ -4195,6 +4302,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Munger, Julie G",
+		"room": "N - 111",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 31"
@@ -4204,6 +4312,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Whichard/Sims Co-taught",
+		"room": "N - 109",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 32"
@@ -4222,6 +4331,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Dunlap, Paul E.",
+		"room": "N - 114",
 		"periods": "6",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 34"
@@ -4231,6 +4341,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Owen, Kristen B",
+		"room": "N - 110",
 		"periods": "6",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 35"
@@ -4240,6 +4351,7 @@
 		"name": "Cont Herit",
 		"courseNumber": "1191",
 		"teachers": "Ja/Sims Co-taught",
+		"room": "N - 113",
 		"periods": "7",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 36"
@@ -4258,6 +4370,7 @@
 		"name": "ERWC",
 		"courseNumber": "7650",
 		"teachers": "Munger, Julie G",
+		"room": "N - 111",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4267,6 +4380,7 @@
 		"name": "Inter Comp",
 		"courseNumber": "1328",
 		"teachers": "Munger, Julie G",
+		"room": "N - 111",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4276,6 +4390,7 @@
 		"name": "Visual Story",
 		"courseNumber": "1522",
 		"teachers": "Kitada, Terence",
+		"room": "N - 108",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4285,6 +4400,7 @@
 		"name": "Visual Story",
 		"courseNumber": "1522",
 		"teachers": "Kitada, Terence",
+		"room": "N - 108",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4294,6 +4410,7 @@
 		"name": "Visual Story",
 		"courseNumber": "1522",
 		"teachers": "Kitada, Terence",
+		"room": "N - 108",
 		"periods": "7",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -4303,6 +4420,7 @@
 		"name": "BasCollSk",
 		"courseNumber": "1512B",
 		"teachers": "Menache, Nicole M",
+		"room": "N - 102",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4312,6 +4430,7 @@
 		"name": "BasCollSk",
 		"courseNumber": "1512B",
 		"teachers": "Menache, Nicole M",
+		"room": "N - 102",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4321,6 +4440,7 @@
 		"name": "AP English Lit & Comp",
 		"courseNumber": "1279",
 		"teachers": "Dunlap, Paul E.",
+		"room": "N - 114",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -4330,6 +4450,7 @@
 		"name": "AP English Lit & Comp",
 		"courseNumber": "1279",
 		"teachers": "Dunlap, Paul E.",
+		"room": "N - 114",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -4339,6 +4460,7 @@
 		"name": "AP English Lit & Comp",
 		"courseNumber": "1279",
 		"teachers": "Ichikawa, Diane M",
+		"room": "N - 112",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -4348,6 +4470,7 @@
 		"name": "AP English Lit & Comp",
 		"courseNumber": "1279",
 		"teachers": "Hernandez, Mark M",
+		"room": "N - 105",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 4"
@@ -4357,6 +4480,7 @@
 		"name": "AP English Lit & Comp",
 		"courseNumber": "1279",
 		"teachers": "Hernandez, Mark M",
+		"room": "N - 105",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 5"
@@ -4366,6 +4490,7 @@
 		"name": "Film Lit",
 		"courseNumber": "1332",
 		"teachers": "Hernandez, Mark M",
+		"room": "N - 105",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4375,6 +4500,7 @@
 		"name": "Film Lit",
 		"courseNumber": "1332",
 		"teachers": "Brown, Justin D",
+		"room": "N - 106",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4384,6 +4510,7 @@
 		"name": "Film Lit",
 		"courseNumber": "1332",
 		"teachers": "Hernandez, Mark M",
+		"room": "N - 105",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -4393,6 +4520,7 @@
 		"name": "Film Lit",
 		"courseNumber": "1332",
 		"teachers": "Brown, Justin D",
+		"room": "N - 106",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -4402,6 +4530,7 @@
 		"name": "Film Lit",
 		"courseNumber": "1332",
 		"teachers": "Hernandez, Mark M",
+		"room": "N - 105",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -4411,6 +4540,7 @@
 		"name": "Film Lit",
 		"courseNumber": "1332",
 		"teachers": "Brown/Tabuchi Co-taught",
+		"room": "N - 106",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -4420,6 +4550,7 @@
 		"name": "Film Lit",
 		"courseNumber": "1332",
 		"teachers": "Brown/Tabuchi Co-taught",
+		"room": "N - 106",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -4429,6 +4560,7 @@
 		"name": "Escape Lit",
 		"courseNumber": "1384",
 		"teachers": "Igler/Tabuchi Co-taught",
+		"room": "N - 107",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4438,6 +4570,7 @@
 		"name": "Escape Lit",
 		"courseNumber": "1384",
 		"teachers": "Igler/Tabuchi Co-taught",
+		"room": "N - 107",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4447,6 +4580,7 @@
 		"name": "Class Myth",
 		"courseNumber": "1469",
 		"teachers": "Igler, Marc",
+		"room": "N - 107",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4456,6 +4590,7 @@
 		"name": "Class Myth",
 		"courseNumber": "1469",
 		"teachers": "Igler, Marc",
+		"room": "N - 107",
 		"periods": "6",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4465,6 +4600,7 @@
 		"name": "Class Myth",
 		"courseNumber": "1469",
 		"teachers": "Igler, Marc",
+		"room": "N - 107",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -4474,6 +4610,7 @@
 		"name": "WritCr 11",
 		"courseNumber": "7601",
 		"teachers": "Wilson, Melinda T",
+		"room": "N - 101",
 		"periods": "7",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4483,6 +4620,7 @@
 		"name": "WritCr 11",
 		"courseNumber": "7601",
 		"teachers": "Dunlap, Paul E.",
+		"room": "N - 114",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4492,6 +4630,7 @@
 		"name": "WritCr 11",
 		"courseNumber": "7601",
 		"teachers": "Wilson, Melinda T",
+		"room": "N - 101",
 		"periods": "7",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -4501,6 +4640,7 @@
 		"name": "Philos Lit",
 		"courseNumber": "1179",
 		"teachers": "Wells, Jordan T",
+		"room": "N - 101",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4510,6 +4650,7 @@
 		"name": "Philos Lit",
 		"courseNumber": "1179",
 		"teachers": "Wells, Jordan T",
+		"room": "N - 101",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4519,6 +4660,7 @@
 		"name": "Philos Lit",
 		"courseNumber": "1179",
 		"teachers": "Wells, Jordan T",
+		"room": "N - 101",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -4528,6 +4670,7 @@
 		"name": "Philos Lit",
 		"courseNumber": "1179",
 		"teachers": "Wells, Jordan T",
+		"room": "N - 101",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -4537,6 +4680,7 @@
 		"name": "ReadBetLines",
 		"courseNumber": "1521B",
 		"teachers": "Munger, Julie G",
+		"room": "N - 111",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4546,6 +4690,7 @@
 		"name": "ReadBetLines",
 		"courseNumber": "1521B",
 		"teachers": "Munger, Julie G",
+		"room": "N - 111",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4555,6 +4700,7 @@
 		"name": "ReadBetLines",
 		"courseNumber": "1521B",
 		"teachers": "Munger, Julie G",
+		"room": "N - 111",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -4564,6 +4710,7 @@
 		"name": "Eng LL 1",
 		"courseNumber": "8761",
 		"teachers": "Helbing, Kerstin",
+		"room": "K - 04",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4573,6 +4720,7 @@
 		"name": "Eng LL 1",
 		"courseNumber": "8761",
 		"teachers": "Helbing, Kerstin",
+		"room": "K - 04",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4582,6 +4730,7 @@
 		"name": "Eng LL 2",
 		"courseNumber": "8762",
 		"teachers": "Helbing, Kerstin",
+		"room": "K - 04",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4591,6 +4740,7 @@
 		"name": "Eng LL 2",
 		"courseNumber": "8762",
 		"teachers": "Helbing, Kerstin",
+		"room": "K - 04",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4600,6 +4750,7 @@
 		"name": "EL 28",
 		"courseNumber": "8768B",
 		"teachers": "Helbing, Kerstin",
+		"room": "K - 04",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4609,6 +4760,7 @@
 		"name": "EL 28",
 		"courseNumber": "8768B",
 		"teachers": "Helbing, Kerstin",
+		"room": "K - 04",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4618,6 +4770,7 @@
 		"name": "WldHist LL",
 		"courseNumber": "8784",
 		"teachers": "Arteaga, Arlena",
+		"room": "G - 06",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4627,6 +4780,7 @@
 		"name": "USGovtLL",
 		"courseNumber": "8781",
 		"teachers": "Arteaga, Arlena",
+		"room": "G - 06",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4636,6 +4790,7 @@
 		"name": "USGovtLL",
 		"courseNumber": "8781",
 		"teachers": "Arteaga, Arlena",
+		"room": "G - 06",
 		"periods": "7",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4645,6 +4800,7 @@
 		"name": "ContWld LL",
 		"courseNumber": "8778",
 		"teachers": "Arteaga, Arlena",
+		"room": "G - 06",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4654,6 +4810,7 @@
 		"name": "ContWld LL",
 		"courseNumber": "8778",
 		"teachers": "Arteaga, Arlena",
+		"room": "G - 06",
 		"periods": "7",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4663,6 +4820,7 @@
 		"name": "Stu Govt",
 		"courseNumber": "8390",
 		"teachers": "Hall, Lisa A",
+		"room": "P-105",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4672,6 +4830,7 @@
 		"name": "Focus on Success",
 		"courseNumber": "2010",
 		"teachers": "Menache, Nicole M",
+		"room": "K - 14",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4681,6 +4840,7 @@
 		"name": "Focus on Success",
 		"courseNumber": "2010",
 		"teachers": "Derrick-Navarro, Laura L",
+		"room": "K - 14",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4690,6 +4850,7 @@
 		"name": "Focus on Success",
 		"courseNumber": "2010",
 		"teachers": "Owen, Kristen B",
+		"room": "K - 14",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -4699,6 +4860,7 @@
 		"name": "Focus on Success",
 		"courseNumber": "2010",
 		"teachers": "Owen, Kristen B",
+		"room": "K - 14",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -4708,6 +4870,7 @@
 		"name": "Focus on Success",
 		"courseNumber": "2010",
 		"teachers": "Menache, Nicole M",
+		"room": "K - 14",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -4717,6 +4880,7 @@
 		"name": "Focus on Success",
 		"courseNumber": "2010",
 		"teachers": "Aston, Timothy",
+		"room": "K - 14",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -4726,6 +4890,7 @@
 		"name": "AVID",
 		"courseNumber": "8334",
 		"teachers": "Whichard, Danielle",
+		"room": "N - 109",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4735,6 +4900,7 @@
 		"name": "AVID",
 		"courseNumber": "8334",
 		"teachers": "Whichard, Danielle",
+		"room": "N - 109",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4744,6 +4910,7 @@
 		"name": "AVID",
 		"courseNumber": "8334",
 		"teachers": "Whichard, Danielle",
+		"room": "N - 109",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -4809,6 +4976,7 @@
 		"name": "Liv Skill",
 		"courseNumber": "8458",
 		"teachers": "Tucker, Jeanette",
+		"room": "V-03",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -4818,6 +4986,7 @@
 		"name": "Liv Skill",
 		"courseNumber": "8458",
 		"teachers": "Tucker, Jeanette",
+		"room": "V-03",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -4827,6 +4996,7 @@
 		"name": "Liv Skill",
 		"courseNumber": "8458",
 		"teachers": "Tucker, Jeanette",
+		"room": "V-03",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -4836,6 +5006,7 @@
 		"name": "Liv Skill",
 		"courseNumber": "8458",
 		"teachers": "Tucker, Jeanette",
+		"room": "V-03",
 		"periods": "6",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -4845,6 +5016,7 @@
 		"name": "Liv Skill",
 		"courseNumber": "8458",
 		"teachers": "Tucker, Jeanette",
+		"room": "V-03",
 		"periods": "7",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -4854,6 +5026,7 @@
 		"name": "Liv Skill",
 		"courseNumber": "8458",
 		"teachers": "Tucker, Jeanette",
+		"room": "V-03",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -4863,6 +5036,7 @@
 		"name": "Liv Skill",
 		"courseNumber": "8458",
 		"teachers": "Tucker, Jeanette",
+		"room": "V-03",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -4872,6 +5046,7 @@
 		"name": "Liv Skill",
 		"courseNumber": "8458",
 		"teachers": "Tucker, Jeanette",
+		"room": "V-03",
 		"periods": "6",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -4881,6 +5056,7 @@
 		"name": "Liv Skill",
 		"courseNumber": "8458",
 		"teachers": "Tucker, Jeanette",
+		"room": "V-03",
 		"periods": "7",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 9"
@@ -4899,6 +5075,7 @@
 		"name": "AP Calculus AB",
 		"courseNumber": "2449",
 		"teachers": "Dion, Rachel",
+		"room": "N - 212",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -4908,6 +5085,7 @@
 		"name": "AP Calculus AB",
 		"courseNumber": "2449",
 		"teachers": "Dion, Rachel",
+		"room": "N - 212",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -4917,6 +5095,7 @@
 		"name": "AP Calculus AB",
 		"courseNumber": "2449",
 		"teachers": "Dion, Rachel",
+		"room": "N - 212",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -4926,6 +5105,7 @@
 		"name": "AP Calculus AB",
 		"courseNumber": "2449",
 		"teachers": "Bautista, Michael",
+		"room": "N - 203",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 4"
@@ -4935,6 +5115,7 @@
 		"name": "AP Calculus AB",
 		"courseNumber": "2449",
 		"teachers": "Bautista, Michael",
+		"room": "N - 203",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 5"
@@ -4944,6 +5125,7 @@
 		"name": "AP Calculus AB",
 		"courseNumber": "2449",
 		"teachers": "Bautista, Michael",
+		"room": "N - 203",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 6"
@@ -4953,6 +5135,7 @@
 		"name": "AP Calculus BC",
 		"courseNumber": "2459",
 		"teachers": "Deggeller, David M",
+		"room": "N - 204",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -4962,6 +5145,7 @@
 		"name": "AP Calculus BC",
 		"courseNumber": "2459",
 		"teachers": "Deggeller, David M",
+		"room": "N - 204",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -4971,6 +5155,7 @@
 		"name": "AP Calculus BC",
 		"courseNumber": "2459",
 		"teachers": "Redfield, Christopher",
+		"room": "N - 208",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -4980,6 +5165,7 @@
 		"name": "AP Calculus BC",
 		"courseNumber": "2459",
 		"teachers": "Redfield, Christopher",
+		"room": "N - 208",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 4"
@@ -4989,6 +5175,7 @@
 		"name": "AP Calculus BC",
 		"courseNumber": "2459",
 		"teachers": "Redfield, Christopher",
+		"room": "N - 208",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 5"
@@ -4998,6 +5185,7 @@
 		"name": "Pre Calc",
 		"courseNumber": "2371",
 		"teachers": "Saxena, Karen",
+		"room": "N - 213",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5007,6 +5195,7 @@
 		"name": "Pre Calc",
 		"courseNumber": "2371",
 		"teachers": "Saxena, Karen",
+		"room": "N - 213",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5016,6 +5205,7 @@
 		"name": "Analysis H",
 		"courseNumber": "2399",
 		"teachers": "Tantod, Gopi D",
+		"room": "N - 205",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 1"
@@ -5025,6 +5215,7 @@
 		"name": "Analysis H",
 		"courseNumber": "2399",
 		"teachers": "Tantod, Gopi D",
+		"room": "N - 205",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 2"
@@ -5034,6 +5225,7 @@
 		"name": "Analysis H",
 		"courseNumber": "2399",
 		"teachers": "Tantod, Gopi D",
+		"room": "N - 205",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 3"
@@ -5043,6 +5235,7 @@
 		"name": "Analysis H",
 		"courseNumber": "2399",
 		"teachers": "Gleason, Diane K",
+		"room": "N - 206",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 4"
@@ -5052,6 +5245,7 @@
 		"name": "Analysis H",
 		"courseNumber": "2399",
 		"teachers": "Gleason, Diane K",
+		"room": "N - 206",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 5"
@@ -5061,6 +5255,7 @@
 		"name": "Analysis H",
 		"courseNumber": "2399",
 		"teachers": "Gleason, Diane K",
+		"room": "N - 206",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 6"
@@ -5070,6 +5265,7 @@
 		"name": "Analysis H",
 		"courseNumber": "2399",
 		"teachers": "Gleason, Diane K",
+		"room": "N - 206",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 7"
@@ -5079,6 +5275,7 @@
 		"name": "Alg2/Trg A",
 		"courseNumber": "2365",
 		"teachers": "Congress, Rachel A",
+		"room": "N - 201",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5088,6 +5285,7 @@
 		"name": "Alg2/Trg A",
 		"courseNumber": "2365",
 		"teachers": "Congress, Rachel A",
+		"room": "N - 201",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5097,6 +5295,7 @@
 		"name": "Alg2/Trg A",
 		"courseNumber": "2365",
 		"teachers": "Chen, Brenda",
+		"room": "N - 203",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -5106,6 +5305,7 @@
 		"name": "Alg2/Trg A",
 		"courseNumber": "2365",
 		"teachers": "Chen, Brenda",
+		"room": "N - 203",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -5115,6 +5315,7 @@
 		"name": "Alg2/Trg A",
 		"courseNumber": "2365",
 		"teachers": "Deggeller, David M",
+		"room": "N - 204",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -5124,6 +5325,7 @@
 		"name": "Alg2/Trg A",
 		"courseNumber": "2365",
 		"teachers": "Deggeller, David M",
+		"room": "N - 204",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -5133,6 +5335,7 @@
 		"name": "Alg2/Trg A",
 		"courseNumber": "2365",
 		"teachers": "Congress, Rachel A",
+		"room": "N - 204",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -5142,6 +5345,7 @@
 		"name": "Alg2",
 		"courseNumber": "2380",
 		"teachers": "Renazco/Axelrod Co-taught",
+		"room": "N - 213",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5151,6 +5355,7 @@
 		"name": "Alg2",
 		"courseNumber": "2380",
 		"teachers": "Renazco/Axelrod Co-taught",
+		"room": "N - 213",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5160,6 +5365,7 @@
 		"name": "Alg2",
 		"courseNumber": "2380",
 		"teachers": "Wang, Danning",
+		"room": "N - 211",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -5169,6 +5375,7 @@
 		"name": "Alg2",
 		"courseNumber": "2380",
 		"teachers": "Renazco, Daisy E",
+		"room": "N - 213",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -5178,6 +5385,7 @@
 		"name": "IntrAnl/Calc",
 		"courseNumber": "2385",
 		"teachers": "Hawes, Kathy J",
+		"room": "N - 209",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5187,6 +5395,7 @@
 		"name": "IntrAnl/Calc",
 		"courseNumber": "2385",
 		"teachers": "Pinkston, Emily",
+		"room": "N - 202",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5196,6 +5405,7 @@
 		"name": "IntrAnl/Calc",
 		"courseNumber": "2385",
 		"teachers": "Pinkston, Emily",
+		"room": "N - 202",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -5205,6 +5415,7 @@
 		"name": "IntrAnl/Calc",
 		"courseNumber": "2385",
 		"teachers": "Hawes, Kathy J",
+		"room": "N - 209",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -5214,6 +5425,7 @@
 		"name": "IntrAnl/Calc",
 		"courseNumber": "2385",
 		"teachers": "Hawes, Kathy J",
+		"room": "N - 209",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -5223,6 +5435,7 @@
 		"name": "IntrAnl/Calc",
 		"courseNumber": "2385",
 		"teachers": "Kaneko, Takeshi",
+		"room": "N - 205",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -5232,6 +5445,7 @@
 		"name": "IntrAnl/Calc",
 		"courseNumber": "2385",
 		"teachers": "Kaneko, Takeshi",
+		"room": "N - 205",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -5241,6 +5455,7 @@
 		"name": "AP Statistics",
 		"courseNumber": "2319",
 		"teachers": "Jamison, Marcus",
+		"room": "N - 210",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -5250,6 +5465,7 @@
 		"name": "AP Statistics",
 		"courseNumber": "2319",
 		"teachers": "Jamison, Marcus",
+		"room": "N - 210",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -5259,6 +5475,7 @@
 		"name": "AP Statistics",
 		"courseNumber": "2319",
 		"teachers": "Congress, Rachel A",
+		"room": "N - 201",
 		"periods": "4 / GT 4",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -5268,6 +5485,7 @@
 		"name": "AP Statistics",
 		"courseNumber": "2319",
 		"teachers": "Congress, Rachel A",
+		"room": "N - 201",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 4"
@@ -5277,6 +5495,7 @@
 		"name": "Alg 1A",
 		"courseNumber": "2348",
 		"teachers": "Pinkston/Axelrod Co-taught",
+		"room": "N - 202",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5286,6 +5505,7 @@
 		"name": "Alg 1A",
 		"courseNumber": "2348",
 		"teachers": "Limburg, Florina A",
+		"room": "N - 207",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5295,6 +5515,7 @@
 		"name": "Alg 1A",
 		"courseNumber": "2348",
 		"teachers": "Limburg, Florina A",
+		"room": "N - 207",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -5304,6 +5525,7 @@
 		"name": "Alg 1A",
 		"courseNumber": "2348",
 		"teachers": "Pinkston/Axelrod Co-taught",
+		"room": "N - 202",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -5313,6 +5535,7 @@
 		"name": "Geom",
 		"courseNumber": "2357",
 		"teachers": "Hexsel/Lopez Co-taught",
+		"room": "N - 206",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5322,6 +5545,7 @@
 		"name": "Geom",
 		"courseNumber": "2357",
 		"teachers": "Hexsel/Lopez Co-taught",
+		"room": "N - 206",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5331,6 +5555,7 @@
 		"name": "Geom",
 		"courseNumber": "2357",
 		"teachers": "Pinkston/Lopez Co-taught",
+		"room": "N - 202",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -5340,6 +5565,7 @@
 		"name": "Geom A",
 		"courseNumber": "2358",
 		"teachers": "Wang, Danning",
+		"room": "N - 211",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5349,6 +5575,7 @@
 		"name": "Geom A",
 		"courseNumber": "2358",
 		"teachers": "Chen, Brenda",
+		"room": "N - 203",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5358,6 +5585,7 @@
 		"name": "Geom A",
 		"courseNumber": "2358",
 		"teachers": "Wang, Danning",
+		"room": "N - 211",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -5367,6 +5595,7 @@
 		"name": "Geom A",
 		"courseNumber": "2358",
 		"teachers": "Wang, Danning",
+		"room": "N - 203",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -5376,6 +5605,7 @@
 		"name": "Geom A",
 		"courseNumber": "2358",
 		"teachers": "Cismas Florea, Cristina I",
+		"room": "N - 208",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -5385,6 +5615,7 @@
 		"name": "Geom A",
 		"courseNumber": "2358",
 		"teachers": "Cismas Florea, Cristina I",
+		"room": "N - 208",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -5394,6 +5625,7 @@
 		"name": "Geom A",
 		"courseNumber": "2358",
 		"teachers": "Chen, Brenda",
+		"room": "N - 204",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -5403,6 +5635,7 @@
 		"name": "Geom A",
 		"courseNumber": "2358",
 		"teachers": "Wang, Danning",
+		"room": "N - 211",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -5412,6 +5645,7 @@
 		"name": "Alg2/TrigH",
 		"courseNumber": "2416",
 		"teachers": "Hawes, Kathy J",
+		"room": "N - 209",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 1"
@@ -5421,6 +5655,7 @@
 		"name": "Alg2/TrigH",
 		"courseNumber": "2416",
 		"teachers": "Limburg, Florina A",
+		"room": "N - 207",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 2"
@@ -5430,6 +5665,7 @@
 		"name": "Alg2/TrigH",
 		"courseNumber": "2416",
 		"teachers": "Limburg, Florina A",
+		"room": "N - 207",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 3"
@@ -5439,6 +5675,7 @@
 		"name": "Alg2/TrigH",
 		"courseNumber": "2416",
 		"teachers": "Limburg, Florina A",
+		"room": "N - 207",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 4"
@@ -5448,6 +5685,7 @@
 		"name": "Alg2/TrigH",
 		"courseNumber": "2416",
 		"teachers": "Dion, Rachel",
+		"room": "N - 212",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 5"
@@ -5457,6 +5695,7 @@
 		"name": "Alg2/TrigH",
 		"courseNumber": "2416",
 		"teachers": "Dion, Rachel",
+		"room": "N - 212",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 6"
@@ -5466,6 +5705,7 @@
 		"name": "Alg2/TrigH",
 		"courseNumber": "2416",
 		"teachers": "Hawes, Kathy J",
+		"room": "N - 209",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 7"
@@ -5475,6 +5715,7 @@
 		"name": "Applied Math",
 		"courseNumber": "2450",
 		"teachers": "Redfield, Christopher",
+		"room": "N - 212",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5484,6 +5725,7 @@
 		"name": "Applied Math",
 		"courseNumber": "2450",
 		"teachers": "Redfield, Christopher",
+		"room": "N - 212",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5493,6 +5735,7 @@
 		"name": "BEAM",
 		"courseNumber": "2433B",
 		"teachers": "Yun, Emily",
+		"room": "N - 205",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5502,6 +5745,7 @@
 		"name": "Geom H",
 		"courseNumber": "2408",
 		"teachers": "Yun, Emily",
+		"room": "N - 204",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 1"
@@ -5511,6 +5755,7 @@
 		"name": "Geom H",
 		"courseNumber": "2408",
 		"teachers": "Cismas Florea, Cristina I",
+		"room": "N - 208",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 2"
@@ -5520,6 +5765,7 @@
 		"name": "Geom H",
 		"courseNumber": "2408",
 		"teachers": "Cismas Florea, Cristina I",
+		"room": "N - 208",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 3"
@@ -5529,6 +5775,7 @@
 		"name": "Geom H",
 		"courseNumber": "2408",
 		"teachers": "Jamison, Marcus",
+		"room": "N - 210",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 4"
@@ -5538,6 +5785,7 @@
 		"name": "Geom H",
 		"courseNumber": "2408",
 		"teachers": "Jamison, Marcus",
+		"room": "N - 210",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 5"
@@ -5547,6 +5795,7 @@
 		"name": "Geom H",
 		"courseNumber": "2408",
 		"teachers": "Yun, Emily",
+		"room": "N - 210",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 6"
@@ -5556,6 +5805,7 @@
 		"name": "Geom H",
 		"courseNumber": "2408",
 		"teachers": "Jamison, Marcus",
+		"room": "N - 210",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 7"
@@ -5565,6 +5815,7 @@
 		"name": "Yoga",
 		"courseNumber": "2759",
 		"teachers": "Ames/Ichikawa",
+		"room": "V-17",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5574,6 +5825,7 @@
 		"name": "Yoga",
 		"courseNumber": "2759",
 		"teachers": "Ames, Steven B.",
+		"room": "V-17",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5583,6 +5835,7 @@
 		"name": "Yoga",
 		"courseNumber": "2759",
 		"teachers": "Ames, Steven B.",
+		"room": "V-17",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -5592,6 +5845,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "Anderson, Amy",
+		"room": "Bow GYM",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5601,6 +5855,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "McGinn, Matthew J",
+		"room": "Bow GYM",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5610,6 +5865,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "Anderson, Amy",
+		"room": "Bow GYM",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -5619,6 +5875,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "McGinn, Matthew J",
+		"room": "Bow GYM",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -5628,6 +5885,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "Creighton, Braumon",
+		"room": "Bow GYM",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -5637,6 +5895,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "McGinn, Matthew J",
+		"room": "Bow GYM",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -5646,6 +5905,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "Anderson, Amy",
+		"room": "Bow GYM",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -5655,6 +5915,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "Ames, Steven B.",
+		"room": "Bow GYM",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -5664,6 +5925,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "Anderson, Amy",
+		"room": "Bow GYM",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 9"
@@ -5673,6 +5935,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "McGinn, Matthew J",
+		"room": "Bow GYM",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 10"
@@ -5682,6 +5945,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "Anderson, Amy",
+		"room": "Bow GYM",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 11"
@@ -5691,6 +5955,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "McGinn, Matthew J",
+		"room": "Bow GYM",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 12"
@@ -5700,6 +5965,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "Anderson, Amy",
+		"room": "Bow GYM",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 13"
@@ -5709,6 +5975,7 @@
 		"name": "PE 9",
 		"courseNumber": "2695",
 		"teachers": "Ames, Steven B.",
+		"room": "Bow GYM",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 14"
@@ -5718,6 +5985,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Creighton, Braumon",
+		"room": "Bow GYM",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5727,6 +5995,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Sabbag, Kimberly A",
+		"room": "Bow GYM",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5736,6 +6005,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Sabbag, Kimberly A",
+		"room": "Bow GYM",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -5745,6 +6015,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Sabbag, Kimberly A",
+		"room": "Bow GYM",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -5754,6 +6025,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Creighton, Braumon",
+		"room": "Bow GYM",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -5763,6 +6035,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Sabbag, Kimberly A",
+		"room": "Bow GYM",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -5772,6 +6045,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Creighton, Braumon",
+		"room": "Bow GYM",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -5781,6 +6055,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Johansen, Curtis",
+		"room": "Bow GYM",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -5790,6 +6065,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Johansen, Curtis",
+		"room": "Bow GYM",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 9"
@@ -5799,6 +6075,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Creighton, Braumon",
+		"room": "Bow GYM",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 10"
@@ -5808,6 +6085,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Sabbag, Kimberly A",
+		"room": "Bow GYM",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 11"
@@ -5817,6 +6095,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Creighton, Braumon",
+		"room": "Bow GYM",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 12"
@@ -5826,6 +6105,7 @@
 		"name": "PE 10",
 		"courseNumber": "2696",
 		"teachers": "Sabbag, Kimberly A",
+		"room": "Bow GYM",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 13"
@@ -5835,6 +6115,7 @@
 		"name": "AP Physics 1",
 		"courseNumber": "3824",
 		"teachers": "Kompella, Jacintha",
+		"room": "J - 10",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -5844,6 +6125,7 @@
 		"name": "AP Physics 1",
 		"courseNumber": "3824",
 		"teachers": "Kompella, Jacintha",
+		"room": "J - 10",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -5853,6 +6135,7 @@
 		"name": "AP Physics 1",
 		"courseNumber": "3824",
 		"teachers": "Lorey, Ann M",
+		"room": "J - 10",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -5862,6 +6145,7 @@
 		"name": "AP Physics 1",
 		"courseNumber": "3824",
 		"teachers": "Kompella, Jacintha",
+		"room": "J - 10",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 4"
@@ -5871,6 +6155,7 @@
 		"name": "AP Physics 1",
 		"courseNumber": "3824",
 		"teachers": "Kompella, Jacintha",
+		"room": "J - 10",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 5"
@@ -5880,6 +6165,7 @@
 		"name": "AP Physics 1",
 		"courseNumber": "3824",
 		"teachers": "Lorey, Ann M",
+		"room": "J - 10",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 6"
@@ -5889,6 +6175,7 @@
 		"name": "Astrophysics",
 		"courseNumber": "6409",
 		"teachers": "Mellows, Heather",
+		"room": "J - 03",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5898,6 +6185,7 @@
 		"name": "Astrophysics",
 		"courseNumber": "6409",
 		"teachers": "Mellows, Heather",
+		"room": "J - 03",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5907,6 +6195,7 @@
 		"name": "Biology H",
 		"courseNumber": "3131",
 		"teachers": "Little, Joshua",
+		"room": "V-02",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 1"
@@ -5916,6 +6205,7 @@
 		"name": "Biology H",
 		"courseNumber": "3131",
 		"teachers": "Little, Joshua",
+		"room": "V-02",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 2"
@@ -5925,6 +6215,7 @@
 		"name": "Biology H",
 		"courseNumber": "3131",
 		"teachers": "Little, Joshua",
+		"room": "V-02",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 3"
@@ -5934,6 +6225,7 @@
 		"name": "Biology H",
 		"courseNumber": "3131",
 		"teachers": "Little, Joshua",
+		"room": "V-02",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 4"
@@ -5943,6 +6235,7 @@
 		"name": "Biology H",
 		"courseNumber": "3131",
 		"teachers": "Little, Joshua",
+		"room": "V-02",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 5"
@@ -5952,6 +6245,7 @@
 		"name": "Biology H",
 		"courseNumber": "3131",
 		"teachers": "Merchant, Angela C",
+		"room": "L-02",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 6"
@@ -5961,6 +6255,7 @@
 		"name": "Biology H",
 		"courseNumber": "3131",
 		"teachers": "Merchant, Angela C",
+		"room": "L-02",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 7"
@@ -5970,6 +6265,7 @@
 		"name": "Marine Biology",
 		"courseNumber": "3168",
 		"teachers": "Woznicki, Christina",
+		"room": "J - 01",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5979,6 +6275,7 @@
 		"name": "Marine Biology",
 		"courseNumber": "3168",
 		"teachers": "Woznicki, Christina",
+		"room": "J - 01",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -5988,6 +6285,7 @@
 		"name": "Chemistry",
 		"courseNumber": "3624",
 		"teachers": "Zizmor, Elana",
+		"room": "J - 07",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -5997,6 +6295,7 @@
 		"name": "Chemistry",
 		"courseNumber": "3624",
 		"teachers": "Zizmor, Elana",
+		"room": "J - 07",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -6006,6 +6305,7 @@
 		"name": "Chemistry",
 		"courseNumber": "3624",
 		"teachers": "Ledgerwood, Eric",
+		"room": "J - 06",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -6015,6 +6315,7 @@
 		"name": "Chemistry",
 		"courseNumber": "3624",
 		"teachers": "Ledgerwood, Eric",
+		"room": "J - 06",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -6024,6 +6325,7 @@
 		"name": "Chemistry",
 		"courseNumber": "3624",
 		"teachers": "O'Connell, Casey J",
+		"room": "L-01",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -6033,6 +6335,7 @@
 		"name": "Chemistry",
 		"courseNumber": "3624",
 		"teachers": "O'Connell, Casey J",
+		"room": "J - 06",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -6042,6 +6345,7 @@
 		"name": "Chemistry",
 		"courseNumber": "3624",
 		"teachers": "Catalano, Kathryn",
+		"room": "J - 08",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -6051,6 +6355,7 @@
 		"name": "Chemistry",
 		"courseNumber": "3624",
 		"teachers": "O'Connell, Casey J",
+		"room": "J - 06",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -6060,6 +6365,7 @@
 		"name": "Chemistry",
 		"courseNumber": "3624",
 		"teachers": "Catalano, Kathryn",
+		"room": "L-01",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 9"
@@ -6069,6 +6375,7 @@
 		"name": "Chemistry",
 		"courseNumber": "3624",
 		"teachers": "Catalano, Kathryn",
+		"room": "L-01",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 10"
@@ -6078,6 +6385,7 @@
 		"name": "AP Chemistry",
 		"courseNumber": "3609",
 		"teachers": "Zizmor, Elana",
+		"room": "J - 07",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -6087,6 +6395,7 @@
 		"name": "AP Chemistry",
 		"courseNumber": "3609",
 		"teachers": "Zizmor, Elana",
+		"room": "J - 07",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -6096,6 +6405,7 @@
 		"name": "AP Chemistry",
 		"courseNumber": "3609",
 		"teachers": "Zizmor, Elana",
+		"room": "J - 07",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -6105,6 +6415,7 @@
 		"name": "AP Biology",
 		"courseNumber": "3139",
 		"teachers": "Lee, Jena",
+		"room": "J - 02",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -6114,6 +6425,7 @@
 		"name": "AP Biology",
 		"courseNumber": "3139",
 		"teachers": "Lee, Jena",
+		"room": "J - 02",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -6123,6 +6435,7 @@
 		"name": "AP Biology",
 		"courseNumber": "3139",
 		"teachers": "Powell, Maria",
+		"room": "J - 02",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -6132,6 +6445,7 @@
 		"name": "AP Biology",
 		"courseNumber": "3139",
 		"teachers": "Powell, Maria",
+		"room": "J - 02",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 4"
@@ -6141,6 +6455,7 @@
 		"name": "AP Biology",
 		"courseNumber": "3139",
 		"teachers": "Powell, Maria",
+		"room": "J - 02",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 5"
@@ -6150,6 +6465,7 @@
 		"name": "Conceptual Physics",
 		"courseNumber": "3254",
 		"teachers": "Pennington/Carlomagno Co-taught",
+		"room": "L-01",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -6159,6 +6475,7 @@
 		"name": "Conceptual Physics",
 		"courseNumber": "3254",
 		"teachers": "Pennington, Laurie S",
+		"room": "L-01",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -6168,6 +6485,7 @@
 		"name": "Conceptual Physics",
 		"courseNumber": "3254",
 		"teachers": "Pennington/Carlomagno Co-taught",
+		"room": "L-01",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -6177,6 +6495,7 @@
 		"name": "Chemistry H",
 		"courseNumber": "3625",
 		"teachers": "O'Connell, Casey J",
+		"room": "J - 06",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 1"
@@ -6186,6 +6505,7 @@
 		"name": "Chemistry H",
 		"courseNumber": "3625",
 		"teachers": "Catalano, Kathryn",
+		"room": "J - 08",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 2"
@@ -6195,6 +6515,7 @@
 		"name": "Chemistry H",
 		"courseNumber": "3625",
 		"teachers": "Catalano, Kathryn",
+		"room": "J - 08",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 3"
@@ -6204,6 +6525,7 @@
 		"name": "Chemistry H",
 		"courseNumber": "3625",
 		"teachers": "Mellows, Heather",
+		"room": "J - 08",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 4"
@@ -6213,6 +6535,7 @@
 		"name": "Chemistry H",
 		"courseNumber": "3625",
 		"teachers": "Mellows, Heather",
+		"room": "J - 08",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 5"
@@ -6222,6 +6545,7 @@
 		"name": "Chemistry H",
 		"courseNumber": "3625",
 		"teachers": "O'Connell, Casey J",
+		"room": "J - 06",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 6"
@@ -6231,6 +6555,7 @@
 		"name": "Chemistry H",
 		"courseNumber": "3625",
 		"teachers": "Mellows, Heather",
+		"room": "J - 08",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 7"
@@ -6240,6 +6565,7 @@
 		"name": "Physics",
 		"courseNumber": "3820",
 		"teachers": "Cohn, Catherine",
+		"room": "J - 05",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -6249,6 +6575,7 @@
 		"name": "Physics",
 		"courseNumber": "3820",
 		"teachers": "Cohn, Catherine",
+		"room": "J - 05",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -6258,6 +6585,7 @@
 		"name": "Physics",
 		"courseNumber": "3820",
 		"teachers": "Cohn, Catherine",
+		"room": "J - 05",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -6267,6 +6595,7 @@
 		"name": "Physics",
 		"courseNumber": "3820",
 		"teachers": "Cohn, Catherine",
+		"room": "J - 05",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -6276,6 +6605,7 @@
 		"name": "Physics",
 		"courseNumber": "3820",
 		"teachers": "Pennington, Laurie S",
+		"room": "J - 05",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -6285,6 +6615,7 @@
 		"name": "Physics",
 		"courseNumber": "3820",
 		"teachers": "Cohn, Catherine",
+		"room": "J - 05",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -6294,6 +6625,7 @@
 		"name": "AP Environmental Science",
 		"courseNumber": "3279B",
 		"teachers": "Ledgerwood, Eric",
+		"room": "J - 03",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -6303,6 +6635,7 @@
 		"name": "AP Environmental Science",
 		"courseNumber": "3279B",
 		"teachers": "Ledgerwood, Eric",
+		"room": "J - 03",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -6312,6 +6645,7 @@
 		"name": "AP Environmental Science",
 		"courseNumber": "3279B",
 		"teachers": "Ledgerwood, Eric",
+		"room": "J - 03",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -6321,6 +6655,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641SJ",
 		"teachers": "Miller, Jason",
+		"room": "C-03",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -6330,6 +6665,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641SJ",
 		"teachers": "Miller, Jason",
+		"room": "C-03",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -6339,6 +6675,7 @@
 		"name": "AP Psychology",
 		"courseNumber": "1859",
 		"teachers": "Perkins, Haley",
+		"room": "C-04",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -6348,6 +6685,7 @@
 		"name": "AP Psychology",
 		"courseNumber": "1859",
 		"teachers": "Perkins, Haley",
+		"room": "C-04",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -6357,6 +6695,7 @@
 		"name": "AP Psychology",
 		"courseNumber": "1859",
 		"teachers": "Collier, Warren J",
+		"room": "C-02",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -6366,6 +6705,7 @@
 		"name": "AP Psychology",
 		"courseNumber": "1859",
 		"teachers": "Collier, Warren J",
+		"room": "C-02",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 4"
@@ -6375,6 +6715,7 @@
 		"name": "AP Psychology",
 		"courseNumber": "1859",
 		"teachers": "Collier, Warren J",
+		"room": "C-02",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 5"
@@ -6384,6 +6725,7 @@
 		"name": "AP Psychology",
 		"courseNumber": "1859",
 		"teachers": "Collier, Warren J",
+		"room": "C-02",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 6"
@@ -6393,6 +6735,7 @@
 		"name": "Positive Psychology",
 		"courseNumber": "1847",
 		"teachers": "Derrick-Navarro, Laura L",
+		"room": "K - 08",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -6402,6 +6745,7 @@
 		"name": "Positive Psychology",
 		"courseNumber": "1847",
 		"teachers": "Derrick-Navarro, Laura L",
+		"room": "K - 08",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -6411,6 +6755,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Arteaga, Arlena",
+		"room": "G - 06",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -6420,6 +6765,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Howard, Laurel J",
+		"room": "C-07",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -6429,6 +6775,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Kinyanjui, Arthur",
+		"room": "E-02",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -6438,6 +6785,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Bisbee/Aro Co-taught",
+		"room": "V-25",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -6447,6 +6795,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Bisbee/Metzler Co-taught",
+		"room": "V-25",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -6456,6 +6805,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Howard, Laurel J",
+		"room": "C-07",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -6465,6 +6815,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Kinyanjui, Arthur",
+		"room": "E-02",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -6474,6 +6825,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Johnson, Christopher P",
+		"room": "C-01",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -6483,6 +6835,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Kinyanjui, Arthur",
+		"room": "E-02",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 9"
@@ -6492,6 +6845,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Miller, Jason",
+		"room": "C-03",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 10"
@@ -6501,6 +6855,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Arteaga, Arlena",
+		"room": "G - 06",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 11"
@@ -6510,6 +6865,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Johnson, Christopher P",
+		"room": "C-01",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 12"
@@ -6519,6 +6875,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Miller, Jason",
+		"room": "C-03",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 13"
@@ -6528,6 +6885,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Miller, Jason",
+		"room": "C-03",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 14"
@@ -6537,6 +6895,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Tuomy, Ariane",
+		"room": "K - 02",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 15"
@@ -6546,6 +6905,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Bisbee/Aro Co-taught",
+		"room": "V-25",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 16"
@@ -6555,6 +6915,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Kinyanjui, Arthur",
+		"room": "E-02",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 17"
@@ -6564,6 +6925,7 @@
 		"name": "Wld Hist",
 		"courseNumber": "1625",
 		"teachers": "Tuomy, Ariane",
+		"room": "K - 02",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 18"
@@ -6573,6 +6935,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Bisbee, David Elliot",
+		"room": "V-25",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -6582,6 +6945,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Miguel, Brian",
+		"room": "C-06",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -6591,6 +6955,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Miguel, Brian",
+		"room": "C-06",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -6600,6 +6965,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Weisman, Mark E",
+		"room": "V-26",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -6609,6 +6975,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Yonkers/Van Zandt Co-taught",
+		"room": "K - 01",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -6618,6 +6985,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Holmes, Patricia A",
+		"room": "F - 06",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -6627,6 +6995,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Miller, Jason",
+		"room": "C-03",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -6636,6 +7005,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Bisbee, David Elliot",
+		"room": "V-25",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -6645,6 +7015,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Holmes, Patricia A",
+		"room": "F - 06",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 9"
@@ -6654,6 +7025,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Miguel, Brian",
+		"room": "C-06",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 10"
@@ -6663,6 +7035,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Yonkers/Van Zandt Co-taught",
+		"room": "K - 01",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 11"
@@ -6672,6 +7045,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Patrick, Jeffrey",
+		"room": "C-08",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 12"
@@ -6681,6 +7055,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Miguel, Brian",
+		"room": "C-06",
 		"periods": "6",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 13"
@@ -6690,6 +7065,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Weisman, Mark E",
+		"room": "V-26",
 		"periods": "6",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 14"
@@ -6699,6 +7075,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Bisbee, David Elliot",
+		"room": "V-25",
 		"periods": "7",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 15"
@@ -6708,6 +7085,7 @@
 		"name": "ContWld 11",
 		"courseNumber": "1641",
 		"teachers": "Yonkers/Van Zandt Co-taught",
+		"room": "K - 01",
 		"periods": "7",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 16"
@@ -6717,6 +7095,7 @@
 		"name": "US Hist",
 		"courseNumber": "1686",
 		"teachers": "Weisman/Aro Co-taught",
+		"room": "V-26",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -6726,6 +7105,7 @@
 		"name": "US Hist",
 		"courseNumber": "1686",
 		"teachers": "Yonkers, Adam H",
+		"room": "K - 01",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -6735,6 +7115,7 @@
 		"name": "US Hist",
 		"courseNumber": "1686",
 		"teachers": "Matta, Nora",
+		"room": "E-02",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -6744,6 +7125,7 @@
 		"name": "US Hist",
 		"courseNumber": "1686",
 		"teachers": "Perkins, Haley",
+		"room": "C-04",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -6753,6 +7135,7 @@
 		"name": "US Hist",
 		"courseNumber": "1686",
 		"teachers": "Yonkers, Adam H",
+		"room": "K - 01",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -6762,6 +7145,7 @@
 		"name": "US Hist",
 		"courseNumber": "1686",
 		"teachers": "Weisman, Mark E",
+		"room": "V-26",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -6771,6 +7155,7 @@
 		"name": "US Hist",
 		"courseNumber": "1686",
 		"teachers": "Perkins, Haley",
+		"room": "C-04",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -6780,6 +7165,7 @@
 		"name": "US Hist",
 		"courseNumber": "1686",
 		"teachers": "Stone, Greer",
+		"room": "K - 02",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -6789,6 +7175,7 @@
 		"name": "US Hist",
 		"courseNumber": "1686",
 		"teachers": "Lyons, Philip J",
+		"room": "F - 01",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 9"
@@ -6798,6 +7185,7 @@
 		"name": "US Hist",
 		"courseNumber": "1686",
 		"teachers": "Weisman/Aro Co-taught",
+		"room": "V-26",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 10"
@@ -6807,6 +7195,7 @@
 		"name": "US Hist",
 		"courseNumber": "1686",
 		"teachers": "Perkins, Haley",
+		"room": "C-04",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 11"
@@ -6816,6 +7205,7 @@
 		"name": "AP US History",
 		"courseNumber": "1699",
 		"teachers": "Johnson, Christopher P",
+		"room": "C-03",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -6825,6 +7215,7 @@
 		"name": "AP US History",
 		"courseNumber": "1699",
 		"teachers": "Johnson, Christopher P",
+		"room": "C-03",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -6834,6 +7225,7 @@
 		"name": "AP US History",
 		"courseNumber": "1699",
 		"teachers": "Johnson, Christopher P",
+		"room": "C-03",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -6843,6 +7235,7 @@
 		"name": "AP US History",
 		"courseNumber": "1699",
 		"teachers": "Howard, Laurel J",
+		"room": "C-07",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 4"
@@ -6852,6 +7245,7 @@
 		"name": "AP US History",
 		"courseNumber": "1699",
 		"teachers": "Howard, Laurel J",
+		"room": "C-07",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 5"
@@ -6861,6 +7255,7 @@
 		"name": "AP US History",
 		"courseNumber": "1699",
 		"teachers": "Howard, Laurel J",
+		"room": "C-07",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 6"
@@ -6870,6 +7265,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Bisbee, David Elliot",
+		"room": "V-25",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -6879,6 +7275,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Miguel, Brian",
+		"room": "C-06",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -6888,6 +7285,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Miguel, Brian",
+		"room": "C-06",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -6897,6 +7295,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Weisman, Mark E",
+		"room": "V-26",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -6906,6 +7305,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Yonkers/Van Zandt Co-taught",
+		"room": "K - 01",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -6915,6 +7315,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Holmes, Patricia A",
+		"room": "F - 06",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -6924,6 +7325,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Miller, Jason",
+		"room": "C-03",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -6933,6 +7335,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Bisbee, David Elliot",
+		"room": "V-25",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -6942,6 +7345,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Holmes, Patricia A",
+		"room": "F - 06",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 9"
@@ -6951,6 +7355,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Miguel, Brian",
+		"room": "C-06",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 10"
@@ -6960,6 +7365,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Patrick, Jeffrey",
+		"room": "C-08",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 11"
@@ -6969,6 +7375,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Yonkers/Van Zandt Co-taught",
+		"room": "K - 01",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 12"
@@ -6978,6 +7385,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Miguel, Brian",
+		"room": "C-06",
 		"periods": "6",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 13"
@@ -6987,6 +7395,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Weisman, Mark E",
+		"room": "V-26",
 		"periods": "6",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 14"
@@ -6996,6 +7405,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Bisbee, David Elliot",
+		"room": "V-25",
 		"periods": "7",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 15"
@@ -7005,6 +7415,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753",
 		"teachers": "Yonkers/Van Zandt Co-taught",
+		"room": "K - 01",
 		"periods": "7",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 16"
@@ -7014,6 +7425,7 @@
 		"name": "Econ AP",
 		"courseNumber": "1811",
 		"teachers": "Linsdell, Dawna J",
+		"room": "E-01",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -7023,6 +7435,7 @@
 		"name": "Econ AP",
 		"courseNumber": "1811",
 		"teachers": "Lyons, Philip J",
+		"room": "F - 01",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -7032,6 +7445,7 @@
 		"name": "Econ AP",
 		"courseNumber": "1811",
 		"teachers": "Lyons, Philip J",
+		"room": "F - 01",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -7041,6 +7455,7 @@
 		"name": "Econ AP",
 		"courseNumber": "1811",
 		"teachers": "Linsdell, Dawna J",
+		"room": "E-01",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 4"
@@ -7050,6 +7465,7 @@
 		"name": "Econ AP",
 		"courseNumber": "1811",
 		"teachers": "Lyons, Philip J",
+		"room": "F - 01",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 5"
@@ -7059,6 +7475,7 @@
 		"name": "Econ AP",
 		"courseNumber": "1811",
 		"teachers": "Linsdell, Dawna J",
+		"room": "E-01",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 6"
@@ -7068,6 +7485,7 @@
 		"name": "Econ AP",
 		"courseNumber": "1811",
 		"teachers": "Lyons, Philip J",
+		"room": "F - 01",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 7"
@@ -7077,6 +7495,7 @@
 		"name": "Econ AP",
 		"courseNumber": "1811",
 		"teachers": "Linsdell, Dawna J",
+		"room": "E-01",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 8"
@@ -7086,6 +7505,7 @@
 		"name": "Econ AP",
 		"courseNumber": "1811",
 		"teachers": "Linsdell, Dawna J",
+		"room": "E-01",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 9"
@@ -7095,6 +7515,7 @@
 		"name": "Econ 11",
 		"courseNumber": "1815",
 		"teachers": "Patrick, Jeffrey",
+		"room": "C-08",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7104,6 +7525,7 @@
 		"name": "Econ 11",
 		"courseNumber": "1815",
 		"teachers": "Patrick, Jeffrey",
+		"room": "C-08",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -7113,6 +7535,7 @@
 		"name": "Econ 11",
 		"courseNumber": "1815",
 		"teachers": "Patrick/Tabuchi Co-taught",
+		"room": "C-08",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -7122,6 +7545,7 @@
 		"name": "Econ 11",
 		"courseNumber": "1815",
 		"teachers": "Patrick, Jeffrey",
+		"room": "C-08",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -7131,6 +7555,7 @@
 		"name": "Econ 11",
 		"courseNumber": "1815",
 		"teachers": "Patrick, Jeffrey",
+		"room": "C-08",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -7140,6 +7565,7 @@
 		"name": "Econ 11",
 		"courseNumber": "1815",
 		"teachers": "Patrick/Tabuchi Co-taught",
+		"room": "C-08",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -7149,6 +7575,7 @@
 		"name": "Psych 11",
 		"courseNumber": "1842",
 		"teachers": "Collier, Warren J",
+		"room": "C-02",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7158,6 +7585,7 @@
 		"name": "Psych 11",
 		"courseNumber": "1842",
 		"teachers": "Derrick-Navarro, Laura L",
+		"room": "K - 08",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -7167,6 +7595,7 @@
 		"name": "Psych 11",
 		"courseNumber": "1842",
 		"teachers": "Collier, Warren J",
+		"room": "C-02",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -7176,6 +7605,7 @@
 		"name": "World History-SLC",
 		"courseNumber": "9343",
 		"teachers": "Miguel, Brian",
+		"room": "C-06",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7185,6 +7615,7 @@
 		"name": "USFor Pol H",
 		"courseNumber": "1769",
 		"teachers": "Firenzi, Tara",
+		"room": "C-04",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 34 | T? Y | N: 1"
@@ -7194,6 +7625,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753SJ",
 		"teachers": "Miller, Jason",
+		"room": "C-03",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7203,6 +7635,7 @@
 		"name": "US Govt",
 		"courseNumber": "1753SJ",
 		"teachers": "Miller, Jason",
+		"room": "C-03",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -7212,6 +7645,7 @@
 		"name": "AP Human Geography",
 		"courseNumber": "1762",
 		"teachers": "Kinyanjui, Arthur",
+		"room": "E-02",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -7221,6 +7655,7 @@
 		"name": "Therapeutic Elective",
 		"courseNumber": "7078",
 		"teachers": "Aro, Adriana",
+		"room": "K - 10",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 1"
@@ -7230,6 +7665,7 @@
 		"name": "Academic Math",
 		"courseNumber": "7088",
 		"teachers": "Axelrod, Brittany",
+		"room": "K - 09",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 1"
@@ -7239,6 +7675,7 @@
 		"name": "Acad Enhancement SAI",
 		"courseNumber": "7090",
 		"teachers": "Conklin, Sandra",
+		"room": "K - 09",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 1"
@@ -7248,6 +7685,7 @@
 		"name": "Academic Communications",
 		"courseNumber": "7707",
 		"teachers": "Metzler, Anne Marie",
+		"room": "K - 09",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 1"
@@ -7257,6 +7695,7 @@
 		"name": "Academic Communications",
 		"courseNumber": "7707",
 		"teachers": "Metzler, Anne Marie",
+		"room": "K - 09",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 2"
@@ -7266,6 +7705,7 @@
 		"name": "Funct Acad",
 		"courseNumber": "8279",
 		"teachers": "Cuevas Ceja, Raquel",
+		"room": "K - 12",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 1"
@@ -7275,6 +7715,7 @@
 		"name": "Funct Acad",
 		"courseNumber": "8279",
 		"teachers": "Conklin, Sandra",
+		"room": "F - 02",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 2"
@@ -7284,6 +7725,7 @@
 		"name": "Funct Acad",
 		"courseNumber": "8279",
 		"teachers": "Conklin, Sandra",
+		"room": "F - 02",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 3"
@@ -7293,6 +7735,7 @@
 		"name": "Funct Acad",
 		"courseNumber": "8279",
 		"teachers": "Cuevas Ceja, Raquel",
+		"room": "K - 12",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 4"
@@ -7302,6 +7745,7 @@
 		"name": "Funct Acad",
 		"courseNumber": "8279",
 		"teachers": "Cuevas Ceja, Raquel",
+		"room": "K - 12",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 5"
@@ -7311,6 +7755,7 @@
 		"name": "Funct Acad",
 		"courseNumber": "8279",
 		"teachers": "Conklin, Sandra",
+		"room": "F - 02",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 6"
@@ -7320,6 +7765,7 @@
 		"name": "Funct Acad",
 		"courseNumber": "8279",
 		"teachers": "Cuevas Ceja, Raquel",
+		"room": "K - 12",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 7"
@@ -7329,6 +7775,7 @@
 		"name": "Funct Acad",
 		"courseNumber": "8279",
 		"teachers": "Conklin, Sandra",
+		"room": "F - 02",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 8"
@@ -7338,6 +7785,7 @@
 		"name": "Funct Acad",
 		"courseNumber": "8279",
 		"teachers": "Cuevas Ceja, Raquel",
+		"room": "K - 12",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 9"
@@ -7347,6 +7795,7 @@
 		"name": "Voc Trng",
 		"courseNumber": "8284",
 		"teachers": "Conklin, Sandra",
+		"room": "F - 02",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 1"
@@ -7356,6 +7805,7 @@
 		"name": "Voc Trng",
 		"courseNumber": "8284",
 		"teachers": "Cuevas Ceja, Raquel",
+		"room": "K - 12",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 2"
@@ -7365,6 +7815,7 @@
 		"name": "Voc Trng",
 		"courseNumber": "8284",
 		"teachers": "Conklin, Sandra",
+		"room": "F - 02",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 3"
@@ -7374,6 +7825,7 @@
 		"name": "Voc Trng",
 		"courseNumber": "8284",
 		"teachers": "Cuevas Ceja, Raquel",
+		"room": "K - 12",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 4"
@@ -7383,6 +7835,7 @@
 		"name": "Voc Trng",
 		"courseNumber": "8284",
 		"teachers": "Cuevas Ceja, Raquel",
+		"room": "K - 12",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 5"
@@ -7392,6 +7845,7 @@
 		"name": "Voc Trng",
 		"courseNumber": "8284",
 		"teachers": "Conklin, Sandra",
+		"room": "F - 02",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 6"
@@ -7401,6 +7855,7 @@
 		"name": "Voc Trng",
 		"courseNumber": "8284",
 		"teachers": "Cuevas Ceja, Raquel",
+		"room": "K - 12",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 7"
@@ -7410,6 +7865,7 @@
 		"name": "Voc Trng",
 		"courseNumber": "8284",
 		"teachers": "Conklin, Sandra",
+		"room": "F - 02",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 8"
@@ -7419,6 +7875,7 @@
 		"name": "Voc Trng",
 		"courseNumber": "8284",
 		"teachers": "Cuevas Ceja, Raquel",
+		"room": "K - 12",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 9"
@@ -7428,6 +7885,7 @@
 		"name": "Acad Planning",
 		"courseNumber": "8308",
 		"teachers": "Van Zandt, Susan",
+		"room": "K - 15",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 1"
@@ -7437,6 +7895,7 @@
 		"name": "Acad Planning",
 		"courseNumber": "8308",
 		"teachers": "Bissegger, Catherine",
+		"room": "K - 15",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 2"
@@ -7446,6 +7905,7 @@
 		"name": "Acad Planning",
 		"courseNumber": "8308",
 		"teachers": "Van Zandt, Susan",
+		"room": "K - 15",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 3"
@@ -7455,6 +7915,7 @@
 		"name": "Acad Planning",
 		"courseNumber": "8308",
 		"teachers": "Bissegger, Catherine",
+		"room": "K - 15",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 4"
@@ -7464,6 +7925,7 @@
 		"name": "Acad Planning",
 		"courseNumber": "8308",
 		"teachers": "Sims, Quan",
+		"room": "K - 15",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: 36 | T? Y | N: 5"
@@ -7473,6 +7935,7 @@
 		"name": "Acad Planning",
 		"courseNumber": "8308",
 		"teachers": "Lopez, Jennel",
+		"room": "K - 15",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 6"
@@ -7482,6 +7945,7 @@
 		"name": "Acad Planning",
 		"courseNumber": "8308",
 		"teachers": "Sims, Quan",
+		"room": "K - 15",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 7"
@@ -7491,6 +7955,7 @@
 		"name": "Acad Planning",
 		"courseNumber": "8308",
 		"teachers": "Lopez, Jennel",
+		"room": "K - 15",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 8"
@@ -7500,6 +7965,7 @@
 		"name": "Acad Planning",
 		"courseNumber": "8308",
 		"teachers": "Shinh, Arshdeep",
+		"room": "K - 10",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 36 | T? Y | N: 9"
@@ -7509,6 +7975,7 @@
 		"name": "AP Stud Art",
 		"courseNumber": "6448DP",
 		"teachers": "Messinger, Deanna",
+		"room": "M - 04",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -7518,6 +7985,7 @@
 		"name": "AP Stud Art",
 		"courseNumber": "6448PH",
 		"teachers": "Boissevain, Barbara",
+		"room": "M - 01",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -7527,6 +7995,7 @@
 		"name": "Jazz B",
 		"courseNumber": "7017",
 		"teachers": "Dungan, Mark A",
+		"room": "S-102",
 		"periods": "8",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7536,6 +8005,7 @@
 		"name": "Advanced Ceramics 1",
 		"courseNumber": "6277",
 		"teachers": "King, Jordan",
+		"room": "M - 03",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7545,6 +8015,7 @@
 		"name": "Ceramics 1",
 		"courseNumber": "6258",
 		"teachers": "King, Jordan",
+		"room": "M - 03",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7554,6 +8025,7 @@
 		"name": "Advanced Ceramics 2",
 		"courseNumber": "6279",
 		"teachers": "King, Jordan",
+		"room": "M - 03",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7563,6 +8035,7 @@
 		"name": "Theatre 4",
 		"courseNumber": "1097",
 		"teachers": "Shelby, James C",
+		"room": "S-147",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7572,6 +8045,7 @@
 		"name": "Theatre 1",
 		"courseNumber": "1070",
 		"teachers": "Shelby, James C",
+		"room": "S-147",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7581,6 +8055,7 @@
 		"name": "Theatre 1",
 		"courseNumber": "1070",
 		"teachers": "Lo, Kristen K",
+		"room": "S-147",
 		"periods": "3",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -7590,6 +8065,7 @@
 		"name": "Theatre 2",
 		"courseNumber": "1073",
 		"teachers": "Shelby, James C",
+		"room": "S-147",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7599,6 +8075,7 @@
 		"name": "Theatre 3",
 		"courseNumber": "1076",
 		"teachers": "Shelby, James C",
+		"room": "S-147",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7608,6 +8085,7 @@
 		"name": "Band",
 		"courseNumber": "7010",
 		"teachers": "Summers/Lewis",
+		"room": "S-102",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7617,6 +8095,7 @@
 		"name": "Jazz Ens",
 		"courseNumber": "7022",
 		"teachers": "McGinn, Shawn",
+		"room": "S-102",
 		"periods": "8",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7626,6 +8105,7 @@
 		"name": "Orchstr",
 		"courseNumber": "7030",
 		"teachers": "Lewis/Ou",
+		"room": "S-102",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7634,6 +8114,7 @@
 		"sectionID": 582962,
 		"name": "Orchstr",
 		"courseNumber": "7030",
+		"room": "S-102",
 		"periods": "",
 		"semester": "undefined",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -7643,6 +8124,7 @@
 		"name": "Orchstr",
 		"courseNumber": "7030",
 		"teachers": "Lewis/Ou",
+		"room": "S-102",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -7652,6 +8134,7 @@
 		"name": "Gprd/Yrbk",
 		"courseNumber": "6167",
 		"teachers": "Gleason, Mark S",
+		"room": "P-117",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7661,6 +8144,7 @@
 		"name": "Adv Photo",
 		"courseNumber": "6158",
 		"teachers": "Boissevain, Barbara",
+		"room": "M - 01",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7670,6 +8154,7 @@
 		"name": "Conc Choir",
 		"courseNumber": "7218",
 		"teachers": "Liberatore/Fitzhugh",
+		"room": "S-121",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7679,6 +8164,7 @@
 		"name": "Adv Vocal",
 		"courseNumber": "7226",
 		"teachers": "Liberatore, William",
+		"room": "S-121",
 		"periods": "8",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7688,6 +8174,7 @@
 		"name": "Treb Choir",
 		"courseNumber": "7267",
 		"teachers": "Liberatore, William",
+		"room": "S-121",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7697,6 +8184,7 @@
 		"name": "Wind Ens",
 		"courseNumber": "6455",
 		"teachers": "Summers, Todd",
+		"room": "S-102",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7706,6 +8194,7 @@
 		"name": "Art Spec 1",
 		"courseNumber": "6205",
 		"teachers": "King, Jordan",
+		"room": "M - 03",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7715,6 +8204,7 @@
 		"name": "Art Spec 1",
 		"courseNumber": "6205",
 		"teachers": "King, Jordan",
+		"room": "M - 03",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -7724,6 +8214,7 @@
 		"name": "Art Spec 1",
 		"courseNumber": "6205",
 		"teachers": "Boissevain, Barbara",
+		"room": "M - 05",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -7733,6 +8224,7 @@
 		"name": "Art Spec 1",
 		"courseNumber": "6205",
 		"teachers": "Boissevain, Barbara",
+		"room": "M - 05",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -7742,6 +8234,7 @@
 		"name": "Art Spec 1",
 		"courseNumber": "6205",
 		"teachers": "King, Jordan",
+		"room": "M - 03",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -7751,6 +8244,7 @@
 		"name": "GraphDes",
 		"courseNumber": "6262",
 		"teachers": "Gleason, Mark S",
+		"room": "P-117",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7760,6 +8254,7 @@
 		"name": "GraphDes",
 		"courseNumber": "6262",
 		"teachers": "Gleason, Mark S",
+		"room": "P-117",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -7769,6 +8264,7 @@
 		"name": "Photo 1",
 		"courseNumber": "6150",
 		"teachers": "Durquet, Marie",
+		"room": "M - 01",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7778,6 +8274,7 @@
 		"name": "Photo 1",
 		"courseNumber": "6150",
 		"teachers": "Durquet, Marie",
+		"room": "M - 01",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -7787,6 +8284,7 @@
 		"name": "Photo 1",
 		"courseNumber": "6150",
 		"teachers": "Durquet, Marie",
+		"room": "M - 03",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -7796,6 +8294,7 @@
 		"name": "AP Music Theory",
 		"courseNumber": "7379",
 		"teachers": "Liberatore, William",
+		"room": "S-121",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -7805,6 +8304,7 @@
 		"name": "Symph Band",
 		"courseNumber": "7013",
 		"teachers": "Summers/Lewis",
+		"room": "S-102",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7814,6 +8314,7 @@
 		"name": "Pt/Dr 1",
 		"courseNumber": "6340",
 		"teachers": "Messinger, Deanna",
+		"room": "M - 04",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7823,6 +8324,7 @@
 		"name": "Pt/Dr 1",
 		"courseNumber": "6340",
 		"teachers": "Boissevain, Barbara",
+		"room": "M - 04",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -7832,6 +8334,7 @@
 		"name": "Adv Gr Des",
 		"courseNumber": "6274",
 		"teachers": "Gleason, Mark S",
+		"room": "P-117",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7841,6 +8344,7 @@
 		"name": "Adv.Draw/Painting II",
 		"courseNumber": "6349B",
 		"teachers": "Messinger, Deanna",
+		"room": "M - 04",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7850,6 +8354,7 @@
 		"name": "AP Studio Art - Drawing",
 		"courseNumber": "6459B",
 		"teachers": "Messinger, Deanna",
+		"room": "M - 04",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -7859,6 +8364,7 @@
 		"name": "Adv.Draw/Painting H",
 		"courseNumber": "6339",
 		"teachers": "Messinger, Deanna",
+		"room": "M - 04",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 1"
@@ -7868,6 +8374,7 @@
 		"name": "ArtStu3D AP",
 		"courseNumber": "6449",
 		"teachers": "King, Jordan",
+		"room": "M - 03",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -7877,6 +8384,7 @@
 		"name": "Adv Photo H",
 		"courseNumber": "4917",
 		"teachers": "Boissevain, Barbara",
+		"room": "M - 01",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 34 | T? Y | N: 1"
@@ -7886,6 +8394,7 @@
 		"name": "Video Prod",
 		"courseNumber": "1037B",
 		"teachers": "Corpuz, Edward M",
+		"room": "L-06 ",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7895,6 +8404,7 @@
 		"name": "Video Prod",
 		"courseNumber": "1037B",
 		"teachers": "Corpuz, Edward M",
+		"room": "L-06 ",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -7913,6 +8423,7 @@
 		"name": "AP Comp. Sci. Princ",
 		"courseNumber": "8635",
 		"teachers": "Hexsel, Jessica",
+		"room": "N -115 Lab",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -7922,6 +8433,7 @@
 		"name": "AP Comp. Sci. Princ",
 		"courseNumber": "8635",
 		"teachers": "Hexsel, Jessica",
+		"room": "N -115 Lab",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -7931,6 +8443,7 @@
 		"name": "Bio Tech",
 		"courseNumber": "3955",
 		"teachers": "Merchant, Angela C",
+		"room": "L-02",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -7940,6 +8453,7 @@
 		"name": "Bio Tech",
 		"courseNumber": "3955",
 		"teachers": "Merchant, Angela C",
+		"room": "L-02",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -7949,6 +8463,7 @@
 		"name": "Bio Tech",
 		"courseNumber": "3955",
 		"teachers": "Merchant, Angela C",
+		"room": "L-02",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -7958,6 +8473,7 @@
 		"name": "APCompSci A",
 		"courseNumber": "2491B",
 		"teachers": "Bautista, Michael",
+		"room": "N-215 Lab",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -7967,6 +8483,7 @@
 		"name": "APCompSci A",
 		"courseNumber": "2491B",
 		"teachers": "Bautista, Michael",
+		"room": "N-215 Lab",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -7976,6 +8493,7 @@
 		"name": "APCompSci A",
 		"courseNumber": "2491B",
 		"teachers": "Paley, Joshua E",
+		"room": "N-215 Lab",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -7985,6 +8503,7 @@
 		"name": "APCompSci A",
 		"courseNumber": "2491B",
 		"teachers": "Paley, Joshua E",
+		"room": "N-215 Lab",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 4"
@@ -7994,6 +8513,7 @@
 		"name": "BroadJourn",
 		"courseNumber": "1494B",
 		"teachers": "Corpuz, Edward M",
+		"room": "L-06 ",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8003,6 +8523,7 @@
 		"name": "SportsNutr",
 		"courseNumber": "5622B",
 		"teachers": "Peters, Cindy L",
+		"room": "K - 05",
 		"periods": "3",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8012,6 +8533,7 @@
 		"name": "Engn Tech",
 		"courseNumber": "8574",
 		"teachers": "Granlund-Moyer, Kristina",
+		"room": "L-05",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8021,6 +8543,7 @@
 		"name": "Engn Tech",
 		"courseNumber": "8574",
 		"teachers": "Granlund-Moyer, Kristina",
+		"room": "L-05",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8030,6 +8553,7 @@
 		"name": "Adv Journ",
 		"courseNumber": "1453",
 		"teachers": "Blackburn, Kristy L",
+		"room": "P-117",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8039,6 +8563,7 @@
 		"name": "Int Engr Des PLTW",
 		"courseNumber": "8569",
 		"teachers": "Granlund-Moyer, Kristina",
+		"room": "F - 04 Lab",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8048,6 +8573,7 @@
 		"name": "CR/CivLaw",
 		"courseNumber": "4540",
 		"teachers": "Holmes, Patricia A",
+		"room": "F - 06",
 		"periods": "6",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8057,6 +8583,7 @@
 		"name": "CR/CivLaw",
 		"courseNumber": "4540",
 		"teachers": "Holmes, Patricia A",
+		"room": "F - 06",
 		"periods": "6",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8066,6 +8593,7 @@
 		"name": "Interior11",
 		"courseNumber": "5851",
 		"teachers": "Peters, Cindy L",
+		"room": "K - 03",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8075,6 +8603,7 @@
 		"name": "Law 1",
 		"courseNumber": "4541",
 		"teachers": "Holmes, Patricia A",
+		"room": "F - 06",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8084,6 +8613,7 @@
 		"name": "Law 1",
 		"courseNumber": "4541",
 		"teachers": "Holmes, Patricia A",
+		"room": "F - 06",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8093,6 +8623,7 @@
 		"name": "Auto 1",
 		"courseNumber": "5043",
 		"teachers": "Camicia, Michael A",
+		"room": "L-08",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8102,6 +8633,7 @@
 		"name": "Auto 1",
 		"courseNumber": "5043",
 		"teachers": "Camicia, Michael A",
+		"room": "L-08",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8111,6 +8643,7 @@
 		"name": "Auto 1",
 		"courseNumber": "5043",
 		"teachers": "Camicia, Michael A",
+		"room": "L-08",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -8120,6 +8653,7 @@
 		"name": "Auto 2",
 		"courseNumber": "5050",
 		"teachers": "Camicia, Michael A",
+		"room": "L-08",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8129,6 +8663,7 @@
 		"name": "Auto 2",
 		"courseNumber": "5050",
 		"teachers": "Camicia, Michael A",
+		"room": "L-08",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8138,6 +8673,7 @@
 		"name": "Stage Tech",
 		"courseNumber": "1087",
 		"teachers": "Lo/Ellington",
+		"room": "S-01",
 		"periods": "8",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8147,6 +8683,7 @@
 		"name": "Stage Tech",
 		"courseNumber": "1087",
 		"teachers": "Lo/Ellington",
+		"room": "S-01",
 		"periods": "8",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8156,6 +8693,7 @@
 		"name": "Stage Tech 2",
 		"courseNumber": "4915",
 		"teachers": "Lo/Ellington",
+		"room": "S-01",
 		"periods": "8",
 		"semester": "S1S2",
 		"other": "HC: - | T? Y | N: 1"
@@ -8165,6 +8703,7 @@
 		"name": "Funct Object Or Prog",
 		"courseNumber": "8634",
 		"teachers": "Kaneko, Takeshi",
+		"room": "N -115 Lab",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: - | T? Y | N: 1"
@@ -8174,6 +8713,7 @@
 		"name": "Funct Object Or Prog",
 		"courseNumber": "8634",
 		"teachers": "Kaneko, Takeshi",
+		"room": "N -115 Lab",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: - | T? Y | N: 2"
@@ -8183,6 +8723,7 @@
 		"name": "Funct Object Or Prog",
 		"courseNumber": "8634",
 		"teachers": "Kaneko, Takeshi",
+		"room": "N -115 Lab",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: - | T? Y | N: 3"
@@ -8192,6 +8733,7 @@
 		"name": "Funct Object Or Prog",
 		"courseNumber": "8634",
 		"teachers": "Paley, Joshua E",
+		"room": "N-215 Lab",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: - | T? Y | N: 4"
@@ -8201,6 +8743,7 @@
 		"name": "Funct Object Or Prog",
 		"courseNumber": "8634",
 		"teachers": "Paley, Joshua E",
+		"room": "N-215 Lab",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: - | T? Y | N: 5"
@@ -8210,6 +8753,7 @@
 		"name": "Culinary Arts - Introduction",
 		"courseNumber": "5620",
 		"teachers": "Peters, Cindy L",
+		"room": "K - 05",
 		"periods": "4",
 		"semester": "S1",
 		"other": "HC: - | T? Y | N: 1"
@@ -8219,6 +8763,7 @@
 		"name": "Culinary Arts - Introduction",
 		"courseNumber": "5620",
 		"teachers": "Peters, Cindy L",
+		"room": "K - 05",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: - | T? Y | N: 2"
@@ -8228,6 +8773,7 @@
 		"name": "Culinary Arts - International",
 		"courseNumber": "5621",
 		"teachers": "Peters, Cindy L",
+		"room": "K - 05",
 		"periods": "4",
 		"semester": "S2",
 		"other": "HC: - | T? Y | N: 1"
@@ -8237,6 +8783,7 @@
 		"name": "Culinary Arts - International",
 		"courseNumber": "5621",
 		"teachers": "Peters, Cindy L",
+		"room": "K - 05",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: - | T? Y | N: 2"
@@ -8255,6 +8802,7 @@
 		"name": "AdvDigiFilm",
 		"courseNumber": "1038B",
 		"teachers": "Corpuz, Edward M",
+		"room": "L-06 ",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8264,6 +8812,7 @@
 		"name": "Prnc Of Engr PLTW",
 		"courseNumber": "5090",
 		"teachers": "Granlund-Moyer, Kristina",
+		"room": "F - 04 Lab",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8273,6 +8822,7 @@
 		"name": "Fiber Arts",
 		"courseNumber": "5613",
 		"teachers": "Peters, Cindy L",
+		"room": "K - 03",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8282,6 +8832,7 @@
 		"name": "MLM GraphPubH",
 		"courseNumber": "8655",
 		"teachers": "Blackburn, Kristy L",
+		"room": "P-117",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8291,6 +8842,7 @@
 		"name": "MLM GraphPub",
 		"courseNumber": "8654",
 		"teachers": "Blackburn, Kristy L",
+		"room": "P-117",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8300,6 +8852,7 @@
 		"name": "Audio/MusicProd",
 		"courseNumber": "1054B",
 		"teachers": "Corpuz, Edward M",
+		"room": "L-06 ",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8309,6 +8862,7 @@
 		"name": "CS Capstone",
 		"courseNumber": "8638",
 		"teachers": "Paley, Joshua E",
+		"room": "N-215 Lab",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8318,6 +8872,7 @@
 		"name": "Adv Video H",
 		"courseNumber": "1044B",
 		"teachers": "Corpuz, Edward M",
+		"room": "L-06 ",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: - | T? Y | N: 1"
@@ -8327,6 +8882,7 @@
 		"name": "Gen Weep11",
 		"courseNumber": "8484AS",
 		"teachers": "Kaci, Rachael A",
+		"room": "V-04",
 		"periods": "8",
 		"semester": "S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8336,6 +8892,7 @@
 		"name": "Gen Weep11",
 		"courseNumber": "8484AS",
 		"teachers": "Kaci, Rachael A",
+		"room": "V-04",
 		"periods": "8",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8345,6 +8902,7 @@
 		"name": "ExplExp-AAR",
 		"courseNumber": "8429AS",
 		"teachers": "Wilson, Melinda T",
+		"room": "N - 101",
 		"periods": "8",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8354,6 +8912,7 @@
 		"name": "Beginning Journalism",
 		"courseNumber": "7625",
 		"teachers": "Blackburn, Kristy L",
+		"room": "P-117",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8363,6 +8922,7 @@
 		"name": "ExplExp-AAR",
 		"courseNumber": "8429",
 		"teachers": "Kaci, Rachael A",
+		"room": "V-04",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8372,6 +8932,7 @@
 		"name": "Stage Tech 2D",
 		"courseNumber": "4915D",
 		"teachers": "Lo/Ellington",
+		"room": "S-01",
 		"periods": "8",
 		"semester": "S1S2",
 		"other": "HC: - | T? Y | N: 1"
@@ -8381,6 +8942,7 @@
 		"name": "ChineseCiv&CultureH",
 		"courseNumber": "4041H",
 		"teachers": "Vrudny, Yanan",
+		"room": "H-04",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 1"
@@ -8390,6 +8952,7 @@
 		"name": "Spanish 1",
 		"courseNumber": "4410",
 		"teachers": "Nino Oliva, Teresa V",
+		"room": "G - 01",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8399,6 +8962,7 @@
 		"name": "Spanish 1",
 		"courseNumber": "4410",
 		"teachers": "Gonzalez Barrios, Ana Maria",
+		"room": "H-05",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8408,6 +8972,7 @@
 		"name": "Spanish 1",
 		"courseNumber": "4410",
 		"teachers": "Nino Oliva, Teresa V",
+		"room": "G - 01",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -8417,6 +8982,7 @@
 		"name": "Spanish 1",
 		"courseNumber": "4410",
 		"teachers": "Nino Oliva, Teresa V",
+		"room": "G - 01",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -8426,6 +8992,7 @@
 		"name": "Span/Span1",
 		"courseNumber": "4401",
 		"teachers": "Matchett, Elizabeth",
+		"room": "H-05",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8435,6 +9002,7 @@
 		"name": "Span/Span2",
 		"courseNumber": "4402",
 		"teachers": "Tabares Ruiz, Daissy",
+		"room": "G - 07",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8444,6 +9012,7 @@
 		"name": "Spanish 2",
 		"courseNumber": "4420",
 		"teachers": "Barba-Medina, Norma A",
+		"room": "G - 02",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8453,6 +9022,7 @@
 		"name": "Spanish 2",
 		"courseNumber": "4420",
 		"teachers": "Tabares Ruiz, Daissy",
+		"room": "G - 07",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8462,6 +9032,7 @@
 		"name": "Spanish 2",
 		"courseNumber": "4420",
 		"teachers": "Garger, Gabriela M",
+		"room": "G - 04",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -8471,6 +9042,7 @@
 		"name": "Spanish 2",
 		"courseNumber": "4420",
 		"teachers": "Tabares Ruiz, Daissy",
+		"room": "G - 07",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -8480,6 +9052,7 @@
 		"name": "Spanish 2",
 		"courseNumber": "4420",
 		"teachers": "Barba-Medina, Norma A",
+		"room": "G - 02",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -8489,6 +9062,7 @@
 		"name": "Spanish 2",
 		"courseNumber": "4420",
 		"teachers": "Tabares Ruiz, Daissy",
+		"room": "G - 07",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -8498,6 +9072,7 @@
 		"name": "Spanish 2",
 		"courseNumber": "4420",
 		"teachers": "Barba-Medina, Norma A",
+		"room": "G - 02",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -8507,6 +9082,7 @@
 		"name": "Spanish 2",
 		"courseNumber": "4420",
 		"teachers": "Tabares Ruiz, Daissy",
+		"room": "G - 07",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -8516,6 +9092,7 @@
 		"name": "Spanish 3",
 		"courseNumber": "4430",
 		"teachers": "Gonzalez Barrios, Ana Maria",
+		"room": "H-05",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8525,6 +9102,7 @@
 		"name": "Spanish 3",
 		"courseNumber": "4430",
 		"teachers": "Barba-Medina, Norma A",
+		"room": "G - 02",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8534,6 +9112,7 @@
 		"name": "Spanish 3",
 		"courseNumber": "4430",
 		"teachers": "Barba-Medina, Norma A",
+		"room": "G - 02",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -8543,6 +9122,7 @@
 		"name": "Spanish 3",
 		"courseNumber": "4430",
 		"teachers": "Matchett, Elizabeth",
+		"room": "H-05",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -8552,6 +9132,7 @@
 		"name": "Spanish 3",
 		"courseNumber": "4430",
 		"teachers": "Matchett, Elizabeth",
+		"room": "H-05",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -8561,6 +9142,7 @@
 		"name": "Spanish 3",
 		"courseNumber": "4430",
 		"teachers": "Gonzalez Barrios, Ana Maria",
+		"room": "H-05",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -8570,6 +9152,7 @@
 		"name": "Spanish 3",
 		"courseNumber": "4430",
 		"teachers": "Gonzalez Barrios, Ana Maria",
+		"room": "H-05",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -8579,6 +9162,7 @@
 		"name": "AP Spanish Language",
 		"courseNumber": "4449",
 		"teachers": "Nino Oliva, Teresa V",
+		"room": "G - 01",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -8588,6 +9172,7 @@
 		"name": "AP Spanish Language",
 		"courseNumber": "4449",
 		"teachers": "Nino Oliva, Teresa V",
+		"room": "G - 01",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -8597,6 +9182,7 @@
 		"name": "AP Spanish Language",
 		"courseNumber": "4449",
 		"teachers": "Garger, Gabriela M",
+		"room": "G - 04",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -8606,6 +9192,7 @@
 		"name": "AP Spanish Language",
 		"courseNumber": "4449",
 		"teachers": "Garger, Gabriela M",
+		"room": "G - 04",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 4"
@@ -8615,6 +9202,7 @@
 		"name": "AP Spanish Language",
 		"courseNumber": "4449",
 		"teachers": "Garger, Gabriela M",
+		"room": "G - 04",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 5"
@@ -8624,6 +9212,7 @@
 		"name": "AP Spanish Literature",
 		"courseNumber": "4459",
 		"teachers": "Garger, Gabriela M",
+		"room": "G - 04",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -8633,6 +9222,7 @@
 		"name": "Chinese 1",
 		"courseNumber": "4010",
 		"teachers": "Vrudny, Yanan",
+		"room": "H-04",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8642,6 +9232,7 @@
 		"name": "ChLangCulAP",
 		"courseNumber": "4029",
 		"teachers": "Vrudny, Yanan",
+		"room": "H-04",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -8651,6 +9242,7 @@
 		"name": "Chinese 2",
 		"courseNumber": "4020",
 		"teachers": "Vrudny, Yanan",
+		"room": "H-04",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8660,6 +9252,7 @@
 		"name": "Chinese 3",
 		"courseNumber": "4030",
 		"teachers": "Vrudny, Yanan",
+		"room": "H-04",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8669,6 +9262,7 @@
 		"name": "Chinese 3",
 		"courseNumber": "4030",
 		"teachers": "Vrudny, Yanan",
+		"room": "H-04",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8678,6 +9272,7 @@
 		"name": "German 1",
 		"courseNumber": "4210",
 		"teachers": "Schroeppel, Claudia",
+		"room": "H-02",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8687,6 +9282,7 @@
 		"name": "German 2",
 		"courseNumber": "4220",
 		"teachers": "Schroeppel, Claudia",
+		"room": "H-02",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8696,6 +9292,7 @@
 		"name": "German 3",
 		"courseNumber": "4230",
 		"teachers": "Schroeppel, Claudia",
+		"room": "H-02",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8705,6 +9302,7 @@
 		"name": "Japanes 1",
 		"courseNumber": "4270",
 		"teachers": "Hall, Matthew",
+		"room": "H-03",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8714,6 +9312,7 @@
 		"name": "Japanes 2",
 		"courseNumber": "4275",
 		"teachers": "Hall, Matthew",
+		"room": "H-03",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8723,6 +9322,7 @@
 		"name": "Japanes 2",
 		"courseNumber": "4275",
 		"teachers": "Hall, Matthew",
+		"room": "H-03",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8732,6 +9332,7 @@
 		"name": "Japanes 3",
 		"courseNumber": "4277",
 		"teachers": "Hall, Matthew",
+		"room": "H-03",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8741,6 +9342,7 @@
 		"name": "Japanes 4H",
 		"courseNumber": "4289",
 		"teachers": "Hall, Matthew",
+		"room": "H-03",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 1"
@@ -8750,6 +9352,7 @@
 		"name": "JapnLangAP",
 		"courseNumber": "4290",
 		"teachers": "Hall, Matthew",
+		"room": "H-03",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -8759,6 +9362,7 @@
 		"name": "French 1",
 		"courseNumber": "4110",
 		"teachers": "Kaufman, Charlotte",
+		"room": "G - 03",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8768,6 +9372,7 @@
 		"name": "French 2",
 		"courseNumber": "4120",
 		"teachers": "Kaufman, Charlotte",
+		"room": "G - 03",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8777,6 +9382,7 @@
 		"name": "French 2",
 		"courseNumber": "4120",
 		"teachers": "Kaufman, Charlotte",
+		"room": "G - 03",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8786,6 +9392,7 @@
 		"name": "French 2",
 		"courseNumber": "4120",
 		"teachers": "Kaufman, Charlotte",
+		"room": "G - 03",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -8795,6 +9402,7 @@
 		"name": "French 3",
 		"courseNumber": "4130",
 		"teachers": "Lizundia, Laura",
+		"room": "H-01",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8804,6 +9412,7 @@
 		"name": "French 3",
 		"courseNumber": "4130",
 		"teachers": "Lizundia, Laura",
+		"room": "H-01",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8813,6 +9422,7 @@
 		"name": "French 3",
 		"courseNumber": "4130",
 		"teachers": "Lizundia, Laura",
+		"room": "H-01",
 		"periods": "5",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -8822,6 +9432,7 @@
 		"name": "AP French Language",
 		"courseNumber": "4149",
 		"teachers": "Lizundia, Laura",
+		"room": "H-01",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -8831,6 +9442,7 @@
 		"name": "AP French Language",
 		"courseNumber": "4149",
 		"teachers": "Lizundia, Laura",
+		"room": "H-01",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -8840,6 +9452,7 @@
 		"name": "SpCiv/CulH",
 		"courseNumber": "4441",
 		"teachers": "Matchett, Elizabeth",
+		"room": "G - 03",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: - | T? Y | N: 1"
@@ -8849,6 +9462,7 @@
 		"name": "GermanLangAP",
 		"courseNumber": "4249",
 		"teachers": "Schroeppel, Claudia",
+		"room": "H-02",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -8858,6 +9472,7 @@
 		"name": "Digital Art Spectrum",
 		"courseNumber": "6393",
 		"teachers": "Gleason, Mark S",
+		"room": "P-117",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: - | T? Y | N: 1"
@@ -8867,6 +9482,7 @@
 		"name": "Digital Art Spectrum",
 		"courseNumber": "6393",
 		"teachers": "Gleason, Mark S",
+		"room": "P-117",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: - | T? Y | N: 2"
@@ -8876,6 +9492,7 @@
 		"name": "Adv Audio/Music Prod",
 		"courseNumber": "1055B",
 		"teachers": "Corpuz, Edward",
+		"room": "L-06 ",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8885,6 +9502,7 @@
 		"name": "Bio SLC",
 		"courseNumber": "3216",
 		"teachers": "Aston, Timothy",
+		"room": "V-01",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8894,6 +9512,7 @@
 		"name": "AP Physics C: Mechanics",
 		"courseNumber": "3859A",
 		"teachers": "Lorey, Ann M",
+		"room": "J - 09",
 		"periods": "1",
 		"semester": "S1",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -8903,6 +9522,7 @@
 		"name": "AP Physics C: Mechanics",
 		"courseNumber": "3859A",
 		"teachers": "Lorey, Ann M",
+		"room": "J - 09",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -8912,6 +9532,7 @@
 		"name": "AP Physics C: Mechanics",
 		"courseNumber": "3859A",
 		"teachers": "Lorey, Ann M",
+		"room": "J - 09",
 		"periods": "5",
 		"semester": "S1",
 		"other": "HC: 30 | T? Y | N: 3"
@@ -8921,6 +9542,7 @@
 		"name": "Int Engr Des PLTW H",
 		"courseNumber": "8685",
 		"teachers": "Granlund-Moyer, Kristina",
+		"room": "F - 04 Lab",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 1"
@@ -8930,6 +9552,7 @@
 		"name": "AmerLit 11",
 		"courseNumber": "1261SJ",
 		"teachers": "Zavack, Kate",
+		"room": "N - 110",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8939,6 +9562,7 @@
 		"name": "US Hist",
 		"courseNumber": "1686SJ",
 		"teachers": "Derrick-Navarro, Laura L",
+		"room": "K - 08",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8966,6 +9590,7 @@
 		"name": "AP Physics C",
 		"courseNumber": "3859Y",
 		"teachers": "Kompella, Jacintha",
+		"room": "J - 09",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -8975,6 +9600,7 @@
 		"name": "Biology",
 		"courseNumber": "3130",
 		"teachers": "Powell/Metzler Co-taught",
+		"room": "J - 04",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 1"
@@ -8984,6 +9610,7 @@
 		"name": "Biology",
 		"courseNumber": "3130",
 		"teachers": "Powell/Metzler Co-taught",
+		"room": "J - 04",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 2"
@@ -8993,6 +9620,7 @@
 		"name": "Biology",
 		"courseNumber": "3130",
 		"teachers": "Aston, Timothy",
+		"room": "V-01",
 		"periods": "2",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 3"
@@ -9002,6 +9630,7 @@
 		"name": "Biology",
 		"courseNumber": "3130",
 		"teachers": "Aston, Timothy",
+		"room": "V-01",
 		"periods": "3",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 4"
@@ -9011,6 +9640,7 @@
 		"name": "Biology",
 		"courseNumber": "3130",
 		"teachers": "Aston, Timothy",
+		"room": "V-01",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 5"
@@ -9020,6 +9650,7 @@
 		"name": "Biology",
 		"courseNumber": "3130",
 		"teachers": "Woznicki, Christina",
+		"room": "J - 01",
 		"periods": "4",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 6"
@@ -9029,6 +9660,7 @@
 		"name": "Biology",
 		"courseNumber": "3130",
 		"teachers": "Lee, Jena",
+		"room": "J - 04",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 7"
@@ -9038,6 +9670,7 @@
 		"name": "Biology",
 		"courseNumber": "3130",
 		"teachers": "Woznicki, Christina",
+		"room": "J - 01",
 		"periods": "6",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 8"
@@ -9047,6 +9680,7 @@
 		"name": "Biology",
 		"courseNumber": "3130",
 		"teachers": "Lee, Jena",
+		"room": "J - 04",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 9"
@@ -9056,6 +9690,7 @@
 		"name": "Biology",
 		"courseNumber": "3130",
 		"teachers": "Woznicki, Christina",
+		"room": "J - 01",
 		"periods": "7",
 		"semester": "S1S2",
 		"other": "HC: 32 | T? Y | N: 10"
@@ -9065,6 +9700,7 @@
 		"name": "Prnc Of Engr H PLTW",
 		"courseNumber": "5092",
 		"teachers": "Granlund-Moyer, Kristina",
+		"room": "F - 04 Lab",
 		"periods": "1",
 		"semester": "S1S2",
 		"other": "HC: 39 | T? Y | N: 1"
@@ -9170,6 +9806,7 @@
 		"name": "Am Clas11H SJ",
 		"courseNumber": "1309SJ",
 		"teachers": "Zavack, Kate",
+		"room": "N - 110",
 		"periods": "2",
 		"semester": "S1",
 		"other": "HC: 39 | T? Y | N: 1"
@@ -9179,6 +9816,7 @@
 		"name": "AP Physics C: E&M",
 		"courseNumber": "3859E",
 		"teachers": "Lorey, Ann M",
+		"room": "J - 09",
 		"periods": "1",
 		"semester": "S2",
 		"other": "HC: 30 | T? Y | N: 1"
@@ -9188,6 +9826,7 @@
 		"name": "AP Physics C: E&M",
 		"courseNumber": "3859E",
 		"teachers": "Lorey, Ann M",
+		"room": "J - 09",
 		"periods": "2",
 		"semester": "S2",
 		"other": "HC: 30 | T? Y | N: 2"
@@ -9197,6 +9836,7 @@
 		"name": "AP Physics C: E&M",
 		"courseNumber": "3859E",
 		"teachers": "Lorey, Ann M",
+		"room": "J - 09",
 		"periods": "5",
 		"semester": "S2",
 		"other": "HC: 30 | T? Y | N: 3"

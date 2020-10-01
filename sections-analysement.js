@@ -192,6 +192,7 @@ const simplified = sections.map(({
     transcript
   },
   periods,
+  room,
   teachers,
   terms: [
     { termName: termName1 } = {},
@@ -248,6 +249,7 @@ const simplified = sections.map(({
     name: courseName,
     courseNumber,
     teachers: teacherDisplay,
+    room,
     periods: [...periodNames].join(' / '),
     semester: termName1 + termName2,
     other: [
