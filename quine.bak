@@ -1,0 +1,3 @@
+#lang racket
+
+(define code (quote (append (append (quote (define code)) (append (quote quote) (list code)) (quote eval code))))) (eval code)
