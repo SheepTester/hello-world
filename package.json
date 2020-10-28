@@ -1,0 +1,29 @@
+{
+  "name": "hello-world",
+  "version": "1.0.0",
+  "description": "fshkato",
+  "main": "no",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "yes"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SheepTester/hello-world.git"
+  },
+  "keywords": [
+    "no"
+  ],
+  "author": "SheepTester",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SheepTester/hello-world/issues"
+  },
+  "homepage": "https://github.com/SheepTester/hello-world#readme"
+}
