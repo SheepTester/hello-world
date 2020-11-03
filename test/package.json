@@ -1,0 +1,15 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "Here's some random stuff I made in `test`, a folder in my Documents folder for playing around with silly things (such as Vim and AutoHotKey).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "SheepTester",
+  "license": "MIT",
+  "dependencies": {
+    "minecraft-data": "^2.69.1",
+    "minecraft-protocol": "^1.19.0"
+  }
+}
