@@ -77,3 +77,8 @@ for (const btn of btns) btn.remove()
 window.removeBidens = null
 }
 })()
+
+// metadata for bookmarklet.html
+// `@name Like posts even when you can't on Schoology`
+// `@link https://pausd.schoology.com/user/2017219/updates`
+// `@linklabel anywhere on Schoology`
