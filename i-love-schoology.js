@@ -1,4 +1,7 @@
-// document.head.appendChild(document.createElement('script')).src = 'https://sheeptester.github.io/hello-world/i-love-schoology.js'
+// javascript:void(document.head.appendChild(document.createElement('script')).src = 'https://sheeptester.github.io/hello-world/i-love-schoology.js')
+
+// Code that shows a like button and a comment link for liking on updates where liking is disabled.
+// You can paste this in the console or use this as a bookmarklet.
 
 (function main () {
 const btns = []
