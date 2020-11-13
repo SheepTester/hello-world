@@ -25,25 +25,31 @@ function getCurrentAssignment () {
   return getAssignment(teacher_id, sk)
 }
 async function main () {
-  const { lines, lines_encode, _id } = await getCurrentAssignment()
+  const uniqueId = `happy-${Date.now()}-`
+  const {
+    lines,
+    lines_encode,
+    _id,
+    inlineSolutionCode
+  } = await getCurrentAssignment()
   const linesDecoded = lines_encode
-    ? JSON.parse(
-      CryptoJS.AES.decrypt(
-        lines_encode,
-        _id + '',
-        { format: CryptoJSAesJson }
-      )
-        .toString(CryptoJS.enc.Utf8)
-    )
+    ? JSON.parse(CryptoJS.AES.decrypt(
+      lines_encode,
+      _id + '',
+      { format: CryptoJSAesJson }
+    ).toString(CryptoJS.enc.Utf8))
     : []
   const solutions = [...lines, ...linesDecoded]
+  console.log(solutions)
   const wrapper = document.createElement('div')
   wrapper.className = 'display-problem problem-page paper-shadow'
   wrapper.style = `
     position: absolute;
     top: 0;
     left: 0;
-    margin: 40px;
+    right: 0;
+    margin: 80px;
+    resize: both;
   `
   const removeBtn = document.createElement('button')
   removeBtn.className = 'btn btn-default btn-sm'
@@ -61,32 +67,51 @@ async function main () {
       case 'line': {
         const span = document.createElement('div')
         span.className = 'jax col-sm-9 col-xs-12'
-        katex.render(data.line, span, {
+        katex.render(data.line + '', span, {
           throwOnError: false,
           displayMode: true
         })
         row.appendChild(span)
-        if (data.exp) {
-          const explanation = document.createElement('div')
-          explanation.className = 'col-sm-3 hidden-xs explanation'
-          explanation.textContent = data.exp
-          renderMathInElement(explanation, getRenderMathSettings())
-          row.appendChild(explanation)
-        }
         break
       }
       case 'html': {
         const span = document.createElement('div')
-        span.className = 'problem-html col-xs-12 col-sm-9'
+        span.className = 'problem-html col-xs-12'
         span.style.textAlign = 'center'
         span.innerHTML = data.html
+          // namespace IDs to avoid confusion with DeltaMath
+          .replace(/id="/g, '$&' + uniqueId)
         renderMathInElement(span, getRenderMathSettings())
         row.appendChild(span)
+        break
+      }
+      case 'eq': {
+        const left = document.createElement('div')
+        left.className = 'jax left-equation col-sm-4 col-xs-5'
+        katex.render(data.left + '=', left, {
+          throwOnError: false,
+          displayMode: true
+        })
+        row.appendChild(left)
+        const right = document.createElement('div')
+        right.className = 'jax right-equation col-sm-4 col-xs-5'
+        katex.render('\\,\\,' + data.right, right, {
+          throwOnError: false,
+          displayMode: true
+        })
+        row.appendChild(right)
         break
       }
       default: {
         console.warn('Interesting row type', type, data)
       }
+    }
+    if (data.exp) {
+      const explanation = document.createElement('div')
+      explanation.className = 'col-sm-3 hidden-xs explanation'
+      explanation.textContent = data.exp
+      renderMathInElement(explanation, getRenderMathSettings())
+      row.appendChild(explanation)
     }
     const { space, size, ...other } = format
     if (Object.keys(other).length) {
@@ -97,6 +122,13 @@ async function main () {
     wrapper.appendChild(row)
   }
   document.body.appendChild(wrapper)
-  console.log(solutions)
+  if (inlineSolutionCode) {
+    // eval >:(
+    eval(inlineSolutionCode
+      .replace(/new DeltaGraph\("/g, '$&' + uniqueId))
+  }
+  for (const svg of wrapper.querySelectorAll('svg')) {
+    svg.style.width = '100vw'
+  }
 }
 main()
