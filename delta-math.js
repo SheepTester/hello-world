@@ -59,16 +59,29 @@ async function main () {
     row.className = 'row hasJax'
     switch (type) {
       case 'line': {
-        if (data.exp) console.log(new Error(data.exp))
-        katex.render(data.line, row, {
+        const span = document.createElement('div')
+        span.className = 'jax col-sm-9 col-xs-12'
+        katex.render(data.line, span, {
           throwOnError: false,
           displayMode: true
         })
+        row.appendChild(span)
+        if (data.exp) {
+          const explanation = document.createElement('div')
+          explanation.className = 'col-sm-3 hidden-xs explanation'
+          explanation.textContent = data.exp
+          renderMathInElement(explanation, getRenderMathSettings())
+          row.appendChild(explanation)
+        }
         break
       }
       case 'html': {
-        row.innerHTML = data.html
-        renderMathInElement(row, getRenderMathSettings())
+        const span = document.createElement('div')
+        span.className = 'problem-html col-xs-12 col-sm-9'
+        span.style.textAlign = 'center'
+        span.innerHTML = data.html
+        renderMathInElement(span, getRenderMathSettings())
+        row.appendChild(span)
         break
       }
       default: {
