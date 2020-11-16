@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>merge rows horizontally, preserve text and formatting</title>
+    <meta name="description" content="very naïve" />
+
+    <link rel="stylesheet" type="text/css" href="/sheep3.css">
+    <script src="/sheep3.js" charset="utf-8"></script>
+
+    <style>
+#input {
+  padding: 10px;
+    border: 1px solid black;
+}
+#output {
+  border: 1px solid blue;
+    padding: 10px;
+}
+   /*     #output table {
+border-collapse: collapse;
+        } */
+    </style>
+    </head>
+  <body>
+    <p> <label><input type=checkbox id=spaces checked> add spaces?</label></p>
+    <p> <label><input type=checkbox id="tables" checked> create tables?</label></p>
+    <p>your table (from google sheets?):</p>
+    <div id="input" contenteditable autofocus>Paste cells from spreadsheet here</div>
+    <p>merged columns (paste into google docs):</p>
+    <div id="output"></div>
+    <script>
+      const spaces = document.getElementById('spaces')
+      const tables = document.getElementById('tables')
+      const input = document.getElementById('input')
+const output = document.getElementById('output')
+input.addEventListener('input', () => {
+  output.innerHTML = ''
+  for (const table of input.querySelectorAll('table')) {
+    const newTable = document.createElement('table')
+    newTable.style.cssText = table.style.cssText
+    newTable.style.tableLayout = null
+    for (const row of table.querySelectorAll('tr')) {
+const newRow = document.createElement('tr')
+        const newTd = document.createElement('td')
+      const p = document.createElement('p')
+      for (const td of row.children) {
+        newTd.style.border = td.style.border
+        newTd.style.padding = td.style.padding
+        //newTd.style.border = td.style.border
+        for (const child of td.childNodes) {
+          const span = document.createElement('span')
+          // copy text styling
+          span.style.cssText = td.style.cssText
+          span.style.border = null
+          span.style.padding = null
+          //span
+          span.appendChild(child.cloneNode(true))
+          if (spaces.checked) span.append(' ')
+          newTd.appendChild(span)
+          p.appendChild(span.cloneNode(true))
+        }
+      }
+        newRow.appendChild(newTd)
+      newTable.appendChild(newRow)
+      if (!tables.checked) output.appendChild(p)
+    }
+    if (tables.checked) output.appendChild(newTable)
+  }
+  window.getSelection().selectAllChildren(output)
+})
+window.getSelection().selectAllChildren(input)
+        </script>
+  </body>
+</html>
