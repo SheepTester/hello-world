@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+    <title>Bookmarklet</title>
+
+    <meta charset="utf-8" />
+    <meta name="description" content="Quickly add a bookmarklet to run something cool on another site"/>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+    body {
+        background-color: #1b1b1d;
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: white;
+    }
+    div {
+        width: 600px;
+        margin: 5em auto;
+        padding: 2em;
+        background-color: #2c2c2f;
+        border-radius: 0.5em;
+        box-shadow: 2px 3px 7px 2px rgba(0,0,0,0.2);
+    }
+    a:link, a:visited {
+        color: #9ba9ea;
+        text-decoration: none;
+    }
+    @media (max-width: 700px) {
+        div {
+            margin: 0 auto;
+            width: auto;
+        }
+    }
+    .no-bookmarklet .bookmarklet,
+    .bookmarklet .no-bookmarklet {
+      display: none;
+    }
+    a:hover { text-decoration: underline; }
+    </style>    
+</head>
+
+<body class="no-bookmarklet">
+<div class="bookmarklet">
+    <h1 id="name">Bookmarklet</h1>
+    <p>Drag <strong><a href="javascript:void (document.head.appendChild(document.createElement('script')).src = 'https://sheeptester.github.io/hello-world/ic-get-schedule.js')" id="script">this link</a></strong> into your bookmarks bar. Then go to <a href="https://example.com/" id="link">any webpage</a> and click the link in the bookmarks bar.</p>
+</div>
+<div class="no-bookmarklet">
+  <p>Hi, this page is supposed to be a generic page for bookmarklets. the script name is added at the end of the URL after a question mark, like</p>
+  <ul>
+    <li><a href="?i-love-schoology"><code>?i-love-schoology</code></a></li>
+  </ul>
+  <h1>NoScript users.</h1>
+  <p>If you turned off JavaScript for some reason, this page won't work properly. I'm assuming you acknowledge that bookmarklets won't be much of use to you, as they run JavaScript, which you turned off.</p>
+  <p>If there's something after a question mark in the URL, let us call it <code>NAME</code>. Substitute it appropriately into the following:</p>
+  <ul>
+    <li>Go to <code>https://github.com/SheepTester/hello-world/blob/master/NAME.js</code> to see the code and perhaps instructions on how to use the bookmarklet.</li>
+    <li>Add a bookmark with the URL <code>javascript:void (document.head.appendChild(document.createElement('script')).src = 'https://sheeptester.github.io/hello-world/NAME.js')</code> to add the bookmarklet.</li>
+  </ul>
+  <p>Cheers.</p>
+</div>
+<script>
+const thing = window.location.search.slice(1)
+if (thing) {
+  document.body.className = 'bookmarklet'
+  fetch(`/hello-world/${thing}.js`).then(r => r.text()).then(js => {
+    function getParam (name) {
+      const match = js.match(new RegExp(`\`@${name} ([^\`]+)\``))
+      return match && match[1]
+    }
+    const title = getParam('name')
+    const link = getParam('link')
+    const linktext = getParam('linklabel')
+    if (title) {
+      document.getElementById('name').textContent = title
+      document.title = title
+    }
+    if (link) {
+      document.getElementById('link').href = link
+    }
+    if (linktext) {
+      document.getElementById('link').textContent = linktext
+    }
+  })
+  document.getElementById('script').href = `javascript:void (document.head.appendChild(document.createElement('script')).src = 'https://sheeptester.github.io/hello-world/${thing}.js')`
+}
+</script>
+</body>
+</html>
