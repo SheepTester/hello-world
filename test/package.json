@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "minecraft-data": "^2.69.1",
-    "minecraft-protocol": "^1.19.0"
+    "minecraft-protocol": "^1.19.0",
+    "mongodb": "^3.6.3"
   }
 }
