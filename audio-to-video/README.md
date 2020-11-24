@@ -8,6 +8,8 @@ deno run --allow-net --allow-run --allow-read=./ --allow-write=./descriptions.js
 
 This should open http://localhost:8080/ where you can add descriptions (don't forget to click "save"!). When you're done, click "done" and it'll do some magic and send you to the video. The video will also be saved at **output.mp4** in this folder.
 
+Afterwards, you can optionally run `deno run --allow-read=./ --allow-run get-timestamps.ts` (if you haven't cleaned the temporary files yet) to get the timestamps for YouTube.
+
 ## Instructions
 
 See how to get this code and install the necessary dependencies for this to work in the [preparation section](#preparation) below.

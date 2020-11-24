@@ -6,6 +6,7 @@ import { serve, ServerRequest } from 'https://deno.land/std@0.79.0/http/server.t
 import { open } from 'https://deno.land/x/opener@v1.0.1/mod.ts'
 import { singleArgument } from 'https://deno.land/x/shell_escape@1.0.0/single-argument.ts'
 import * as colors from 'https://deno.land/std@0.79.0/fmt/colors.ts'
+import { getAudio, AudioEntry } from './get-audio.ts'
 
 function quoteFFMpeg (path: string): string {
   // https://stackoverflow.com/a/49407684
@@ -15,36 +16,10 @@ function quoteFFMpeg (path: string): string {
 
 const decoder = new TextDecoder()
 
-const invalidDate = new Date('unknown')
-
-interface AudioEntry {
-  description: string
-  date: Date
-}
-
-const audioUnsorted: Map<string, AudioEntry> = new Map()
-for await (const { isFile, name } of Deno.readDir('./')) {
-  if (isFile && (name.endsWith('.mp3') || name.endsWith('.wav'))) {
-    const stat = await Deno.stat('./' + name)
-    audioUnsorted.set(name, {
-      description: '',
-      date: stat.mtime ?? stat.birthtime ?? invalidDate
-    })
-  }
-}
-const audio: Map<string, AudioEntry> = new Map(
-  [...audioUnsorted].sort((a, b) => a[1].date.getTime() - b[1].date.getTime())
-)
-
 const descJson: { [key: string]: string } = JSON.parse(
   await Deno.readTextFile('./descriptions.json').catch(() => '{}')
 )
-for (const [fileName, description] of Object.entries(descJson)) {
-  const entry = audio.get(fileName)
-  if (entry) {
-    entry.description = description
-  }
-}
+let audio: Map<string, AudioEntry> = await getAudio(descJson)
 
 const thumbnails: Set<string> = new Set()
 
@@ -59,8 +34,9 @@ function useTemplate (html: string): string {
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <title>Audio to video</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <style>
-      body { background-color: black; color: white; font-family: sans-serif; margin: 20px; }
+      body { background-color: black; color: white; font-family: 'Montserrat', sans-serif; margin: 20px; }
       a { color: cyan; }
       textarea { width: 100%; box-sizing: border-box; }
     </style>
@@ -74,6 +50,13 @@ function escape (text: string): string {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
+}
+function homePage (updated: boolean = false): string {
+  return `<form method="POST" action="/"><p><input type="submit" value="Click here" /> if you add/remove audio files. ${updated ? '(updated)' : ''}</p></form><ul>${
+    Array.from(audio, ([fileName, { description, date }]) => (
+      `<li><a href="/${escape(fileName)}.html">${escape(fileName)}</a> &mdash; ${description ? escape(description).bold() : '<em>No description</em>'} <small>${date}</small></li>`
+    )).join('')
+  }</ul><a href="/thumbnails">done</a><form method="POST" action="/cleanup"><input type="submit" value="remove temporary files (keeps audio and final video files)" /></form>`
 }
 function editPage (fileName: string, { description, date }: AudioEntry, saved: boolean = false): string {
   return `<p><a href="/">home</a></p><audio src="/${
@@ -108,11 +91,7 @@ async function onRequest (request: ServerRequest) {
   const path = decodeURIComponent(request.url)
   if (request.method === 'GET') {
     if (path === '/') {
-      sendHtml(request, `<p>This list won't update if you add more audio files. If you restart the server, your work will be lost.</p><ul>${
-        Array.from(audio, ([fileName, { description, date }]) => (
-          `<li><a href="/${escape(fileName)}.html">${escape(fileName)}</a> &mdash; ${description ? escape(description).bold() : '<em>No description</em>'} <small>${date}</small></li>`
-        )).join('')
-      }</ul><a href="/thumbnails">done</a><form method="POST" action="/cleanup"><input type="submit" value="remove temporary files (keeps audio and final video files)" /></form>`)
+      sendHtml(request, homePage())
     } else if (path === '/thumbnails') {
       sendHtml(request, '<p>wait as the thumbnails are made</p><script src="/thumbnails.exe"></script>')
     } else if (path === '/thumbnails.exe') {
@@ -166,6 +145,7 @@ async function onRequest (request: ServerRequest) {
       await Deno.writeFile(thumbPath, await Deno.readAll(request.body))
       thumbnails.add(thumbPath)
       request.respond({ status: 204 })
+      console.log(colors.blue(`[:)] - ${thumbPath}`))
       return
     } else if (path === '/make-video') {
       console.log(colors.cyan('[:)] I\'m starting to make the video...'))
@@ -173,19 +153,36 @@ async function onRequest (request: ServerRequest) {
       const videoPaths: string[] = []
       for (const fileName of audio.keys()) {
         const videoPath = `./parts/${fileName}.mp4`
+        // Seems like you don't need to escape characters for paths; Deno does
+        // that for you!
         const process = Deno.run({
           cmd: [
             'ffmpeg',
+            // Loops the one frame once?
             '-loop', '1',
+            // Overwrites the output if it already exists
             '-y',
+            // The image input
             '-i', `./thumbnails/${fileName}.png`,
+            // The audio input
             '-i', `./${fileName}`,
+            // Selects the libx264 encoder for the video
             '-c:v', 'libx264',
+            // Specifically for libx264; stillimage is "good for slideshow-like
+            // content"
+            // https://trac.ffmpeg.org/wiki/Encode/H.264
             '-tune', 'stillimage',
+            // Selects the AAC encoder for the audio; it's apparently already
+            // the default and natively implemented into ffmpeg
             '-c:a', 'aac',
+            // Audio bitrate
             '-b:a', '192k',
+            // Pixel format; yuv420p is a pixel format
             '-pix_fmt', 'yuv420p',
+            // Stops encoding when the first source stops; apparently this pads
+            // the audio input with silence?
             '-shortest',
+            // Output path
             videoPath
           ]
         })
@@ -196,7 +193,25 @@ async function onRequest (request: ServerRequest) {
       }
       await Deno.writeTextFile('./videos.txt', videoPaths.join(''))
       const process = Deno.run({
-        cmd: ['ffmpeg', '-f', 'concat', '-safe', '0', '-i', 'videos.txt', '-c', 'copy', 'output.mp4']
+        cmd: [
+          'ffmpeg',
+          // NOTE: There's no -y flag here, so if output.mp4 exists, it'll ask.
+          // Maybe I should add it here.
+          // Use the concatenation script demuxer (format?)
+          '-f', 'concat',
+          // Accepts any file path (not sure why this is necessary)
+          // What's a safe file path, then, if -safe is 1? A safe file path is
+          // relative, contains sensible characters, and doesn't start with a
+          // period. I'm guessing Unicode characters are not "from the portable
+          // character set" so it is off
+          '-safe', '0',
+          // Use the script generated at videos.txt
+          '-i', 'videos.txt',
+          // Skip encoding/decoding (hence why this step is really fast)
+          '-c', 'copy',
+          // Output path
+          'output.mp4'
+        ]
       })
       const { success } = await process.status()
       if (!success) throw new Error(`Merging the video parts was unsuccessful.`)
@@ -209,6 +224,11 @@ async function onRequest (request: ServerRequest) {
       await Deno.remove('./parts/', { recursive: true })
       await Deno.remove('./videos.txt')
       sendHtml(request, '<p>temporary files removed! don\'t worry, your audio and final video files have been kept</p><a href="/">home</a>')
+      return
+    } else if (path === '/') {
+      console.log(colors.green('[:)] Refreshing audio list'))
+      audio = await getAudio(descJson)
+      sendHtml(request, homePage())
       return
     }
   }

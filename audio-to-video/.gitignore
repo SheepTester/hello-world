@@ -6,6 +6,9 @@
 /audio.txt
 /audio-list.js
 
+# Audio descriptions
+/descriptions.json
+
 # Thumbnail images
 /thumbnails.zip
 /thumbnails/
@@ -17,6 +20,8 @@
 # Final output video
 /output.mp4
 
+# Timestamps
+/timestamps.txt
+
 # Random other files
 /other
-
