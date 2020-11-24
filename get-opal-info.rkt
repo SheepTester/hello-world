@@ -6,10 +6,18 @@
 (require json)
 (require racket/cmdline)
 
-(define opal-login-url
-  (make-parameter "https://gun.opals.pausd.org/bin/login"))
-(define opal-myaccount-url
-  (make-parameter "https://gun.opals.pausd.org/bin/user/myaccount"))
+; gun.opals.pausd.org Gunn HS
+; pa.opals.pausd.org  Paly HS
+; jls.opals.pausd.org JLS MS
+; ter.opals.pausd.org Terman MS
+; hoo.opals.pausd.org Hoover ES
+; duv.opals.pausd.org Duveneck ES
+; nix.opals.pausd.org Nixon ES
+; elc.opals.pausd.org El Carmelo ES
+; oh.opals.pausd.org  Ohlone ES
+
+(define opal-base
+  (make-parameter "gun.opals.pausd.org"))
 (define student-id
   (make-parameter "12345"))
 
@@ -17,19 +25,31 @@
 (define show-json (make-parameter #f))
 
 (command-line
- #:program "Get information from Opal"
+ #:program "Get information from Opals"
+ 
  #:once-each
- ["--login" url
-            "Use an Opal login URL for a different school"
-            (opal-login-url url)]
- ["--myaccount" url
-                "Use an Opal myaccount URL for a different school"
-                (opal-myaccount-url url)]
- [("-r" "--robot") "Hide the human-readable output"
-                   (show-human-readable #f)]
- [("-j" "--json") "Output the JSON containing the user info"
-                  (show-json #t)]
- #:args (id) "Get information for a given ID" (student-id id))
+ ["--opals"
+  base
+  "Specify the domain of the Opals site. (eg \"pa.opals.pausd.org\")"
+  (opal-base base)]
+ 
+ [("-r" "--robot")
+  "Hide the human-readable output"
+  (show-human-readable #f)]
+ 
+ [("-j" "--json")
+  "Output the JSON containing the user info"
+  (show-json #t)]
+ 
+ #:args
+ (id)
+ "Get information for a given ID"
+ (student-id id))
+
+(define opal-login-url
+  (string-append "https://" (opal-base) "/bin/login"))
+(define opal-myaccount-url
+  (string-append "https://" (opal-base) "/bin/user/myaccount"))
 
 (define get-session-id-regexp #rx"sessionID=([0-9a-fA-F]+);")
 (define (get-session-id header)
@@ -98,7 +118,7 @@
 
 ; Login to Opal
 (define login-response
-  (post (opal-login-url)
+  (post opal-login-url
         #:form `((username . ,(student-id))
                  (password . ""))))
 
@@ -111,7 +131,7 @@
   (error "Unable to log in. (Student ID probably does not exist)"))
 
 (define myaccount-response
-  (get (opal-myaccount-url)
+  (get opal-myaccount-url
        #:headers (hasheq 'cookie
                          (bytes-append #"sessionID=" session-id))))
 

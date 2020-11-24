@@ -36,7 +36,7 @@ cd hello-world/audio-to-video
     ```
 
     to get FFmpeg.
-    
+
     From my experience, there was an error the first time suggesting to update some commands. I think it was something like `sudo apt-get update`. I ran that and then reattempted to install FFmpeg and it worked.
 
 2. If FFmpeg is not on your PATH, then edit `audio-pairer.sh` and `video-joiner.sh`.
@@ -50,4 +50,8 @@ sudo apt-get install -y nodejs
 
 to get Node 13.
 
+## Deno
 
+It's pretty easy to [install Deno](https://deno.land/#installation).
+
+To get Atom to work with Deno, using [typescript-deno-plugin](https://www.npmjs.com/package/typescript-deno-plugin) worked for me. Don't forget to restart Atom!
