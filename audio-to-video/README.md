@@ -1,3 +1,13 @@
+## Instructions Neue
+
+Put all the mp3 and wav files in this `audio-to-video` folder, then [get Deno](#deno) and run
+
+```sh
+deno run --allow-net --allow-run --allow-read=./ --allow-write=./descriptions.json,./thumbnails,./parts,./videos.txt,./output.mp4 audio-to-video.ts
+```
+
+This should open http://localhost:8080/ where you can add descriptions (don't forget to click "save"!). When you're done, click "done" and it'll do some magic and send you to the video. The video will also be saved at **output.mp4** in this folder.
+
 ## Instructions
 
 See how to get this code and install the necessary dependencies for this to work in the [preparation section](#preparation) below.

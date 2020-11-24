@@ -49,7 +49,15 @@ async function main () {
       body: await makeImage(filename, description, date)
     })
   }
-  document.body.prepend('I\'m making the video! See the server console for progress updates.')
+  const here = document.createElement('a')
+  here.textContent = 'here'
+  here.href = '/output'
+  document.body.prepend(
+    'I\'m making the video! See the server console for progress updates. ',
+    'If it says it\'s done in the console and I don\'t redirect you automatically, click ',
+    here,
+    '.'
+  )
   const response = await fetch('/make-video', { method: 'POST' })
   if (response.ok) {
     window.location.replace('/output')

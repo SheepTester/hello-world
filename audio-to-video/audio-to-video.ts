@@ -1,19 +1,12 @@
 /**
- * deno run --allow-net --allow-run --allow-read=./ --allow-write=./thumbnails,./parts,./videos.txt,./output.mp4 audio-to-video.ts
+ * deno run --allow-net --allow-run --allow-read=./ --allow-write=./descriptions.json,./thumbnails,./parts,./videos.txt,./output.mp4 audio-to-video.ts
  */
 
 import { serve, ServerRequest } from 'https://deno.land/std@0.79.0/http/server.ts'
 import { open } from 'https://deno.land/x/opener@v1.0.1/mod.ts'
 import { singleArgument } from 'https://deno.land/x/shell_escape@1.0.0/single-argument.ts'
+import * as colors from 'https://deno.land/std@0.79.0/fmt/colors.ts'
 
-function quoteBash (str: string): string {
-  // Single quotes are better? https://superuser.com/a/133787
-  // This just flip-flops double and single quotes with JSON.stringify /shrug
-  // Also FFMpeg concat only accepts single quotes https://ffmpeg.org/ffmpeg-formats.html#concat
-  // > special characters and spaces must be escaped with backslash or single quotes.
-  return JSON.stringify(str.replace(/['"]/g, (m: string) => m === '"' ? "'" : '"'))
-    .replace(/['"]/g, m => m === '"' ? "'" : '"')
-}
 function quoteFFMpeg (path: string): string {
   // https://stackoverflow.com/a/49407684
   return singleArgument(path)
@@ -22,19 +15,34 @@ function quoteFFMpeg (path: string): string {
 
 const decoder = new TextDecoder()
 
+const invalidDate = new Date('unknown')
+
 interface AudioEntry {
   description: string
-  date: Date | 'unknown'
+  date: Date
 }
 
-const audio: Map<string, AudioEntry> = new Map()
+const audioUnsorted: Map<string, AudioEntry> = new Map()
 for await (const { isFile, name } of Deno.readDir('./')) {
   if (isFile && (name.endsWith('.mp3') || name.endsWith('.wav'))) {
     const stat = await Deno.stat('./' + name)
-    audio.set(name, {
+    audioUnsorted.set(name, {
       description: '',
-      date: stat.mtime ?? stat.birthtime ?? 'unknown'
+      date: stat.mtime ?? stat.birthtime ?? invalidDate
     })
+  }
+}
+const audio: Map<string, AudioEntry> = new Map(
+  [...audioUnsorted].sort((a, b) => a[1].date.getTime() - b[1].date.getTime())
+)
+
+const descJson: { [key: string]: string } = JSON.parse(
+  await Deno.readTextFile('./descriptions.json').catch(() => '{}')
+)
+for (const [fileName, description] of Object.entries(descJson)) {
+  const entry = audio.get(fileName)
+  if (entry) {
+    entry.description = description
   }
 }
 
@@ -67,12 +75,12 @@ function escape (text: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
 }
-function editPage (fileName: string, description: string): string {
+function editPage (fileName: string, { description, date }: AudioEntry, saved: boolean = false): string {
   return `<p><a href="/">home</a></p><audio src="/${
     escape(fileName)
-  }" controls></audio><form method="POST"><textarea name="desc" autofocus>${
-    description
-  }</textarea><input type="submit" value="save" /></form>`
+  }" autoplay controls></audio>from ${date}<form method="POST"><textarea name="desc" autofocus>${
+    escape(description)
+  }</textarea><input type="submit" value="save" />${saved ? 'saved.' : ''}</form>`
 }
 function sendHtml (request: ServerRequest, html: string, status: number = 200) {
   request.respond({
@@ -101,10 +109,10 @@ async function onRequest (request: ServerRequest) {
   if (request.method === 'GET') {
     if (path === '/') {
       sendHtml(request, `<p>This list won't update if you add more audio files. If you restart the server, your work will be lost.</p><ul>${
-        Array.from(audio, ([fileName, { description }]) => (
-          `<li><a href="/${escape(fileName)}.html">${escape(fileName)}</a> &mdash; ${description ? escape(description).bold() : '<em>No description</em>'}</li>`
+        Array.from(audio, ([fileName, { description, date }]) => (
+          `<li><a href="/${escape(fileName)}.html">${escape(fileName)}</a> &mdash; ${description ? escape(description).bold() : '<em>No description</em>'} <small>${date}</small></li>`
         )).join('')
-      }</ul><a href="/thumbnails">done</a>`)
+      }</ul><a href="/thumbnails">done</a><form method="POST" action="/cleanup"><input type="submit" value="remove temporary files (keeps audio and final video files)" /></form>`)
     } else if (path === '/thumbnails') {
       sendHtml(request, '<p>wait as the thumbnails are made</p><script src="/thumbnails.exe"></script>')
     } else if (path === '/thumbnails.exe') {
@@ -123,7 +131,7 @@ async function onRequest (request: ServerRequest) {
       const fileName = path.slice(1).replace(/\.html$/, '')
       const entry = audio.get(fileName)
       if (entry) {
-        sendHtml(request, editPage(fileName, entry.description))
+        sendHtml(request, editPage(fileName, entry))
       } else {
         sendHtml(request, '<p>you do not have this sound go <a href="/">home</a></p>', 404)
       }
@@ -145,8 +153,11 @@ async function onRequest (request: ServerRequest) {
       const entry = audio.get(fileName)
       const body = new URLSearchParams(decoder.decode(await Deno.readAll(request.body)))
       if (entry) {
-        entry.description = body.get('desc') || ''
-        sendHtml(request, editPage(fileName, entry.description))
+        const description = body.get('desc') || ''
+        entry.description = description
+        descJson[fileName] = description
+        sendHtml(request, editPage(fileName, entry, true))
+        await Deno.writeTextFile('./descriptions.json', JSON.stringify(descJson, null, 2))
         return
       }
     } else if (path.endsWith('.wav.png') || path.endsWith('.mp3.png')) {
@@ -157,10 +168,8 @@ async function onRequest (request: ServerRequest) {
       request.respond({ status: 204 })
       return
     } else if (path === '/make-video') {
-      console.log('[:)] I\'m starting to make the video...')
+      console.log(colors.cyan('[:)] I\'m starting to make the video...'))
       await Deno.mkdir('./parts', { recursive: true })
-      // Deno.run({ cmd: ['echo', singleArgument('./thumbnails/test lol!\'.wav.png')] })
-      // Deno.run({ cmd: ['wc', '-c', singleArgument('./thumbnails/test lol!\'.wav.png')] })
       const videoPaths: string[] = []
       for (const fileName of audio.keys()) {
         const videoPath = `./parts/${fileName}.mp4`
@@ -182,7 +191,7 @@ async function onRequest (request: ServerRequest) {
         })
         const { success } = await process.status()
         if (!success) throw new Error(`Making ${videoPath} was unsuccessful.`)
-        console.log(`[:)] - ${videoPath}`)
+        console.log(colors.blue(`[:)] - ${videoPath}`))
         videoPaths.push(`file ${quoteFFMpeg(videoPath)}\n`)
       }
       await Deno.writeTextFile('./videos.txt', videoPaths.join(''))
@@ -191,8 +200,15 @@ async function onRequest (request: ServerRequest) {
       })
       const { success } = await process.status()
       if (!success) throw new Error(`Merging the video parts was unsuccessful.`)
-      console.log('[:)] You are done! You can stop this server by doing ctrl+C.')
+      console.log(colors.green('[:)] You are done! You can stop this server by doing ctrl+C.'))
       request.respond({ status: 204 })
+      return
+    } else if (path === '/cleanup') {
+      console.log(colors.yellow('[!!] Cleaning up!'))
+      await Deno.remove('./thumbnails/', { recursive: true })
+      await Deno.remove('./parts/', { recursive: true })
+      await Deno.remove('./videos.txt')
+      sendHtml(request, '<p>temporary files removed! don\'t worry, your audio and final video files have been kept</p><a href="/">home</a>')
       return
     }
   }
@@ -201,7 +217,7 @@ async function onRequest (request: ServerRequest) {
 
 for await (const request of server) {
   onRequest(request).catch(err => {
-    console.error('[:(] Caught error:', err)
+    console.error(colors.red('[:(] Caught error:'), Deno.inspect(err))
     sendHtml(request, `<p>server die</p><p style="color: pink; white-space: pre-wrap;">${escape(err.toString())}</p>`, 500)
   })
 }
