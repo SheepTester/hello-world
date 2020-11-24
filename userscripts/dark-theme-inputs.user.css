@@ -1,0 +1,17 @@
+/* ==UserStyle==
+@name           Force dark theme inputs/scrollbars
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    You need to enable the flag at chrome://flags/#form-controls-dark-mode
+@author         SheepTester
+==/UserStyle== */
+
+/*
+  Enable the flag at chrome://flags/#form-controls-dark-mode
+
+  More info: https://web.dev/color-scheme/
+*/
+
+:root {
+  color-scheme: dark light;
+}
