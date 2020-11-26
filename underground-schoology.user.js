@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Underground Schoology
 // @namespace    https://orbiit.github.io/
-// @version      pre-1.1.20
+// @version      pre-1.1.21
 // @description  A second social media on top of Schoology
 // @author       Anti-SELF revolutionaries
 // @match        *://*.schoology.com/*
@@ -10,6 +10,8 @@
 
 (function() {
   'use strict';
+
+  if (!document.getElementById('edge-filters-menu')) return;
 
   const STORAGE_KEY = '[us] userID pre-1.1';
   const UG_CSS_PFX = 'underground-st';
