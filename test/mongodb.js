@@ -1,3 +1,5 @@
+// http://mongodb.github.io/node-mongodb-native/3.4/quick-start/quick-start/
+
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
