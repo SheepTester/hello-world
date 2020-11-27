@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Schoology liker and disliker
 // @namespace    https://sheeptester.github.io/
-// @version      1.1
+// @version      1.2
 // @description  Press ALT/OPTION + D to activate: like and dislike updates and comments on Schoology.
 // @author       SheepTester
 // @match        *://*.schoology.com/*
@@ -44,7 +44,9 @@
       alignItems: 'center',
       width: '100%',
       height: '100%',
-      position: 'fixed'
+      position: 'fixed',
+      // Above any existing popups
+      zIndex: 1901
     })
     overlay.append(loading)
 
@@ -359,11 +361,15 @@
         .then(async ({ [nid]: dislikers = [] }) => {
           const fragment = document.createDocumentFragment()
           if (dislikers.length) {
-            for (const user of await getUsers(dislikers.slice(0, 50))) {
+            for (const [userId, user] of await getUsers(dislikers.slice(0, 50))) {
               if (!user) {
-                fragment.append(Object.assign(document.createElement('li'), {
-                  textContent: '???'
+                const li = document.createElement('li')
+                li.append(Object.assign(document.createElement('a'), {
+                  textContent: userId,
+                  href: `/user/${removeDomain(userId)}`
                 }))
+                fragment.append(li)
+                continue
               }
 
               const { id, name_display, picture_url } = user
@@ -371,7 +377,11 @@
                 src: picture_url,
                 className: 'profile-picture-wrapper'
               })
-              image.style.height = '46px'
+              Object.assign(image.style, {
+                height: '46px',
+                width: '50px',
+                objectFit: 'cover'
+              })
 
               const imageLink = Object.assign(document.createElement('a'), {
                 href: `/user/${id}`
@@ -395,9 +405,12 @@
               fragment.append(li)
             }
             for (const extra of dislikers.slice(50)) {
-              fragment.append(Object.assign(document.createElement('li'), {
-                textContent: extra
+              const li = document.createElement('li')
+              li.append(Object.assign(document.createElement('a'), {
+                textContent: extra,
+                href: `/user/${removeDomain(extra)}`
               }))
+              fragment.append(li)
             }
           }
           return {
@@ -503,6 +516,6 @@
     })
       .then(responseOk)
       .then(r => r.json())
-      .then(({ response }) => response.map(r => r.body))
+      .then(({ response }) => response.map((r, i) => [userIds[i], r.body]))
   }
 })()
