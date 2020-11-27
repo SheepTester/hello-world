@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Schoology liker and disliker
 // @namespace    https://sheeptester.github.io/
-// @version      1.0
-// @description  Press ALT + D to activate: like and dislike updates and comments on Schoology.
+// @version      1.1
+// @description  Press ALT/OPTION + D to activate: like and dislike updates and comments on Schoology.
 // @author       SheepTester
 // @match        *://*.schoology.com/*
 // @exclude      *://asset-cdn.schoology.com/*
@@ -301,7 +301,7 @@
   const initialized = new Promise(resolve => (initialize = resolve))
 
   document.addEventListener('keydown', async e => {
-    if (e.altKey && e.key === 'd') {
+    if (e.altKey && e.keyCode === 68) {
       e.preventDefault()
 
       if (start) {
