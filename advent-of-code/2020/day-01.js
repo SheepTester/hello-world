@@ -22,3 +22,16 @@ for (let i of [0, 5]) {
 }
 
 1573 * 447
+
+// brute force >:D
+sets = {}
+nums = document.body.textContent.split('\n').filter(a => a).map(Number)
+for (const a of nums) {
+for (const b of nums) {
+for (const c of nums) {
+if (a + b + c === 2020) throw [a, b, c]
+}
+}
+}
+
+930 * 609 * 481
