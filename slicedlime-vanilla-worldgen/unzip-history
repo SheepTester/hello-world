@@ -3,8 +3,8 @@
 cd ./examples/
 
 # -f checks if file exists
-if [ -f ./last-commit.txt ]; then
-  last_commit="$(cat ./last-commit.txt).."
+if [ -f ../last-commit.txt ]; then
+  last_commit="$(cat ../last-commit.txt).."
 fi
 
 git pull
