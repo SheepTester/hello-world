@@ -15,11 +15,7 @@ git pull
 # There's a distinction between "author" and "committer" that I believe is not relevant for this repository.
 # --follow only lists the commits for a file
 # --reverse reverses the order of the commits (so oldest first)
-git log --format="%H %s (%ai)" --follow vanilla_worldgen.zip --reverse $last_commit > ../commits.txt
-
-# Get hash of latest commit
-# https://stackoverflow.com/a/949391
-git rev-parse HEAD > last-commit.txt
+git log --format="%H %s (%ai)" --follow --reverse $last_commit vanilla_worldgen.zip > ../commits.txt
 
 # https://stackoverflow.com/a/1521498
 while read line; do
@@ -50,6 +46,9 @@ while read line; do
 
   # Unsure if this is necessary or it'll reset when at the end of a loop
   cd ../examples/
+
+  # Save last commit in case the script gets stopped mid-way
+  echo "$hash" > ../last-commit.txt
 
   echo "$message"
 done < ../commits.txt
