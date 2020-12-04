@@ -5,5 +5,11 @@ examples
 # Destination repo with unzipped files
 vanilla_worldgen
 
+# Zip file
+vanilla_worldgen.zip
+
 # List of commits
 commits.txt
+
+# Hash of last commit
+last-commit.txt

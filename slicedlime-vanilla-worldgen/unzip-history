@@ -2,12 +2,24 @@
 
 cd ./examples/
 
+# -f checks if file exists
+if [ -f ./last-commit.txt ]; then
+  last_commit="$(cat ./last-commit.txt).."
+fi
+
+git pull
+
 # %H is placeholder for commit hash
 # %s: subject
 # %ai: author date, ISO 8601-like format
 # There's a distinction between "author" and "committer" that I believe is not relevant for this repository.
 # --follow only lists the commits for a file
-git log --format="%H %s (%ai)" --follow vanilla_worldgen.zip > ../commits.txt
+# --reverse reverses the order of the commits (so oldest first)
+git log --format="%H %s (%ai)" --follow vanilla_worldgen.zip --reverse $last_commit > ../commits.txt
+
+# Get hash of latest commit
+# https://stackoverflow.com/a/949391
+git rev-parse HEAD > last-commit.txt
 
 # https://stackoverflow.com/a/1521498
 while read line; do
@@ -23,14 +35,21 @@ while read line; do
 
   # Remove all files in repo
   # https://stackoverflow.com/a/51093657
-  git rm -r .
+  # git rm normally complains if there's nothing to remove. --ignore-unmatch shuts that up.
+  git rm -r . --quiet --ignore-unmatch
 
   # Extracts the given zip into this (vanilla_worldgen) directory
-  unzip ../vanilla_worldgen.zip -d .
+  # -qq makes it extra quiet
+  unzip -qq ../vanilla_worldgen.zip -d .
 
-  git add .
-  git commit -m "$message"
+  # There isn't a --quiet option for git add :(
+  # https://stackoverflow.com/questions/26277968/git-add-quiet-quiet-option-not-available#comment41228251_26277968
+  # https://stackoverflow.com/a/33192221
+  git add . &> /dev/null
+  git commit -m "$message" --quiet
 
   # Unsure if this is necessary or it'll reset when at the end of a loop
   cd ../examples/
+
+  echo "$message"
 done < ../commits.txt
