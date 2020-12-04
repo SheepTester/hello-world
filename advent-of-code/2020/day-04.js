@@ -51,3 +51,29 @@ return [e, d]
 }
 })
 ;[a.filter(n => n[0] === null).length, a]
+
+// was one off, for some reason, hmm
+count = 0
+document.body.textContent.split(/\r?\n\r?\n/).filter(entry => {
+if (!entry) return
+try {
+const values = Object.fromEntries(entry.split(/\s+/).map(a => a.split(':')))
+if (+values.byr >= 1920 && +values.byr <= 2002)
+if (+values.iyr >= 2010 && +values.iyr <= 2020)
+if (+values.eyr >= 2020 && +values.eyr <= 2030)
+if (values.hgt.slice(-2) === 'cm' && +values.hgt.slice(0, -2) >= 150 && +values.hgt.slice(0, -2) <= 193
+|| values.hgt.slice(-2) === 'in' && +values.hgt.slice(0, -2) >= 59 && +values.hgt.slice(0, -2) <= 76)
+if (/^#[0-9a-f]{6}$/i.test(values.hcl))
+if (['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'].includes(values.ecl))
+if (/^\d{9}$/.test(values.pid))
+return true
+    } catch { return }
+})
+
+// part 2 attempt 1 matched this
+// the regex I think matches the first 9 digits which is why method 2 is superior (values.hcl.length === 9 also works)
+/*
+byr:1966
+cid:133 pid:9953651821 ecl:gry iyr:2020 hgt:152cm
+hcl:#fffffd eyr:2026
+*/
