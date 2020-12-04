@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# I believe -r removes recursively--it recurses inside folders to remove their files--and -f removes forcefully--say yes whenever it asks you are you sure.
+rm -rf examples
+rm -rf vanilla_worldgen
+rm commits.txt

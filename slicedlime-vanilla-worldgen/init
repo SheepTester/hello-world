@@ -1,0 +1,13 @@
+#!/bin/bash
+
+./clean-up
+
+# Clone repo into examples/ folder
+git clone https://github.com/slicedlime/examples.git
+
+# Create a repo for vanilla_worldgen
+mkdir vanilla_worldgen
+cd vanilla_worldgen
+git init
+# Not necessary but in case I add more lines after
+cd ..

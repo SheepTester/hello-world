@@ -1,0 +1,9 @@
+# Source repo with zip
+# https://github.com/slicedlime/examples
+examples
+
+# Destination repo with unzipped files
+vanilla_worldgen
+
+# List of commits
+commits.txt

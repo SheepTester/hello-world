@@ -1,0 +1,36 @@
+#!/bin/bash
+
+cd ./examples/
+
+# %H is placeholder for commit hash
+# %s: subject
+# %ai: author date, ISO 8601-like format
+# There's a distinction between "author" and "committer" that I believe is not relevant for this repository.
+# --follow only lists the commits for a file
+git log --format="%H %s (%ai)" --follow vanilla_worldgen.zip > ../commits.txt
+
+# https://stackoverflow.com/a/1521498
+while read line; do
+  # Split by first space, storing the left and right halves in hash and message respectively.
+  # https://unix.stackexchange.com/a/53315
+  IFS=' ' read -r hash message <<< "$line"
+  
+  # Get file from specific commit (hash) and store it somewhere
+  # https://stackoverflow.com/a/888623
+  git cat-file blob $hash:vanilla_worldgen.zip > ../vanilla_worldgen.zip
+
+  cd ../vanilla_worldgen/
+
+  # Remove all files in repo
+  # https://stackoverflow.com/a/51093657
+  git rm -r .
+
+  # Extracts the given zip into this (vanilla_worldgen) directory
+  unzip ../vanilla_worldgen.zip -d .
+
+  git add .
+  git commit -m "$message"
+
+  # Unsure if this is necessary or it'll reset when at the end of a loop
+  cd ../examples/
+done < ../commits.txt
