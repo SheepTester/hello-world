@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Instagram story stealer
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.4
 // @description  (ctrl/cmmd) + M when viewing an Instagram story to open the video/image in new tab
 // @author       Sean
 // @match        https://www.instagram.com/*
@@ -20,7 +20,13 @@
                 parent = parent.parentElement;
             }
             if (video) GM_openInTab(video.getAttribute("src"));
-            if (image) GM_openInTab(image.getAttribute("src"));
+            if (image) {
+                try {
+                    GM_openInTab(image.getAttribute('srcset').split(',')[0].split(' ')[0]);
+                } catch (err) {
+                    GM_openInTab(image.getAttribute("src"));
+                }
+            }
         }
     }, false);
 })();
