@@ -36,4 +36,27 @@ v = turnn()
 v
 }
 
-// 
+// paused before potential out of memory crash oh no
+e = document.body.textContent.trim()
+e = '0,3,6'
+// per turn: number -> last turn BEFORE the prev turn with number
+obj = {}
+turn = 1
+for (const n of e.split(',').map(Number)) {
+lastNum = n
+obj[lastNum] = turn
+turn++
+}
+console.time()
+for (; turn <= 30000000; turn++) {
+  const t = obj[lastNum]
+  obj[lastNum] = turn - 1
+  if (t && t !== turn - 1) {
+    lastNum = turn - 1 - t
+  } else {
+    lastNum = 0
+  }
+  //console.log(turn, lastNum)
+}
+console.timeEnd()
+lastNum
