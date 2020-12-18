@@ -33,3 +33,15 @@ const parts = line.replaceAll('(', 'ok(').replaceAll('*', ', null, ')
 return eval(`ok(${parts})`)
 return evall(out)
 }).reduce((a, b) => a + b)
+
+// part II but cleaner:
+const input = document.body.textContent.trim().split(/\r?\n/)
+function product (...sums) {
+  return sums.reduce((a, b) => a * b)
+}
+input
+  .map(line => {
+    const parts = line.replaceAll('(', 'product(').replaceAll('*', ', ')
+    return eval(`product(${parts})`)
+  })
+  .reduce((a, b) => a + b)
