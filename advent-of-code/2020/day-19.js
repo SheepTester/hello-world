@@ -19,7 +19,7 @@ tester = compileRule('0', true)
 //tester = new RegExp('^' + compileRule('0').toString().replaceAll('/', '').replaceAll('|', '$|^') + '$')
 msgs.filter(t => tester.test(t)).length
 
-// no balancing regex in js
+// no balancing regex in js, so brute force (five is enough yes). I have never seen a regex lag until today
 ;
 [rawrules, msgs] =
 document.body.textContent
@@ -36,20 +36,21 @@ let rule = rawrules.get(id)
 if (rule.startsWith('"')) {
 rules.set(id, new RegExp(JSON.parse(rule)))
 } else if (id === '8') {
-rules.set(id, new RegExp('(?:'+get('42') + '+)'))
+rules.set(id, new RegExp('('+get('42') + ')+'))
 } else if (id === '11') {
 let str = []
 // harcoding up to five /shrug
-for (let i =1; i<=5; i++) str.push(
-`(?:${get('42')}{${i}})(?:${get('31')}{${i}})`
+for (let i =1; i<=6; i++) str.push(
+`(${get('42')}){${i}}(${get('31')}){${i}}`
 )
+console.log(str)
 rules.set(id, 
 //new RegExp('(?:'+get('42')+'{1})(?:' + get('31') + '+)')
 new RegExp(str.join('|')
 ))
 } else {
 if (topLevel) rule = '^' + rule.replaceAll('|', '$|^') + '$'
-rules.set(id, new RegExp(rule.replace(/\d+/g, id => '(?:'+get(id) + ')').replace(/\s/g, '')))
+rules.set(id, new RegExp(rule.replace(/\d+/g, id => '('+get(id) + ')').replace(/\s/g, '')))
 }
 return rules.get(id)
 }
