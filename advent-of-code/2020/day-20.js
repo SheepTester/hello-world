@@ -150,20 +150,26 @@ down: 'left'
 function getCell(x, y) {
 let dir = 'right'
 let currentTile = byId(corner)
+let flip = false
 while (x >= 8) {
 thing = currentTile.sides.find(s => s.dir === rightMappings[dir])
 dir = thing.other.dir // dir fortunately means the direction coming IN!
 currentTile = byId(thing.other.id)
+if (thing.needsFlippin) flip = !flip
 x -= 8
 }
+if (flip) x = 7 - x
+flip = false
 //console.log(dir, perpMappings[dir])
 dir = perpMappings[dir]
 while (y >= 8) {
 thing = currentTile.sides.find(s => s.dir === rightMappings[dir])
 dir = thing.other.dir // dir fortunately means the direction coming IN!
 currentTile = byId(thing.other.id)
+if (thing.needsFlippin) flip = !flip
 y -= 8
 }
+if (flip) y = 7 - y
 return {
 right: () => currentTile.newRows[y][x],
 down: () => currentTile.newRows[x][7 - y],
@@ -200,8 +206,8 @@ if (findDragonAt(x, y, rotate)) console.log('omg')
 }
 }
 }
-findDragonDir(rotators.right)
-//getCell(95, 94)
+//findDragonDir(rotators.right)
+getCell(0, 12)
 //byId(corner)
 //woBorders(input[0].rows)
 
