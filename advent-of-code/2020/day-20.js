@@ -104,6 +104,7 @@ return rows.slice(1, -1).map(a => a.slice(1, -1))
 heat = new Map()
 images = []
 byId = id => input.find(f => f.id === id)
+corner = null
 for (const obj of input) {
 const { rows, id, sides } = obj
 // number of edge sides (sides w/ no partners)
@@ -120,7 +121,7 @@ sides.push({ other, needsFlippin, dir })
 }
 }
 if (hmm === 2) {//console.log(sides)
-if (sides.find(m => m.dir === 'up') && sides.find(m => m.dir === 'left'))corner = id;
+if (sides.find(m => m.dir === 'down') && sides.find(m => m.dir === 'left')) {corner = id;console.log(sides)}
 }
 obj.newRows = woBorders(rows)
 heat.set(hmm, (heat.get(hmm) || 0) + 1)
@@ -131,6 +132,11 @@ heat.set(hmm, (heat.get(hmm) || 0) + 1)
 // |
 // |
 // |
+// however this cannot be found, so we use the corner where
+// one can come DOWN or left. consequences? posiitve Y is up, so
+// yes there are BIG consequences. Alternatively, I could, hmm.
+// 
+
 // corner is ideal so that I can use it as the top left origin lol
 if (8 !== input[0].newRows.length) throw 'up'
 rightMappings = { // posiitive x dir
@@ -141,7 +147,7 @@ up: 'down',
 down: 'up'
 }
 perpMappings = {
-// map current dir to 90 deg right
+// map current dir to 90 deg LEFT
 right: 'down',
 up: 'right',
 left: 'up',
@@ -207,7 +213,7 @@ if (findDragonAt(x, y, rotate)) console.log('omg')
 }
 }
 //findDragonDir(rotators.right)
-getCell(0, 12)
+//getCell(0, 12)
 //byId(corner)
 //woBorders(input[0].rows)
 
