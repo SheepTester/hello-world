@@ -13,7 +13,7 @@ p2.push(p2.shift(), p1.shift())
 winner = p2.length ? p2 : p1
 winner.map((card, i) => card * (winner.length - i) ).reduce((a, b) => a + b)
 
-// very recursive :(
+// very recursive :( FORGOT TO SLICE dgijfghfdghfgh
 ;
 [p1, p2] = document.body.textContent
 .trim().split(/\r?\n\r?\n/)
@@ -32,7 +32,7 @@ const p1Card = p1.shift()
 const p2Card = p2.shift()
 let p1Won
 if (p1.length >= p1Card && p2.length >= p2Card) {
-v =   game([...p1], [...p2])
+v =   game(p1.slice(0, p1Card), p2.slice(0, p2Card))
 //console.log(v)
 p1Won = v=== 1
 } else p1Won = p1Card > p2Card
