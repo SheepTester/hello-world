@@ -7,7 +7,8 @@
     "test": "test"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "nearley": "^2.20.1"
   },
   "devDependencies": {
     "typescript": "^4.1.2",

@@ -10,8 +10,8 @@ MineSpeed := 3500
 ; Walking speed is 4.317 m/s (NOT sneaking)
 ; https://minecraft.gamepedia.com/Sprinting#Usage
 ; Time it takes to move a metre (in ms, while NOT sneaking)
-; Subtracting a few ms because blocks are being skipped
-MetreTime := 1000 / 4.317 - 20
+; Subtracting a few ms because blocks are being skipped (doesn't really help)
+MetreTime := 1000 / 4.317 - 10
 
 IfWinExist %wintit%
 
@@ -47,6 +47,10 @@ Loop, 8 {
   ControlSend ahk_parent, {d down}, %wintit%
   Sleep, %MetreTime%
   ControlSend ahk_parent, {d up}, %wintit%
+
+  ; Swap items with offhand (toggle between two pickaxes
+  ; to maximise durability)
+  ; ControlSend ahk_parent, f, %wintit%
 }
 
 ; Stop left click
