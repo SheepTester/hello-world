@@ -249,6 +249,8 @@ function getOtherTilesWithSide (tile) {
   const needsFlip = other.sides.map(toId).includes(toId(side))
   if (needsFlip) {
   const rows = flip(other.rows)
+other. rows = flip(other.rows)
+return other
   return {...other, rows,
   sides: null//getSides(rows), 
   }
@@ -281,6 +283,7 @@ function rotInPlace (tile) {
       // they go in opp dirs (cw and ccw) so must reverse
       if (rev(sides[compl[i]]) === side) {
         matched.add(pairToId(others[i], tile))
+        if (others[i].neighbours[compl[i]]) throw 'what'
         others[i].neighbours[compl[i]] = tile.id
         others[i].sides = sides
         others[i].rows = rows
@@ -296,42 +299,76 @@ function rotInPlace (tile) {
 // left right top bottom
 sideData = {0: [-1,0 ],1:[1,0],2:[0,-1],3:[0,1]}
 function displ(startTile, ) {
-const set = new Map()
-let minX = Infinity, maxX = -Infinity,
-minY = Infinity, maxY = -Infinity
-const processed = new Set()
-const next = [[startTile, 0, 0]]
-let item
-while (item = next.shift()) {
-processed.add(item[0].id)
-next.push(...item[0].neighbours.map((id, i) => [tiles.get(id), ...sideData[i]]).filter(x => x && !processed.has(x[0].id)))
-const [{rows}, dx, dy]=item
-const ddx = dx * 10
-const ddy = dy * 10
-rows.forEach((row, y) => [...row].forEach((cell, x) => {
-let totY = ddy+y,totX = ddx+x
-if (totY<minY) minY = totY
-if (totX<minX) minX = totX
-if (totY>maxY) maxY = totY
-if (totX>maxX) maxX = totX
-const pos = `${ddx + x},${totY}`
-set.set(pos, cell)
-})
-)
+  const set = new Map()
+  let minX = Infinity, maxX = -Infinity,
+  minY = Infinity, maxY = -Infinity
+  const willProcess = new Set([startTile.id])
+  const claims = new Map([[startTile.id, [0, 0]]])
+  const next = [[startTile, 0, 0]]
+  let item
+  while (item = next.shift()) {
+  const [{rows,neighbours,id:curr}, dx, dy]=item
+  for (let i = 0; i < 4; i++) {
+const id = neighbours[i]
+if (id ){
+const [mdx,mdy] = sideData[i]
+if (!willProcess.has(id)) {
+willProcess.add(id)
+const val=[tiles.get(id), dx+mdx,dy+mdy]
+claims.set(id, [dx+mdx,dy+mdy])
+next.push(val)
+} //else console.log(id, [...willProcess], 'already.')
+else {
+const claim = claims.get(id)
+if (!claim) throw [willProcess, 'has', id, 'but its not in', claims]
+const [tx, ty] = claim
+if (tx !== dx+mdx || ty !== dy+mdy) {
+throw [curr, 'claims', id, 'is at', [dx+mdx,dy+mdy], 'but it is registered at ', [tx, ty]]
 }
-let str= ''
-for (let y = minY;y<=maxY;y++) {
-for (let x = minX;x<=maxX;x++){
-const pos = `${x},${y}`
-str += set.get(pos) ||' '
 }
-str += '\n'
 }
-return str
+  }
+  const ddx = dx * 10
+  const ddy = dy * 10
+  rows.forEach((row, y) => [...row].forEach((cell, x) => {
+  let totY = ddy+y,totX = ddx+x
+  if (totY<minY) minY = totY
+  if (totX<minX) minX = totX
+  if (totY>maxY) maxY = totY
+  if (totX>maxX) maxX = totX
+  const pos = `${ddx + x},${totY}`
+  set.set(pos, cell)
+  })
+  )
+  }
+  let str= ''
+  for (let y = minY;y<=maxY;y++) {
+  for (let x = minX;x<=maxX;x++){
+  const pos = `${x},${y}`
+  str += set.get(pos) ||' '
+  }
+  str += '\n'
+  }
+  return str
 }
 firstId = input[0].id
-rotInPlace(tiles.get(firstId))
+//*
+done = new Set([])
+queue = [firstId]
+while (queue.length) {
+const next = queue.shift()
+rotInPlace(tiles.get(next))
+done.add(next)
+for (const neighbour of tiles.get(next).neighbours) {
+if (neighbour!== null && !done.has(neighbour) && !queue.includes(neighbour)) queue.push(neighbour)
+}
+if (queue.length > 17) break
+}
 console.log(displ(tiles.get(firstId)))
+//*/
+// console.log(getOtherTilesWithSide(tiles.get(2663)))
+// console.log(rotInPlace(tiles.get(firstId)))
+// console.log(getOtherTilesWithSide(tiles.get(2663)))
 //getOtherTilesWithSide(tiles[0])
 // console.log(tiles[0].rows.join('\n'))
 // console.log(rotate90CCW(tiles[0].rows).join('\n'))
