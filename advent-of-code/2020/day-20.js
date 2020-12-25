@@ -218,3 +218,120 @@ if (findDragonAt(x, y, rotate)) console.log('omg')
 //woBorders(input[0].rows)
 
 //[...matchers].filter(f => f[1].length <= 2)
+
+// redoing day 20 because I forgot how my code works
+;
+function getSides (rows) {
+const col = x => rows.map(row => row[x]).join('')
+const row = y => rows[y]
+// left right top bottom sides, +y down
+// clockwise
+return [rev(col(0)),col(9),row(0),rev(row(9))] 
+}
+toId = str => parseInt(str.replace(/#/g, '1').replace(/\./g, '0'), 2)
+rev = str => [...str].reverse().join('')
+serSide = m => Math.min(toId(m), toId(rev(m))) // "serialize" side
+input = document.body.textContent
+.trim().split(/\r?\n\r?\n/)
+.map(tile => {
+  const [header, ...rows] = tile.split(/\r?\n/)
+  const id = +header.match(/\d+/)[0]
+  const sides = getSides(rows)
+  return { id, rows, sides, neighbours: [] }
+})
+tiles = new Map(input.map(m => [m.id, m]))
+function getOtherTilesWithSide (tile) {
+  return tile.sides.map(side => {
+  const ser = serSide(side)
+  const other = [...tiles.values()].find(t => t.id !== tile.id && t.sides.map(serSide).includes(ser))
+  if (!other) return null
+  // needs flip if the direction for both sides are the SAME. think about it (like gears)
+  const needsFlip = other.sides.map(toId).includes(toId(side))
+  if (needsFlip) {
+  const rows = flip(other.rows)
+  return {...other, rows,
+  sides: null//getSides(rows), 
+  }
+         }
+  else return other
+  })
+}
+function flip (rows) {
+ return [...rows].reverse()
+}
+function rotate90CCW (rows) {
+  // (4, 1) -> (8, 4)
+  // meant to be clockwise but accidentally made ccw, oh well
+  return rows.map((row, y) => [...row].map((_, x) => rows[x][9-y]).join(''))
+}
+// map side index to the other
+compl = {0:1,1:0,2:3,3:2}
+matched = new Set()
+pairToId = (a, b) => a.id < b.id ? a.id + ',' + b.id : b.id + ',' + a.id
+function rotInPlace (tile) {
+  const others = getOtherTilesWithSide(tile)
+  tile.neighbours = tile.sides.map((side, i) => {
+    if (tile.neighbours[i]) return tile.neighbours[i]
+    if (!others[i]) return null
+    let rows = others[i].rows
+    //let sides = others[i].sides
+    for (let j = 0; ; j++ ) {
+      if (j > 5) throw {tile,side}
+      const sides = getSides(rows)
+      // they go in opp dirs (cw and ccw) so must reverse
+      if (rev(sides[compl[i]]) === side) {
+        matched.add(pairToId(others[i], tile))
+        others[i].neighbours[compl[i]] = tile.id
+        others[i].sides = sides
+        others[i].rows = rows
+        return others[i].id
+        return {...others[i], sides, rows }
+      }
+      //console.log(rows, sides[compl[i]], side)
+      rows = rotate90CCW(rows)
+    }
+  })
+  return tile
+}
+// left right top bottom
+sideData = {0: [-1,0 ],1:[1,0],2:[0,-1],3:[0,1]}
+function displ(startTile, ) {
+const set = new Map()
+let minX = Infinity, maxX = -Infinity,
+minY = Infinity, maxY = -Infinity
+const processed = new Set()
+const next = [[startTile, 0, 0]]
+let item
+while (item = next.shift()) {
+processed.add(item[0].id)
+next.push(...item[0].neighbours.map((id, i) => [tiles.get(id), ...sideData[i]]).filter(x => x && !processed.has(x[0].id)))
+const [{rows}, dx, dy]=item
+const ddx = dx * 10
+const ddy = dy * 10
+rows.forEach((row, y) => [...row].forEach((cell, x) => {
+let totY = ddy+y,totX = ddx+x
+if (totY<minY) minY = totY
+if (totX<minX) minX = totX
+if (totY>maxY) maxY = totY
+if (totX>maxX) maxX = totX
+const pos = `${ddx + x},${totY}`
+set.set(pos, cell)
+})
+)
+}
+let str= ''
+for (let y = minY;y<=maxY;y++) {
+for (let x = minX;x<=maxX;x++){
+const pos = `${x},${y}`
+str += set.get(pos) ||' '
+}
+str += '\n'
+}
+return str
+}
+firstId = input[0].id
+rotInPlace(tiles.get(firstId))
+console.log(displ(tiles.get(firstId)))
+//getOtherTilesWithSide(tiles[0])
+// console.log(tiles[0].rows.join('\n'))
+// console.log(rotate90CCW(tiles[0].rows).join('\n'))
