@@ -261,10 +261,11 @@ return other
 function flip (rows) {
  return [...rows].reverse()
 }
-function rotate90CCW (rows) {
+function rotate90CCW (rows, trim) {
+// assumes rows is square (don't think this matters tbh)
   // (4, 1) -> (8, 4)
   // meant to be clockwise but accidentally made ccw, oh well
-  return rows.map((row, y) => [...row].map((_, x) => rows[x][9-y]).join(''))
+  return rows.map((row, y) => [...row].map((_, x) => rows[x][rows.length-1-y]).join(''))
 }
 // map side index to the other
 compl = {0:1,1:0,2:3,3:2}
@@ -298,7 +299,7 @@ function rotInPlace (tile) {
 }
 // left right top bottom
 sideData = {0: [-1,0 ],1:[1,0],2:[0,-1],3:[0,1]}
-function displ(startTile, ) {
+function displ(startTile, trim) {
   const set = new Map()
   let minX = Infinity, maxX = -Infinity,
   minY = Infinity, maxY = -Infinity
@@ -328,15 +329,21 @@ throw [curr, 'claims', id, 'is at', [dx+mdx,dy+mdy], 'but it is registered at ',
 }
 }
   }
-  const ddx = dx * 10
-  const ddy = dy * 10
+const size = trim ? 8 : 10
+  const ddx = dx * size
+  const ddy = dy * size
   rows.forEach((row, y) => [...row].forEach((cell, x) => {
   let totY = ddy+y,totX = ddx+x
+  if (trim) {
+if (y === 0 || x === 0 || y === 9 || x === 9) return
+totY --
+totX--
+  }
   if (totY<minY) minY = totY
   if (totX<minX) minX = totX
   if (totY>maxY) maxY = totY
   if (totX>maxX) maxX = totX
-  const pos = `${ddx + x},${totY}`
+  const pos = `${totX},${totY}`
   set.set(pos, cell)
   })
   )
@@ -356,15 +363,57 @@ firstId = input[0].id
 done = new Set([])
 queue = [firstId]
 while (queue.length) {
-const next = queue.shift()
-rotInPlace(tiles.get(next))
-done.add(next)
-for (const neighbour of tiles.get(next).neighbours) {
-if (neighbour!== null && !done.has(neighbour) && !queue.includes(neighbour)) queue.push(neighbour)
+  const next = queue.shift()
+  rotInPlace(tiles.get(next))
+  done.add(next)
+  for (const neighbour of tiles.get(next).neighbours) {
+  if (neighbour!== null && !done.has(neighbour) && !queue.includes(neighbour)) queue.push(neighbour)
+  }
+  if (queue.length > 17) break
 }
-if (queue.length > 17) break
+wow = displ(tiles.get(firstId), true)
+console.log(total = wow.match(/#/g).length)
+//console.log(wow) // <--- very cool
+wow = wow.trim().split('\n')
+orig = [...wow]
+dragOk = new Set()
+dragon = `                  # 
+#    ##    ##    ###
+ #  #  #  #  #  #   `.split(/\r?\n/).map((row, y) => [...row].map((char, x) => char === '#' && dragOk.add([x, y])))
+d = {width: 19, height: 3}
+hasDragons = new Set()
+function lookForDragon () {
+  for (let x = 0; x < wow[0].length - d.width; x++) {
+  lol:
+  for (let y = 0; y < wow.length - d.height; y++) {
+  for (const [dx, dy] of dragOk) {
+  const tdx = x + dx
+  const tdy = y + dy
+  if (wow[tdy][tdx] === '.') continue lol
+  else if (wow[tdy][tdx] !== '#') throw ['?>>???', tdx, tdy]
+  }
+  console.log('dragon found owo', { x,y })
+  for (const [dx, dy] of dragOk) {
+  const tdx = x + dx
+  const tdy = y + dy
+  hasDragons.add(`${tdx},${tdy}`)
+  }
+  }
+  }
 }
-console.log(displ(tiles.get(firstId)))
+for (let i = 0; i < 4; i++) {
+  console.log(i, 'ok')
+  lookForDragon()
+  wow = rotate90CCW(wow)
+}
+wow = flip(wow)
+for (let i = 0; i < 4; i++) {
+  console.log(i, 'oknt')
+  lookForDragon()
+  wow = rotate90CCW(wow)
+}
+//if (orig.join('\n') !== wow.join('\n')) throw 'something badh appened'
+null
 //*/
 // console.log(getOtherTilesWithSide(tiles.get(2663)))
 // console.log(rotInPlace(tiles.get(firstId)))
@@ -372,3 +421,4 @@ console.log(displ(tiles.get(firstId)))
 //getOtherTilesWithSide(tiles[0])
 // console.log(tiles[0].rows.join('\n'))
 // console.log(rotate90CCW(tiles[0].rows).join('\n'))
+total - hasDragons.size
