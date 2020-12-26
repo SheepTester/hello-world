@@ -27,6 +27,13 @@
         color: #9ba9ea;
         text-decoration: none;
     }
+    #script {
+        font-size: 0;
+    }
+    #script::after {
+        content: 'this link';
+        font-size: initial;
+    }
     @media (max-width: 700px) {
         div {
             margin: 0 auto;
@@ -44,12 +51,13 @@
 <body class="no-bookmarklet">
 <div class="bookmarklet">
     <h1 id="name">Bookmarklet</h1>
-    <p>Drag <strong><a href="javascript:void (document.head.appendChild(document.createElement('script')).src = 'https://sheeptester.github.io/hello-world/ic-get-schedule.js')" id="script">this link</a></strong> into your bookmarks bar. Then go to <a href="https://example.com/" id="link">any webpage</a> and click the link in the bookmarks bar.</p>
+    <p>Drag <strong><a href="javascript:alert('This bookmarklet doesn\'t contain any code. Something went wrong when you first added it.')" id="script">this link</a></strong> into your bookmarks bar. Then go to <a href="https://example.com/" id="link">a webpage</a> and click the link in the bookmarks bar.</p>
 </div>
 <div class="no-bookmarklet">
   <p>Hi, this page is supposed to be a generic page for bookmarklets. the script name is added at the end of the URL after a question mark, like</p>
   <ul>
     <li><a href="?i-love-schoology"><code>?i-love-schoology</code></a></li>
+    <li><a href="?ig-stories"><code>?ig-stories</code></a></li>
   </ul>
   <h1>NoScript users.</h1>
   <p>If you turned off JavaScript for some reason, this page won't work properly. I'm assuming you acknowledge that bookmarklets won't be much of use to you, as they run JavaScript, which you turned off.</p>
@@ -62,9 +70,16 @@
 </div>
 <script>
 const thing = window.location.search.slice(1)
+async function getThing (thing) {
+  let response = await fetch(`/hello-world/${thing}.bookmarklet.js`)
+  if (response.ok) return response.text()
+  response = await fetch(`/hello-world/${thing}.js`)
+  if (response.ok) return response.text()
+  throw new Error('Couldn\'t get the bookmarklet.')
+}
 if (thing) {
   document.body.className = 'bookmarklet'
-  fetch(`/hello-world/${thing}.js`).then(r => r.text()).then(js => {
+  getThing(thing).then(js => {
     function getParam (name) {
       const match = js.match(new RegExp(`\`@${name} ([^\`]+)\``))
       return match && match[1]
@@ -74,6 +89,7 @@ if (thing) {
     const linktext = getParam('linklabel')
     if (title) {
       document.getElementById('name').textContent = title
+      document.getElementById('link').textContent = title
       document.title = title
     }
     if (link) {
