@@ -45,10 +45,28 @@
       display: none;
     }
     a:hover { text-decoration: underline; }
-    </style>    
+    </style>
+<script>
+window.bookmarkletId = window.location.search.slice(1)
+async function getScript (thing) {
+  let response = await fetch(`/hello-world/${thing}.bookmarklet.js`)
+  if (response.ok) return [response.text(), window.location.origin + `/hello-world/${thing}.bookmarklet.js`]
+  response = await fetch(`/hello-world/${thing}.js`)
+  if (response.ok) return [response.text(), window.location.origin + `/hello-world/${thing}.js`]
+  throw new Error('Couldn\'t get the bookmarklet.')
+}
+if (window.bookmarkletId) {
+  window.scriptPromise = getScript(window.bookmarkletId)
+}
+</script>
 </head>
 
 <body class="no-bookmarklet">
+<script>
+if (window.bookmarkletId) {
+  document.body.className = 'bookmarklet'
+}
+</script>
 <div class="bookmarklet">
     <h1 id="name">Bookmarklet</h1>
     <p>Drag <strong><a href="javascript:alert('This bookmarklet doesn\'t contain any code. Something went wrong when you first added it.')" id="script">this link</a></strong> into your bookmarks bar. Then go to <a href="https://example.com/" id="link">a webpage</a> and click the link in the bookmarks bar.</p>
@@ -69,17 +87,9 @@
   <p>Cheers.</p>
 </div>
 <script>
-const thing = window.location.search.slice(1)
-async function getThing (thing) {
-  let response = await fetch(`/hello-world/${thing}.bookmarklet.js`)
-  if (response.ok) return response.text()
-  response = await fetch(`/hello-world/${thing}.js`)
-  if (response.ok) return response.text()
-  throw new Error('Couldn\'t get the bookmarklet.')
-}
-if (thing) {
-  document.body.className = 'bookmarklet'
-  getThing(thing).then(js => {
+if (window.bookmarkletId) {
+  document.getElementById('script').href = `javascript:void (document.head.appendChild(document.createElement('script')).src = 'https://sheeptester.github.io/hello-world/${window.bookmarkletId}.bookmarklet.js')`
+  window.scriptPromise.then(([js, url]) => {
     function getParam (name) {
       const match = js.match(new RegExp(`\`@${name} ([^\`]+)\``))
       return match && match[1]
@@ -98,8 +108,8 @@ if (thing) {
     if (linktext) {
       document.getElementById('link').textContent = linktext
     }
+    document.getElementById('script').href = `javascript:void (document.head.appendChild(document.createElement('script')).src = ${JSON.stringify(url)})`
   })
-  document.getElementById('script').href = `javascript:void (document.head.appendChild(document.createElement('script')).src = 'https://sheeptester.github.io/hello-world/${thing}.js')`
 }
 </script>
 </body>
