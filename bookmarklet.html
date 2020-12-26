@@ -50,9 +50,9 @@
 window.bookmarkletId = window.location.search.slice(1)
 async function getScript (thing) {
   let response = await fetch(`/hello-world/${thing}.bookmarklet.js`)
-  if (response.ok) return [response.text(), window.location.origin + `/hello-world/${thing}.bookmarklet.js`]
+  if (response.ok) return [await response.text(), window.location.origin + `/hello-world/${thing}.bookmarklet.js`]
   response = await fetch(`/hello-world/${thing}.js`)
-  if (response.ok) return [response.text(), window.location.origin + `/hello-world/${thing}.js`]
+  if (response.ok) return [await response.text(), window.location.origin + `/hello-world/${thing}.js`]
   throw new Error('Couldn\'t get the bookmarklet.')
 }
 if (window.bookmarkletId) {
