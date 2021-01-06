@@ -1,0 +1,14 @@
+/* ==UserStyle==
+@name           Github show commit times
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    For CommonApp activities
+@author         SheepTester
+==/UserStyle== */
+
+@-moz-document regexp("https://github\\.com/[^/]+/[^/]+/commits.*") {
+  relative-time::after {
+    color: blue;
+    content: " " attr(title);
+  }
+}
