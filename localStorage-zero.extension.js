@@ -1,3 +1,5 @@
+importScripts('https://cdnjs.cloudflare.com/ajax/libs/localforage/1.7.3/localforage.min.js')
+
 class LocalStorage {
   constructor () {}
 
