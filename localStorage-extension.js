@@ -44,7 +44,7 @@ class LocalStorage {
   }
 
   readLocalStorage ({ NAME }) {
-    return localforage.getItem(NAME)
+    return localforage.getItem(NAME) || ''
   }
 
   setLocalStorage ({ NAME, VALUE }) {
