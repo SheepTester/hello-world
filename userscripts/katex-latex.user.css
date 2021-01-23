@@ -1,0 +1,15 @@
+/* ==UserStyle==
+@name           Katex
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    Allow copying latex from Katex rendering
+@author         SheepTester
+==/UserStyle== */
+
+.katex .katex-mathml annotation {
+  display: block;
+}
+.katex .katex-mathml mrow,
+.katex .katex-html {
+  user-select: none;
+}
