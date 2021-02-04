@@ -1,0 +1,4 @@
+#!/usr/bin/env ts-node-script
+
+const wow: string = 'hello'
+console.log(wow)
