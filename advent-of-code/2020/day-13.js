@@ -23,3 +23,24 @@ if ((i + offset) % id !== 0) continue wow
 console.log(i)
 break
 }
+
+// implementation of the Racket attempt but in more comfy language
+;
+[, input] = document.body.textContent
+.trim().split(/\r?\n/)
+busIds = input.split(',').map((v, i) => v !== 'x' ? [+v, i] : null).filter(v => v)
+function takeABreak (time = 100) {
+  return new Promise(resolve => setTimeout(resolve), time)
+}
+interval = busIds[0][0] 
+timestamp = interval
+for ( const [busId, offset] of busIds.slice(1)) {
+for (; (timestamp + offset) % busId !== 0; timestamp += interval);
+console.log(`Up to bus ${busId}, there is an ideal time at ${timestamp} uwu`)
+await takeABreak()
+interval *= busId // lcm of primes
+}
+console.log(timestamp) 
+for ( const [busId, offset] of busIds) {
+console.log(`(${timestamp} + ${offset}) / ${busId} = ${(timestamp + offset) / busId}`) 
+}

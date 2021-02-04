@@ -1,0 +1,15 @@
+/* ==UserStyle==
+@name           show hover text
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    easter eggs they call it
+@author         sheeptester
+==/UserStyle== */
+
+@-moz-document domain("adventofcode.com") {
+  [title]::after {
+    content: attr(title);
+    color: cyan;
+    text-shadow: none;
+  }
+}
