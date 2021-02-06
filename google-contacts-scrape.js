@@ -1,31 +1,53 @@
-function getFReq (nextHandle, max = 300) {
+{
+const url = 'https://contacts.google.com/u/1/_/ContactsUi/data/batchexecute'
+const contentType = 'application/x-www-form-urlencoded;charset=UTF-8'
+
+// Guessing what these values mean
+const requestType = 'RdqMrd'
+const key = AF_initDataChunkQueue.find(chunk => chunk.key === 'ds:0').data[3]
+const at = 'ACHfmao4TKfPTvnYrL2OOfrwJNGp:1612478362900'
+
+function getFReq (nextHandle, max = 5000) {
   return new URLSearchParams([
     ['f.req', JSON.stringify([[[
-      'RdqMrd',
+      requestType,
       JSON.stringify([
         null,
         nextHandle,
         // Number of results
         max,
-        'CIa0kYCm0e4C'
+        key
       ]),
       null,
       'generic'
     ]]])],
-    ['at', 'ACHfmao4TKfPTvnYrL2OOfrwJNGp:1612478362900']
+    ['at', at]
   ]).toString() + '&'
 }
 async function getContacts (nextHandle = null) {
-  const [contacts, nextNextHandle] = await fetch('https://contacts.google.com/u/1/_/ContactsUi/data/batchexecute?rpcids=RdqMrd&f.sid=-6567574267548801005&bl=boq_contactsuiserver_20210131.18_p0&hl=en&soc-app=527&soc-platform=1&soc-device=1&_reqid=1352765&rt=c', {
+  const [contacts, nextNextHandle] = await fetch(url, {
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      'Content-Type': contentType
     },
     body: getFReq(nextHandle),
-    method: 'POST',
+    method: 'POST'
   })
     .then(r => r.text())
-    .then(t => JSON.parse(JSON.parse(t.split(/\r?\n/).slice(3, 5).join(''))[0][2]))
-  return { contacts, nextHandle: nextNextHandle }
+    .then(t => JSON.parse(JSON.parse(t.replace(/^[^[{]+/, ''))[0][2]))
+  return {
+    contacts: contacts || [],
+    nextHandle: nextNextHandle
+  }
 }
-a = await getContacts()
-console.log(a.contacts, (await getContacts(a.nextHandle)).contacts)
+
+const contacts = []
+let page = { nextHandle: null }
+do {
+  page = await getContacts(page.nextHandle)
+  console.log(page)
+  contacts.push(...page.contacts)
+} while (page.nextHandle)
+window.contacts = contacts
+console.log(contacts)
+console.log(JSON.stringify(contacts))
+}
