@@ -76,6 +76,71 @@ const item9BaseSchema = z.tuple([
   z.union([z.literal(1), z.literal(2)]),
   z.tuple([z.literal(true)]),
 ])
+const item9item1length4Schema = z.tuple([
+  z.tuple([
+    z.null(),
+    z.literal(0),
+    z.null(),
+    z.null(),
+    z.null(),
+    z.null(),
+    z.literal(true).nullable(),
+    z.null(),
+    z.string().regex(hexRegex), // hex
+    z.null(),
+    z.null(),
+    z.null(),
+    z.null(),
+    z.null(),
+    z.literal(1),
+  ]),
+  z.string().email(), // email
+  z.union([z.literal('work'), z.literal('home')]),
+  z.union([z.literal('Work'), z.literal('Home')]),
+])
+const item9length2Schema = z.tuple([
+  z.tuple([
+    z.literal(true),
+    z.literal(1),
+    z.null(),
+    z.literal(true).nullable(),
+    z.null(),
+    z.null(),
+    z.null(),
+    z.string().regex(decRegex), // 9xx longish decimal
+    z.string().regex(hexRegex), // hex
+    z.null(),
+    z.null(),
+    z.literal(true).nullable(),
+    z.tuple([
+      z.tuple([
+        z.string().regex(decRegex), // 1xx long decimal
+        z.literal(1),
+        z.literal(true),
+      ]),
+    ]).nullable(),
+    z.null(),
+    z.literal(2),
+  ]),
+  z.string().email(), // email
+])
+const item12BaseSchema = z.tuple([
+  z.null(),
+  z.union([z.literal(0), z.literal(7)]),
+  z.literal(true).nullable(),
+  z.null(),
+  z.null(),
+  z.literal(0).nullable(),
+  z.null(),
+  z.null(),
+  z.string().regex(decRegex), // 1xx long decimal
+  z.null(),
+  z.null(),
+  z.literal(true).nullable(),
+  z.null(),
+  z.null(),
+  z.union([z.literal(1), z.literal(7)]),
+])
 
 const contactSchema = z.tuple([
   // 0
@@ -199,41 +264,127 @@ const contactSchema = z.tuple([
     z.tuple([item9BaseSchema]),
     z.tuple([
       item9BaseSchema,
-      z.tuple([
+      z.union([
         z.tuple([
-          z.literal(true),
-          z.literal(1),
-          z.null(),
-          z.literal(true),
-          z.null(),
-          z.null(),
-          z.null(),
-          z.string().regex(decRegex), // 7xx medium decimal
-          z.string().regex(hexRegex), // hex
-          z.null(),
-          z.null(),
-          z.literal(true).nullable(),
           z.tuple([
+            z.literal(true),
+            z.literal(1),
+            z.null(),
+            z.literal(true),
+            z.null(),
+            z.null(),
+            z.null(),
+            z.string().regex(decRegex), // 7xx medium decimal
+            z.string().regex(hexRegex), // hex
+            z.null(),
+            z.null(),
+            z.literal(true).nullable(),
             z.tuple([
-              z.string().regex(decRegex), // 1xx long decimal
-              z.literal(1),
-              z.literal(true),
+              z.tuple([
+                z.string().regex(decRegex), // 1xx long decimal
+                z.literal(1),
+                z.literal(true),
+              ]),
             ]),
+            z.null(),
+            z.literal(2),
           ]),
-          z.null(),
-          z.literal(2),
+          z.string().email(), // email
         ]),
-        z.string().email(), // email
+        item9item1length4Schema,
       ]),
+    ]),
+    z.tuple([
+      item9BaseSchema,
+      item9item1length4Schema,
+      item9length2Schema,
+      item9length2Schema,
     ]),
   ]),
   z.null(),
-  z.null(),
+  // 11 (rare) - phone numbers
+  z.array(z.tuple([
+    z.tuple([
+      z.literal(true).nullable(),
+      z.union([z.literal(0), z.literal(1)]),
+      z.literal(true).nullable(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.string().regex(decRegex).nullable(), // 9xx longish decimal
+      z.string().regex(hexRegex), // hex
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.union([z.literal(1), z.literal(2)])
+    ]),
+    z.string(), // phone number with dashes
+    z.literal('home'),
+    z.string(), // phone number starting with + and with no dashes
+    z.literal('Home'),
+    z.null(),
+    z.string(), // tel: URI
+  ])).nullable(),
   // 12
+  z.array(z.union([
+    z.tuple([
+      item12BaseSchema,
+      z.string().nullable(), // school?
+      z.string().nullable(), // location
+      z.string().nullable(), // job title
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.union([z.literal(1), z.literal(2)]).nullable(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.union([z.literal('Work'), z.literal('work'), z.literal('school')]),
+      z.union([z.literal('Work'), z.literal('School')]),
+    ]),
+    z.tuple([
+      item12BaseSchema,
+      z.string().nullable(), // school?
+      z.string().nullable(), // location
+      z.string().nullable(), // job title
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.union([z.literal(1), z.literal(2)]).nullable(),
+      z.string().regex(decRegex).nullable(), // 1xx medium decimal
+      z.string().regex(decRegex), // 1xx medium decimal
+      z.literal(true).nullable(),
+      z.number().nullable(),
+      z.number(),
+      z.union([z.literal('work'), z.literal('school')]),
+      z.union([z.literal('Work'), z.literal('School')]),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.null(),
+      z.tuple([z.number(), z.number(), z.number()]).nullable(),
+      z.tuple([z.number(), z.number(), z.number()]),
+    ])
+  ])).nullable(),
+  // 13 (rare)
   z.array(z.tuple([
     z.tuple([
       z.null(),
-      z.union([z.literal(0), z.literal(7)]),
+      z.literal(0),
       z.literal(true).nullable(),
       z.null(),
       z.null(),
@@ -243,29 +394,19 @@ const contactSchema = z.tuple([
       z.string().regex(decRegex), // 1xx long decimal
       z.null(),
       z.null(),
-      z.literal(true).nullable(),
       z.null(),
       z.null(),
-      z.union([z.literal(1), z.literal(7)]),
+      z.null(),
+      z.literal(1),
     ]),
-    z.string().nullable(),
-    z.string().nullable(), // location
-    z.string().nullable(), // job title
+    z.string(), // address
+    z.literal(true).nullable(),
     z.null(),
     z.null(),
     z.null(),
     z.null(),
-    z.null(),
-    z.literal(1).nullable(),
-    z.null(),
-    z.null(),
-    z.null(),
-    z.null(),
-    z.null(),
-    z.union([z.literal('Work'), z.literal('work')]),
-    z.literal('Work'),
+    z.literal('default'),
   ])).nullable(),
-  z.null(),
   z.null(),
   z.null(),
   z.null(),
@@ -287,13 +428,15 @@ const contactsSchema = z.array(contactSchema)
 
 type RawContact = z.infer<typeof contactSchema>
 
+const slice = json.slice(2414, 2771 + 1)
+
 function displayError (error: z.ZodError, indent: string = ''): string {
   let display = ''
   for (const suberror of error.errors) {
     display += indent + `${colours.bold(colours.red(suberror.code))} ${suberror.message}\n`
     let path = ''
     let findable = true
-    let value = json
+    let value = slice
     for (const key of suberror.path) {
       if (typeof key === 'number') {
         path += `[${key}]`
@@ -301,7 +444,7 @@ function displayError (error: z.ZodError, indent: string = ''): string {
         if (path) path += '.'
         path += key
       }
-      if (key in value) {
+      if (typeof value === 'object' && value !== null && key in value) {
         value = value[key]
       } else if (findable) {
         findable = false
@@ -332,7 +475,7 @@ function displayError (error: z.ZodError, indent: string = ''): string {
   return display
 }
 
-const result = contactsSchema.safeParse(json.slice(0, 2400))
+const result = contactsSchema.safeParse(slice)
 if (result.success) {
   const contacts: RawContact[] = result.data
   // console.log(contacts)
@@ -343,7 +486,7 @@ if (result.success) {
   const problematicKeys = new Set(result.error.errors.map(suberror => suberror.path[0]))
   const problematic: { [key: string]: any } = {}
   for (const key of problematicKeys) {
-    problematic[key] = json[key]
+    problematic[key] = slice[key]
   }
   await Deno.writeTextFile('./ignored/contacts-problems.json', JSON.stringify(problematic, null, 2))
     .then(() => {
