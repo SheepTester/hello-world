@@ -29,7 +29,9 @@ const json: any = await Deno.readTextFile(filePath)
 const decRegex = /\d+/
 const hexRegex = /[\da-f]+/
 const hex6Regex = /[\dA-F]{6}/
-const weirdBase64 = /[\da-zA-Z=_-]+/
+const weirdBase64 = /[\da-zA-Z_-]+=*/
+const item1Item21Regex = /#[\dA-Za-z/]+=*/
+const item25Regex = /%[\dA-Za-z]+=*/
 
 const item3BaseSchema = z.tuple([
   z.boolean().nullable(),
@@ -48,7 +50,7 @@ const item3BaseSchema = z.tuple([
   z.null(),
   z.union([z.literal(1), z.literal(2), z.literal(7)]),
 ])
-const item9BaseSchema = z.tuple([
+const item9Length10Schema = z.tuple([
   z.tuple([
     z.null(),
     z.literal(7),
@@ -76,29 +78,29 @@ const item9BaseSchema = z.tuple([
   z.union([z.literal(1), z.literal(2)]),
   z.tuple([z.literal(true)]),
 ])
-const item9item1length4Schema = z.tuple([
+const item9Length4Schema = z.tuple([
   z.tuple([
-    z.null(),
-    z.literal(0),
+    z.literal(true).nullable(),
+    z.union([z.literal(0), z.literal(1)]),
     z.null(),
     z.null(),
     z.null(),
     z.null(),
     z.literal(true).nullable(),
-    z.null(),
+    z.string().regex(decRegex).nullable(), // 2xx medium decimal
     z.string().regex(hexRegex), // hex
     z.null(),
     z.null(),
+    z.literal(true).nullable(),
     z.null(),
     z.null(),
-    z.null(),
-    z.literal(1),
+    z.union([z.literal(1), z.literal(2)]),
   ]),
   z.string().email(), // email
-  z.union([z.literal('work'), z.literal('home')]),
-  z.union([z.literal('Work'), z.literal('Home')]),
+  z.union([z.literal('work'), z.literal('home'), z.literal('other')]),
+  z.union([z.literal('Work'), z.literal('Home'), z.literal('Other')]),
 ])
-const item9length2Schema = z.tuple([
+const item9Length2Schema = z.tuple([
   z.tuple([
     z.literal(true),
     z.literal(1),
@@ -107,7 +109,7 @@ const item9length2Schema = z.tuple([
     z.null(),
     z.null(),
     z.null(),
-    z.string().regex(decRegex), // 9xx longish decimal
+    z.string().regex(decRegex), // 7xx medium or 9xx longish decimal
     z.string().regex(hexRegex), // hex
     z.null(),
     z.null(),
@@ -163,7 +165,7 @@ const contactSchema = z.tuple([
     z.null(),
     z.null(),
     z.literal(true),
-    z.array(z.union([z.literal(1), z.literal(2), z.literal(4)])),
+    z.array(z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)])),
     z.string().regex(decRegex).nullable(), // 1xx medium decimal
     z.null(),
     z.string().regex(decRegex).nullable(), // a date?
@@ -182,7 +184,7 @@ const contactSchema = z.tuple([
           z.string().regex(decRegex), // 1xx long decimal
           z.null(),
           z.number().nullable(),
-          z.enum(['#42WmSpB8rSM=', '#72/qfAxTj2E=']),
+          z.string().regex(item1Item21Regex),
           z.union([z.literal(1), z.literal(2), z.literal(7)]),
         ]),
         z.tuple([
@@ -190,9 +192,9 @@ const contactSchema = z.tuple([
           z.string().regex(decRegex), // 1xx long decimal
           z.null(),
           z.number().nullable(),
-          z.enum(['#42WmSpB8rSM=', '#72/qfAxTj2E=']),
+          z.string().regex(item1Item21Regex),
           z.union([z.literal(1), z.literal(2), z.literal(7)]),
-          z.tuple([z.literal(1602784942), z.literal(102000000)]),
+          z.tuple([z.number(), z.number()]),
         ])
       ])),
     ]),
@@ -259,48 +261,12 @@ const contactSchema = z.tuple([
   z.null(),
   z.null(),
   z.null(),
-  // 9
-  z.union([
-    z.tuple([item9BaseSchema]),
-    z.tuple([
-      item9BaseSchema,
-      z.union([
-        z.tuple([
-          z.tuple([
-            z.literal(true),
-            z.literal(1),
-            z.null(),
-            z.literal(true),
-            z.null(),
-            z.null(),
-            z.null(),
-            z.string().regex(decRegex), // 7xx medium decimal
-            z.string().regex(hexRegex), // hex
-            z.null(),
-            z.null(),
-            z.literal(true).nullable(),
-            z.tuple([
-              z.tuple([
-                z.string().regex(decRegex), // 1xx long decimal
-                z.literal(1),
-                z.literal(true),
-              ]),
-            ]),
-            z.null(),
-            z.literal(2),
-          ]),
-          z.string().email(), // email
-        ]),
-        item9item1length4Schema,
-      ]),
-    ]),
-    z.tuple([
-      item9BaseSchema,
-      item9item1length4Schema,
-      item9length2Schema,
-      item9length2Schema,
-    ]),
-  ]),
+  // 9 - emails
+  z.array(z.union([
+    item9Length10Schema,
+    item9Length4Schema,
+    item9Length2Schema,
+  ])),
   z.null(),
   // 11 (rare) - phone numbers
   z.array(z.tuple([
@@ -338,7 +304,7 @@ const contactSchema = z.tuple([
       z.null(),
       z.null(),
       z.null(),
-      z.null(),
+      z.string().nullable(), // job desc/bio (rare)
       z.null(),
       z.union([z.literal(1), z.literal(2)]).nullable(),
       z.null(),
@@ -378,7 +344,9 @@ const contactSchema = z.tuple([
       z.null(),
       z.tuple([z.number(), z.number(), z.number()]).nullable(),
       z.tuple([z.number(), z.number(), z.number()]),
-    ])
+    ]),
+    // rare
+    z.tuple([item12BaseSchema]),
   ])).nullable(),
   // 13 (rare)
   z.array(z.tuple([
@@ -419,16 +387,13 @@ const contactSchema = z.tuple([
   z.null(),
   z.null(),
   // 25
-  z.union([
-    z.literal('%Eg4BAgMJPgoLPwwPEBMmLxoEAQIHCA=='),
-    z.literal('%Eg4BAgMJPgoLPwwPEBMmLxoEAQIHCCIMNzIvcWZBeFRqMkU9'),
-  ]),
+  z.string().regex(item25Regex),
 ])
 const contactsSchema = z.array(contactSchema)
 
 type RawContact = z.infer<typeof contactSchema>
 
-const slice = json.slice(2414, 2771 + 1)
+const slice = json
 
 function displayError (error: z.ZodError, indent: string = ''): string {
   let display = ''
@@ -475,7 +440,9 @@ function displayError (error: z.ZodError, indent: string = ''): string {
   return display
 }
 
+console.time('Validation')
 const result = contactsSchema.safeParse(slice)
+console.timeEnd('Validation') // 214755ms
 if (result.success) {
   const contacts: RawContact[] = result.data
   // console.log(contacts)
