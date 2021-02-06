@@ -29,7 +29,7 @@ const json: any = await Deno.readTextFile(filePath)
 const decRegex = /\d+/
 const hexRegex = /[\da-f]+/
 const hex6Regex = /[\dA-F]{6}/
-const base64 = /[\da-zA-Z+=]+/
+const weirdBase64 = /[\da-zA-Z=_-]+/
 
 const item3BaseSchema = z.tuple([
   z.boolean().nullable(),
@@ -37,7 +37,7 @@ const item3BaseSchema = z.tuple([
   z.literal(true).nullable(),
   z.null(),
   z.null(),
-  z.null(),
+  z.literal(0).nullable(),
   z.literal(true).nullable(),
   z.string().regex(decRegex).nullable(), // 7xx medium decimal
   z.string().regex(hexRegex).nullable(), // medium hex
@@ -101,7 +101,7 @@ const contactSchema = z.tuple([
     z.array(z.union([z.literal(1), z.literal(2), z.literal(4)])),
     z.string().regex(decRegex).nullable(), // 1xx medium decimal
     z.null(),
-    z.null(),
+    z.string().regex(decRegex).nullable(), // a date?
     z.null(),
     z.null(),
     z.null(),
@@ -157,7 +157,7 @@ const contactSchema = z.tuple([
     z.string(), // full name
     z.null(),
     z.string(), // first name
-    z.string(), // last name
+    z.string().nullable(), // last name
     z.null(),
     z.null(),
     z.null(),
@@ -176,13 +176,13 @@ const contactSchema = z.tuple([
       item3BaseSchema,
       z.string().url(), // pfp url
       z.literal(true).nullable(),
-      z.string().regex(base64), // base64 ID
+      z.string().regex(weirdBase64), // base64 ID
     ]),
     z.tuple([
       item3BaseSchema,
       z.string().url(), // pfp url
       z.literal(true),
-      z.string().regex(base64), // base64 ID
+      z.string().regex(weirdBase64), // base64 ID
       z.null(),
       z.null(),
       z.literal(true),
@@ -230,43 +230,41 @@ const contactSchema = z.tuple([
   z.null(),
   z.null(),
   // 12
-  z.tuple([
+  z.array(z.tuple([
     z.tuple([
-      z.tuple([
-        z.null(),
-        z.literal(7),
-        z.literal(true),
-        z.null(),
-        z.null(),
-        z.null(),
-        z.null(),
-        z.null(),
-        z.string().regex(decRegex), // 1xx long decimal
-        z.null(),
-        z.null(),
-        z.literal(true),
-        z.null(),
-        z.null(),
-        z.literal(7),
-      ]),
       z.null(),
-      z.string(), // location
-      z.string(), // job title
+      z.union([z.literal(0), z.literal(7)]),
+      z.literal(true).nullable(),
       z.null(),
       z.null(),
+      z.literal(0).nullable(),
       z.null(),
       z.null(),
+      z.string().regex(decRegex), // 1xx long decimal
       z.null(),
       z.null(),
+      z.literal(true).nullable(),
       z.null(),
       z.null(),
-      z.null(),
-      z.null(),
-      z.null(),
-      z.literal('Work'),
-      z.literal('Work'),
+      z.union([z.literal(1), z.literal(7)]),
     ]),
-  ]).nullable(),
+    z.string().nullable(),
+    z.string().nullable(), // location
+    z.string().nullable(), // job title
+    z.null(),
+    z.null(),
+    z.null(),
+    z.null(),
+    z.null(),
+    z.literal(1).nullable(),
+    z.null(),
+    z.null(),
+    z.null(),
+    z.null(),
+    z.null(),
+    z.union([z.literal('Work'), z.literal('work')]),
+    z.literal('Work'),
+  ])).nullable(),
   z.null(),
   z.null(),
   z.null(),
@@ -312,7 +310,7 @@ function displayError (error: z.ZodError, indent: string = ''): string {
     display += indent + ` --> ${colours.cyan(path)}\n`
     switch (suberror.code) {
       case 'invalid_type': {
-        display += indent + `Expected ${colours.green(suberror.expected)}; got ${colours.red(suberror.received)}.\n`
+        display += indent + `Expected ${colours.yellow(suberror.expected)}; got ${colours.yellow(suberror.received)}.\n`
         break
       }
       case 'invalid_union': {
@@ -334,11 +332,28 @@ function displayError (error: z.ZodError, indent: string = ''): string {
   return display
 }
 
-const result = contactsSchema.safeParse(json.slice(0, 2))
+const result = contactsSchema.safeParse(json.slice(0, 2400))
 if (result.success) {
   const contacts: RawContact[] = result.data
   // console.log(contacts)
   console.log('Contacts passed!', contacts.length)
 } else {
   console.log(displayError(result.error))
+
+  const problematicKeys = new Set(result.error.errors.map(suberror => suberror.path[0]))
+  const problematic: { [key: string]: any } = {}
+  for (const key of problematicKeys) {
+    problematic[key] = json[key]
+  }
+  await Deno.writeTextFile('./ignored/contacts-problems.json', JSON.stringify(problematic, null, 2))
+    .then(() => {
+      console.log(colours.magenta('Problematic contacts written to ignored/contacts-problems.json'))
+    })
+    .catch(err => {
+      if (err instanceof Deno.errors.PermissionDenied) {
+        console.log(colours.magenta('Run with --allow-write to save the problematic contacts to a file.'))
+      } else {
+        throw err
+      }
+    })
 }
