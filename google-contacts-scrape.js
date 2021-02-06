@@ -1,3 +1,6 @@
+// https://contacts.google.com/u/1/directory
+// run the following in the console
+
 {
 const url = 'https://contacts.google.com/u/1/_/ContactsUi/data/batchexecute'
 const contentType = 'application/x-www-form-urlencoded;charset=UTF-8'

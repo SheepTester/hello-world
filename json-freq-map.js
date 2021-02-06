@@ -1,3 +1,6 @@
+/// <reference path="./json-freq-map.d.ts" />
+
+export
 class JsonFreqMap extends Map {
   constructor (...args) {
     super(...args)
