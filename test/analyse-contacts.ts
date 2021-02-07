@@ -69,34 +69,33 @@ const item3BaseSchema = z.tuple([
 // Item 9 notes for tuple 0 (4, 5, 9, 10, 13 are null for all):
 // - Everyone has the first item
 // - People whom I know have more than one item
-// 0: First is null, rest are true*
-// 1: First is 7, rest are 1 (or 0*) if true
-// 2: First is true, rest are null
-// 3: First is null, rest are mostly true (except for seven people)
-// 6: First is true, rest are almost always null (except for C. Farina's second
-// item)
-// 7: First is null, rest are some separate ID for the contact (or null*)
-// 8: First has user ID for the contact; rest have hex
-// 11: First is true, rest are often null
-// 12: First is null, rest are usually a tuple [user ID, 1, true]
-// 14: First is 7, 2 (or 1*)
 // * Christophers Mahle and Farina are exceptions in their second item
 const item9Tuple0Schema = z.tuple([
+  // 0: First is null, rest are true*
   z.literal(true).nullable(),
+  // 1: First is 7, rest are 1 (or 0*) if true
   z.union([z.literal(0), z.literal(1), z.literal(7)]),
+  // 2: First is true, rest are null
   z.literal(true).nullable(),
+  // 3: First is null, rest are mostly true (except for seven people)
   z.literal(true).nullable(),
   z.null(),
   z.null(),
+  // 6: First is true, rest are almost always null (except for C. Farina's
+  // second item)
   z.literal(true).nullable(),
+  // 7: First is null, rest are some separate ID for the contact (or null*)
   z.string().regex(decRegex).nullable(),
+  // 8: First has user ID for the contact; rest have hex
   z.union([
     z.string().regex(decRegex), // 1xx long decimal
     z.string().regex(hexRegex), // hex
   ]),
   z.null(),
   z.null(),
+  // 11: First is true, rest are often null
   z.literal(true).nullable(),
+  // 12: First is null, rest are usually a tuple [user ID, 1, true]
   z.tuple([
     z.tuple([
       z.string().regex(decRegex), // 1xx long decimal
@@ -105,6 +104,7 @@ const item9Tuple0Schema = z.tuple([
     ]),
   ]).nullable(),
   z.null(),
+  // 14: First is 7, 2 (or 1*)
   z.union([z.literal(1), z.literal(2), z.literal(7)]),
 ])
 // Other item 9 notes:
@@ -190,7 +190,7 @@ const contactSchema = z.tuple([
     z.array(z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)])),
     z.null(),
     z.null(),
-    // Timestamp that seems to differ from in tuple 21
+    // Timestamp that seems to differ from in tuple 21 (in ms)
     z.string().regex(decRegex).nullable(), // a date?
     z.null(),
     z.null(),
@@ -208,14 +208,11 @@ const contactSchema = z.tuple([
           // First item is 1 if in my contacts else 0
           // Second item is 0 if in my contacts else 7
           // Third item is 7 (only if in my contacts)
-          z.union([z.literal(0), z.literal(1), z.literal(7)]),
+          z.union([z.literal(0), z.literal(7)]),
           // User ID of the contact
           z.string().regex(decRegex), // 1xx long decimal
           z.null(),
-          // A timestamp (in MICROSECONDS since epoch) -- maybe correlated with
-          // last email send date with the contact? (including sharing
-          // documents) null for most people
-          z.number().nullable(),
+          z.null(),
           // First item seems to depend on the timestamp above ("#42WmSpB8rSM="
           // for everyone else not in my contacts)
           // Second and third item is "#42WmSpB8rSM=" for everyone
@@ -224,16 +221,20 @@ const contactSchema = z.tuple([
           // 0 -> 1
           // 1 -> 2
           // 7 -> 7
-          z.union([z.literal(1), z.literal(2), z.literal(7)]),
+          z.union([z.literal(1), z.literal(7)]),
         ]),
         // My contacts people (first item)
+        // First field (item 0) is always 1
         z.tuple([
-          z.union([z.literal(0), z.literal(1), z.literal(7)]),
+          z.literal(1),
           z.string().regex(hexRegex), // 1xx long decimal
           z.null(),
-          z.number().nullable(),
+          // A timestamp (in MICROSECONDS since epoch) -- maybe correlated with
+          // last email send date with the contact? (including sharing
+          // documents) null for most people
+          z.number(),
           z.string().regex(item1Item21Regex),
-          z.union([z.literal(1), z.literal(2), z.literal(7)]),
+          z.literal(2),
           // A tuple of [seconds, nanosecond] :o
           // Should be the same as the timestamp above
           z.tuple([z.number(), z.number()]),
@@ -254,6 +255,7 @@ const contactSchema = z.tuple([
       // 1 - me, or my contacts?
       // (correlates with last field--see below)
       z.union([z.literal(0), z.literal(1), z.literal(7)]),
+      // First item is true, second item is null
       z.literal(true).nullable(),
       z.null(),
       z.null(),
@@ -263,9 +265,14 @@ const contactSchema = z.tuple([
       // First item is some other ID (if in my contacts?)
       // People with 2 in the last field (see below) will have this set
       // Second item is my ID (except it's the other one that starts with 9)
+      // Otherwise, null
       z.string().regex(decRegex).nullable(), // decimal
-      // user ID for the contact
-      z.string().regex(decRegex), // 1xx long decimal
+      z.union([
+        // user ID for the contact
+        z.string().regex(decRegex), // 1xx long decimal
+        // First item of the group of 50 people is a hex of #7 above
+        z.string().regex(hexRegex),
+      ]),
       z.null(),
       z.null(),
       z.null(),
@@ -365,7 +372,7 @@ const contactSchema = z.tuple([
     z.null(),
     z.string(), // tel: URI
   ])).nullable(),
-  // 12
+  // 12: occupation
   z.array(z.union([
     z.tuple([
       item12BaseSchema,
@@ -541,8 +548,71 @@ if (result.success) {
 
   const contacts: Contact[] = []
   for (const contact of rawContacts) {
+    const group204 = contact[1][21][2].find(group204 => group204[0] === 1)
     contacts.push({
-      uuid: contact[0]
+      id: contact[0],
+      metadata: {
+        otherId: contact[1][5] ? contact[1][5][0] : undefined,
+        inMyContacts: contact[1][8] !== null,
+        group254: contact[1][12].includes(2),
+        isMe: contact[1][12].includes(3),
+        timestamp: contact[1][15] ?? undefined,
+        group204: group204 && group204[3] !== null ? {
+          timestamp: group204[3],
+          encodedTimestamp: group204[4],
+        } : undefined,
+      },
+      names: contact[2].map(name => ({
+        type: name[0][1],
+        isFirst: name[0][2] !== null,
+        fullName: name[1],
+        firstName: name[3],
+        lastName: name[4] ?? undefined,
+        lastFirstName: name[12],
+        certainStaff: name[0][5] === 0,
+        group50: name[0][14] === 2 && name[0][7] !== null ? {
+          otherId: name[0][7],
+          hex: name[0][8],
+        } : undefined,
+      })),
+      pfps: contact[3].map(pfp => ({
+        type: pfp[0][1],
+        isZero: pfp[0][5] === 0,
+        otherId: pfp[0][0] && pfp[0][7] !== null ? {
+          id: pfp[0][7],
+          hex: pfp[0][8],
+        } : undefined,
+        url: pfp[1],
+        base64: pfp[3],
+        colour: pfp[7],
+      })),
+      emails: contact[9].map(email => ({
+        type: email[0][1],
+        email: email[1],
+        emailType: email[2] ?? undefined,
+      })),
+      phones: contact[11]?.map(phone => ({
+        strangeId: phone[0][7] ?? undefined,
+        hex: phone[0][0] === true ? phone[0][8] : undefined,
+        dashedPhone: phone[1],
+        plusPhone: phone[2],
+        phoneUri: phone[6],
+      })) ?? [],
+      jobs: contact[12]?.map(job => ({
+        type: job[0][1],
+        location: job[2] ?? job[1] ?? undefined,
+        title: job[3] ?? undefined,
+        desc: job[7] ?? undefined,
+        id: job[9] ?? undefined,
+        jobType: job[16] === 'Work' ? 'work' : 'school',
+        year: job[27]?.[0],
+        yearAlt: job[26]?.[0],
+      })) ?? [],
+      cities: contact[13]?.map(city => ({
+        city: city[1],
+        current: city[2] === true,
+      })) ?? [],
+      group: contact[25],
     })
   }
   if (Deno.args[1]) {
