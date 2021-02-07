@@ -1,0 +1,17 @@
+0: # total: 6 - unique!
+  103711438160485240292: [1] Billy Bob
+  103711438160485240291: [1] Bongus Joe
+  ...: nonexhaustive
+1:
+  0: # total: 6
+    null: [5] Billy Bob, Joe Fungus, Bongus Joe, Billy Ergonsus, Bob Rao
+    true: [1] Fortunae Lolien
+  1: # total: 6
+    null: [2] Billy Bob, Bob Rao
+    true: [1] Fortunae Lolien
+    __ARRAY__:
+      0: # total: 3
+        1: [2] Joe Fungus, Bongus Joe
+        7: [1] Billy Ergonsus
+      1: # total: 3
+        null: [3] Joe Fungus, Bongus Joe, Billy Ergonsus
