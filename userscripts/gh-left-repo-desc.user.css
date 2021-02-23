@@ -1,13 +1,15 @@
 /* ==UserStyle==
 @name           Github repo description on left
 @namespace      sheeptester.github.io
-@version        1.0.0
+@version        1.1.1
 @description    Put the repo description on the left for LTR readers like me to see it first
 @author         SheepTester
 ==/UserStyle== */
 
 @-moz-document domain("github.com") {
-  .repository-content > .flex-md-row {
-    flex-direction: row-reverse !important;
+  @media (min-width: 768px) {
+    .repository-content > div > .flex-md-row.flex-column {
+      flex-direction: row-reverse !important;
+    }
   }
 }
