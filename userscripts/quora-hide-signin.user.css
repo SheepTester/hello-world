@@ -1,0 +1,17 @@
+/* ==UserStyle==
+@name           Hide Quora sign-in modal
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    Hide the annoying Quora sign-in modal
+@author         SheepTester
+==/UserStyle== */
+
+@-moz-document domain("quora.com") {
+  #root > div > .q-box > .qu-zIndex--modal_desktop {
+    display: none !important;
+  }
+  #root > div > .q-box > .qu-overflow--hidden {
+    overflow: visible !important;
+    filter: none !important;
+  }
+}
