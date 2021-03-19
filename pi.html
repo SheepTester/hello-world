@@ -1,0 +1,63 @@
+<!--<p><strong>real pi</strong> <script> document.write(Math.PI) </script></p>
+<p><strong>approx pi</strong> <span id="target"></span></p>
+<p><strong># of terms</strong> <span id="nn"></span></p>
+<p><strong>add. terms per frame</strong> <span id="speedy" style="color:grey"></span></p>-->
+<style>
+td,th {border: 1px solid black;}
+td { min-width: 20ch; }
+</style>
+<table style="
+  border-collapse: collapse;
+  ">
+<tr><th>real pi</th> <td><script> document.write(Math.PI) </script></td></tr>
+<tr><th>approx pi</th> <td id="target"></td></tr>
+<tr><th># of terms</th> <td id="nn"></td></tr>
+<tr style="color:grey"><th>add. terms per frame</th> <td id="speedy"></td></tr>
+</table>
+  <script>
+    let n = 0
+let sum = 0
+    function iter () {
+sum += 1 / (2 * (n++) + 1)
+      sum -= 1 / (2 * (n++) + 1)
+    }
+function iter2 () {
+  if (n % 2 === 0) {
+
+sum += 1 / (2 * (n++) + 1)
+  } else {
+      sum -= 1 / (2 * (n++) + 1)
+  }
+}
+let speed = 1
+let time = 0
+function paint () {
+  const iters = Math.min(
+3e6,
+    Math.E ** (time / 100) / 50
+    )
+  speedy.textContent = iters
+  nn.textContent = n
+  if (iters >= 1 || time % Math.floor(1 / iters) === 0 )
+  for (let i = 0; i < iters; i++)
+    iter2()
+  target.textContent = sum * 4
+  time++
+  //speed++
+  window.requestAnimationFrame(paint)
+}
+paint()
+/*
+const start = performance.now()
+for (let i = 0; i < 1e5; i++) iter()
+const time = performance.now() - start
+target.textContent = sum * 4
+window.requestAnimationFrame(() => {
+const start2 = performance.now()
+window.requestAnimationFrame(() =>{
+const frame = performance.now() - start2
+
+  console.log(time, frame)
+})
+})*/
+  </script>
