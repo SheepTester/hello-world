@@ -12,9 +12,14 @@ bigger.textContent = name
 document.body.appendChild(span)
   const col = window.getComputedStyle(span).backgroundColor
   const chans = col.match(/\d+/g).map(Number)
-span.append(bigger, '#'+chans.map(n => n.toString(16).padStart(2, '0')))
+  if (chans.length !== 3) {
+    span.style.color = 'red'
+    span.append(bigger)
+    return
+  }
+span.append(bigger, '#'+chans.map(n => n.toString(16).padStart(2, '0')).join(''))
   const sum = chans.reduce((a, b) => a + b)
-  if (sum < 255 * 3 / 2) bigger.style.color = 'white'
+  if (sum < 255 * 3 / 2) span.style.color = 'white'
 }
 </script>
 <style>
