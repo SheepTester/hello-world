@@ -1,0 +1,32 @@
+<script>
+const sysColours = ["ActiveText", "ButtonFace", "ButtonText", "Canvas", "CanvasText", "Field", "FieldText", "GrayText", "Highlight", "HighlightText", "LinkText", "Mark", "MarkText", "VisitedText"]
+const depColours = ["ActiveBorder", "ActiveCaption", "AppWorkspace", "Background", "ButtonHighlight", "ButtonShadow", "CaptionText", "InactiveBorder", "InactiveCaption", "InactiveCaptionText", "InfoBackground", "InfoText", "Menu", "MenuText", "Scrollbar", "ThreeDDarkShadow", "ThreeDFace", "ThreeDHighlight", "ThreeDLightShadow", "ThreeDShadow", "Window", "WindowFrame", "WindowText"]
+
+function wow (name) {
+const span = document.createElement('div')
+span.style.backgroundColor = name
+const bigger = document.createElement('span')
+bigger.textContent = name
+span.append(bigger, window.getComputedStyle(span).backgroundColor)
+document.body.appendChild(span)
+}
+</script>
+<style>
+div {
+display: inline-flex;
+flex-direction: column;
+align-items: center;
+justify-content : center;
+padding: 20px;
+}
+span {
+font-size: 2em;
+}
+</style>
+<h1>System colours</h1>
+<script>sysColours.forEach(wow)</script>
+<h1>Deprecated system colours</h1>
+<script>depColours.forEach(wow)</script>
+<p>
+Thanks to <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#system_colors">MDN</a>
+</p>
