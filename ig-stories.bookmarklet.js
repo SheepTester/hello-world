@@ -6,8 +6,12 @@ const get = url => fetch(url, {
   }
 }).then(r => r.json())
 const { tray } = await get('https://i.instagram.com/api/v1/feed/reels_tray/')
-const { reels_media } = await get('https://i.instagram.com/api/v1/feed/reels_media/?' + tray.map(story => 'reel_ids=' + story.id).join('&'))
-const stories = reels_media.map(({
+const reelsMedia = []
+for (let i = 0; i < tray.length; i += 30) {
+  const { reels_media } = await get('https://i.instagram.com/api/v1/feed/reels_media/?' + tray.slice(i, i + 30).map(story => 'reel_ids=' + story.id).join('&'))
+  reelsMedia.push(...reels_media)
+}
+const stories = reelsMedia.map(({
   user: { username },
   items
 }) => ({
