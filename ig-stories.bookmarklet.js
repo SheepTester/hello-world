@@ -28,7 +28,7 @@ document.body.innerHTML = stories.map(({ username, stories }) =>
       video ? `<video src="${video}" controls></video>` : `<img src="${image}" />`
     }</li>`
   ).join('')}</ul>`
-).join('') + '<style>img, video { max-width: 90vw; max-height: 600px; } body { background: black; color: white; } ul { overflow: auto; white-space: nowrap; } li { display: inline-block; }</style>'
+).join('') + '<style>img, video { max-width: 90vw; max-height: 600px; } body { background: black; color: white; overflow: auto !important; } ul { overflow: auto; white-space: nowrap; } li { display: inline-block; }</style>'
 console.log(stories)
 
 // metadata for bookmarklet.html
