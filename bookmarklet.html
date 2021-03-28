@@ -91,12 +91,13 @@ if (window.bookmarkletId) {
   document.getElementById('script').href = `javascript:void (document.head.appendChild(document.createElement('script')).src = 'https://sheeptester.github.io/hello-world/${window.bookmarkletId}.bookmarklet.js')`
   window.scriptPromise.then(([js, url]) => {
     function getParam (name) {
-      const match = js.match(new RegExp(`\`@${name} ([^\`]+)\``))
-      return match && match[1]
+      const match = js.match(new RegExp(`\`@${name}\\b\\s*([^\`]*)\``))
+      return match ? match[1] : null
     }
     const title = getParam('name')
     const link = getParam('link')
     const linktext = getParam('linklabel')
+    const inline = getParam('inline')
     if (title) {
       document.getElementById('name').textContent = title
       document.getElementById('script').textContent = title
@@ -108,7 +109,11 @@ if (window.bookmarkletId) {
     if (linktext) {
       document.getElementById('link').textContent = linktext
     }
-    document.getElementById('script').href = `javascript:void (document.head.appendChild(document.createElement('script')).src = ${JSON.stringify(url)})`
+    if (inline === 'eval') {
+      document.getElementById('script').href = `javascript:void eval(${JSON.stringify(`(async ()=>{${js}})()`)})`
+    } else {
+      document.getElementById('script').href = `javascript:void (document.head.appendChild(document.createElement('script')).src = ${JSON.stringify(url)})`
+    }
   })
 }
 </script>

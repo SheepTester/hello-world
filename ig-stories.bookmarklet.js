@@ -27,11 +27,12 @@ document.body.innerHTML = stories.map(({ username, stories }) =>
     `<li><p>${time.toString()}</p>${
       video ? `<video src="${video}" controls></video>` : `<img src="${image}" />`
     }</li>`
-  ).join('')}</ul><style>img, video { max-width: 100vw; max-height: 100vh; } body { background: black; color: white; }</style>`
-).join('')
+  ).join('')}</ul>`
+).join('') + '<style>img, video { max-width: 90vw; max-height: 600px; } body { background: black; color: white; } ul { overflow: auto; white-space: nowrap; } li { display: inline-block; }</style>'
 console.log(stories)
 
 // metadata for bookmarklet.html
 // `@name Incognito story viewer`
 // `@link https://www.instagram.com/`
 // `@linklabel Instagram`
+// `@inline eval`
