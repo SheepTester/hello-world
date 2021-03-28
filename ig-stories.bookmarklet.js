@@ -12,10 +12,13 @@ for (let i = 0; i < tray.length; i += 30) {
   reelsMedia.push(...reels_media)
 }
 const stories = reelsMedia.map(({
-  user: { username },
+  user: { pk, username, full_name, profile_pic_url },
   items
 }) => ({
+  id: pk,
   username,
+  name: full_name,
+  pfp: profile_pic_url,
   stories: items.map(({
     image_versions2: { candidates: [{ url: image }] },
     video_versions: [{ url: video } = {}] = [],
@@ -26,13 +29,18 @@ const stories = reelsMedia.map(({
     video
   }))
 }))
-document.body.innerHTML = stories.map(({ username, stories }) =>
-  `<h3>${username}</h3><ul>${stories.map(({ time, image, video }) =>
+document.body.innerHTML = stories.map(({ id, username, name, pfp, stories }) =>
+  `<h3 onmouseenter="enter(this)" data-id="${id}"><img class="pfp" src="${pfp}" height=48>@${username} <em>${name}</em></h3><ul>${stories.map(({ time, image, video }) =>
     `<li><p>${time.toString()}</p>${
       video ? `<video src="${video}" controls></video>` : `<img src="${image}" />`
     }</li>`
   ).join('')}</ul>`
-).join('') + '<style>img, video { max-width: 90vw; max-height: 600px; } body { background: black; color: white; overflow: auto !important; } ul { overflow: auto; white-space: nowrap; } li { display: inline-block; }</style>'
+).join('') + '<style>img, video { max-width: 90vw; max-height: 600px; } body { background: black; color: white; overflow: auto !important; } ul { overflow: auto; white-space: nowrap; } li { display: inline-block; } .pfp { border: 1px solid grey; }</style>'
+window.enter = async elem => {
+elem.onmouseenter = null
+const { user: { biography, hd_profile_pic_url_info: { url: pfp } } } = await get(`https://i.instagram.com/api/v1/users/${elem.dataset.id}/info/`)
+elem.after(biography)
+}
 console.log(stories)
 
 // metadata for bookmarklet.html
