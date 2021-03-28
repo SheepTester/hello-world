@@ -4,7 +4,6 @@ queryTypes = {
   HIGHLIGHTS: 'd4d88dc1500312af6f937f7b804c68c3', // and suggested
   USER_POSTS: '42d2750e44dbac713ff30130659cd891',
 }
-myUserId = '3199863918'
 
 function getFollowing (userId, count = 24, cursor = null) {
   return fetch(
@@ -24,20 +23,22 @@ function getFollowing (userId, count = 24, cursor = null) {
     .then(({ data: { user: { edge_follow } } }) => edge_follow)
 }
 
-following = new Map()
-let cursor
-while (true) {
-  const { edges, page_info: { end_cursor, has_next_page } } = await getFollowing(myUserId, 100, cursor)
-  for (const { node } of edges) {
-    following.set(node.id, node)
+async function getAllFollowing (userId) {
+  const following = new Map()
+  let cursor
+  while (true) {
+    const { edges, page_info: { end_cursor, has_next_page } } = await getFollowing(userId, 100, cursor)
+    for (const { node } of edges) {
+      following.set(node.id, node)
+    }
+    if (has_next_page) {
+      cursor = end_cursor
+    } else {
+      break
+    }
   }
-  if (has_next_page) {
-    cursor = end_cursor
-  } else {
-    break
-  }
+  return following
 }
-following
 
 function getPosts (userId, count = 12, cursor = null) {
   return fetch(
@@ -70,4 +71,34 @@ async function getAllPosts (userId) {
   return posts
 }
 
-await getAllPosts('12338962766')
+function largestResource (resources) {
+  let largestSrc
+  let maxSize = 0
+  for (const { config_width, config_height, src } of resources) {
+    const size = config_width ** 2 + config_height ** 2
+    if (size > maxSize) {
+      largestSrc = src
+      maxSize = size
+    }
+  }
+  return largestSrc
+}
+
+await getAllFollowing('3199863918')
+
+(await getAllPosts('12338962766')).map(({ node }) => {
+  const slides = node.__typename === 'GraphSidecar'
+    ? node.edge_sidecar_to_children.edges
+    : [{ node }]
+  return {
+    caption: node.edge_media_to_caption.edges[0]?.node.text ?? '',
+    url: node.shortcode, // https://www.instagram.com/p/...
+    timestamp: node.taken_at_timestamp, // epoch in seconds
+    slides: slides.map(({ node }) => ({
+      video: node.is_video,
+      src: node.is_video
+        ? node.video_url
+        : largestResource(node.display_resources),
+    }))
+  }
+})
