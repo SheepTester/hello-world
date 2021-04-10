@@ -1,4 +1,4 @@
-// chrome://settings/siteData
+// Run in console in chrome://settings/siteData
 function parseSize({size}){
 return size ? parseFloat(size.replace(',', ''))
 *(size.includes('KB') ? 1_000
@@ -7,7 +7,7 @@ return size ? parseFloat(size.replace(',', ''))
 : 1) : 0
 }
 let {sendWithPromise} = await import("chrome://resources/js/cr.m.js")
-(await sendWithPromise('localData.getDisplayList', '')
+;(await sendWithPromise('localData.getDisplayList', '')
 .then(({ items: sites}) => Promise.all(sites.map(({ site, localData}) => sendWithPromise('localData.getCookieDetails', site).then(r => ({site,...r})))))).map(a => ({
 size: a.children.map(parseSize).reduce((a, b) => a + b, 0),
 ...a
