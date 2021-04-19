@@ -2,13 +2,28 @@
 <html>
   <head>
     <title>big file viewer</title>
+    <style>
+      /*#results {
+        font-fami
+      }*/
+      .context {
+        color: grey;
+      }
+      .res {
+        color: inherit;
+        text-decoration: none;
+      }
+      .res:hover {
+        text-decoration: underline;
+      }
+    </style>
   </head>
   
   <body>
     <form onsubmit="window.onSub(this, event)">
       <label>
         load from url
-        <input type="url" id="url" value="https://sheeptester.github.io/javascripts/charcopy.html" autofocus>
+        <input type="url" id="url" value="https://sheeptester.github.io/scratch-gui/lib.min.js" autofocus>
       </label>
       or
       <label>
@@ -17,9 +32,9 @@
       </label>
       <input type="submit" value="ok">
     </form>
-    <textarea id="log" readonly style="color:red" placeholder="errors go here"></textarea>
+    <textarea cols="50" id="log" readonly style="color:red" placeholder="errors go here"></textarea>
     <!-- rows seems to be inexact?? nvm it is because the entr key symbo -->
-    <textarea id="out" readonly cols="100" rows="20" placeholder="text goes here"></textarea>
+    <p><textarea id="out" readonly cols="100" rows="20" placeholder="text goes here"></textarea></p>
     <input id="pos" placeholder="line:col" readonly>
     <p>press arrow keys to navigate; "g" to go to line/column; "G" (shift + g) to go to end</p>
     <form onsubmit="window.searchh(event)" >
@@ -35,7 +50,7 @@
         use regex?
       </label></fieldset>
     </form>
-    <div id="results"></div>
+    <pre id="results"></pre>
     <script>
     async function onSub (form, event) {
       event.preventDefault()
@@ -90,7 +105,7 @@
         //console.log(rows, rowtoIndex, linetoIndex)
         let ROWindex
         const entries = Object.entries(rowtoIndex)
-        function showtext (index) {
+        function showtext (index, length = null) {
           let rowIndex
           //entries.forEach(([, charindex], i) => {
           for (let i = 0; i < entries.length; i++) {
@@ -117,7 +132,7 @@
           out.focus()
          // console.log(offset, rowCharIndex, rowIndex)
           out.selectionStart = offset + rowCharIndex
-          out.selectionEnd = offset + rowCharIndex + 1
+          out.selectionEnd = offset + rowCharIndex + (length /* pretty naive but am lazy */ || 1)
           //for (const )
           const [line, col] = rowIndextolineCol[rowIndex]
           pos.value = `${line}:${col + rowCharIndex}`
@@ -134,7 +149,7 @@
             case 'ArrowDown': indexx = rowtoIndex[ROWindex + 1] + (col) || text.length - 1; break
             case 'ArrowUp': indexx = rowtoIndex[ROWindex - 1] + col || 0; break
             case 'g': {
-              const wow = prompt('line:col')
+              const wow = prompt('line:col', pos.value)
               if (wow === null) return
               const [line, col = 1] = wow.split(':')
               indexx = linetoIndex[line] + +col - 1
@@ -146,33 +161,89 @@
             }
             default: return
           }
+          e.preventDefault()
+          weeeIndex()
+        })
+        function weeeIndex (length) {
           if (isNaN(indexx)) {indexx = oldin; return}
           if (indexx < 0) indexx = 0
           if (indexx >= text.length) indexx = text.length - 1
-          showtext(indexx)
-        })
+          showtext(indexx, length)
+        }
         showtext(0)
         window.text = text
         
         window.showtext = showtext
         
+        function ecape (str) {
+          return str.replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+        }
+        function htmlFrom ([index, length]) {
+          return `<li><a href="#" class="res" data-index="${index}" data-length="${length}"><span class="context">${
+              ecape(text.slice(Math.max(0,index - 50), index))
+              
+            }</span>${text.slice(index, index + length)}<span class="context">${
+              ecape(text.slice(index + length, index + length + 50))
+              
+            }</span></a></li>`
+        }
         window.searchh = e => {
           e.preventDefault()
           try {
           const matcher = regex.checked ? getRegexMatches(text, new RegExp(searchy.value, 'g')) : gettextMatches(text, searchy.value)
-          let i = 0
-          for (const [index, length] of matcher) {
-            console.log(text.slice(index, index + length))
-            i++
-            if (i >= 20) break
+          //let i = 0
+          //innerHTML
+          results.textContent = ''
+          let w = '<ol>'
+          let done = false
+          //for (const [index, length] of matcher) {
+          for (let i = 0; i < 20 ; i++) {
+            //console.log(text.slice(index, index + length))
+           // i++
+           const { value, done: d } = matcher.next()
+           if (d) {
+             done = i === 0 ? 'first' : 'not first'
+             break
+           }
+             w+= htmlFrom(value)
+            //if (i >= 20) break
+          }
+          if (done === 'first') {
+            results.textContent = 'no matches'
+          } else {
+            let wow = w
+            if (!done) {
+              window.more = () => {
+                while (true) {
+                  const { value, done } = matcher.next()
+                  if (done) break
+                  w += htmlFrom(value)
+                }
+                results.innerHTML = w+'</ol>'
+              }
+              wow += '<li><button onclick="window.more()">load rest</button></li>'
+            }
+            results.innerHTML = wow+'</ol>'
           }
           //console.log()
           } catch (err) {
             log.value = err.stack
             log.focus()
+            throw err
           }
         }
         weee.disabled = false
+        
+        results.onclick = e => {
+          const link = e.target.closest('a')
+          if (!link) return
+          e.preventDefault()
+          indexx = +link.dataset.index
+          weeeIndex(+link.dataset.length)
+        }
       }
       
       function * gettextMatches (source, search) {
