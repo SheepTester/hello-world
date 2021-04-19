@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+  <head>
+    <title>big file viewer</title>
+  </head>
+  
+  <body>
+    <form onsubmit="window.onSub(this, event)">
+      <label>
+        load from url
+        <input type="url" id="url" value="https://sheeptester.github.io/javascripts/charcopy.html" autofocus>
+      </label>
+      or
+      <label>
+        upload file
+        <input type="file" id="file">
+      </label>
+      <input type="submit" value="ok">
+    </form>
+    <textarea id="log" readonly style="color:red" placeholder="errors go here"></textarea>
+    <!-- rows seems to be inexact?? nvm it is because the entr key symbo -->
+    <textarea id="out" readonly cols="100" rows="20" placeholder="text goes here"></textarea>
+    <input id="pos" placeholder="line:col" readonly>
+    <p>press arrow keys to navigate; "g" to go to line/column; "G" (shift + g) to go to end</p>
+    <form onsubmit="window.searchh(event)" >
+      <fieldset id="weee" disabled>
+        <legend>search</legend>
+      <label>
+        search:
+        <input type="search" id="searchy">
+      </label>
+      <input type="submit" value="search">
+      <label>
+        <input type=checkbox id=regex>
+        use regex?
+      </label></fieldset>
+    </form>
+    <div id="results"></div>
+    <script>
+    async function onSub (form, event) {
+      event.preventDefault()
+      try {
+        log.value = "loading..."
+        if (file.files.length > 0) {
+          loadtext(await file.files[0].text())
+        } else if (url.value) {
+          loadtext(await fetch(url.value).then(r => r.text()))
+        } else {
+          throw new Error('you neeed... url or file.')
+        }
+        log.value = ""
+      form.remove()
+      } catch (err) {
+        log.value = err.stack
+        log.focus()
+        throw err
+      }
+    }
+      function loadtext (text) {
+        //console.log(text)
+        text = text.replace(/\r/g, '')
+        const rows = []
+        const rowtoIndex = {}
+        const linetoIndex = {}
+        const rowIndextolineCol = {}
+        const rowOffset = {}
+        let linenum = 0
+        let chars = 0
+        for (const line of text.split('\n')) {
+          linenum++
+          linetoIndex[linenum] = chars
+          const header = `${linenum}. `
+          const offset = header.length
+          rowOffset[rows.length] = offset
+          let col = 1
+          let str = `${header}${line}¬` // ↵
+          let isfirstrow = true
+          while (str) {
+            rowtoIndex[rows.length] = chars
+            rowIndextolineCol[rows.length] = [linenum, col]
+            chars += str.slice(0, 100).length // not necessarily 100
+            col += str.slice(0, 100).length
+          if (isfirstrow) { chars -= offset; col -= offset }
+            rows.push(str.slice(0, 100))
+            str = str.slice(100)
+            isfirstrow = false
+          }
+          //chars--
+        }
+        //console.log(rows, rowtoIndex, linetoIndex)
+        let ROWindex
+        const entries = Object.entries(rowtoIndex)
+        function showtext (index) {
+          let rowIndex
+          //entries.forEach(([, charindex], i) => {
+          for (let i = 0; i < entries.length; i++) {
+            // [rowindex, charindex]
+            if (entries[i][1] > index) {
+              rowIndex = +entries[i - 1][0]
+              break
+            }
+          }
+          //const filtered = Object.entries(rowtoIndex).filter(([rowindex, charindex]) => charindex <= index)
+          //const rowIndex = +filtered[filtered.length - 1][0]
+          let str = ''
+          for (let i = rowIndex - 9; i < rowIndex; i++){
+            str += (rows[i]||'') + '\n'
+          }
+          const offset = str.length + (rowOffset[rowIndex] || 0)
+          str+=(rows[rowIndex])+'\n'
+          for (let i = rowIndex + 1; i <= rowIndex + 10; i++) {
+            str+=(rows[i ] || '')+'\n'
+          }
+          const rowCharIndex = index - rowtoIndex[rowIndex]
+          //console.log(outRows, rowIndex)
+          out.value = str.slice(0, -1)
+          out.focus()
+         // console.log(offset, rowCharIndex, rowIndex)
+          out.selectionStart = offset + rowCharIndex
+          out.selectionEnd = offset + rowCharIndex + 1
+          //for (const )
+          const [line, col] = rowIndextolineCol[rowIndex]
+          pos.value = `${line}:${col + rowCharIndex}`
+          ROWindex = rowIndex
+          
+        }
+        let indexx = 0
+        out.addEventListener('keydown', e => {
+          const oldin = indexx
+          const col = indexx - rowtoIndex[ROWindex]
+          switch (e.key) {
+            case 'ArrowLeft': indexx--; break;
+            case 'ArrowRight': indexx++; break
+            case 'ArrowDown': indexx = rowtoIndex[ROWindex + 1] + (col) || text.length - 1; break
+            case 'ArrowUp': indexx = rowtoIndex[ROWindex - 1] + col || 0; break
+            case 'g': {
+              const wow = prompt('line:col')
+              if (wow === null) return
+              const [line, col = 1] = wow.split(':')
+              indexx = linetoIndex[line] + +col - 1
+              break
+            }
+            case 'G': {
+              indexx = text.length - 1
+              break
+            }
+            default: return
+          }
+          if (isNaN(indexx)) {indexx = oldin; return}
+          if (indexx < 0) indexx = 0
+          if (indexx >= text.length) indexx = text.length - 1
+          showtext(indexx)
+        })
+        showtext(0)
+        window.text = text
+        
+        window.showtext = showtext
+        
+        window.searchh = e => {
+          e.preventDefault()
+          try {
+          const matcher = regex.checked ? getRegexMatches(text, new RegExp(searchy.value, 'g')) : gettextMatches(text, searchy.value)
+          let i = 0
+          for (const [index, length] of matcher) {
+            console.log(text.slice(index, index + length))
+            i++
+            if (i >= 20) break
+          }
+          //console.log()
+          } catch (err) {
+            log.value = err.stack
+            log.focus()
+          }
+        }
+        weee.disabled = false
+      }
+      
+      function * gettextMatches (source, search) {
+        let lastIndex = 0
+        while (true) {
+          const index = source.indexOf(search, lastIndex)
+          if (index === -1) return
+          
+          yield [index, search.length]
+          lastIndex = search.length + index
+        }
+      }
+      function * getRegexMatches (source, pattern) {
+        let match
+        while ((match = pattern.exec(source))) {
+          yield [match.index, match[0].length]
+        }
+      }
+    </script>
+  </body>
+</html>
