@@ -4,6 +4,12 @@
   <head>
     <title>generate a png of a single colour</title>
     <meta name="description" content="computation of cyclic redundancy my asfffg-phg">
+    <style>
+      
+      img {
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+      }
+    </style>
   </head>
   <body>
     <p><label>
@@ -23,15 +29,40 @@
         <input id=colour type=color value="#28003F">
       </label>
     </p>
-    <p><a  id=out download>download</a>
+    <p><a  id=out download>download</a> (<span id=bytes></span> B)
     </p>
     <img id="preview">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crc-32/1.2.0/crc32.min.js"
     integrity="sha512-YNnnl6BjFAxH9uOdbvr1gPnaHzL9wNH9PzdYuywy0KfP8KDga2MWT1Dah8LoowtBbKbtlZZT77zX07G0CAvOpQ=="
     crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js"
+      integrity="sha512-yJSo0YTQvvGOqL2au5eH0W4K/0FI0sTJuyHjiHkh0O31Lzlb814P0fDXtuEtzOj13lOBZ9j99BjqFx4ASz9pGA=="
+      crossorigin="anonymous"></script>
+      <h2>thanks</h2>
+      <p>thank you very much for helpign me,</p>
+      <ul>
+        <li><a href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">wikipedia article on png</a> for base reference on the png chunks</li>
+        <li><a href="https://www.photopea.com/">photopea</a> for generating the tiny png using palettes which i used as a template</li>
+        <li><a href="https://hexed.it/">hexed.it</a> for making it a lot easier to inspect the PNG bytes</li>
+        <li><a href="https://www.npmjs.com/package/crc-32">crc-32</a> for helping to deal with the weird png CRCs with a nice api</li>
+        <li><a href="https://www.mjt.me.uk/posts/smallest-png/">smallest 256x256 single-colour png</a> for making me realise what the idat chunk is for</li>
+        <li><a href="https://nodeca.github.io/pako/">pako</a> for DEFLAtE compressing the png, also nice api</li>
+        <!--
+        <li><a href="aaaaa">aaaaa</a></li>
+        <li><a href="aaaaa">aaaaa</a></li>
+        <li><a href="aaaaa">aaaaa</a></li>
+        <li><a href="aaaaa">aaaaa</a></li>
+        <li><a href="aaaaa">aaaaa</a></li>
+        <li><a href="aaaaa">aaaaa</a></li>
+        <li><a href="aaaaa">aaaaa</a></li>
+        <li><a href="aaaaa">aaaaa</a></li>
+        <li><a href="aaaaa">aaaaa</a></li>
+        
+        -->
+      </ul>
     <script>
       
-        const data = new Uint8Array( [
+        const start = new Uint8Array( [
           // https://hexed.it#base64:Screenshot%202021-04-19%20at%2019.png;iVBORw0KGgoAAAANSUhEUgAAAh0AAAF+AQMAAAAcJjrNAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAANQTFRFKAA/J0IHvwAAADBJREFUeJztwYEAAAAAw6D5U1/hAFUBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwGtm9gABLr+JgwAAAABJRU5ErkJggg==
   // Offset 0x00000000 to 0x00000153
   
@@ -46,7 +77,7 @@
             0x00, 0x00, 0x02, 0x1D,
             // height - offset 0x14
             0x00, 0x00, 0x01, 0x7E,
-            // bit depth 1, colour type 3, compression method 0, filter method 0, interlace method 0
+            // bit depth 1 , colour type 3 (indexed), compression method 0, filter method 0, interlace method 0
             0x01, 0x03, 0x00, 0x00, 0x00,
             // crc - offset 0x1d
             0x1C, 0x26, 0x3A, 0xCD,
@@ -81,19 +112,13 @@
             // crc >:(- offset 0x4e
             0x27, 0x42, 0x07, 0xBF,
           // IDAt
-            // length 48
+            // length 48 - offset 0x52
             0x00, 0x00, 0x00, 0x30,
-            // "IDAt" (all caps)
-            0x49, 0x44, 0x41, 0x54,
-            // data (photopea generated this; idk why all this is necesary)
-            0x78, 0x9C, 0xED, 0xC1,  0x81, 0x00, 0x00, 0x00,
-            0x00, 0xC3, 0xA0, 0xF9,  0x53, 0x5F, 0xE1, 0x00,
-            0x55, 0x01, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00,
-            0x00, 0x00, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00,
-            0x00, 0x00, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00,
-            0x00, 0x00, 0xC0, 0x6B,  0x66, 0xF6, 0x00, 0x01,
-            // crc
-            0x2E, 0xBF, 0x89, 0x83,
+            // "IDAt" (all caps) - offset 0x56
+            0x49, 0x44, 0x41, 0x54
+            // data and crc ommitted - offset 0x5a
+            ])
+            const end = new Uint8Array([
           // IEND
             // length 0
             0x00, 0x00, 0x00, 0x00,
@@ -103,25 +128,46 @@
             0xAE, 0x42, 0x60, 0x82
         ])
       function gen (width, height, colour) {
-        const buffer = data.buffer.slice() // clones buffer i think
+        // https://www.mjt.me.uk/posts/smallest-png/
+        // (width * height) / 8 + height (= # of scanlines)
+        // idk why ceil(width / 8) + height; ceil((width * height) / 8) left a gap at the bottom for some reason
+        const idatLength = Math.ceil(width / 8) * height + height
+        const idat = new Uint8Array(idatLength)
+        const deflated = pako.deflate(idat)
+        // idat is all zero for 0th colour in palette (or 0 for no filter)
+        
+        // CRC = cyclic redundancy computation or something dumb like that
+        // including 4 bytes for idat crc
+        const data = new Uint8Array(start.length + end.length + deflated.length + 4)
+        data.set(start, 0)
+        data.set(deflated, start.length)
+        // crc for idat is set a few lines down
+        data.set(end, start.length + deflated.length + 4)
+        const buffer = data.buffer // clones buffer i think
         const dataView = new DataView(buffer)
         dataView.setUint32(0x10, width)
         dataView.setUint32(0x14, height)
         dataView.setUint8(0x4b    , colour >> 16 & 0xff)
         dataView.setUint8(0x4b + 1, colour >>  8 & 0xff)
         dataView.setUint8(0x4b + 2, colour       & 0xff)
+        dataView.setUint32(0x52, deflated.length)
+        //dataView.setInt32(start.length + deflated.length + 4, CRC32.buf(deflated)) // crc for idat
         const bytes = new Uint8Array(buffer)
         const ihdr = bytes.slice(0x0c, 0x1d)
         dataView.setInt32(0x1d, CRC32.buf(ihdr)) // crc for ihdr
         const plte = bytes.slice(0x47, 0x4e)
         dataView.setInt32(0x4e, CRC32.buf(plte)) // crc for plte
+        const idatWithIdat = bytes.slice(0x56, 0x5a + deflated.length)
+        dataView.setInt32(0x5a + deflated.length, CRC32.buf(idatWithIdat)) // crc for idat
         return new Blob([buffer], { type: 'image/png'})
       }
       let lastUrl
       function update () {
-        const url = URL.createObjectURL(gen(+width.value, +height.value, parseInt(colour.value.slice(1), 16)))
+        const blob = gen(+width.value, +height.value, parseInt(colour.value.slice(1), 16))
+        const url = URL.createObjectURL(blob)
         out.href = url
         preview.src = url
+        bytes.textContent = blob.size
         if (lastUrl && lastUrl !== url) {
           URL.revokeObjectURL(lastUrl)
         }
