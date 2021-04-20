@@ -1,0 +1,135 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>generate a png of a single colour</title>
+    <meta name="description" content="computation of cyclic redundancy my asfffg-phg">
+  </head>
+  <body>
+    <p><label>
+      width
+      <input id=width type=number value="541">
+    </label></p>
+    <p>
+      <!-- coding your own game yada yada -->
+      <label>
+        height
+        <input id=height type=number value="382">
+      </label>
+    </p>
+    <p>
+      <label>
+        colour
+        <input id=colour type=color value="#28003F">
+      </label>
+    </p>
+    <p><a  id=out download>download</a>
+    </p>
+    <img id="preview">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crc-32/1.2.0/crc32.min.js"
+    integrity="sha512-YNnnl6BjFAxH9uOdbvr1gPnaHzL9wNH9PzdYuywy0KfP8KDga2MWT1Dah8LoowtBbKbtlZZT77zX07G0CAvOpQ=="
+    crossorigin="anonymous"></script>
+    <script>
+      
+        const data = new Uint8Array( [
+          // https://hexed.it#base64:Screenshot%202021-04-19%20at%2019.png;iVBORw0KGgoAAAANSUhEUgAAAh0AAAF+AQMAAAAcJjrNAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAANQTFRFKAA/J0IHvwAAADBJREFUeJztwYEAAAAAw6D5U1/hAFUBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwGtm9gABLr+JgwAAAABJRU5ErkJggg==
+  // Offset 0x00000000 to 0x00000153
+  
+          // HEADERS (8b)
+          0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A,
+          // IHDR
+            // length 13 b
+            0x00, 0x00, 0x00, 0x0D,
+            // "IHDR" - offset 0x0c
+            0x49, 0x48, 0x44, 0x52,
+            // width - offset 0x10
+            0x00, 0x00, 0x02, 0x1D,
+            // height - offset 0x14
+            0x00, 0x00, 0x01, 0x7E,
+            // bit depth 1, colour type 3, compression method 0, filter method 0, interlace method 0
+            0x01, 0x03, 0x00, 0x00, 0x00,
+            // crc - offset 0x1d
+            0x1C, 0x26, 0x3A, 0xCD,
+          // sRBG
+            // length 1 b
+            0x00, 0x00, 0x00, 0x01,
+            // "sRGB"
+            0x73, 0x52, 0x47, 0x42,
+            // rendering intent 1
+            0x01,
+            // crc
+            0xD9, 0xC9, 0x2C, 0x7F,
+          // pHYs (intended pixel size/aspect ratio?)
+            // length 9 b
+            0x00, 0x00, 0x00, 0x09,
+            // "pHYs"
+            0x70, 0x48, 0x59, 0x73,
+            // px/un x, y axis 2834 for both??
+            0x00, 0x00, 0x0B, 0x13,
+            0x00, 0x00, 0x0B, 0x13,
+            // unit specifier??
+            0x01,
+            // crc
+            0x00, 0x9A, 0x9C, 0x18,
+          // PLtE
+            // length 3
+            0x00, 0x00, 0x00, 0x03,
+            // "PLtE" (all caps) - offset 0x47
+            0x50, 0x4C, 0x54, 0x45,
+            // the colour :D - offset 0x4b
+            0x28, 0x00, 0x3F,
+            // crc >:(- offset 0x4e
+            0x27, 0x42, 0x07, 0xBF,
+          // IDAt
+            // length 48
+            0x00, 0x00, 0x00, 0x30,
+            // "IDAt" (all caps)
+            0x49, 0x44, 0x41, 0x54,
+            // data (photopea generated this; idk why all this is necesary)
+            0x78, 0x9C, 0xED, 0xC1,  0x81, 0x00, 0x00, 0x00,
+            0x00, 0xC3, 0xA0, 0xF9,  0x53, 0x5F, 0xE1, 0x00,
+            0x55, 0x01, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0xC0, 0x6B,  0x66, 0xF6, 0x00, 0x01,
+            // crc
+            0x2E, 0xBF, 0x89, 0x83,
+          // IEND
+            // length 0
+            0x00, 0x00, 0x00, 0x00,
+            // "IEND"
+            0x49, 0x45, 0x4E, 0x44,
+            // crc
+            0xAE, 0x42, 0x60, 0x82
+        ])
+      function gen (width, height, colour) {
+        const buffer = data.buffer.slice() // clones buffer i think
+        const dataView = new DataView(buffer)
+        dataView.setUint32(0x10, width)
+        dataView.setUint32(0x14, height)
+        dataView.setUint8(0x4b    , colour >> 16 & 0xff)
+        dataView.setUint8(0x4b + 1, colour >>  8 & 0xff)
+        dataView.setUint8(0x4b + 2, colour       & 0xff)
+        const bytes = new Uint8Array(buffer)
+        const ihdr = bytes.slice(0x0c, 0x1d)
+        dataView.setInt32(0x1d, CRC32.buf(ihdr)) // crc for ihdr
+        const plte = bytes.slice(0x47, 0x4e)
+        dataView.setInt32(0x4e, CRC32.buf(plte)) // crc for plte
+        return new Blob([buffer], { type: 'image/png'})
+      }
+      let lastUrl
+      function update () {
+        const url = URL.createObjectURL(gen(+width.value, +height.value, parseInt(colour.value.slice(1), 16)))
+        out.href = url
+        preview.src = url
+        if (lastUrl && lastUrl !== url) {
+          URL.revokeObjectURL(lastUrl)
+        }
+        lastUrl = url
+      }
+      
+      update()
+      width.oninput = height.oninput = colour.oninput = update
+    </script>
+  </body>
+</html>
