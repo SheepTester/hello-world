@@ -1,4 +1,5 @@
 import { emptyDir } from 'https://deno.land/std@0.97.0/fs/empty_dir.ts'
+import { ensureFile } from 'https://deno.land/std@0.97.0/fs/ensure_file.ts'
 
 // From https://github.com/nbuilding/N-lang/blob/22f8a361d141c2e034c732e836f5eb81b57fa935/js/src/utils/type-guards.ts#L23
 function isObjectLike (
@@ -74,11 +75,33 @@ async function getSourceMapsFrom (url: string): Promise<Map<string, string>> {
   return superMap
 }
 
-await Deno.writeTextFile('./url.txt', [...(await getSourceMapsFrom('https://electron.stp-prod.collegeboard.org/')).keys()].join('\n') + '\n')
-// await emptyDir('source')
-// for (const [uri, content] of await getSourceMapsFrom('https://electron.stp-prod.collegeboard.org/')) {
-//   if (!uri.startsWith('webpack:////') && !uri.startsWith('webpack:///../')) {
-//     console.warn(uri, 'doesn\'t start with webpack://')
-//     continue
-//   }
-// }
+await emptyDir('source')
+for (const [uri, content] of await getSourceMapsFrom('https://electron.stp-prod.collegeboard.org/')) {
+  let path = uri.startsWith('webpack:////')
+    ? uri.replace('webpack:////', './source/src/')
+    : uri.startsWith('webpack:///./')
+    ? uri.replace('webpack:///./', './source/src/')
+    : uri.startsWith('webpack:///../')
+    ? uri.replace('webpack:///../', './source/')
+    : uri.startsWith('webpack:///(webpack)/')
+    ? uri.replace('webpack:///(webpack)/', './source/.webpack/')
+    : uri.startsWith('webpack:///webpack/')
+    ? uri.replace('webpack:///webpack/', './source/.webpack/')
+    : null
+  if (path === null) {
+    console.warn(uri, 'doesn\'t start with webpack://')
+    continue
+  }
+  if (path.includes('..')) {
+    console.warn(uri, 'has two .., it seems')
+    continue
+  }
+  if (path.includes(String.raw`^\.\/.*$`)) {
+    path = path.replace(String.raw`^\.\/.*$`, '')
+  }
+  await ensureFile(path).catch(err => {
+    console.log(path)
+    throw err
+  })
+  await Deno.writeTextFile(path, content)
+}
