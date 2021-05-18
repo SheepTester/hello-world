@@ -1,0 +1,81 @@
+
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>trevor</title>
+          <style> 
+            body {
+                margin: 0;
+                padding: 0;
+            }
+          </style>
+          <base href="https://electron.stp-prod.collegeboard.org/"> 
+  <script>
+window.ipcRenderer = {
+  send: (...args) => console.log('[send]', args),
+  on: (...args) => {
+    console.log('[on]', args)
+    if (args[0] === 'update:not-available') args[1]()
+  },
+  removeListener: (...args) => console.log('[removeListener]', args),
+  invoke: (...args) => (console.log('[invoke]', args), "{}"),
+} </script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>          
+        
+          
+          
+        </head>
+        <body>
+          
+        
+        <div id="app-utility"></div>
+        <div id="app"></div>
+        
+          <script src="/npm.aws-crypto.js?4b690d2d068570379083"></script>
+<script src="/npm.cb.js?4b690d2d068570379083"></script>
+<script src="/npm.draft-js.js?4b690d2d068570379083"></script>
+<script src="/npm.moment.js?4b690d2d068570379083"></script>
+<script src="/npm.sentry.js?4b690d2d068570379083"></script>
+<script src="/npm.aws-sdk.js?4b690d2d068570379083"></script>
+<script src="/npm.axios.js?4b690d2d068570379083"></script>
+<script src="/npm.react-spinners.js?4b690d2d068570379083"></script>
+<script src="/npm.capacitor.js?4b690d2d068570379083"></script>
+<script src="/npm.react-redux.js?4b690d2d068570379083"></script>
+<script src="/npm.parse-asn1.js?4b690d2d068570379083"></script>
+<script src="/npm.protobufjs.js?4b690d2d068570379083"></script>
+<script src="/npm.elliptic.js?4b690d2d068570379083"></script>
+<script src="/npm.lodash.js?4b690d2d068570379083"></script>
+<script src="/npm.asn1.js.js?4b690d2d068570379083"></script>
+<script src="/npm.readable-stream.js?4b690d2d068570379083"></script>
+<script src="/npm.redux-persist.js?4b690d2d068570379083"></script>
+<script src="/npm.emotion.js?4b690d2d068570379083"></script>
+<script src="/npm.react-transition-group.js?4b690d2d068570379083"></script>
+<script src="/npm.react-draggable.js?4b690d2d068570379083"></script>
+<script src="/npm.dap.js?4b690d2d068570379083"></script>
+<script src="/npm.graphql-request.js?4b690d2d068570379083"></script>
+<script src="/npm.node-libs-browser.js?4b690d2d068570379083"></script>
+<script src="/npm.react-ace.js?4b690d2d068570379083"></script>
+<script src="/npm.ace-builds.js?4b690d2d068570379083"></script>
+<script src="/npm.react-dom.js?4b690d2d068570379083"></script>
+<script src="/npm.immutable.js?4b690d2d068570379083"></script>
+<script src="/npm.moment-timezone.js?4b690d2d068570379083"></script>
+<script src="/npm.hotkeys-js.js?4b690d2d068570379083"></script>
+<script src="/npm.bn.js.js?4b690d2d068570379083"></script>
+<script src="/npm.buffer.js?4b690d2d068570379083"></script>
+<script src="/npm.dexie.js?4b690d2d068570379083"></script>
+<script src="/npm.diff-match-patch.js?4b690d2d068570379083"></script>
+<script src="/npm.jmespath.js?4b690d2d068570379083"></script>
+<script src="/npm.localforage.js?4b690d2d068570379083"></script>
+<script src="/npm.lodash.isequal.js?4b690d2d068570379083"></script>
+<script src="/npm.popper.js.js?4b690d2d068570379083"></script>
+<script src="/npm.resize-observer-polyfill.js?4b690d2d068570379083"></script>
+<script src="/npm.ua-parser-js.js?4b690d2d068570379083"></script>
+<script src="/vendors~main.js?4b690d2d068570379083"></script>
+<script src="/main.js?4b690d2d068570379083"></script>
+          
+        </body>
+      </html>
+      
