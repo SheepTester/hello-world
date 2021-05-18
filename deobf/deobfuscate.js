@@ -45,9 +45,18 @@ async function attemptDeobfuscation (jsFile) {
 }
 
 async function main () {
+  await fs.mkdir('output', { recursive: true })
+
+  console.log('main/index.js')
   await fs.writeFile(
-    './output.js',
+    './output/main.js',
     await attemptDeobfuscation(await fs.readFile('./app/main/index.js', 'utf8'))
+  )
+
+  console.log('preload/index.js')
+  await fs.writeFile(
+    './output/preload.js',
+    await attemptDeobfuscation(await fs.readFile('./app/preload/index.js', 'utf8'))
   )
 }
 

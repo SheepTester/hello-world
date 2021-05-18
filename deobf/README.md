@@ -2,4 +2,4 @@
 
 2. `./extract-asar.sh` to extract app.asar
 
-3. `node deobfuscate.ts`
+3. `node deobfuscate.js`
