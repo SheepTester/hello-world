@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Hide Schoology assessment answers
 @namespace      sheeptester.github.io
-@version        1.0.1
+@version        1.0.2
 @description    Hide the correct answer for reviewing
 @author         SheepTester
 ==/UserStyle== */
@@ -13,7 +13,8 @@
   main article > article:not(:hover) input[type=radio],
   main article > article:not(:hover) .lrn-label:before,
   main article > article:not(:hover) .lrn-response-validate-wrapper:after,
-  main article > article:not(:hover) .lrn_clozedropdown_answer:after {
+  main article > article:not(:hover) .lrn_clozedropdown_answer:after,
+  main article > article:not(:hover) .lrn_sort_block .lrn_item:after {
     opacity: 0;
   }
   main article > article:not(:hover) .lrn_selected,
@@ -27,5 +28,11 @@
   }
   main article > article:not(:hover) .lrn-response-validate-wrapper {
     border-color: transparent !important;
+  }
+  main article > article:not(:hover) .lrn_widget.lrn_orderlist .lrn_btn_sort {
+    background: none !important;
+  }
+  main article > article:not(:hover) .lrn_suggested_answer_item {
+    display: none;
   }
 }
