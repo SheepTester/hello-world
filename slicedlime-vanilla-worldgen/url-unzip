@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ ! -d .git ]; then
+  echo "cannot find .git folder, so probably not good idea to remove all files here" 1>&2
+  exit 1
+fi
+
+git rm -r .
+curl "$1" >> CavesAndCliffsPreview.zip
+unzip CavesAndCliffsPreview.zip -d .
+rm CavesAndCliffsPreview.zip
+git add .
