@@ -106,7 +106,7 @@ yay
 
 - [FLASH FLASH FLASH (**epilepsy warning**)](./graduation-rehearsal-is-boring.html)
 
-- [learn how to get your SCHEDULE on infinite CAMPOOS](./ic-get-schedule.js)
+- [learn how to get your SCHEDULE on infinite CAMPOOS](./ic-get-schedule.html)
 
 - [sheep.](./idle.html)
 
