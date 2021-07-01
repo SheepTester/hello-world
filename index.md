@@ -87,3 +87,59 @@ yay
 - [USERSCRIPTS??? and userstyles??? illegal on scratch yes](./userscripts/)
 
 - [phrase weird flex but ok better? weird flex, but ok](./weird-flex.html)
+
+- [school BELL](./bell.html)
+
+- [view INSANEly BIG LARGE FILES](./big-file-viewer.html)
+
+- [introduce BOOKmARKEtLEttES](./bookmarklet.html)
+
+- [quickly open windows CALCULAtOR from browser](./calc.html)
+
+- [fizzbuzz in CSS (and html)](./css-fizzbuzz.html)
+
+- [should use NON BREAKING SPACES in your css class names!](./css-identifiers.html)
+
+- [see how much of ppl's LIVES are being wasted on DELtA MAtH](./deltamath-time.html)
+
+- [fuck](./fuck.html)
+
+- [FLASH FLASH FLASH (**epilepsy warning**)](./graduation-rehearsal-is-boring.html)
+
+- [learn how to get your SCHEDULE on infinite CAMPOOS](./ic-get-schedule.js)
+
+- [sheep.](./idle.html)
+
+- [merge rows horizontally in google sheets with FORMAttING](./merge-horiz.html)
+
+- [pwas dont need much, just a bed and some water](./minimal-pwa/)
+
+- [experiment with OPEN GRAPH](./open-graph-testing.html)
+
+- [approximate ***P I*** (made this during distance learning calc class taylor series unit)](./pi.html)
+
+- [curtly said single colour PNG](./plaincolour.html)
+
+- [pumpkin.](./pumpkin.html)
+
+- [pretend to be SGY ***P E N D O***](./sgy-pendo.html)
+
+- [see your SYStEM COLOURS](./system-colours.html)
+
+- [*someone* thinks that google docs should be able to handle ***10 MILLION*** pages. can you?](./tenmillionpages.html)
+
+- [closing tags in html is c r i n g e](./test/dumb.html)
+
+- [omitting closing tags can catch ERRORS](./test/dumb2.html)
+
+- [embed](./test/embedder.html)
+
+- [be embedded](./test/embedee.html)
+
+- [does "AWESOME new gunn shedool package" work in browser?](./test/index.html)
+
+- [sans nouveaux is fancy pixel font](./test/sans-nouveaux-test.html)
+
+- [vim is cool](./test/testthing.html)
+
+- [learn IDIOMS from ***W I S E***](./wiseguy.html)
