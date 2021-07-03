@@ -1,0 +1,35 @@
+[
+  {
+    title: "Default"
+    paths: [
+      "~/.atom"
+      "~/Documents/awesome-new-gunn-schedule-package"
+    ]
+    settings:
+      editor:
+        tabLength: 2
+        tabType: "soft"
+      whitespace:
+        removeTrailingWhitespace: true
+  }
+  {
+    title: "Tech Guy"
+    paths: [
+      "~/Documents/tech_guy"
+    ]
+    settings:
+      editor:
+        tabLength: 4
+      whitespace:
+        removeTrailingWhitespace: false
+  }
+  {
+    title: "HarVM"
+    paths: [
+      "~/Documents/HarVM"
+    ]
+    settings:
+      editor:
+        tabType: "hard"
+  }
+]

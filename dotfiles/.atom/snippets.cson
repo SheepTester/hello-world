@@ -1,0 +1,89 @@
+# Your snippets
+#
+# Atom snippets allow you to enter a simple prefix in the editor and hit tab to
+# expand the prefix into a larger code block with templated values.
+#
+# You can create a new snippet in this file by typing "snip" and then hitting
+# tab.
+# >>> DON'T FORGET ABOUT "snipns" <<<
+#
+# An example CoffeeScript snippet to expand log to console.log:
+#
+# '.source.coffee':
+#   'Console log':
+#     'prefix': 'log'
+#     'body': 'console.log $1'
+#
+# Each scope (e.g. '.source.coffee' above) can only be declared once.
+#
+# This file uses CoffeeScript Object Notation (CSON).
+# If you are unfamiliar with CSON, you can read more about it in the
+# Atom Flight Manual:
+# http://flight-manual.atom.io/using-atom/sections/basic-customization/#_cson
+
+'.text.html.basic':
+  'HTML template':
+    'prefix': 'html'
+    'body': """
+    <!DOCTYPE html>
+    <html lang="en">
+    \t<head>
+    \t\t<meta charset="UTF-8" />
+    \t\t<meta name="viewport" content="width=device-width, initial-scale=1" />
+    \t\t
+    \t\t<title>${1:If you see this, I haven't bothered setting a website title.}</title>${2:
+    \t\t<meta name="description" content="${3:If you see this, I haven't bothered writing a description.}" />}${4:
+    \t\t
+    \t\t<link rel="stylesheet" type="text/css" href="/sheep3.css">
+    \t\t<script src="/sheep3.js" charset="utf-8"></script>}
+    \t\t
+    \t\t<style>
+    \t\t\t/* TEMP */
+    \t\t</style>
+    \t</head>
+    \t<body>
+    \t\t<script${5: type="module"}>${5:
+    \t\t\timport * as module from '${6:./index.js}'}
+    \t\t\t${7:// TEMP}${5:
+    \t\t\tObject.assign(window, module)}
+    \t\t</script>
+    \t</body>
+    </html>
+    """
+  'Dead comment to avoid whitespace clearing':
+    'prefix': '//'
+    'body': '${1:<!-- $2 -->}'
+'.source.css':
+  'Dead comment to avoid whitespace clearing':
+    'prefix': '//'
+    'body': '${1:/* $2 */}'
+  'RGBA colour':
+    'prefix': 'rgb'
+    'body': 'rgba(${1:255}, ${2:255}, ${3:255}, ${4:0.5})$5'
+'.source.js':
+  'DOM':
+    'prefix': 'd'
+    'body': 'document'
+  'DOM head':
+    'prefix': 'dh'
+    'body': 'document.head'
+  'DOM body':
+    'prefix': 'db'
+    'body': 'document.body'
+  'addEventListener':
+    'prefix': 'ae'
+    'body': """
+    addEventListener('$1', ${2:e => \\{$3\\}})
+    """
+  'createElement':
+    'prefix': 'cre'
+    'body': 'createElement(\'${1:div}\')$2'
+  'createDocumentFragment':
+    'prefix': 'cdf'
+    'body': 'createDocumentFragment()$1'
+  'appendChild':
+    'prefix': 'app'
+    'body': 'appendChild($1)$2'
+  'getBoundingClientRect':
+    'prefix': 'getrect'
+    'body': 'getBoundingClientRect()$1'
