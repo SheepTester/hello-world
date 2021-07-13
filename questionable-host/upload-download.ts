@@ -3,6 +3,18 @@
 import { Md5 } from 'https://deno.land/std@0.95.0/hash/md5.ts'
 import { encodeToString } from 'https://deno.land/std@0.95.0/encoding/hex.ts'
 
+class HttpError extends Error {
+  name = this.constructor.name
+
+  static async from (response: Response): Promise<HttpError> {
+    return new HttpError(
+      `HTTP error ${response.status} for ${
+        response.url
+      }. ${await response.text().catch(() => 'Could not get response text.')}`
+    )
+  }
+}
+
 /** Maximum size of an asset on Scratch in bytes = 10 MB */
 const MAX_SIZE = 10 * 1000 * 1000
 
@@ -34,45 +46,50 @@ const SERVER = atob('aHR0cHM6Ly9hc3NldHMuc2NyYXRjaC5taXQuZWR1Lw==')
  * Upload a file to Scratch's asset servers. Returns the md5 hash of the first
  * chunk.
  *
- * `scratchSessionSid` is required if uploading outside the browser. Specifying
+ * `scratchSessionsId` is required if uploading outside the browser. Specifying
  * it in the browser won't do anything because you can't set the cookie header
  * in front-end JS.
  */
 export async function upload (
   file: Blob,
-  scratchSessionSid?: string
+  scratchSessionsId?: string
 ): Promise<string> {
   // The last chunk's hash will just be zeroes
   let nextChunkHash = new ArrayBuffer(16)
   // Start from end of chunk backwards because the chunks form a linked list
   for (let i = Math.ceil(file.size / CHUNK_SIZE) - 1; i >= 0; i--) {
+    // A u64 containing the number of bytes starting from this chunk
+    const bytesLeft = new DataView(new ArrayBuffer(8))
+    bytesLeft.setBigUint64(0, BigInt(file.size - i))
+
     const byteIndex = i * CHUNK_SIZE
     // Chunk data
     const blob = new Blob([
       // md5 hash of the next chunk
       nextChunkHash,
-      // A u64 containing the number of bytes starting from this chunk
-      new BigUint64Array([BigInt(file.size - i)]),
+      bytesLeft,
       // Chunk data
       file.slice(byteIndex, byteIndex + CHUNK_SIZE)
     ])
 
     const md5 = new Md5().update(await blob.arrayBuffer())
-    const hash = md5.toString('hex')
+    // NOTE: .digest() is not pure and calling it multiple times changes the
+    // hash
     nextChunkHash = md5.digest()
+    const hash = encodeToString(new Uint8Array(nextChunkHash))
 
     const response = await fetch(SERVER + hash + '.wav', {
       method: 'POST',
       credentials: 'include',
-      headers: scratchSessionSid
+      headers: scratchSessionsId
         ? {
-            Cookie: `scratchsessionsid=${scratchSessionSid}`
+            cookie: `scratchsessionsid=${scratchSessionsId}`
           }
         : {},
       body: blob
     })
     if (!response.ok) {
-      throw new Error(`HTTP error ${response.status} for ${response.url}`)
+      throw await HttpError.from(response)
     }
   }
   return encodeToString(new Uint8Array(nextChunkHash))
@@ -99,7 +116,7 @@ export async function download (
       `${SERVER}internalapi/asset/${nextHash}.wav/get/`
     )
     if (!response.ok) {
-      throw new Error(`HTTP error ${response.status} for ${response.url}`)
+      throw await HttpError.from(response)
     }
     if (!response.body) {
       throw new Error('No response body')
@@ -126,6 +143,8 @@ export async function download (
         if (headerPos >= header.length) {
           const view = new DataView(header.buffer)
           const bytesLeft = Number(view.getBigUint64(16))
+          console.log(bytesLeft, header)
+
           // If this is the first chunk, then the bytes left should be the total
           // size of the file
           if (!totalBytes) {
@@ -166,7 +185,7 @@ export async function downloadOld (
 
     const response = await fetch(`${SERVER}internalapi/asset/${hash}.wav/get/`)
     if (!response.ok) {
-      throw new Error(`HTTP error ${response.status} for ${response.url}`)
+      throw await HttpError.from(response)
     }
     if (!response.body) {
       throw new Error('No response body')
