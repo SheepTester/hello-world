@@ -151,6 +151,8 @@
         border-radius: 7px;
         box-shadow: 0 0 0 2px white, inset 0 0 0 1px rgba(0, 0, 0, 0.7);
       }
+      /* BUG: For some reason, the Download button (a link) turns white on
+      :visited (eg when opening the image in a new tab) */
       button,
       input[type='submit'],
       .button {
@@ -164,6 +166,7 @@
         text-align: center;
         padding: 6px 12px;
         min-width: 120px;
+        text-decoration: none;
       }
       button:hover,
       input[type='submit']:hover,
@@ -204,7 +207,20 @@
       }
       .actual-preview {
         display: flex;
+        flex-direction: column;
         flex: auto;
+      }
+      .actual-preview iframe,
+      .actual-preview video,
+      .actual-preview img {
+        height: 0;
+        flex: auto;
+      }
+      .actual-preview iframe {
+        border: none;
+      }
+      .actual-preview img {
+        object-fit: contain;
       }
       .title {
         font-size: 28px;
@@ -241,6 +257,10 @@
       .progress-error {
         background-color: #ff99a4;
         transition: width 0.5s, background-color 0.5s;
+      }
+      .progress-done {
+        opacity: 0;
+        transition: opacity 0.5s;
       }
     </style>
   </head>
@@ -293,6 +313,33 @@
     <script type="module">
       import { download, downloadOld } from './upload-download.bundle.js'
 
+      const mimeTypes = {
+        iframe: {
+          pdf: 'application/pdf',
+          html: 'text/html'
+        },
+        video: {
+          mp4: 'video/mp4',
+          mpeg: 'video/mpeg',
+          webm: 'video/webm'
+        },
+        audio: {
+          weba: 'audio/webm',
+          mp3: 'audio/mpeg',
+          wav: 'audio/wav',
+          ogg: 'audio/ogg'
+        },
+        image: {
+          bmp: 'image/bmp',
+          gif: 'image/gif',
+          jpg: 'image/jpeg',
+          jpeg: 'image/jpeg',
+          png: 'image/png',
+          svg: 'image/svg+xml',
+          webp: 'image/webp'
+        }
+      }
+
       document.body.classList.remove('section-loading')
       const params = new URL(window.location).searchParams
       const options = {
@@ -311,18 +358,63 @@
       if (hash) {
         const fileName =
           options.name ||
-          (hash.includes('.') ? hash.split('.').slice(-1)[0] : 'File')
+          (hash.includes('.') ? 'file.' + hash.split('.').slice(-1)[0] : 'File')
         elems.name.textContent = fileName
+        elems.downloadLink.download = fileName
         document.body.classList.add('section-preview')
         elems.preview.classList.add('show-loading')
+
+        let mimeType = ''
+        outer: for (const type of Object.values(mimeTypes)) {
+          for (const [extension, mime] of Object.entries(type)) {
+            if (fileName.endsWith('.' + extension)) {
+              mimeType = mime
+              break outer
+            }
+          }
+        }
+
+        const isType = Object.fromEntries(
+          Object.entries(mimeTypes).map(([type, extensions]) => {
+            for (const extension of Object.keys(extensions)) {
+              if (fileName.endsWith('.' + extension)) {
+                return [type, true]
+              }
+            }
+            return [type, false]
+          })
+        )
 
         const handleProgress = progress => {
           elems.progress.style.width = progress * 100 + '%'
           elems.percent.textContent = (progress * 100).toFixed(1)
         }
         const handleDone = file => {
-          //
+          const url = URL.createObjectURL(file)
+          elems.downloadLink.href = url
           elems.preview.classList.remove('show-loading')
+          elems.progress.classList.add('progress-done')
+          if (isType.iframe) {
+            const iframe = document.createElement('iframe')
+            iframe.src = url
+            elems.preview.appendChild(iframe)
+          } else if (isType.video) {
+            const video = document.createElement('video')
+            video.src = url
+            video.controls = true
+            elems.preview.appendChild(video)
+          } else if (isType.audio) {
+            const audio = document.createElement('audio')
+            audio.src = url
+            video.controls = true
+            elems.preview.appendChild(audio)
+          } else if (isType.image) {
+            const image = document.createElement('img')
+            image.src = url
+            elems.preview.appendChild(image)
+          } else {
+            elems.preview.classList.add('show-no-preview-available')
+          }
         }
         const handleError = error => {
           console.error(error)
@@ -332,11 +424,11 @@
           elems.progress.classList.add('progress-error')
         }
         if (hash.includes('.')) {
-          downloadOld(hash.split('.').slice(0, -1), handleProgress)
+          downloadOld(hash.split('.').slice(0, -1), handleProgress, mimeType)
             .then(handleDone)
             .catch(handleError)
         } else {
-          download(hash, handleProgress)
+          download(hash, handleProgress, mimeType)
             .then(handleDone)
             .catch(handleError)
         }

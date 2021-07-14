@@ -116,7 +116,8 @@ export async function upload (
  */
 export async function download (
   hash: string,
-  onProgress?: (percent: number) => void
+  onProgress?: (percent: number) => void,
+  type?: string
 ): Promise<Blob> {
   if (onProgress) onProgress(0)
 
@@ -182,7 +183,7 @@ export async function download (
     }
   }
 
-  return new Blob(parts)
+  return new Blob(parts, { type })
 }
 
 /**
@@ -193,7 +194,8 @@ export async function download (
  */
 export async function downloadOld (
   hashes: string[],
-  onProgress?: (percent: number) => void
+  onProgress?: (percent: number) => void,
+  type?: string
 ): Promise<Blob> {
   const parts = []
   let i = 0
@@ -229,5 +231,5 @@ export async function downloadOld (
     i++
   }
   if (onProgress) onProgress(1)
-  return new Blob(parts)
+  return new Blob(parts, { type })
 }
