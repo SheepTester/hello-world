@@ -4,9 +4,9 @@
 // @version      1.0
 // @description  Ĝenu la Skraĉteamon. Alŝutu viajn dosierojn al ĝia valoraĵservilo.
 // @author       Vi
-// @match        https://scratch.mit.edu/studios/1000/
-// @include      https://scratch.mit.edu/studios/1000/projects/
-// @include      https://scratch.mit.edu/Skra%C4%89team%C4%9Denanto/
+// @match        https://scratch.mit.edu/studios/1000
+// @include      https://scratch.mit.edu/studios/1000/projects
+// @include      https://scratch.mit.edu/Skra%C4%89team%C4%9Denanto
 // @grant        none
 // ==/UserScript==
 
