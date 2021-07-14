@@ -4,13 +4,19 @@
 // @version      1.0
 // @description  Ĝenu la Skraĉteamon. Alŝutu viajn dosierojn al ĝia valoraĵservilo.
 // @author       Vi
-// @match        https://scratch.mit.edu/studios/1000/
-// @include      https://scratch.mit.edu/studios/1000/projects/
+// @match        https://scratch.mit.edu/studios/1000
+// @include      https://scratch.mit.edu/studios/1000/projects
+// @include      https://scratch.mit.edu/Skra%C4%89team%C4%9Denanto
 // @grant        none
 // ==/UserScript==
 
 ;(async () => {
   'use strict'
+  
+  if (!window.location.pathname.startsWith('/Skra%C4%89team%C4%9Denanto')) {
+    window.location = '/Skra%C4%89team%C4%9Denanto'
+    return
+  }
 
   // Scratch usa js-md5
   await import('https://unpkg.com/js-md5@0.7.3/build/md5.min.js')
@@ -77,7 +83,7 @@
 
   const paraDescargar = $('<input type="text" placeholder="ID">')
 
-  $('#tabs-content')
+  $('#page-404 .box-content')
     .css({
       display: 'flex',
       flexDirection: 'column',
