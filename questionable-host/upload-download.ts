@@ -36,11 +36,8 @@ const CHUNK_SIZE = MAX_SIZE - 24
 
 /**
  * Scratch's asset server host.
- *
- * Decoding from base64 to discourage this file from being picked up by GitHub
- * search.
  */
-const SERVER = atob('aHR0cHM6Ly9hc3NldHMuc2NyYXRjaC5taXQuZWR1Lw==')
+const SERVER = 'https://assets.scratch.mit.edu/'
 
 /**
  * Upload a file to Scratch's asset servers. Returns the md5 hash of the first
@@ -49,16 +46,28 @@ const SERVER = atob('aHR0cHM6Ly9hc3NldHMuc2NyYXRjaC5taXQuZWR1Lw==')
  * `scratchSessionsId` is required if uploading outside the browser. Specifying
  * it in the browser won't do anything because you can't set the cookie header
  * in front-end JS.
+ *
+ * `onProgress` is a bit chopier than when downloading because the Fetch API
+ * does not support progress events for uploading.
+ *
+ * NOTE: Scratch prohibits the bytes "<script"; if your file might contain it
+ * (especially if it is an HTML file), then you probably should encode it
+ * somehow before uploading it.
  */
 export async function upload (
   file: Blob,
-  scratchSessionsId?: string
+  scratchSessionsId?: string,
+  onProgress?: (percent: number) => void
 ): Promise<string> {
+  const totalChunks = Math.ceil(file.size / CHUNK_SIZE)
   // The last chunk's hash will just be zeroes
   let nextChunkHash = new ArrayBuffer(16)
   // Start from end of chunk backwards because the chunks form a linked list
-  for (let i = Math.ceil(file.size / CHUNK_SIZE) - 1; i >= 0; i--) {
+  for (let i = totalChunks - 1; i >= 0; i--) {
+    if (onProgress) onProgress((totalChunks - 1 - i) / totalChunks)
+
     // A u64 containing the number of bytes starting from this chunk
+    // A DataView is required to make it reliably big-endian
     const bytesLeft = new DataView(new ArrayBuffer(8))
     bytesLeft.setBigUint64(0, BigInt(file.size - i))
 
@@ -88,10 +97,14 @@ export async function upload (
         : {},
       body: blob
     })
+
     if (!response.ok) {
       throw await HttpError.from(response)
     }
   }
+
+  if (onProgress) onProgress(1)
+
   return encodeToString(new Uint8Array(nextChunkHash))
 }
 
@@ -129,13 +142,12 @@ export async function download (
       const result = await reader.read()
       if (result.done) break
 
-      const bytes = result.value
-      parts.push(bytes)
-      byteCount += bytes.length
+      let bytes = result.value
 
       // Copy bytes into the header
       if (headerPos < header.length) {
-        header.set(bytes.slice(0, header.length - headerPos), headerPos)
+        const relativeHeaderEnd = header.length - headerPos
+        header.set(bytes.slice(0, relativeHeaderEnd), headerPos)
         headerPos += bytes.length
         if (headerPos >= 16) {
           nextHash = encodeToString(header.slice(0, 16))
@@ -143,8 +155,6 @@ export async function download (
         if (headerPos >= header.length) {
           const view = new DataView(header.buffer)
           const bytesLeft = Number(view.getBigUint64(16))
-          console.log(bytesLeft, header)
-
           // If this is the first chunk, then the bytes left should be the total
           // size of the file
           if (!totalBytes) {
@@ -155,15 +165,22 @@ export async function download (
             nextHash = null
           }
         }
+        if (headerPos > header.length) {
+          // Set `bytes` to the non-header bytes
+          bytes = bytes.slice(relativeHeaderEnd)
+        } else {
+          continue
+        }
       }
+
+      parts.push(bytes)
+      byteCount += bytes.length
 
       if (onProgress && totalBytes) {
         onProgress(byteCount / totalBytes)
       }
     }
   }
-
-  if (onProgress) onProgress(1)
 
   return new Blob(parts)
 }

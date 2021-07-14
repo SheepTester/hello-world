@@ -4,6 +4,22 @@ import { parse } from 'https://deno.land/std@0.101.0/flags/mod.ts'
 import { iter, writeAll } from 'https://deno.land/std@0.101.0/io/util.ts'
 import { upload, download, downloadOld } from './upload-download.ts'
 
+const WIDTH = 20
+const encoder = new TextEncoder()
+function handleProgress (progress: number): void {
+  if (progress === 1) {
+    console.log('\r'.padEnd(WIDTH + 10, ' '))
+  } else {
+    Deno.stdout.write(
+      encoder.encode(
+        `\r[${'#'.repeat(Math.floor(progress * WIDTH))}${' '.repeat(
+          WIDTH - Math.floor(progress * WIDTH)
+        )}] ${(progress * 100).toFixed(1).padStart(5, ' ')}%`
+      )
+    )
+  }
+}
+
 const [mode, ...args] = Deno.args
 
 if (!mode || mode.startsWith('-')) {
@@ -113,7 +129,9 @@ if (!mode || mode.startsWith('-')) {
         ].join('\n')
       )
     }
-    console.log(await upload(new Blob(chunks), scratchSessionsId))
+    console.log(
+      await upload(new Blob(chunks), scratchSessionsId, handleProgress)
+    )
   }
 } else if (mode === 'download') {
   const {
@@ -162,12 +180,13 @@ if (!mode || mode.startsWith('-')) {
         ].join('\n')
       )
     }
+    const onProgress = filePath === undefined ? undefined : handleProgress
     const strHash = String(hash)
     let file
     if (strHash.includes('.') || strHash.includes('-')) {
-      file = await downloadOld(strHash.split(/[-.]/).slice(0, -1))
+      file = await downloadOld(strHash.split(/[-.]/).slice(0, -1), onProgress)
     } else {
-      file = await download(strHash)
+      file = await download(strHash, onProgress)
     }
     const bytes = new Uint8Array(await file.arrayBuffer())
     if (filePath === undefined) {
