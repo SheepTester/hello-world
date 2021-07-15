@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Wide Minecraft Wiki (and hide ads)
 @namespace      sheeptester.github.io
-@version        1.0.0
+@version        1.0.1
 @description    The new design is not terrible at least
 @author         SheepTester
 ==/UserStyle== */
@@ -13,10 +13,15 @@
   .global-navigation,
   /* Blue thing on bottom right */
   #WikiaBar,
+  /* Fan feed at bottom of page (not really necessary but whatever) */
+  .mcf-wrapper,
+  /* Footer (also not necessary but meh) */
+  .wds-global-footer,
   /* Ads */
   #hivi_leaderboard,
-  #ds_cpp {
-    display: none;
+  #ds_cpp,
+  .gpt-ad {
+    display: none !important;
   }
   body {
     /* Remove margin that was made for ads */
