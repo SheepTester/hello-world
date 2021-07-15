@@ -12,8 +12,7 @@
 ;(async () => {
   'use strict'
 
-  // const HOST = 'https://sheeptester.github.io/hello-world/questionable-host'
-  const HOST = 'http://localhost:8080/hello-world/questionable-host'
+  const HOST = 'https://sheeptester.github.io/hello-world/questionable-host'
 
   const { upload } = await import(HOST + '/upload-download.bundle.js')
 
