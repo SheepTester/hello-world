@@ -14,6 +14,12 @@
     <script src="/sheep3.js" charset="utf-8"></script>
 
     <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .empty {
+        color: rgba(255, 255, 255, 0.786);
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <form class="main" id="uploader">
@@ -28,7 +34,17 @@
           <input type="checkbox" name="compressed" id="compressed" checked />
           Compress files before uploading?
         </label>
-        <input type="submit" value="Upload" />
+        <p><input type="submit" value="Upload" /></p>
+
+        <table id="hashes">
+          <tr class="table-heading">
+            <th>File name</th>
+            <th>File hash</th>
+          </tr>
+          <tr id="no-converted">
+            <td colspan="2" class="empty"><em>No converted files.</em></td>
+          </tr>
+        </table>
       </fieldset>
     </form>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js"></script>
@@ -42,32 +58,39 @@
       const progress = document.getElementById('progress')
       const submitForm = document.getElementById('uploader')
       const fieldset = document.getElementById('fieldset')
-      let blobCount
+      const results = document.getElementById('hashes')
+      let noConverted = document.getElementById('no-converted')
+      let options
+      let fileNames
       submitForm.addEventListener('submit', async e => {
         e.preventDefault()
-        const blobs = compressCheckbox.checked
-          ? await Promise.all(
-              Array.from(
-                files.files,
-                async file => new Blob([pako.deflate(await file.arrayBuffer())])
-              )
-            )
-          : [...files.files]
-        window.parent.postMessage({
-          type: 'upload',
-          blobs
-        }, '*')
-        blobCount = blobs.length
         fieldset.disabled = true
         progress.classList.remove('progress-done')
         progress.classList.remove('progress-error')
         progress.style.width = 0
+
+        fileNames = Array.from(files.files, file => file.name)
+        window.parent.postMessage(
+          {
+            type: 'upload',
+            blobs: compressCheckbox.checked
+              ? await Promise.all(
+                  Array.from(
+                    files.files,
+                    async file =>
+                      new Blob([pako.deflate(await file.arrayBuffer())])
+                  )
+                )
+              : Array.from(files.files, file => new Blob([file]))
+          },
+          '*'
+        )
       })
       window.addEventListener('message', ({ data }) => {
         switch (data.type) {
           case 'progress': {
             progress.style.width =
-              ((data.blobIndex + data.percent) / blobCount) * 100 + '%'
+              ((data.blobIndex + data.percent) / fileNames.length) * 100 + '%'
             break
           }
           case 'error': {
@@ -80,7 +103,35 @@
             fieldset.disabled = false
             progress.style.width = null
             progress.classList.add('progress-done')
-            console.log(data.hashes)
+            if (data.hashes.length > 0 && noConverted) {
+              noConverted.remove()
+              noConverted = null
+            }
+            data.hashes.forEach((hash, i) => {
+              const tr = Object.assign(document.createElement('tr'))
+              tr.appendChild(
+                Object.assign(document.createElement('td'), {
+                  textContent: fileNames[i]
+                })
+              )
+              const td = document.createElement('td')
+              td.appendChild(
+                Object.assign(document.createElement('a'), {
+                  className: 'link',
+                  textContent: hash,
+                  href:
+                    `./?` +
+                    new URLSearchParams({
+                      hash,
+                      name: fileNames[i],
+                      compressed: compressCheckbox.checked
+                    }),
+                  target: '_blank'
+                })
+              )
+              tr.appendChild(td)
+              results.appendChild(tr)
+            })
             break
           }
           default: {

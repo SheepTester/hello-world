@@ -85,6 +85,10 @@ input[type='checkbox']:active {
   border-color: rgba(255, 255, 255, 0.1581);
   background-color: rgba(255, 255, 255, 0.0698);
 }
+input[type='checkbox']:disabled {
+  cursor: default;
+  border-color: rgba(255, 255, 255, 0.1581);
+}
 input[type='checkbox']:checked {
   border: none;
   background-color: #60cdff;
@@ -100,6 +104,10 @@ input[type='checkbox']:checked:active {
   background-color: rgba(96, 205, 255, 0.8);
   background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.00195 8.49805C3.00195 8.36133 3.05078 8.24414 3.14844 8.14648C3.24609 8.04883 3.36328 8 3.5 8C3.63672 8 3.75391 8.04883 3.85156 8.14648L6.5 10.7949L12.1484 5.14648C12.2461 5.04883 12.3633 5 12.5 5C12.5703 5 12.6348 5.01367 12.6934 5.04102C12.7559 5.06445 12.8086 5.09961 12.8516 5.14648C12.8984 5.18945 12.9355 5.24219 12.9629 5.30469C12.9902 5.36328 13.0039 5.42773 13.0039 5.49805C13.0039 5.63477 12.9531 5.75391 12.8516 5.85547L6.85156 11.8555C6.75391 11.9531 6.63672 12.002 6.5 12.002C6.36328 12.002 6.24609 11.9531 6.14844 11.8555L3.14844 8.85547C3.05078 8.75781 3.00195 8.63867 3.00195 8.49805Z' fill='black' fill-opacity='0.5' /%3E%3C/svg%3E%0A");
 }
+input[type='checkbox']:checked:disabled {
+  background-color: rgba(255, 255, 255, 0.1581);
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.00195 8.49805C3.00195 8.36133 3.05078 8.24414 3.14844 8.14648C3.24609 8.04883 3.36328 8 3.5 8C3.63672 8 3.75391 8.04883 3.85156 8.14648L6.5 10.7949L12.1484 5.14648C12.2461 5.04883 12.3633 5 12.5 5C12.5703 5 12.6348 5.01367 12.6934 5.04102C12.7559 5.06445 12.8086 5.09961 12.8516 5.14648C12.8984 5.18945 12.9355 5.24219 12.9629 5.30469C12.9902 5.36328 13.0039 5.42773 13.0039 5.49805C13.0039 5.63477 12.9531 5.75391 12.8516 5.85547L6.85156 11.8555C6.75391 11.9531 6.63672 12.002 6.5 12.002C6.36328 12.002 6.24609 11.9531 6.14844 11.8555L3.14844 8.85547C3.05078 8.75781 3.00195 8.63867 3.00195 8.49805Z' fill='white' fill-opacity='0.5302' /%3E%3C/svg%3E%0A");
+}
 .checkbox-label input[type='checkbox']:focus {
   outline: none;
 }
@@ -108,7 +116,7 @@ input[type='checkbox']:checked:active {
   box-shadow: 0 0 0 2px white, inset 0 0 0 1px rgba(0, 0, 0, 0.7);
 }
 /* BUG: For some reason, the Download button (a link) turns white on
-      :visited (eg when opening the image in a new tab) */
+:visited (eg when opening the image in a new tab) */
 button,
 input[type='submit'],
 .button {
@@ -199,4 +207,53 @@ input[type='submit']:disabled,
 .progress-done {
   opacity: 0;
   transition: opacity 0.5s;
+}
+
+table {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  /* border: 1px solid rgba(0, 0, 0, 0.1); */
+  border-radius: 3px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.0512);
+  width: 100%;
+  border-collapse: collapse;
+}
+tr {
+  height: 48px;
+}
+tr:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.0837);
+}
+tr.table-heading {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.0512);
+  font-size: 20px;
+  line-height: 28px;
+}
+th,
+td {
+  padding: 0 44px;
+}
+th {
+  text-align: left;
+}
+
+.link {
+  color: #99ebff;
+  padding: 5px 12px;
+  border-radius: 3px;
+  text-decoration: none;
+  margin: 0 -12px;
+  display: inline-block;
+}
+.link:hover {
+  background-color: rgba(255, 255, 255, 0.0605);
+}
+.link:active {
+  color: #60cdff;
+  background-color: rgba(255, 255, 255, 0.0419);
+}
+.link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px white, inset 0 0 0 1px rgba(0, 0, 0, 0.7);
 }

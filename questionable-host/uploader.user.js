@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         File uploader
 // @namespace    https://sheeptester.github.io/
-// @version      0.1
+// @version      1.0.0
 // @description  Go to https://scratch.mit.edu/questionable-host to upload a file.
 // @author       SheepTester
 // @match        https://scratch.mit.edu/about/?questionable-host
@@ -29,6 +29,7 @@
   document.body.appendChild(iframe)
   document.body.scrollTo(0, 0)
   document.body.style.fontSize = 0
+  document.title = 'File uploader'
   iframe.focus()
   window.addEventListener('message', ({ data }) => {
     switch (data.type) {

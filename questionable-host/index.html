@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/sheep3.css" />
     <script src="/sheep3.js" charset="utf-8"></script>
 
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css" />
     <style>
       .generate-link,
       .loading,
@@ -60,9 +60,14 @@
       }
       .actual-preview iframe {
         border: none;
+        background-color: white;
       }
       .actual-preview img {
         object-fit: contain;
+      }
+      .has-audio {
+        justify-content: center;
+        align-items: center;
       }
       .loading,
       .no-preview-available,
@@ -182,7 +187,10 @@
       const options = {
         hash: params.get('hash'),
         name: params.get('name'),
-        compressed: params.get('compressed') || false
+        compressed:
+          params.get('compressed') !== 'false'
+            ? params.get('compressed')
+            : false
       }
       const elems = {
         name: document.getElementById('file-name'),
@@ -249,7 +257,8 @@
           } else if (isType.audio) {
             const audio = document.createElement('audio')
             audio.src = url
-            video.controls = true
+            audio.controls = true
+            elems.preview.classList.add('has-audio')
             elems.preview.appendChild(audio)
           } else if (isType.image) {
             const image = document.createElement('img')
