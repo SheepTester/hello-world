@@ -238,19 +238,28 @@ th {
   text-align: left;
 }
 
-.link {
+.link,
+.link-box {
   color: #99ebff;
-  padding: 5px 12px;
-  border-radius: 3px;
   text-decoration: none;
+  border-radius: 3px;
+}
+.link-box {
+  padding: 5px 12px;
   margin: 0 -12px;
   display: inline-block;
 }
 .link:hover {
+  text-decoration: underline;
+}
+.link-box:hover {
   background-color: rgba(255, 255, 255, 0.0605);
 }
-.link:active {
+.link:active,
+.link-box:active {
   color: #60cdff;
+}
+.link-box:active {
   background-color: rgba(255, 255, 255, 0.0419);
 }
 .link:focus-visible {
