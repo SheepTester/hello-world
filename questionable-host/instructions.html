@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How to upload files</title>
+    <meta
+      name="description"
+      content="Instructions for installing the file uploading script."
+    />
+
+    <link rel="stylesheet" type="text/css" href="/sheep3.css" />
+    <script src="/sheep3.js" charset="utf-8"></script>
+
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="main">
+      <div class="container">
+        <h1>Upload a file</h1>
+        <label class="text-label">
+          File
+          <input type="file" multiple required autofocus />
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="compressed" checked />
+          Compress files before uploading?
+        </label>
+        <input type="submit" value="Upload" />
+      </div>
+    </div>
+  </body>
+</html>

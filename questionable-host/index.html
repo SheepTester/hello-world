@@ -13,194 +13,36 @@
     <link rel="stylesheet" type="text/css" href="/sheep3.css" />
     <script src="/sheep3.js" charset="utf-8"></script>
 
+    <link rel="stylesheet" href="./styles.css">
     <style>
-      html,
-      body,
-      .section {
-        height: 100%;
-      }
-      body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-          'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
-          'Segoe UI Emoji', 'Segoe UI Symbol';
-        background-color: #202020;
-        color: white;
-        font-size: 14px;
-        line-height: 20px;
-      }
-      input {
-        -webkit-appearance: none;
-        border: none;
-        background: none;
-        color: inherit;
-        font: inherit;
-      }
-      .section {
+      .generate-link,
+      .loading,
+      .preview {
         display: none;
       }
+      .section-generate-link .generate-link {
+        display: block;
+      }
+      .loading,
+      .preview {
+        height: 100%;
+      }
       .section-loading .loading,
-      .section-generate-link .generate-link,
       .section-preview .preview {
         display: flex;
+        flex-direction: column;
       }
       .loading {
-        flex-direction: column;
         justify-content: center;
         align-items: center;
         text-align: center;
-      }
-      .download-bar {
-        background-color: #333333;
-      }
-      .container {
-        background-color: rgba(58, 58, 58, 0.3);
-        border-radius: 8px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.13);
-        margin: 20px auto;
-        width: 100%;
-        max-width: 700px;
-        padding: 0 56px;
-        box-sizing: border-box;
-      }
-      @media (max-width: 700px) {
-        .container {
-          margin: 0;
-          border: none;
-          border-radius: 0;
-        }
-      }
-      h1 {
-        font-weight: 600;
-        font-size: 40px;
-        line-height: 52px;
-        margin-top: 44px;
-        margin-bottom: 32px;
-      }
-      p,
-      label {
-        display: block;
-        margin: 32px 0;
-      }
-      input[type='text'] {
-        border-radius: 4px;
-        background-color: rgba(255, 255, 255, 0.0605);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-bottom-color: rgba(255, 255, 255, 0.5442);
-        height: 32px;
-        box-sizing: border-box;
-        padding: 0 12px;
-        padding-bottom: 1px;
-      }
-      input[type='text']:focus {
-        outline: none;
-        border-color: rgba(255, 255, 255, 0.0698);
-        padding-bottom: 0;
-        border-bottom: 2px solid #60cdff;
-      }
-      label input[type='text'] {
-        display: block;
-        margin-top: 8px;
-        width: 100%;
-      }
-      ::placeholder,
-      ::-webkit-input-placeholder {
-        color: rgba(255, 255, 255, 0.786);
-      }
-      .checkbox-label {
-        display: flex;
-        align-items: center;
-      }
-      input[type='checkbox'] {
-        width: 20px;
-        height: 20px;
-        box-sizing: border-box;
-        border: 1px solid rgba(255, 255, 255, 0.5442);
-        border-radius: 3px;
-        margin: 4px;
-        margin-right: 8px;
-        cursor: pointer;
-      }
-      input[type='checkbox']:hover {
-        background-color: rgba(255, 255, 255, 0.0419);
-      }
-      input[type='checkbox']:active {
-        border-color: rgba(255, 255, 255, 0.1581);
-        background-color: rgba(255, 255, 255, 0.0698);
-      }
-      input[type='checkbox']:checked {
-        border: none;
-        background-color: #60cdff;
-        background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.00195 8.49805C3.00195 8.36133 3.05078 8.24414 3.14844 8.14648C3.24609 8.04883 3.36328 8 3.5 8C3.63672 8 3.75391 8.04883 3.85156 8.14648L6.5 10.7949L12.1484 5.14648C12.2461 5.04883 12.3633 5 12.5 5C12.5703 5 12.6348 5.01367 12.6934 5.04102C12.7559 5.06445 12.8086 5.09961 12.8516 5.14648C12.8984 5.18945 12.9355 5.24219 12.9629 5.30469C12.9902 5.36328 13.0039 5.42773 13.0039 5.49805C13.0039 5.63477 12.9531 5.75391 12.8516 5.85547L6.85156 11.8555C6.75391 11.9531 6.63672 12.002 6.5 12.002C6.36328 12.002 6.24609 11.9531 6.14844 11.8555L3.14844 8.85547C3.05078 8.75781 3.00195 8.63867 3.00195 8.49805Z' fill='black' /%3E%3C/svg%3E%0A");
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: 16px;
-      }
-      input[type='checkbox']:checked:hover {
-        background-color: rgba(96, 205, 255, 0.9);
-      }
-      input[type='checkbox']:checked:active {
-        background-color: rgba(96, 205, 255, 0.8);
-        background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.00195 8.49805C3.00195 8.36133 3.05078 8.24414 3.14844 8.14648C3.24609 8.04883 3.36328 8 3.5 8C3.63672 8 3.75391 8.04883 3.85156 8.14648L6.5 10.7949L12.1484 5.14648C12.2461 5.04883 12.3633 5 12.5 5C12.5703 5 12.6348 5.01367 12.6934 5.04102C12.7559 5.06445 12.8086 5.09961 12.8516 5.14648C12.8984 5.18945 12.9355 5.24219 12.9629 5.30469C12.9902 5.36328 13.0039 5.42773 13.0039 5.49805C13.0039 5.63477 12.9531 5.75391 12.8516 5.85547L6.85156 11.8555C6.75391 11.9531 6.63672 12.002 6.5 12.002C6.36328 12.002 6.24609 11.9531 6.14844 11.8555L3.14844 8.85547C3.05078 8.75781 3.00195 8.63867 3.00195 8.49805Z' fill='black' fill-opacity='0.5' /%3E%3C/svg%3E%0A");
-      }
-      .checkbox-label input[type='checkbox']:focus {
-        outline: none;
-      }
-      .checkbox-label:focus-within {
-        border-radius: 7px;
-        box-shadow: 0 0 0 2px white, inset 0 0 0 1px rgba(0, 0, 0, 0.7);
-      }
-      /* BUG: For some reason, the Download button (a link) turns white on
-      :visited (eg when opening the image in a new tab) */
-      button,
-      input[type='submit'],
-      .button {
-        display: inline-block;
-        color: black;
-        background-color: #60cdff;
-        border-radius: 4px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-bottom-color: rgba(0, 0, 0, 0.14);
-        cursor: pointer;
-        text-align: center;
-        padding: 6px 12px;
-        min-width: 120px;
-        text-decoration: none;
-      }
-      button:hover,
-      input[type='submit']:hover,
-      .button:hover {
-        background-color: rgba(96, 205, 255, 0.9);
-      }
-      button:active,
-      input[type='submit']:active,
-      .button:active {
-        background-color: rgba(96, 205, 255, 0.8);
-        color: rgba(0, 0, 0, 0.5);
-      }
-      button:focus-visible,
-      input[type='submit']:focus-visible,
-      .button:focus-visible {
-        outline: none;
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7), 0 0 0 3px white;
-      }
-      button:disabled,
-      input[type='submit']:disabled,
-      .button:not(:link) {
-        border-color: transparent;
-        background-color: rgba(255, 255, 255, 0.1581);
-        color: rgba(255, 255, 255, 0.5302);
-        cursor: default;
-      }
-      .preview {
-        flex-direction: column;
       }
       .download-bar {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         padding: 12px 32px;
+        background-color: #333333;
       }
       .flex {
         flex: auto;
@@ -221,11 +63,6 @@
       }
       .actual-preview img {
         object-fit: contain;
-      }
-      .title {
-        font-size: 28px;
-        line-height: 36px;
-        margin: 12px 0;
       }
       .loading,
       .no-preview-available,
@@ -271,11 +108,11 @@
         <p>(By the way, you'll need to enable JavaScript.)</p>
       </noscript>
     </div>
-    <form class="section generate-link" method="GET">
+    <form class="main section generate-link" method="GET">
       <div class="container">
-        <h1>Generate a link</h1>
+        <h1 class="display">Generate a link</h1>
         <p>*Required</p>
-        <label>
+        <label class="text-label">
           File MD5 hash*
           <input
             type="text"
@@ -285,7 +122,7 @@
             autofocus
           />
         </label>
-        <label>
+        <label class="text-label">
           File name, with file extension
           <input type="text" name="name" placeholder="nichodon-mixtape.mp3" />
         </label>
@@ -389,7 +226,13 @@
           elems.progress.style.width = progress * 100 + '%'
           elems.percent.textContent = (progress * 100).toFixed(1)
         }
-        const handleDone = file => {
+        const handleDone = async file => {
+          if (options.compressed) {
+            file = new Blob(
+              [pako.inflate(new Uint8Array(await file.arrayBuffer()))],
+              { type: file.type }
+            )
+          }
           const url = URL.createObjectURL(file)
           elems.downloadLink.href = url
           elems.preview.classList.remove('show-loading')
