@@ -16,7 +16,7 @@ class HttpError extends Error {
 }
 
 /** Maximum size of an asset on Scratch in bytes = 10 MB */
-const MAX_SIZE = 10 * 1000 * 1000
+const MAX_SIZE = 10 * 1000 * 1000 - 1
 
 /**
  * The size of the header, in bytes, at the start of each chunk.
@@ -66,12 +66,13 @@ export async function upload (
   for (let i = totalChunks - 1; i >= 0; i--) {
     if (onProgress) onProgress((totalChunks - 1 - i) / totalChunks)
 
+    const byteIndex = i * CHUNK_SIZE
+
     // A u64 containing the number of bytes starting from this chunk
     // A DataView is required to make it reliably big-endian
     const bytesLeft = new DataView(new ArrayBuffer(8))
-    bytesLeft.setBigUint64(0, BigInt(file.size - i))
+    bytesLeft.setBigUint64(0, BigInt(file.size - byteIndex))
 
-    const byteIndex = i * CHUNK_SIZE
     // Chunk data
     const blob = new Blob([
       // md5 hash of the next chunk
