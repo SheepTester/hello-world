@@ -14,11 +14,11 @@
       ::before {
         content: counter(fizzbuzz);
       }
-      :nth-child(3n)::before {
-        content: 'Fizz';
-      }
       :nth-child(5n)::before {
         content: '';
+      }
+      :nth-child(3n)::before {
+        content: 'Fizz';
       }
       :nth-child(5n)::after {
         content: 'Buzz';
