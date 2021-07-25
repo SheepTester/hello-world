@@ -6,6 +6,7 @@ import { upload } from '../upload-download.ts'
 const sessionId = (await Deno.readTextFile('../.scratchsessionsid')).trim()
 
 const videos = (await Deno.readTextFile('./videos.txt'))
+  .trim()
   .split(/\r?\n/)
   .map(line => line.split('\t'))
 
