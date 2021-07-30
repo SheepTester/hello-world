@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+  <head>
+    <title>lol a website</title>
+    <meta name="description" content="Imagine using &quot;standard&quot; HTML tags">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+      }
+      navbar {
+        display: block;
+      }
+      wordmark {
+        display: inline-block;
+        padding: 20px;
+        font-size: 1.2em;
+      }
+      navbar-links {
+        display: inline-block;
+        float: right;
+      }
+      navbar-links a {
+        padding: 20px;
+        text-decoration: none;
+      }
+      navbar-links a:hover {
+        text-decoration: underline;
+      }
+      container {
+        display: block;
+        max-width: 1000px;
+        margin: 20px auto;
+        width: 100%;
+      }
+      heading {
+        display: block;
+        font-weight: bold;
+        font-size: 1.5em;
+      }
+      paragraph {
+        display: block;
+        margin: 20px 0;
+      }
+      list {
+        display: block;
+      }
+      list-item {
+        display: block;
+      }
+      list-item::before {
+        content: '- ';
+      }
+      footer {
+        background: #333;
+        color: white;
+        padding: 20px;
+      }
+    </style>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $('#add-item').click(function () {
+          $('list').append($('<list-item>Hi! Today is ' + new Date().toString() + '!</list-item>'))
+        })
+      })
+    </script>
+  </head>
+  <body>
+    <navbar>
+      <wordmark>Brand name</wordmark>
+      <navbar-links>
+        <a href="#">lol</a>
+        <a href="#">lol</a>
+        <a href="#">lol</a>
+      </navbar-links>
+    </navbar>
+    <container>
+      <heading>Hi, this is a website</heading>
+      <paragraph>lol</paragraph>
+      <list>
+        <list-item>Hi!</list-item>
+      </list>
+      <button id="add-item">Add an item.</button>
+    </container>
+    <footer>
+      &copy; 2021 Website maker
+    </footer>
+  </body>
+</html>
