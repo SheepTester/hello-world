@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>If your device goes offline or online, I will make a noise.</title>
+    <meta name="description" content="This is because my broken Chromebook likes to go offline randomly a lot, so this serves as a nice PING.">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+    html,
+    body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      display: flex;
+      color: white;
+      background: black;
+      font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';
+    }
+    .wow {
+      display: none;
+      flex: auto;
+      padding: 20px;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .online { background: #4CAF50; }
+    .offline { background: #F44336; }
+      .need-interaction .ni,
+      .online .n,
+      .offline .f {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wow ni">Please click somewhere on this page so I can play audio! 🙏</div>
+    <div class="wow n">Online</div>
+    <div class="wow f">Offline :(</div>
+    <script>
+      const base = window.location.protocol === 'file:' ? 'https://sheeptester.github.io/hello-world/' : window.location.href
+      
+      const offline = new Audio(new URL('./test/a/s/s/e/t/s/offline.mp3', base))
+      const online = new Audio(new URL('./test/a/s/s/e/t/s/online.mp3', base))
+      
+      Promise.all([offline, online].map(audio => new Promise((resolve, reject) => {
+        audio.oncanplaythrough = resolve
+        audio.onerror = reject
+      }))).then(async () => {
+        offline.volume = 0
+        const canPlay = await offline.play().then(() => true).catch(() => false)
+        if (!canPlay) {
+          document.body.classList.add('need-interaction')
+          
+          await new Promise(resolve => {
+            const handleClick = () => {
+              offline.play().then(resolve)
+            }
+            document.onclick = handleClick
+          })
+          
+          document.body.classList.remove('need-interaction')
+          document.onclick = null
+        }
+        offline.pause()
+        offline.volume = 1
+        
+        function markOffline () {
+          document.body.classList.add('offline')
+          document.body.classList.remove('online')
+          document.title = '🔴 Offline :( 🔴'
+        }
+        function markOnline () {
+          document.body.classList.remove('offline')
+          document.body.classList.add('online')
+          document.title = '🟢 Online! 🟢'
+        }
+        function delay (ms) {
+          return new Promise(resolve => setTimeout(resolve, ms))
+        }
+        window.addEventListener('offline',  async () => {
+          markOffline()
+          offline.currentTime = 0
+          offline.play()
+          await delay(200)
+          offline.currentTime = 0
+        })
+        window.addEventListener('online',  async () => {
+          markOnline()
+          online.currentTime = 0
+          online.play()
+          await delay(200)
+          online.currentTime = 0
+        })
+        if (navigator.onLine) {
+          markOnline()
+        } else {
+          markOffline()
+        }
+        
+      })
+    </script>
+  </body>
+</html>
