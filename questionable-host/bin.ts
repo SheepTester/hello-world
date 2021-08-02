@@ -1,11 +1,29 @@
 // deno run ./bin.ts
 
+// @deno-types="https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/types/pako/index.d.ts"
+import {
+  deflate,
+  inflate
+} from 'https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.esm.mjs'
 import { parse } from 'https://deno.land/std@0.101.0/flags/mod.ts'
 import { iter, writeAll } from 'https://deno.land/std@0.101.0/io/util.ts'
+import { basename } from 'https://deno.land/std@0.102.0/path/mod.ts'
 import { handleProgress } from './handle-progress.ts'
 import { upload, download, downloadOld } from './upload-download.ts'
 
 const [mode, ...args] = Deno.args
+
+function mergeBytes (arrays: Uint8Array[]): Uint8Array {
+  const result = new Uint8Array(
+    arrays.reduce((acc, curr) => acc + curr.length, 0)
+  )
+  let i = 0
+  for (const array of arrays) {
+    result.set(array, i)
+    i += array.length
+  }
+  return result
+}
 
 if (!mode || mode.startsWith('-')) {
   console.log(
@@ -31,14 +49,19 @@ if (!mode || mode.startsWith('-')) {
     help,
     'session-id': sessionId,
     'session-id-path': sessionIdPath,
+    compress,
+    'output-download-url': outputDownloadUrl,
     _: [filePath]
   } = parse(args, {
     string: ['session-id', 'session-id-path'],
-    boolean: ['help'],
+    boolean: ['compress', 'output-download-url', 'help'],
     alias: {
-      h: 'help',
       s: 'session-id',
-      S: 'session-id-path'
+      S: 'session-id-path',
+      c: 'compress',
+      url: 'output-download-url',
+      U: 'output-download-url',
+      h: 'help'
     }
   })
 
@@ -78,6 +101,12 @@ if (!mode || mode.startsWith('-')) {
         '    -S, --session-id-path=<PATH>',
         '        Provide a path to a file containing the `scratchsessionsid` cookie.',
         '',
+        '    -c, --compress',
+        '        Whether to compress the file using the DEFLATE algorithm.',
+        '',
+        '    -U, --url, --output-download-url',
+        '        Whether to output a link to a download URL instead of just the hash.',
+        '',
         'ENVIRONMENT VARIABLES:',
         '    SCRATCHSESSIONSID',
         "        The Scratch account's `scratchsessionsid` cookie. (required)"
@@ -114,17 +143,34 @@ if (!mode || mode.startsWith('-')) {
         ].join('\n')
       )
     }
-    console.log(
-      await upload(new Blob(chunks), scratchSessionsId, handleProgress)
-    )
+    if (compress) {
+      console.log('Compressing...')
+    }
+    const blob = compress
+      ? new Blob([deflate(mergeBytes(chunks))])
+      : new Blob(chunks)
+    const hash = await upload(blob, scratchSessionsId, handleProgress)
+    if (outputDownloadUrl) {
+      console.log(
+        `https://sheeptester.github.io/hello-world/questionable-host/?${new URLSearchParams({
+          hash,
+          name: filePath !== undefined ? basename(String(filePath)) : 'file',
+          compressed: compress
+        })}`
+      )
+    } else {
+      console.log(hash)
+    }
   }
 } else if (mode === 'download') {
   const {
     help,
+    compressed,
     _: [hash, filePath]
   } = parse(args, {
-    boolean: ['help'],
+    boolean: ['compressed', 'help'],
     alias: {
+      c: 'compressed',
       h: 'help'
     }
   })
@@ -152,7 +198,11 @@ if (!mode || mode.startsWith('-')) {
         '',
         'OPTIONS:',
         '    -h, --help',
-        '        Prints help information'
+        '        Prints help information',
+        '',
+        '    -c, --compressed',
+        '        Whether the file was compressed. If this argument is specified, then the',
+        '        file will be decompressed per the DEFLATE algorithm.'
       ].join('\n')
     )
   } else {
@@ -173,7 +223,10 @@ if (!mode || mode.startsWith('-')) {
     } else {
       file = await download(strHash, onProgress)
     }
-    const bytes = new Uint8Array(await file.arrayBuffer())
+    let bytes = new Uint8Array(await file.arrayBuffer())
+    if (compressed) {
+      bytes = inflate(bytes)
+    }
     if (filePath === undefined) {
       writeAll(Deno.stdout, bytes)
     } else {

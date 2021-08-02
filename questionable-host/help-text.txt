@@ -48,6 +48,12 @@ OPTIONS:
     -S, --session-id-path=<PATH>
         Provide a path to a file containing the `scratchsessionsid` cookie.
 
+    -c, --compress
+        Whether to compress the file using the DEFLATE algorithm.
+
+    -U, --url, --output-download-url
+        Whether to output a link to a download URL instead of just the hash.
+
 ENVIRONMENT VARIABLES:
     SCRATCHSESSIONSID
         The Scratch account's `scratchsessionsid` cookie. (required)
@@ -89,6 +95,10 @@ If PATH is omitted, then the downloaded file will be output to stdout.
 OPTIONS:
     -h, --help
         Prints help information
+
+    -c, --compressed
+        Whether the file was compressed. If this argument is specified, then the
+        file will be decompressed per the DEFLATE algorithm.
 
 ---
 
