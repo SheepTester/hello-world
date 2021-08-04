@@ -8,7 +8,7 @@ const contentType = 'application/x-www-form-urlencoded;charset=UTF-8'
 // Guessing what these values mean
 const requestType = 'RdqMrd'
 const key = AF_initDataChunkQueue.find(chunk => chunk.key === 'ds:0').data[3]
-const at = 'ACHfmao4TKfPTvnYrL2OOfrwJNGp:1612478362900'
+const at = WIZ_global_data.SNlM0e
 
 function getFReq (nextHandle, max = 5000) {
   return new URLSearchParams([
