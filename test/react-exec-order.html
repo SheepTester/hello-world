@@ -4,6 +4,9 @@
 <script>
   function App () {
     console.log('App')
+    React.useEffect(() => {
+      console.log('useEffect')
+    })
     return React.createElement('p', null, 'hi')
   }
   
