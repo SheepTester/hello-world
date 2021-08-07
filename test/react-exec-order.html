@@ -1,0 +1,13 @@
+<script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<div id="root"></div>
+<script>
+  function App () {
+    console.log('App')
+    return React.createElement('p', null, 'hi')
+  }
+  
+  ReactDOM.render(React.createElement(App), document.getElementById('root'))
+  
+  console.log(document.getElementById('root').outerHTML)
+</script>
