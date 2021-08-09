@@ -1,10 +1,29 @@
 <title>Wow</title>
 <h1 id="title">Wow</title>
+<p>Why not <a href="/hello-world/lol" id="link">check out "Lol"</a>?</p>
 
+<h2>What is this for?</h2>
+<p>This is to see if <a href="https://github.com/rafgraph/spa-github-pages">spa-github-pages</a> will work with SEO.</p>
+<div id="results">
+  <p>This page can be indexed normally on Google because it's just a normal HTML page. See "Lol" for some more interesting results.</p>
+</div>
 <script>
   if (window.location.search === '?lol') {
     window.history.replaceState({}, '', '/hello-world/lol')
     document.title = 'Lol'
     title.textContent = 'Lol'
+    link.href = '/hello-world/test/wow.html'
+    link.textContent = 'check out "Wow"'
+    results.innerHTML = `
+    <p>The URL for this page (<code>https://sheeptester.github.io/hello-world/lol</code>) <strong>cannot</strong> be indexed by
+    Google because GitHub Pages sends a status code of 404.</p>
+    <img src="https://cdn.discordapp.com/attachments/750218629286461593/874427274638790666/unknown.png" height="300">
+    <p>However, the URL that the 404 page redirects the user to (<code>https://sheeptester.github.io/hello-world/test/wow.html?lol</code>)
+    <strong>does</strong> work!</p>
+    <img src="https://cdn.discordapp.com/attachments/750218629286461593/874427515962269706/unknown.png" height="300">
+    <p>Since GoogleBot supports client-side rendered apps, it even renders the web page correctly. (The below screenshot is with an old version of this page
+  with less text.</p>
+  <img src="https://cdn.discordapp.com/attachments/750218629286461593/874427647826984961/unknown.png" height="300">
+    `
   }
 </script>
