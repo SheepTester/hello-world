@@ -2,7 +2,7 @@
 <h1 id="title">Wow</title>
 
 <script>
-  if (window.location.query === '?lol') {
+  if (window.location.search === '?lol') {
     window.history.replaceState({}, '', '/hello-world/lol')
     document.title = 'Lol'
     title.textContent = 'Lol'
