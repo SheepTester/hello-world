@@ -1,3 +1,6 @@
+// https://act.ucsd.edu/webreg2/main?p1=FA21&p2=UN#tabs-1
+
+// change this list to your own courses
 IDEAL = 'ece 15, cse 11, math 18, math 20c, cat 1'
   .split(/\s*,\s*/)
   .map(normalise)
@@ -69,10 +72,12 @@ for (const obj of found) {
       days: [...DAY_CODE].map((d) => days[d]).join(', '),
       // todo: days
     }
-    // ignore finals
+    // ignore finals and midterms and labs
     if (FK_SPM_SPCL_MTG_CD === 'FI') continue
+    if (FK_SPM_SPCL_MTG_CD === 'MI') continue
+    if (FK_CDI_INSTR_TYPE === 'LA') continue
     // idk
-    //if (FK_SPM_SPCL_MTG_CD !== '  ') throw 'special meeting is not empty'
+    if (FK_SPM_SPCL_MTG_CD !== '  ') throw 'special meeting is not empty'
     if (number === '00') {
       if (FK_CDI_INSTR_TYPE !== 'LE') throw '00 is not LE'
       sections[letter].teacher = PERSON_FULL_NAME.split(';')[0]
