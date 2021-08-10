@@ -101,52 +101,46 @@ ff = ({
 }) => {
   entries = Object.entries(processed).sort((a, b) => a[0].localeCompare(b[0]))
   return entries
-    .map(([letter, { teacher, lecture, discussions }], i) =>
-      discussions
-        .sort(
-          (a, b) =>
-            a.dayCode.localeCompare(b.dayCode) ||
-            a.start.localeCompare(b.start) ||
-            a.loc.localeCompare(b.loc)
-        )
-        .map(
-          ({ start, end, days, loc, left, number }, j) =>
-            `<tr>${
-              // course name
-              i === 0 && j === 0
-                ? `<td rowspan="${totDiscussions}" style="border-top: 1px solid black; padding: 0 10px;"><strong>${SUBJ_CODE.trim()} ${CRSE_CODE.trim()}: ${CRSE_TITLE}</strong>${
-                    prereqs.length
-                      ? `<p>Prerequisites:</p><ul>${prereqs
-                          .map(
-                            (req) =>
-                              `<li>${
-                                req.TYPE === 'TEST'
-                                  ? `(test) ${req.TEST_TITLE}`
-                                  : req.TYPE === 'COURSE'
-                                  ? `(course) ${req.CRSE_TITLE}`
-                                  : `(${req.TYPE} ???)`
-                              }</li>`
-                          )
-                          .join('')}</ul>`
-                      : '<p><em>No prerequisites</em></p>'
-                  }</td>`
-                : ''
-            }${
-              // lecture name
-              j === 0
-                ? `<td rowspan="${discussions.length}" style="${
-                    i === 0 ? 'border-top: 1px solid black;' : ''
-                  }padding: 0 10px;"><strong>${letter}</strong><br>${
-                    lecture.days
-                  }<br>${lecture.start}&ndash;${lecture.end} @ ${
-                    lecture.loc
-                  }</td>`
-                : ''
-            }<td style="${
-              i === 0 && j === 0 ? 'border-top: 1px solid black;' : ''
-            }padding: 0 10px;"><strong>${number}</strong> ${days} ${start}&ndash;${end} @ ${loc} <span style="font-size: smaller;">(${left} left)</span></td>`
-        )
-        .join('')
+    .map(
+      ([letter, { teacher, lecture, discussions }], i) =>
+        `<tr>${
+          // course name
+          i === 0
+            ? `<td rowspan="${
+                entries.length
+              }" style="border-top: 1px solid black; padding: 0 10px;"><strong>${SUBJ_CODE.trim()} ${CRSE_CODE.trim()}: ${CRSE_TITLE}</strong>${
+                prereqs.length
+                  ? `<p>Prerequisites:</p><ul>${prereqs
+                      .map(
+                        (req) =>
+                          `<li>${
+                            req.TYPE === 'TEST'
+                              ? `(test) ${req.TEST_TITLE}`
+                              : req.TYPE === 'COURSE'
+                              ? `(course) ${req.CRSE_TITLE}`
+                              : `(${req.TYPE} ???)`
+                          }</li>`
+                      )
+                      .join('')}</ul>`
+                  : '<p><em>No prerequisites</em></p>'
+              }</td>`
+            : ''
+        }<td style="border-top: 1px solid black;padding: 0 10px;"><strong>${letter}</strong><br>${
+          lecture.days
+        }<br>${lecture.start}&ndash;${lecture.end} @ ${
+          lecture.loc
+        }</td><td style="border-top: 1px solid black; padding: 0 10px;">${discussions
+          .sort(
+            (a, b) =>
+              a.dayCode.localeCompare(b.dayCode) ||
+              a.start.localeCompare(b.start) ||
+              a.loc.localeCompare(b.loc)
+          )
+          .map(
+            ({ start, end, days, loc, left, number }, j) =>
+              `<strong>${number}</strong> ${days} ${start}&ndash;${end} @ ${loc} <span style="font-size: smaller;">(${left} left)</span>`
+          )
+          .join('<br>')}</td></tr>`
     )
     .join('')
 }
