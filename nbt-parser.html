@@ -3,11 +3,47 @@
   <head>
     <title>nbt parser</title>
     <meta name="description" content="parse nbt lol"/>
+    <style>
+      :root {
+        scroll-behavior: smooth;
+      }
+      .result {
+        font-family: 'Courier New', Courier, monospace;
+        padding: 20px;
+        border-radius: 5px;
+        border: 1px solid gray;
+        background-color: rgb(240, 240, 240);
+        white-space: pre-wrap;
+        margin-top: 8px;
+      }
+      .item > .list:not(.list-empty),
+      .item > .compound:not(.compound-empty) {
+        padding-left: calc(2ch - 1px);
+        border-left: 1px solid lightgray;
+      }
+      .name {
+        color: #7D1F7C;
+        font-weight: bold;
+      }
+      .string {
+        color: #B72619;
+      }
+      .number {
+        color: #1A1A9F;
+      }
+      .compound {
+        position: relative;
+      }
+      .list-item:not(:last-child) {
+        margin-bottom: 1em;
+      }
+    </style>
   </head>
   <body>
     <p>thnaks to <a href="https://minecraft.fandom.com/wiki/NBT_format#NBT_file">wiki</a></p>
-    <p><label>select FILE <input type="file" id="file" /></label></p>
-    <p>(open console to see th eresult)</p>
+    <p><label>select FILE <input type="file" id="file" accept=".dat,.dat_old,.nbt" /></label></p>
+    <script src="https://cdn.jsdelivr.net/npm/pako@2.0.4/dist/pako.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
     const decoder = new TextDecoder()
     // TODO: It's probably better to have an impure class that CONSUMES the values and automatically moves
@@ -109,11 +145,52 @@
           }
         }
       }
+
+      function displayResult (value) {
+        if (typeof value === 'number' || typeof value === 'bigint') {
+          return $('<span class="number">').text(String(value))
+        } else if (typeof value === 'string') {
+          return $('<span class="string">').text(JSON.stringify(value))
+        } else if (Array.isArray(value)) {
+          if (value.length === 0) {
+            return $('<span class="list list-empty">[]</div>')
+          }
+          const inline = typeof value[0] !== 'object'
+          const elem = $('<div class="list">')
+          return elem.append(value.map((item, i) => {
+            const itemElem = inline
+              ? $('<span class="item list-item-inline">')
+              : $('<div class="item list-item">')
+            return itemElem.append(inline && i > 0 ? ', ' : '', displayResult(item))
+          }))
+        } else {
+          const entries = Object.entries(value)
+          if (entries.length === 0) {
+            return $('<span class="compound compound-empty">').append('{}')
+          }
+          const elem = $('<div class="compound">')
+          for (const [name, item] of entries) {
+            elem.append($('<div class="item compound-item">').append(
+              $('<span class="name">').text(name),
+              ' ',
+              displayResult(item)
+            ))
+          }
+          return elem
+        }
+      }
       
       file.onchange = async () => {
         if (file.files[0]) {
-          const buffer = await file.files[0].arrayBuffer()
-          console.log(nbtToJs(new DataView(buffer)))
+          const dataView = new DataView(await file.files[0].arrayBuffer())
+          const result = dataView.getUint16(0) === 0x1f8b
+            ? // 1f 8b is the magic header for gzip
+              nbtToJs(new DataView(pako.inflate(dataView.buffer).buffer))
+            : nbtToJs(dataView)
+          console.log(result.value)
+          const [elem] = displayResult(result.value).addClass('result')
+          $(document.body).append(elem)
+          elem.scrollIntoViewIfNeeded(false)
         }
       }
     </script>
