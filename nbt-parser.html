@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>nbt parser</title>
+    <meta name="description" content="parse nbt lol"/>
+  </head>
+  <body>
+    <p>thnaks to <a href="https://minecraft.fandom.com/wiki/NBT_format#NBT_file">wiki</a></p>
+    <p><label>select FILE <input type="file" id="file" /></label></p>
+    <p>(open console to see th eresult)</p>
+    <script>
+    const decoder = new TextDecoder()
+    // TODO: It's probably better to have an impure class that CONSUMES the values and automatically moves
+    // its cursor up every time it's read from (there could also be peek methods to avoid that)
+      function nbtToJs (dataView, { position = 0, tagId = null, getName = true, ...options} = {}) {
+        if (Number.isNaN(position)) throw new Error(`Position is NaN`)
+        // NOTE: Java likes signed integers /shrug
+        const {} = options
+        // tagId may be given by a list type
+        if (tagId === null) {
+          tagId = dataView.getInt8(position++)
+        }
+        let name
+        if (tagId !== 0 && getName) {
+          const length = dataView.getUint16(position)
+          position += 2
+          name = decoder.decode(dataView.buffer.slice(position, position += length))
+        }
+        switch (tagId) {
+          case 0: {
+            // end
+            return { position }
+          }
+          case 1: {
+            // byte
+            return { name, value: dataView.getInt8(position++), position }
+          }
+          case 2: {
+            // short
+            return { name, value: dataView.getInt16(position), position: position + 2 }
+          }
+          case 3: {
+            // int
+            return { name, value: dataView.getInt32(position), position: position + 4 }
+          }
+          case 4: {
+            // long
+            return { name, value: dataView.getBigInt64(position), position: position + 8 }
+          }
+          case 5: {
+            // float
+            return { name, value: dataView.getFloat32(position), position: position + 4 }
+          }
+          case 6: {
+            // double
+            return { name, value: dataView.getFloat64(position), position: position + 8 }
+          }
+          case 7: {
+            // byte array
+            const size = dataView.getInt32(position)
+            position += 4
+            return { name, value: new Int8Array(dataView.buffer.slice(position, position + size)), position: position + size }
+          }
+          case 8: {
+            // string
+            const length = dataView.getUint16(position)
+            position += 2
+            return { name, value: decoder.decode(dataView.buffer.slice(position, position + length)), position: position + length }
+          }
+          case 9: {
+            // list
+            const tagId = dataView.getInt8(position++)
+            const size = dataView.getInt32(position)
+            position += 4
+            const values = []
+            let value
+            for (let i =0; i < size; i++) {
+              ;({ value, position } = nbtToJs(dataView, { position, tagId, getName: false }))
+              values.push(value)
+            }
+            return { name, value: values, position }
+          }
+          case 10: {
+            // compound
+            const object = Object.create(null)
+            let value, tagName
+            do {
+              ;({ value, name: tagName, position } = nbtToJs(dataView, { position }))
+              if (value !== undefined) {
+                object[tagName] = value
+              }
+            } while (value !== undefined)
+            return { name, value: object, position }
+          }
+          case 11: {
+            // int arrays
+            const size = dataView.getInt32(position) * 4
+            position += 4
+            return { name, value: new Int32Array(dataView.buffer.slice(position, position + size)), position: position + size }
+          }
+          case 12: {
+            // long arrays
+            const size = dataView.getInt32(position) * 8
+            position += 4
+            return { name, value: new BigInt64Array(dataView.buffer.slice(position, position + size)), position: position + size }
+          }
+          default: {
+            throw new Error(`Unknown tag ID ${tagId}`)
+          }
+        }
+      }
+      
+      file.onchange = async () => {
+        if (file.files[0]) {
+          const buffer = await file.files[0].arrayBuffer()
+          console.log(nbtToJs(new DataView(buffer)))
+        }
+      }
+    </script>
+  </body>
+</html>
