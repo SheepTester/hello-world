@@ -47,13 +47,12 @@ export async function init (
       '',
       '# Stop all conversations, if possible',
       `tag @a remove spoken-to`,
-      '',
       onLoad
     )
   )
   await Deno.writeTextFile(
     new URL(`./data/${namespace}/functions/tick.mcfunction`, base),
-    lines(onTick)
+    lines('# NPC dialogue', onTick)
   )
 
   await Deno.writeTextFile(
