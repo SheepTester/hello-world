@@ -1,5 +1,5 @@
 import { ensureDir } from 'https://deno.land/std@0.102.0/fs/ensure_dir.ts'
-import { resolve, toFileUrl } from 'https://deno.land/std@0.102.0/path/mod.ts'
+import { join } from 'https://deno.land/std@0.102.0/path/mod.ts'
 import { parse as parseArgs } from 'https://deno.land/std@0.104.0/flags/mod.ts'
 import { toMcfunction } from './compile-to-mcfunction.ts'
 import { parse } from './parse-yaml.ts'
@@ -18,8 +18,8 @@ function lines (...lines: Lines[]): string {
 }
 
 export async function init (
-  yamlPath: string | URL,
-  base: string | URL,
+  yamlPath: string,
+  basePath: string,
   { namespace = 'minecraft', description = 'Mysterious datapack' } = {}
 ): Promise<void> {
   const npcData = parse(await Deno.readTextFile(yamlPath))
@@ -32,16 +32,16 @@ export async function init (
   }
 
   // ensureDir expects an absolute path rather than a file:// URL
-  await ensureDir(new URL(`./data/${namespace}/functions/`, base).pathname)
-  await ensureDir(new URL('./data/minecraft/tags/functions/', base).pathname)
+  await ensureDir(join(basePath, `./data/${namespace}/functions/`))
+  await ensureDir(join(basePath, './data/minecraft/tags/functions/'))
 
   await Deno.writeTextFile(
-    new URL('./pack.mcmeta', base),
+    join(basePath, './pack.mcmeta'),
     JSON.stringify({ pack: { pack_format: 7, description } }, null, 2)
   )
 
   await Deno.writeTextFile(
-    new URL(`./data/${namespace}/functions/load.mcfunction`, base),
+    join(basePath, `./data/${namespace}/functions/load.mcfunction`),
     lines(
       '# Initialise scoreboards',
       'scoreboard objectives add npc-timers dummy',
@@ -53,16 +53,16 @@ export async function init (
     )
   )
   await Deno.writeTextFile(
-    new URL(`./data/${namespace}/functions/tick.mcfunction`, base),
+    join(basePath, `./data/${namespace}/functions/tick.mcfunction`),
     lines('# NPC dialogue', onTick)
   )
 
   await Deno.writeTextFile(
-    new URL('./data/minecraft/tags/functions/load.json', base),
+    join(basePath, './data/minecraft/tags/functions/load.json'),
     JSON.stringify({ values: [`${namespace}:load`] }, null, 2)
   )
   await Deno.writeTextFile(
-    new URL('./data/minecraft/tags/functions/tick.json', base),
+    join(basePath, './data/minecraft/tags/functions/tick.json'),
     JSON.stringify({ values: [`${namespace}:tick`] }, null, 2)
   )
 }
@@ -83,18 +83,14 @@ if (import.meta.main) {
       h: 'help'
     }
   })
-  if (help) {
+  if (help || !yamlPath || !pathToDatapackFolder) {
     console.log(
-      'deno run --allow-all minecraft-npc/init.ts [path to yml file] [path to datapack folder] -n [namespace name] -d [description]'
+      'deno run --allow-read --allow-write https://raw.githubusercontent.com/SheepTester/hello-world/master/minecraft-npc/init.ts [path to yml file] [path to datapack folder] -n [namespace name] -d [description]'
     )
   } else {
-    await init(
-      toFileUrl(resolve(String(yamlPath))),
-      toFileUrl(resolve(String(pathToDatapackFolder)) + '/'),
-      {
-        namespace,
-        description
-      }
-    )
+    await init(String(yamlPath), String(pathToDatapackFolder), {
+      namespace,
+      description
+    })
   }
 }
