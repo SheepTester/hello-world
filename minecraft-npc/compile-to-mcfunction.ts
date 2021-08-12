@@ -31,6 +31,7 @@ function rawJson (json: unknown): string {
 }
 
 export function toMcfunction (
+  namespace: string,
   id: string,
   {
     name,
@@ -45,7 +46,12 @@ export function toMcfunction (
     } = {},
     dialogue = []
   }: Npc
-): { onLoad: Lines; onTick: Lines } {
+): {
+  reset: Lines
+  onLoad: Lines
+  onTick: Lines
+  functions: Record<string, Lines>
+} {
   const npcTag = `npc-${id}`
   const playerTag = `victim-of-dialogue-by-${id}`
   // Prevent the dialogue from immediately restarting
@@ -65,14 +71,11 @@ export function toMcfunction (
     eavesdropper: `@a[distance=..${HEAR_DIST}]`
   }
 
+  const functions: Record<string, Lines> = {}
+
   return {
-    onLoad: [
-      `# Reset the villager for ${id}.`,
-      // Kill old villager
-      `kill @e[type=minecraft:villager, tag=${npcTag}]`,
-      // Reset conversations, if possible (player may be offline)
-      `tag @a remove ${playerTag}`,
-      `tag @a remove ${formerPlayerTag}`,
+    reset: [
+      `# Summon the villager for ${id}.`,
       // Summon new villager
       `summon minecraft:villager ${x} ${y} ${z} ${toSnbt({
         Silent: true,
@@ -108,9 +111,46 @@ export function toMcfunction (
         Offers: '{}'
       })}`
     ],
+    onLoad: [
+      // Reset conversations, if possible (player may be offline)
+      `tag @a remove ${playerTag}`,
+      `tag @a remove ${formerPlayerTag}`
+    ],
     onTick: [
       `# Dialogue for ${id}`,
       dialogue.map(({ messages }) => {
+        const indexToFuncName = (i: number) =>
+          `dialogue-${id}-${i
+            .toString()
+            .padStart(String(messages.length - 1).length, '0')}`
+        for (const [i, message] of messages.entries()) {
+          // # of vowels (≈ syllables) * 5 ticks/vowel
+          const duration = (message.match(/[aiueo]/gi)?.length ?? 0) * 5
+          functions[indexToFuncName(i)] = [
+            `# Dialogue line #${i + 1}: speak and make noise.`,
+            `execute at ${select.self} run tellraw ${
+              select.eavesdropper
+            } ${JSON.stringify([
+              '<',
+              { text: name || 'Passerby', color: colour, bold: true },
+              `> ${message}`
+            ])}`,
+            `execute at ${select.self} run playsound minecraft:entity.villager.ambient player ${select.eavesdropper}`,
+            `schedule function ${namespace}:funcs/${
+              i === messages.length - 1
+                ? `dialogue-${id}-end`
+                : indexToFuncName(i + 1)
+            } ${duration}t`
+          ]
+        }
+        functions[`dialogue-${id}-end`] = [
+          '# Handle the end of the conversation.',
+          // No `limit=1` just in case there are multiple players with the tag
+          `tag ${select.player} add ${formerPlayerTag}`,
+          `tag @a[tag=${playerTag}] remove spoken-to`,
+          `tag @a[tag=${playerTag}] remove ${playerTag}`,
+          `tag ${select.self} remove speaking`
+        ]
         return [
           '',
           `# Mark players who have ditched the NPC as viable for re-conversation.`,
@@ -120,52 +160,17 @@ export function toMcfunction (
           // TODO: Consider `mark` and `if`
           `execute at ${select.notSpeaking} run tag @a[tag=!spoken-to, tag=!${formerPlayerTag}, distance=..${START_DIST}, sort=nearest, limit=1] add ${playerTag}`,
           `execute if entity ${select.newPlayer} run tag ${select.self} add speaking`,
-          `execute if entity ${select.newPlayer} run scoreboard players set ${id} npc-timers 0`,
-          // TODO: Also handle different dialogue lines (separate scoreboard?)
           `execute if entity ${
             select.newPlayer
-          } run scoreboard players set ${id} npc-steps ${messages.length + 1}`,
+          } run schedule function ${namespace}:funcs/${indexToFuncName(0)} 1t`,
           `tag ${select.newPlayer} add spoken-to`,
-          '',
-          '# While in a conversation, make eye contact with the player.',
-          `execute as ${select.speaking} at @s run tp @s ~ ~ ~ facing entity ${select.player}`,
-          '',
-          '# If the last line of dialogue finished, continue to the next one.',
-          // TODO: Move this into a function? (Actually might as well move a
-          // bunch of a things into their own functions)
-          `execute if entity ${select.speaking} if score ${id} npc-timers matches 0 run scoreboard players remove ${id} npc-steps 1`,
-          messages.map((message, i) => {
-            const step = messages.length - i
-            // # of vowels (≈ syllables) * 5 ticks/vowel
-            const duration = (message.match(/[aiueo]/gi)?.length ?? 0) * 5
-            return [
-              '',
-              `# Dialogue line #${i + 1}`,
-              `execute if entity ${
-                select.speaking
-              } if score ${id} npc-timers matches 0 if score ${id} npc-steps matches ${step} at ${
-                select.speaking
-              } run tellraw ${select.eavesdropper} ${JSON.stringify([
-                '<',
-                { text: name || 'Passerby', color: colour, bold: true },
-                `> ${message}`
-              ])}`,
-              `execute if entity ${select.speaking} if score ${id} npc-timers matches 0 if score ${id} npc-steps matches ${step} at ${select.speaking} run playsound minecraft:entity.villager.ambient player ${select.eavesdropper}`,
-              `execute if entity ${select.speaking} if score ${id} npc-timers matches 0 if score ${id} npc-steps matches ${step} run scoreboard players set ${id} npc-timers ${duration}`
-            ]
-          }),
-          '',
-          '# Handle the end of the conversation.',
-          // No `limit=1` just in case there are multiple players with the tag
-          `execute if entity ${select.speaking} if score ${id} npc-timers matches 0 if score ${id} npc-steps matches 0 run tag @a[tag=${playerTag}] remove spoken-to`,
-          `execute if entity ${select.speaking} if score ${id} npc-timers matches 0 if score ${id} npc-steps matches 0 run tag ${select.player} add ${formerPlayerTag}`,
-          `execute if entity ${select.speaking} if score ${id} npc-timers matches 0 if score ${id} npc-steps matches 0 run tag @a[tag=${playerTag}] remove ${playerTag}`,
-          `execute as ${select.speaking} if score ${id} npc-timers matches 0 if score ${id} npc-steps matches 0 run tag @s remove speaking`,
-          '',
-          '# Decrement the timer per tick while speaking.',
-          `execute as ${select.speaking} run scoreboard players remove ${id} npc-timers 1`
+          ''
         ]
-      })
-    ]
+      }),
+      '',
+      '# While in a conversation, make eye contact with the player.',
+      `execute as ${select.speaking} at @s run tp @s ~ ~ ~ facing entity ${select.player}`
+    ],
+    functions
   }
 }

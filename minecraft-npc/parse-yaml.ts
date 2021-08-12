@@ -25,20 +25,14 @@ const schema = z
   .object({
     name: z.string(),
     colour: z.union([
-      z
-        .string()
-        .regex(
-          /^[0-9a-f]{6}$/i,
-          'Custom colours must be 6-digit hex colour codes (case insensitive) without the #.'
-        )
-        .transform(hex => `#${hex}`),
+      z.number().transform(hex => `#${hex.toString(16).padStart(6, '0')}`),
       ...colourNameSchema
     ]),
     position: z
       .string()
       .regex(
-        /^-?\d+ -?\d+ -?\d+$/i,
-        'Positions must be a triplet of signed integers.'
+        /^-?\d+(?:\.\d*)? -?\d+(?:\.\d*)? -?\d+(?:\.\d*)?$/i,
+        'Positions must be a triplet of signed numbers.'
       )
       .transform((triplet): [number, number, number] => {
         const [x, y, z] = triplet.split(' ').map(Number)
