@@ -1,4 +1,6 @@
 import { ensureDir } from 'https://deno.land/std@0.102.0/fs/ensure_dir.ts'
+import { resolve, toFileUrl } from 'https://deno.land/std@0.102.0/path/mod.ts'
+import { parse as parseArgs } from 'https://deno.land/std@0.104.0/flags/mod.ts'
 import { toMcfunction } from './compile-to-mcfunction.ts'
 import { parse } from './parse-yaml.ts'
 
@@ -66,12 +68,33 @@ export async function init (
 }
 
 if (import.meta.main) {
-  init(
-    new URL('./simpler.yml', import.meta.url),
-    'file:///mnt/c/Users/seant/AppData/Roaming/.minecraft/saves/test/datapacks/test-npc-ooga-booga/',
-    {
-      namespace: 'test-npc',
-      description: 'aafysfgyudgf goofie'
+  // deno run --allow-all --no-check minecraft-npc/init.ts ./minecraft-npc/simpler.yml /mnt/c/Users/seant/AppData/Roaming/.minecraft/saves/test/datapacks/test-npc-ooga-booga/ -n test-npc -d "aafysfgyudgf goofie"
+  const {
+    namespace = 'npcs',
+    description = 'Generated NPC datapack from a YAML file.',
+    help,
+    _: [yamlPath, pathToDatapackFolder]
+  } = parseArgs(Deno.args, {
+    string: ['namespace', 'description'],
+    boolean: ['help'],
+    alias: {
+      n: 'namespace',
+      d: 'description',
+      h: 'help'
     }
-  )
+  })
+  if (help) {
+    console.log(
+      'deno run --allow-all minecraft-npc/init.ts [path to yml file] [path to datapack folder] -n [namespace name] -d [description]'
+    )
+  } else {
+    await init(
+      toFileUrl(resolve(String(yamlPath))),
+      toFileUrl(resolve(String(pathToDatapackFolder)) + '/'),
+      {
+        namespace,
+        description
+      }
+    )
+  }
 }

@@ -136,7 +136,8 @@ export function toMcfunction (
           `execute if entity ${select.speaking} if score ${id} npc-timers matches 0 run scoreboard players remove ${id} npc-steps 1`,
           messages.map((message, i) => {
             const step = messages.length - i
-            // TODO: Configurable hearing distance?
+            // # of vowels (≈ syllables) * 5 ticks/vowel
+            const duration = (message.match(/[aiueo]/gi)?.length ?? 0) * 5
             return [
               '',
               `# Dialogue line #${i + 1}`,
@@ -150,8 +151,7 @@ export function toMcfunction (
                 `> ${message}`
               ])}`,
               `execute if entity ${select.speaking} if score ${id} npc-timers matches 0 if score ${id} npc-steps matches ${step} at ${select.speaking} run playsound minecraft:entity.villager.ambient player ${select.eavesdropper}`,
-              // TODO: Message duration
-              `execute if entity ${select.speaking} if score ${id} npc-timers matches 0 if score ${id} npc-steps matches ${step} run scoreboard players set ${id} npc-timers 60`
+              `execute if entity ${select.speaking} if score ${id} npc-timers matches 0 if score ${id} npc-steps matches ${step} run scoreboard players set ${id} npc-timers ${duration}`
             ]
           }),
           '',
