@@ -1,0 +1,12 @@
+billy:
+  name: Billy
+  colour: ff00ff
+  position: 1000 70 1000
+  head: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDE1NWQyMWM3NzNjNzY1MmJlOTg0YmQ3NTNkZDhiM2QyMjVkOWE5NTBkMWQyM2ViZjBmYzVjOWVkYzM4NDBjYiJ9fX0=
+  villager:
+    type: jungle
+    profession: fletcher
+  dialogue:
+    - messages:
+        - Once upon a time, I stumbled across a hole.
+        - Honestly, I have no idea how I didn't fall in.

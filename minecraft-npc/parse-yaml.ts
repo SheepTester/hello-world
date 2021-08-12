@@ -28,11 +28,22 @@ const schema = z
       z
         .string()
         .regex(
-          /[0-9a-f]{6}/i,
+          /^[0-9a-f]{6}$/i,
           'Custom colours must be 6-digit hex colour codes (case insensitive) without the #.'
-        ),
+        )
+        .transform(hex => `#${hex}`),
       ...colourNameSchema
     ]),
+    position: z
+      .string()
+      .regex(
+        /^-?\d+ -?\d+ -?\d+$/i,
+        'Positions must be a triplet of signed integers.'
+      )
+      .transform((triplet): [number, number, number] => {
+        const [x, y, z] = triplet.split(' ').map(Number)
+        return [x, y, z]
+      }),
     head: z.string(),
     villager: z.object({
       type: z.union([
@@ -66,7 +77,8 @@ const schema = z
         z.literal(2),
         z.literal(3),
         z.literal(4),
-        z.literal(5)
+        z.literal(5),
+        z.literal(99)
       ])
     }),
     dialogue: z.array(

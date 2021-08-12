@@ -3,11 +3,11 @@ knight-dei:
   colour: 8aace8
   head: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTAwNmU2NDYxYjkyZDJlMjQ4MGFjNGM3OWVhZGVjZTRmOTVkNTQ5MmVjMzBmYTliODdjYjkwMTY3NTQ3ZWYxNyJ9fX0=
   villager:
-    type: minecraft:plains
-    profession: minecraft:armorer
+    type: plains
+    profession: armorer
   dialogue:
-    - mark: '@a[distance = ..7, nbt = { Inventory: [{ id: "minecraft:apple" }] }]'
-      if: entity @marked
+    - mark: 'distance=..7, nbt={ Inventory: [{ id: "minecraft:apple" }] }'
+      if: if entity @marked
       messages:
         - ['Hey ', @marked, '!']
         - ['That apple is rotting.', ['Rotting!', { italic: true }]]
