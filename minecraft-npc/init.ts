@@ -45,6 +45,9 @@ export async function init (
       'scoreboard objectives add npc-timers dummy',
       'scoreboard objectives add npc-steps dummy',
       '',
+      '# Stop all conversations, if possible',
+      `tag @a remove spoken-to`,
+      '',
       onLoad
     )
   )
