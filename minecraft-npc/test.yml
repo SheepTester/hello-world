@@ -6,8 +6,7 @@ knight-dei:
     type: plains
     profession: armorer
   dialogue:
-    - mark: 'distance=..7, nbt={ Inventory: [{ id: "minecraft:apple" }] }'
-      if: if entity @marked
+    - if: 'if entity @marked[distance=..7, nbt={ Inventory: [{ id: "minecraft:apple" }] }]'
       messages:
         - ['Hey ', @marked, '!']
         - ['That apple is rotting.', ['Rotting!', { italic: true }]]

@@ -118,7 +118,10 @@ export function toMcfunction (
     ],
     onTick: [
       `# Dialogue for ${id}`,
-      dialogue.map(({ messages }) => {
+      '',
+      `# Mark players who have ditched the NPC as viable for re-conversation.`,
+      `execute at ${select.notSpeaking} run tag @a[tag=${formerPlayerTag}, distance=${LEAVE_DIST}..] remove ${formerPlayerTag}`,
+      dialogue.map(({ messages }, i) => {
         const indexToFuncName = (i: number) =>
           `dialogue-${id}-${i
             .toString()
@@ -153,18 +156,15 @@ export function toMcfunction (
         ]
         return [
           '',
-          `# Mark players who have ditched the NPC as viable for re-conversation.`,
-          `execute at ${select.notSpeaking} run tag @a[tag=${formerPlayerTag}, distance=${LEAVE_DIST}..] remove ${formerPlayerTag}`,
-          '',
-          "# Start a conversation if it can and hasn't already.",
-          // TODO: Consider `mark` and `if`
+          `# Dialogue option #${i +
+            1}: start a conversation if it can and hasn't already.`,
+          // TODO: Consider `if`
           `execute at ${select.notSpeaking} run tag @a[tag=!spoken-to, tag=!${formerPlayerTag}, distance=..${START_DIST}, sort=nearest, limit=1] add ${playerTag}`,
           `execute if entity ${select.newPlayer} run tag ${select.self} add speaking`,
           `execute if entity ${
             select.newPlayer
           } run schedule function ${namespace}:funcs/${indexToFuncName(0)} 1t`,
-          `tag ${select.newPlayer} add spoken-to`,
-          ''
+          `tag ${select.newPlayer} add spoken-to`
         ]
       }),
       '',
