@@ -93,13 +93,18 @@ async function bruteForce (rawCourseNames, term) {
             termcode: term
           })
       ).then(r => r.json())
-      /** @type {Record<'LE' | 'DI' | 'LA', ParsedGroup[]>} */
+      /**
+       * Map of lecture letters (eg "A") to a map of group tyoes to a list of
+       * groups per type.
+       * @type {Record<string, Record<'LE' | 'DI' | 'LA', ParsedGroup[]>>}
+       */
       const groups = {}
       for (const group of groupData) {
         const start = group.BEGIN_HH_TIME * 60 + group.BEGIN_MM_TIME
         const end = group.END_HH_TIME * 60 + group.END_MM_TIME
         const days = Array.from(group.DAY_CODE, Number)
         const building = group.BLDG_CODE.trim()
+        const letter = group.SECT_CODE.match(/[a-z]+/i)[0]
         // Ignore TBA periods
         if (start === 0 && end === 0) continue
         if (
@@ -107,10 +112,13 @@ async function bruteForce (rawCourseNames, term) {
           group.FK_SPM_SPCL_MTG_CD === '  '
         ) {
           if (['LE', 'DI', 'LA'].includes(group.FK_CDI_INSTR_TYPE)) {
-            if (!groups[group.FK_CDI_INSTR_TYPE]) {
-              groups[group.FK_CDI_INSTR_TYPE] = []
+            if (!groups[letter]) {
+              groups[letter] = {}
             }
-            groups[group.FK_CDI_INSTR_TYPE].push({
+            if (!groups[letter][group.FK_CDI_INSTR_TYPE]) {
+              groups[letter][group.FK_CDI_INSTR_TYPE] = []
+            }
+            groups[letter][group.FK_CDI_INSTR_TYPE].push({
               code: `${courseCode}: ${group.SECT_CODE}`,
               start,
               end,
@@ -138,41 +146,126 @@ async function bruteForce (rawCourseNames, term) {
   }
 
   /**
-   * @yields {ParsedGroup[][]}
-   * @returns {Generator<ParsedGroup[][]>}
+   * @param {{ lectures: ParsedGroup[][][] }[]} courses
+   * @param {Schedule} parentSchedule
+   * @yields {Schedule}
+   * @returns {Generator<Schedule>}
+   */
+  function * groupCombinations (courses, parentSchedule) {
+    if (courses.length > 0) {
+      const [{ lectures }, ...rest] = courses
+      // For each letter (A, B, C, ...)
+      for (const lecture of lectures) {
+        // Consider every combination of lecture to discussion
+        groups: for (const groups of combinations(lecture)) {
+          // Add lecture and discussion groups to schedule
+          const schedule = parentSchedule.map(day => day.slice())
+          for (const group of groups) {
+            for (const day of group.days) {
+              if (
+                // Give up if I find a period that already overlaps
+                schedule[day].find(
+                  period =>
+                    period.start <= group.end && group.start <= period.end
+                )
+              ) {
+                continue groups
+              }
+              schedule[day].push(group)
+            }
+          }
+          // This group option is compatible with the parent schedule. Proceed!
+          yield * groupCombinations(rest, schedule)
+        }
+      }
+    } else {
+      yield parentSchedule
+    }
+  }
+
+  /**
+   * @yields {Schedule}
+   * @returns {Generator<Schedule>}
    */
   function * getPossibleSchedules () {
     for (const courseCombo of combinations(courseNames)) {
       const groupPossibilities = courseCombo
-        .map(name => Object.values(courseData[name].groups))
-        .flat()
-        .sort((a, b) => a.length - b.length)
-      groups: for (const groupCombo of combinations(groupPossibilities)) {
-        /**
-         * Mapping day ID -> list of groups. (Index 0 is not used because I think
-         * Sunday is 7).
-         * @type {ParsedGroup[][]}
-         */
-        const schedule = Array.from({ length: 8 }, () => [])
-        for (const group of groupCombo) {
-          for (const day of group.days) {
-            // Give up if I find a period that already overlaps
-            // [ {   ] } [  {  }  ]
-            // [  ] {  }
-            if (
-              schedule[day].find(
-                period => period.start <= group.end && group.start <= period.end
-              )
-            ) {
-              continue groups
-            }
-            schedule[day].push(group)
+        .flatMap(name => {
+          // A list of lectures/letters each with a list of lists of groups
+          // split by type. This is a mess.
+          const lectures = Object.values(courseData[name].groups).map(groups =>
+            Object.values(groups)
+          )
+          return {
+            lectures,
+            count: lectures.flat(2).length
           }
-        }
-        yield schedule
-      }
+        })
+        .sort((a, b) => a.count - b.count)
+      yield * groupCombinations(
+        groupPossibilities,
+        Array.from({ length: 8 }, () => [])
+      )
     }
   }
+
+  const days = ' Mon Tue Wed Thu Fri Sat Sun'.split(' ')
+
+  /** @param {Schedule} schedule */
+  function displaySchedule (schedule) {
+    const scale = 2.5 // 2.5 min per char
+    const minTime = Math.min(
+      ...schedule.flatMap(day => day.map(group => group.start))
+    )
+    const maxTime = Math.max(
+      ...schedule.flatMap(day => day.map(group => group.end))
+    )
+    const startHour = Math.floor(minTime / 60)
+    const endHour = Math.floor(maxTime / 60)
+    let chars = ' '.repeat((maxTime - minTime) / scale)
+    for (let hour = startHour; hour <= endHour; hour++) {
+      const display = `${hour.toString().padStart(2, '0')}:00 ->`
+      const index = Math.floor((hour * 60 - minTime) / scale)
+      if (index < 0) continue
+      chars =
+        chars.slice(0, index) + display + chars.slice(index + display.length)
+    }
+    let output = `KEY ${chars}`
+    for (let i = 1; i <= 7; i++) {
+      const chars = new Array((maxTime - minTime) / scale).fill(' ')
+      for (const { start, end, code } of schedule[i].sort(
+        (a, b) => a.start - b.start
+      )) {
+        const name = code + ' | '
+        const startIndex = Math.floor((start - minTime) / scale)
+        const endIndex = Math.floor((end - minTime) / scale)
+        for (let i = startIndex; i < endIndex; i++) {
+          chars[i] =
+            i === startIndex ? '[' : name[(i - startIndex - 1) % name.length]
+        }
+        chars[endIndex - 2] = '…'
+        chars[endIndex - 1] = ']'
+      }
+      output += `\n${days[i]} ${chars.join('')}`
+    }
+    console.log(output)
+    if (!window.displayed) {
+      window.displayed = document.createElement('pre')
+      Object.assign(window.displayed.style, {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        whiteSpace: 'pre',
+        overflow: 'auto'
+      })
+      document.body.append(window.displayed)
+    }
+    window.displayed.textContent = output
+  }
+
+  const schedules = [...getPossibleSchedules()]
+  displaySchedule(schedules[Math.floor(Math.random() * schedules.length)])
 
   const locals = {
     rawCourseNames,
@@ -184,7 +277,11 @@ async function bruteForce (rawCourseNames, term) {
     distances,
     rawCourseData,
     courseData,
-    getPossibleSchedules
+    groupCombinations,
+    getPossibleSchedules,
+    days,
+    displaySchedule,
+    schedules
   }
   Object.assign(globalThis, locals)
   return locals
@@ -260,5 +357,11 @@ async function bruteForce (rawCourseNames, term) {
 
 /**
  * @typedef {Object} HasParsedGroups
- * @property {Record<'LE' | 'DI' | 'LA', ParsedGroup[]>} groups
+ * @property {Record<string, Record<'LE' | 'DI' | 'LA', ParsedGroup[]>>} groups
+ */
+
+/**
+ * Mapping between day ID (1-7) to a list of groups (not necessarily in
+ * chronological order), so index 0 isn't used.
+ * @typedef {ParsedGroup[][]} Schedule
  */
