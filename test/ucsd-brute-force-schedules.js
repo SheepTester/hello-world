@@ -18,6 +18,47 @@ bruteForce(
  * @param {string} term
  */
 async function bruteForce (rawCourseNames, term) {
+  if (!window.displayed) {
+    window.displayed = {
+      wrapper: Object.assign(document.createElement('div'), {
+        className: 'styled'
+      }),
+      pre: Object.assign(document.createElement('pre'), {}),
+      slider: Object.assign(document.createElement('input'), {
+        type: 'range',
+        min: 0
+      }),
+      heuristic: Object.assign(document.createElement('strong'), {})
+    }
+    Object.assign(window.displayed.wrapper.style, {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0
+    })
+    Object.assign(window.displayed.pre.style, {
+      whiteSpace: 'pre',
+      overflow: 'auto',
+      textContent: 'Loading...'
+    })
+    Object.assign(window.displayed.slider.style, {
+      flex: 'auto'
+    })
+    const label = document.createElement('label')
+    Object.assign(label.style, {
+      display: 'flex',
+      gap: '10px'
+    })
+    label.append(
+      'Schedule: ',
+      window.displayed.slider,
+      'Heuristic: ',
+      window.displayed.heuristic
+    )
+    window.displayed.wrapper.append(window.displayed.pre, label)
+    document.body.append(window.displayed.wrapper)
+  }
+
   /** @param {string} str */
   function normalise (str) {
     return str.replace(/\s+/g, '').toLowerCase()
@@ -338,7 +379,11 @@ async function bruteForce (rawCourseNames, term) {
         } else if (timeDiff <= 20) {
           // If the time between classes is less than 20 min, then reward for
           // shorter commute times (linearly)
-          score += 136 - timeDiff * 7
+          score += 30 - timeDiff * 1.4
+          // Extra bonus if it's in the same building
+          if (commute === 0) {
+            score += 13
+          }
         } else {
           // If there's like an hour between classes, commute time doesn't
           // really matter. But the hour gap is pretty annoying
@@ -349,13 +394,12 @@ async function bruteForce (rawCourseNames, term) {
       // I think I will tolerate up to 4 pm then start deducting points
       if (endTime > 16 * 60) {
         // -34 points per hour
-        score -= (endTime / 60 - 16) * 34
+        score -= (endTime / 60 - 16) * 97
       }
       const startTime = schedule[i][schedule[i].length - 1].end
       // 8 am is quite early. I can tolerate 9 am somewhat
       if (startTime < 9.5 * 60) {
-        // -19 points per hour
-        score -= (9.5 - startTime / 60) * 19
+        score -= (9.5 - startTime / 60) * 194
       }
     }
     const classCounts = schedule
@@ -370,7 +414,7 @@ async function bruteForce (rawCourseNames, term) {
     )
     // Punish schedules that do not balance the number of classes per day very
     // well
-    score -= stddev * 33
+    score -= stddev * 217
     return score
   }
 
@@ -378,51 +422,19 @@ async function bruteForce (rawCourseNames, term) {
     schedule,
     heuristic: heuristic(schedule)
   })).sort((a, b) => b.heuristic - a.heuristic)
-  if (!window.displayed) {
-    window.displayed = {
-      wrapper: Object.assign(document.createElement('div'), {}),
-      pre: Object.assign(document.createElement('pre'), {}),
-      prev: Object.assign(document.createElement('button'), {
-        textContent: '<<<'
-      }),
-      next: Object.assign(document.createElement('button'), {
-        textContent: '>>>'
-      })
-    }
-    Object.assign(window.displayed.wrapper.style, {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0
-    })
-    Object.assign(window.displayed.pre.style, {
-      whiteSpace: 'pre',
-      overflow: 'auto'
-    })
-    window.displayed.wrapper.append(
-      window.displayed.pre,
-      window.displayed.prev,
-      window.displayed.next
-    )
-    document.body.append(window.displayed.wrapper)
-  }
-  let index = 0
-  function render () {
+  function render (index) {
     window.displayed.pre.textContent = displaySchedule(
       schedules[index].schedule
     )
-    window.displayed.prev.disabled = index <= 0
-    window.displayed.next.disabled = index >= schedules.length - 1
+    window.displayed.heuristic.textContent = schedules[index].heuristic.toFixed(
+      3
+    )
   }
-  window.displayed.prev.onclick = () => {
-    index--
-    render()
+  window.displayed.slider.max = schedules.length - 1
+  window.displayed.slider.oninput = () => {
+    render(window.displayed.slider.value)
   }
-  window.displayed.next.onclick = () => {
-    index++
-    render()
-  }
-  render()
+  render(0)
 
   const locals = {
     rawCourseNames,
@@ -441,7 +453,6 @@ async function bruteForce (rawCourseNames, term) {
     neededDistances,
     heuristic,
     schedules,
-    index,
     render
   }
   locals.locals = locals
