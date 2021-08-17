@@ -48,16 +48,44 @@ async function bruteForce (rawCourseNames, term) {
   )
   const courseNamesToGet = new Set(courseNames.flat())
 
-  // Times determined by https://maps.ucsd.edu/map/default.htm; I hear they're
-  // inaccurate, but whatever
-  /** @type {Record<string, Record<string, number>>} */
+  /**
+   * Times determined by https://maps.ucsd.edu/map/default.htm; I hear they're
+   * inaccurate, but whatever. Also, this assumes the walking times are
+   * commutative, but they might not be (uphill/downhill differences, etc.).
+   * @type {Record<string, Record<string, number>>}
+   */
   const distances = {
     MOS: {
       CENTR: 9,
       APM: 3,
       PCYNH: 13,
-      WLH: 10
-    }
+      WLH: 10,
+      CSB: 4,
+      CTL: 2, // Catalyst
+      RWAC: 2,
+      SOLIS: 4,
+      YORK: 9
+    },
+    CENTR: {
+      CSB: 7,
+      SOLIS: 8,
+      WLH: 7,
+      CTL: 9,
+      MANDE: 5, // Required other map because new map used a roundabout route
+      HSS: 6, // Using old map
+      PCYNH: 5,
+      RWAC: 9,
+      YORK: 9
+    },
+    WLH: { SOLIS: 8, YORK: 14 },
+    SOLIS: { YORK: 10 },
+    APM: { CTL: 4, CENTR: 9, MANDE: 3, WLH: 10, YORK: 7 },
+    CSB: { CTL: 3, SOLIS: 1, WLH: 8 },
+    CTL: { HSS: 5, RWAC: 1, SOLIS: 3, WLH: 10, YORK: 10 },
+    HSS: { MANDE: 4, MOS: 4, YORK: 7 },
+    MANDE: { MOS: 5, SOLIS: 6, WLH: 11, YORK: 8 },
+    PCYNH: { SOLIS: 10 },
+    RWAC: { SOLIS: 2, WLH: 9, YORK: 9 }
   }
 
   /** @type {CourseSearchResult[]} */
@@ -96,7 +124,8 @@ async function bruteForce (rawCourseNames, term) {
       /**
        * Map of lecture letters (eg "A") to a map of group tyoes to a list of
        * groups per type.
-       * @type {Record<string, Record<'LE' | 'DI' | 'LA', ParsedGroup[]>>}
+       * @type {Record<string, Record<'LE' | 'DI' | 'LA', Record<string,
+       * ParsedGroup>>>}
        */
       const groups = {}
       for (const group of groupData) {
@@ -116,15 +145,29 @@ async function bruteForce (rawCourseNames, term) {
               groups[letter] = {}
             }
             if (!groups[letter][group.FK_CDI_INSTR_TYPE]) {
-              groups[letter][group.FK_CDI_INSTR_TYPE] = []
+              groups[letter][group.FK_CDI_INSTR_TYPE] = {}
             }
-            groups[letter][group.FK_CDI_INSTR_TYPE].push({
+            // Using timestamp to remove duplicate classes at the same time and
+            // location
+            groups[letter][group.FK_CDI_INSTR_TYPE][
+              `${start}-${end}-${building}`
+            ] = {
               code: `${courseCode}: ${group.SECT_CODE}`,
               start,
               end,
               days,
-              building: building === 'TBA' ? null : building
-            })
+              building:
+                building === 'TBA'
+                  ? null
+                  : building === 'RCLAS'
+                  ? // Assuming that remote classes will take place in my dorm
+                    // room, which is some Sixth building (using Mosaic)
+                    'MOS'
+                  : building === 'GA'
+                  ? // GA is said to be in the "new Sixth area"
+                    'MOS'
+                  : building
+            }
           } else {
             throw new Error(
               `Unexpected "fuxk CDI instruction type": "${group.FK_CDI_INSTR_TYPE}"`
@@ -194,7 +237,7 @@ async function bruteForce (rawCourseNames, term) {
           // A list of lectures/letters each with a list of lists of groups
           // split by type. This is a mess.
           const lectures = Object.values(courseData[name].groups).map(groups =>
-            Object.values(groups)
+            Object.values(groups).map(groupMap => Object.values(groupMap))
           )
           return {
             lectures,
@@ -248,24 +291,138 @@ async function bruteForce (rawCourseNames, term) {
       }
       output += `\n${days[i]} ${chars.join('')}`
     }
-    console.log(output)
-    if (!window.displayed) {
-      window.displayed = document.createElement('pre')
-      Object.assign(window.displayed.style, {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        whiteSpace: 'pre',
-        overflow: 'auto'
-      })
-      document.body.append(window.displayed)
-    }
-    window.displayed.textContent = output
+    return output
   }
 
-  const schedules = [...getPossibleSchedules()]
-  displaySchedule(schedules[Math.floor(Math.random() * schedules.length)])
+  const neededDistances = new Set()
+
+  /**
+   * Heuristic based on my personal needs
+   * @param {Schedule} schedule
+   * @returns {number}
+   */
+  function heuristic (schedule) {
+    // Sort periods
+    for (const day of schedule) {
+      day.sort((a, b) => a.start - b.start)
+    }
+    let score = 0
+    for (let i = 1; i <= 7; i++) {
+      if (schedule[i].length === 0) continue
+      for (const [j, period] of schedule[i].slice(1).entries()) {
+        const before = schedule[i][j]
+        const timeDiff = period.start - before.end
+        if (!period.building || !before.building) {
+          // Big penalty for being TBA
+          score -= 68
+          continue
+        }
+        const commute =
+          period.building === before.building
+            ? 0
+            : distances[period.building]?.[before.building] ??
+              distances[before.building]?.[period.building]
+        if (commute === undefined) {
+          neededDistances.add(
+            before.building < period.building
+              ? `${before.building}-${period.building}`
+              : `${period.building}-${before.building}`
+          )
+          continue
+        }
+        if (commute >= timeDiff) {
+          // If the commute takes longer than the time between the periods, that
+          // is terrible! The times between buildings are probably quite
+          // inaccurate but whatever. This is a big penalty.
+          score -= 49
+        } else if (timeDiff <= 20) {
+          // If the time between classes is less than 20 min, then reward for
+          // shorter commute times (linearly)
+          score += 136 - timeDiff * 7
+        } else {
+          // If there's like an hour between classes, commute time doesn't
+          // really matter. But the hour gap is pretty annoying
+          score -= 17
+        }
+      }
+      const endTime = schedule[i][schedule[i].length - 1].end
+      // I think I will tolerate up to 4 pm then start deducting points
+      if (endTime > 16 * 60) {
+        // -34 points per hour
+        score -= (endTime / 60 - 16) * 34
+      }
+      const startTime = schedule[i][schedule[i].length - 1].end
+      // 8 am is quite early. I can tolerate 9 am somewhat
+      if (startTime < 9.5 * 60) {
+        // -19 points per hour
+        score -= (9.5 - startTime / 60) * 19
+      }
+    }
+    const classCounts = schedule
+      .map(day => day.length)
+      .filter(classes => classes !== 0)
+    const average =
+      classCounts.reduce((acc, curr) => acc + curr, 0) / classCounts.length
+    const stddev = Math.sqrt(
+      classCounts
+        .map(count => (average - count) ** 2)
+        .reduce((acc, curr) => acc + curr, 0) / classCounts.length
+    )
+    // Punish schedules that do not balance the number of classes per day very
+    // well
+    score -= stddev * 33
+    return score
+  }
+
+  const schedules = Array.from(getPossibleSchedules(), schedule => ({
+    schedule,
+    heuristic: heuristic(schedule)
+  })).sort((a, b) => b.heuristic - a.heuristic)
+  if (!window.displayed) {
+    window.displayed = {
+      wrapper: Object.assign(document.createElement('div'), {}),
+      pre: Object.assign(document.createElement('pre'), {}),
+      prev: Object.assign(document.createElement('button'), {
+        textContent: '<<<'
+      }),
+      next: Object.assign(document.createElement('button'), {
+        textContent: '>>>'
+      })
+    }
+    Object.assign(window.displayed.wrapper.style, {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0
+    })
+    Object.assign(window.displayed.pre.style, {
+      whiteSpace: 'pre',
+      overflow: 'auto'
+    })
+    window.displayed.wrapper.append(
+      window.displayed.pre,
+      window.displayed.prev,
+      window.displayed.next
+    )
+    document.body.append(window.displayed.wrapper)
+  }
+  let index = 0
+  function render () {
+    window.displayed.pre.textContent = displaySchedule(
+      schedules[index].schedule
+    )
+    window.displayed.prev.disabled = index <= 0
+    window.displayed.next.disabled = index >= schedules.length - 1
+  }
+  window.displayed.prev.onclick = () => {
+    index--
+    render()
+  }
+  window.displayed.next.onclick = () => {
+    index++
+    render()
+  }
+  render()
 
   const locals = {
     rawCourseNames,
@@ -281,8 +438,13 @@ async function bruteForce (rawCourseNames, term) {
     getPossibleSchedules,
     days,
     displaySchedule,
-    schedules
+    neededDistances,
+    heuristic,
+    schedules,
+    index,
+    render
   }
+  locals.locals = locals
   Object.assign(globalThis, locals)
   return locals
 }
@@ -357,7 +519,8 @@ async function bruteForce (rawCourseNames, term) {
 
 /**
  * @typedef {Object} HasParsedGroups
- * @property {Record<string, Record<'LE' | 'DI' | 'LA', ParsedGroup[]>>} groups
+ * @property {Record<string, Record<'LE' | 'DI' | 'LA', Record<string,
+ * ParsedGroup>>>} groups
  */
 
 /**
