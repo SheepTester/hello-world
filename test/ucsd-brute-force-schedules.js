@@ -185,10 +185,10 @@ async function bruteForce (
         // Ignore TBA periods
         if (start === 0 && end === 0) continue
         if (courseCode === 'CSE 11' && group.SCTN_CPCTY_QTY === 10) {
-          // "according to the link, they plan to release ~39 seats per section"
+          // "according to the link, they plan to release ~49 seats per section"
           // https://cse.ucsd.edu/undergraduate/fall-undergraduate-course-updates
-          // https://discord.com/channels/822781608184381451/822781608184381453/877730306440982579
-          const inc = 29
+          // https://discord.com/channels/822781608184381451/874780668847087706/877999963131494470
+          const inc = 39
           group.SCTN_CPCTY_QTY += inc
           // For B01, AVAIL_SEAT=-5, SCTN_CPCTY_QTY=10, SCTN_ENRLT_QTY=15,
           // COUNT_ON_WAITLIST=40. I assume when SCTN_CPCTY_QTY becomes 39,
