@@ -10,14 +10,21 @@
 bruteForce(
   // Array of course names or an array of a course name and alternates
   ['cat 1', 'math 18', 'math 20c', ['cse 11', 'cse 8b'], 'ece 15'],
-  'FA21'
+  { term: 'FA21', hideFull: true, noRemote: true }
 )
 
 /**
  * @param {(string | string[])[]} rawCourseNames
- * @param {string} term
+ * @param {object} options
+ * @param {string} options.term
+ * @param {boolean} [options.hideFull] - Whether to filter out full
+ * classes
+ * @param {boolean} [options.noRemote] - Whether to filter out remote classes
  */
-async function bruteForce (rawCourseNames, term) {
+async function bruteForce (
+  rawCourseNames,
+  { term, hideFull = false, noRemote = false }
+) {
   if (!window.displayed) {
     window.displayed = {
       wrapper: Object.assign(document.createElement('div'), {
@@ -177,6 +184,18 @@ async function bruteForce (rawCourseNames, term) {
         const letter = group.SECT_CODE.match(/[a-z]+/i)[0]
         // Ignore TBA periods
         if (start === 0 && end === 0) continue
+        if (courseCode === 'CSE 11' && group.SCTN_CPCTY_QTY === 10) {
+          // "according to the link, they plan to release ~39 seats per section"
+          // https://cse.ucsd.edu/undergraduate/fall-undergraduate-course-updates
+          // https://discord.com/channels/822781608184381451/822781608184381453/877730306440982579
+          group.SCTN_CPCTY_QTY = 39
+        }
+        if (hideFull && group.AVAIL_SEAT === 0) {
+          continue
+        }
+        if (noRemote && building === 'RCLAS') {
+          continue
+        }
         if (
           group.FK_SPM_SPCL_MTG_CD === ' ' ||
           group.FK_SPM_SPCL_MTG_CD === '  '
@@ -207,7 +226,8 @@ async function bruteForce (rawCourseNames, term) {
                   : building === 'GA'
                   ? // GA is said to be in the "new Sixth area"
                     'MOS'
-                  : building
+                  : building,
+              remote: building === 'RCLAS'
             }
           } else {
             throw new Error(
@@ -358,6 +378,10 @@ async function bruteForce (rawCourseNames, term) {
           score -= 68
           continue
         }
+        if (period.remote) {
+          // Quite tired of remote classes
+          score -= 54
+        }
         const commute =
           period.building === before.building
             ? 0
@@ -391,15 +415,16 @@ async function bruteForce (rawCourseNames, term) {
         }
       }
       const endTime = schedule[i][schedule[i].length - 1].end
-      // I think I will tolerate up to 4 pm then start deducting points
-      if (endTime > 16 * 60) {
+      // Late classes: I think I will tolerate up to 4 pm then start deducting
+      // points
+      if (endTime > 15.5 * 60) {
         // -34 points per hour
-        score -= (endTime / 60 - 16) * 97
+        score -= (endTime / 60 - 15.5) * 187
       }
-      const startTime = schedule[i][schedule[i].length - 1].end
-      // 8 am is quite early. I can tolerate 9 am somewhat
+      const startTime = schedule[i][0].start
+      // Morning classes: 8 am is quite early. I can tolerate 9 am somewhat
       if (startTime < 9.5 * 60) {
-        score -= (9.5 - startTime / 60) * 194
+        score -= (9.5 - startTime / 60) * 87
       }
     }
     const classCounts = schedule
@@ -526,6 +551,7 @@ async function bruteForce (rawCourseNames, term) {
  * @property {number} end
  * @property {number[]} days
  * @property {string | null} building
+ * @property {boolean} remote
  */
 
 /**
