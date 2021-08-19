@@ -204,8 +204,15 @@ async function bruteForce (
             group.AVAIL_SEAT -= waitlistMovement
             group.SCTN_ENRLT_QTY += waitlistMovement
           }
+          if (group.AVAIL_SEAT > 0 && group.STP_ENRLT_FLAG === 'Y') {
+            group.STP_ENRLT_FLAG = 'N'
+          }
         }
-        if (hideFull && group.AVAIL_SEAT <= 0) {
+        // Apparently if `AVAIL_SEAT` is 0, `STP_ENRLT_FLAG` remains `N`.
+        if (
+          hideFull &&
+          (group.AVAIL_SEAT <= 0 || group.STP_ENRLT_FLAG === 'Y')
+        ) {
           continue
         }
         if (noRemote && building === 'RCLAS') {
@@ -365,10 +372,10 @@ async function bruteForce (
     let output = `KEY ${chars}`
     for (let i = 1; i <= 7; i++) {
       const chars = new Array((maxTime - minTime) / scale).fill(' ')
-      for (const { start, end, code } of schedule[i].sort(
+      for (const { start, end, code, building } of schedule[i].sort(
         (a, b) => a.start - b.start
       )) {
-        const name = code + ' | '
+        const name = `${code} @ ${building} | `
         const startIndex = Math.floor((start - minTime) / scale)
         const endIndex = Math.floor((end - minTime) / scale)
         for (let i = startIndex; i < endIndex; i++) {
@@ -433,7 +440,7 @@ async function bruteForce (
         } else if (timeDiff <= 20) {
           // If the time between classes is less than 20 min, then reward for
           // shorter commute times (linearly)
-          score += 30 - timeDiff * 1.4
+          score += 30 - commute * 1.4
           // Extra bonus if it's in the same building
           if (commute === 0) {
             score += 13
@@ -469,7 +476,7 @@ async function bruteForce (
     )
     // Punish schedules that do not balance the number of classes per day very
     // well
-    score -= stddev * 217
+    score -= stddev * 417
     return score
   }
 
@@ -478,6 +485,10 @@ async function bruteForce (
     heuristic: heuristic(schedule)
   })).sort((a, b) => b.heuristic - a.heuristic)
   function render (index) {
+    if (schedules.length === 0) {
+      window.displayed.pre.textContent =
+        'No possible schedules. Your criteria are too strict.'
+    }
     window.displayed.pre.textContent = displaySchedule(
       schedules[index].schedule
     )
