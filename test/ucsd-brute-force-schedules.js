@@ -188,9 +188,24 @@ async function bruteForce (
           // "according to the link, they plan to release ~39 seats per section"
           // https://cse.ucsd.edu/undergraduate/fall-undergraduate-course-updates
           // https://discord.com/channels/822781608184381451/822781608184381453/877730306440982579
-          group.SCTN_CPCTY_QTY = 39
+          const inc = 29
+          group.SCTN_CPCTY_QTY += inc
+          // For B01, AVAIL_SEAT=-5, SCTN_CPCTY_QTY=10, SCTN_ENRLT_QTY=15,
+          // COUNT_ON_WAITLIST=40. I assume when SCTN_CPCTY_QTY becomes 39,
+          // then AVAIL_SEAT first becomes 24 (39 - 15 = 24). Then
+          // COUNT_ON_WAITLIST can decrease by 24, and AVAIL_SEAT becomes 0.
+          group.AVAIL_SEAT += inc
+          const waitlistMovement = Math.min(
+            group.COUNT_ON_WAITLIST,
+            group.AVAIL_SEAT
+          )
+          if (waitlistMovement > 0) {
+            group.COUNT_ON_WAITLIST -= waitlistMovement
+            group.AVAIL_SEAT -= waitlistMovement
+            group.SCTN_ENRLT_QTY += waitlistMovement
+          }
         }
-        if (hideFull && group.AVAIL_SEAT === 0) {
+        if (hideFull && group.AVAIL_SEAT <= 0) {
           continue
         }
         if (noRemote && building === 'RCLAS') {
@@ -227,7 +242,10 @@ async function bruteForce (
                   ? // GA is said to be in the "new Sixth area"
                     'MOS'
                   : building,
-              remote: building === 'RCLAS'
+              remote: building === 'RCLAS',
+              available:
+                (group.AVAIL_SEAT - group.COUNT_ON_WAITLIST) /
+                group.SCTN_CPCTY_QTY
             }
           } else {
             throw new Error(
@@ -245,7 +263,17 @@ async function bruteForce (
           )
         }
       }
-      courseData[normalisedId] = { ...course, groups }
+      for (const [key, groupMapping] of Object.entries(groups)) {
+        if (
+          (groupMapping.DI && Object.keys(groupMapping.DI).length > 0) ||
+          (groupMapping.LA && Object.keys(groupMapping.LA).length > 0)
+        ) {
+          continue
+        } else {
+          delete groups[key]
+        }
+      }
+      courseData[normalisedId] = { ...course, groupData, groups }
     }
   }
 
@@ -382,6 +410,8 @@ async function bruteForce (
           // Quite tired of remote classes
           score -= 54
         }
+        // Favour periods with better availability (for planning purposes)
+        score += period.available * 45
         const commute =
           period.building === before.building
             ? 0
@@ -504,7 +534,8 @@ async function bruteForce (
  * @property {number} END_MM_TIME - Minute hand of the end time
  * @property {number} SCTN_CPCTY_QTY - Capacity of the section
  * @property {string} LONG_DESC - Apparently always just a space (" ").
- * @property {number} SCTN_ENRLT_QTY - Number of people already enrolled
+ * @property {number} SCTN_ENRLT_QTY - Number of people already enrolled; can be
+ * greater than `SCTN_CPCTY_QTY`, which makes `AVAIL_SEAT` negative.
  * @property {number} BEGIN_HH_TIME - Hour hand of the start time
  * @property {string} SECTION_NUMBER - 6-digit number (including leading zeroes)
  * @property {string} SECTION_START_DATE - YYYY-MM-DD, same for all groups it
@@ -541,7 +572,7 @@ async function bruteForce (
  * @property {string} SECT_CODE - A capital letter followed by two digits (eg
  * "A01"). The digits tend to be 00 for lectures and 50 for labs, it seems.
  * @property {number} AVAIL_SEAT - Available spots left. Should be equal to
- * `SCTN_CPCTY_QTY - SCTN_ENRLT_QTY`.
+ * `SCTN_CPCTY_QTY - SCTN_ENRLT_QTY`. Can be negative!
  */
 
 /**
@@ -552,10 +583,14 @@ async function bruteForce (
  * @property {number[]} days
  * @property {string | null} building
  * @property {boolean} remote
+ * @property {number} available - A number (up to 1) representing the proportion
+ * of the total seats that is still available. May be negative if there are
+ * people on the waitlist.
  */
 
 /**
  * @typedef {Object} HasParsedGroups
+ * @property {GroupDatum[]} groupData
  * @property {Record<string, Record<'LE' | 'DI' | 'LA', Record<string,
  * ParsedGroup>>>} groups
  */
