@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang=en>
+  <head>
+    <title>nested svgs</title>
+    <meta name=description content="how far can it go?"/>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <style>
+      svg { display: block;}
+    </style>
+  </head>
+  <body>
+    <button id="nested">nest.</button>
+    <script>
+      // irrigation still needed? for how long
+      // ibuprofen still necessary?
+      
+      const svg = (width, num, colour, content = '') => `<svg width="${width}" height="100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <rect x="0" y="0" width="100" height="100" id="rec-${num}" />
+      <style>
+      #rec-${num} {
+        fill: ${colour};
+        animation: anim-${num} .5s alternate infinite;
+      }
+      @keyframes anim-${num} {
+        from {
+          transform: rotate(-5deg);
+        }
+        to {
+          transform: rotate(5deg);
+        }
+      }
+      </style>
+      <text x="0" y="100" font-size="100">${num}</text>
+      ${content}
+    </svg>`
+    
+    let lastSvg = ''
+    let last= 0
+    
+    const clours = ["indianred","lightcoral","salmon","darksalmon","lightsalmon",
+    "crimson","red","firebrick","darkred",
+"pink","lightpink","hotpink","deeppink","mediumvioletred","palevioletred","coral","tomato","orangered","darkorange","orange","gold","yellow","lightyellow","lemonchiffon","lightgoldenrodyellow","papayawhip","moccasin","peachpuff","palegoldenrod","khaki","darkkhaki","lavender","thistle","plum","violet","orchid","fuchsia","magenta","mediumorchid","mediumpurple","rebeccapurple","blueviolet","darkviolet","darkorchid","darkmagenta","purple","indigo","slateblue","darkslateblue","mediumslateblue","greenyellow","chartreuse","lawngreen","lime","limegreen","palegreen","lightgreen","mediumspringgreen","springgreen","mediumseagreen","seagreen","forestgreen","green","darkgreen","yellowgreen","olivedrab","olive","darkolivegreen","mediumaquamarine","darkseagreen","lightseagreen","darkcyan","teal","aqua","cyan","lightcyan","paleturquoise","aquamarine","turquoise","mediumturquoise","darkturquoise","cadetblue","steelblue","lightsteelblue","powderblue","lightblue","skyblue","lightskyblue","deepskyblue","dodgerblue","cornflowerblue","royalblue","blue","mediumblue","darkblue","navy","midnightblue","cornsilk","blanchedalmond","bisque","navajowhite","wheat","burlywood","tan","rosybrown","sandybrown","goldenrod","darkgoldenrod","peru","chocolate","saddlebrown","sienna","brown","maroon","white","snow","honeydew","mintcream","azure","aliceblue","ghostwhite","whitesmoke","seashell","beige","oldlace","floralwhite","ivory","antiquewhite","linen","lavenderblush","mistyrose","gainsboro","lightgray","silver","darkgray","gray","dimgray","lightslategray","slategray","darkslategray","black"]
+
+    const escapeHtml = text => text.replace(/[<>&"]/g, m => `&${{'<': 'lt', '>': 'gt', '&': 'amp', '"': 'quot'}[m]};`)
+    
+    nested.onclick = () => {
+      last++
+      lastSvg = svg(last * 100, last, clours[clours.length * Math.random()|0], lastSvg ?
+      `<image x="100" y="0" width="${(last - 1)*100}" height="100" xlink:href="${escapeHtml(`data:image/svg+xml,${encodeURIComponent(lastSvg)}`)}" />`
+      
+      :  '')
+      nested.insertAdjacentHTML('beforeBegin', lastSvg)
+      
+    }
+    </script>
+  </body>
+  </html>
