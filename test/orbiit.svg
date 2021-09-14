@@ -1,0 +1,48 @@
+<svg viewBox="-10 -10 480 480" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#000" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+  <path d="
+    M180 160
+    a80 80 0 0 1 80 -80
+    h20
+    a40 40 0 0 1 0 80
+    h-20
+    m0 -80
+    v-80
+
+    M360 160
+    v-80
+    m50 0
+    v80
+    m50 0
+    v-160
+    m0 40
+    h-100
+
+    M141.28355544951825 28.57699122507686
+    A80 80 0 1 0 28.57699122507684 141.28355544951825
+
+    M66.10814578664558 158.78462024097664
+    A80 80 0 0 0 158.78462024097664 66.10814578664558
+
+    M136.77251193294845 3.8799070552135273
+    A100 40 -45 1 1 3.8799070552135273 136.77251193294845
+  "/>
+  <!--
+top circle:
+origin (80, 80), r=80, 40 to 230
+(80 + 80cos40, 80 - 80sin40) (start)
+(80 + 80cos230, 80 - 80sin230) (end)
+
+bottom circle:
+(same attributes), 260 to 10
+(80 + 80cos260, 80 - 80sin260)
+(80 + 80cos10, 80 - 80sin10)
+
+ring: rotated 45 counterclockwise
+origin (80, 80), rx=27.3, ry=9.65, 30 to 150 (other direction)
+let x1 = 27.3cos30,  y1 = 9.65sin30,
+    x2 = 27.3cos150, y2 = 9.65sin150
+(80 + x1cos45 - y1sin45, 80 - x1sin45 - y1sin45)
+(80 + x2cos45 - y2sin45, 80 - x2sin45 - y2sin45)
+except nvm about radii, here's new radii: rx=100, ry=40
+  -->
+</svg>

@@ -1,0 +1,11 @@
+<svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg" fill='#4FA1A7'>
+  <path d="M 2 0 L 0 2 L 2 4 L 4 2 z" />
+  <foreignObject x="0" y="0" width="1000" height="500">
+    <iframe
+      xmlns="http://www.w3.org/1999/xhtml"
+      style="width: 1000px; height: 500px;"
+      src="https://blueimp.github.io/JavaScript-MD5/"
+    ></iframe>
+  </foreignObject>
+</svg>
+
