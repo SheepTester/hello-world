@@ -16,15 +16,23 @@
 
   const { upload } = await import(HOST + '/upload-download.bundle.js')
 
+  while (document.head.firstChild) {
+    document.head.removeChild(document.head.firstChild)
+  }
   while (document.body.firstChild) {
     document.body.removeChild(document.body.firstChild)
   }
 
   const iframe = document.createElement('iframe')
   iframe.src = HOST + '/upload.html'
-  iframe.style.border = 'none'
-  iframe.style.width = '100%'
-  iframe.style.height = '100%'
+  Object.assign(iframe.style, {
+    border: 'none',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%'
+  })
   document.body.appendChild(iframe)
   document.body.scrollTo(0, 0)
   document.body.style.fontSize = 0
