@@ -89,7 +89,7 @@
       }
       submitForm.addEventListener('submit', e => {
         e.preventDefault()
-        uploadFiles(files)
+        uploadFiles(files.files)
       })
       document.addEventListener('paste', event => {
         uploadFiles(event.clipboardData.files)
