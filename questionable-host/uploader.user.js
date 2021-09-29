@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         File uploader
 // @namespace    https://sheeptester.github.io/
-// @version      1.0.0
+// @version      1.0.1
 // @description  Go to https://scratch.mit.edu/questionable-host to upload a file.
 // @author       SheepTester
 // @match        https://scratch.mit.edu/about/?questionable-host
