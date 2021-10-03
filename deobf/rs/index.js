@@ -3,18 +3,19 @@ import { exists } from 'https://deno.land/std@0.109.0/fs/exists.ts'
 
 // $ deno run --allow-all deobf/rs/index.js
 
-const onlyFans = 'ZXB1Yg=='
+const onlyFans = atob('ZXB1Yg==')
+
+const [cookie, work] = Deno.args
 const base = atob('aHR0cHM6Ly9wbGF0Zm9ybS52aXJkb2NzLmNvbS8=')
 const options = {
   headers: {
-    Cookie: '...',
+    Cookie: cookie,
     Referer: base
   }
 }
-const work = '...'
 
 async function get (path) {
-  console.log(path)
+  console.log(path + '')
   const response = await fetch(
     path instanceof URL ? path : new URL(path, base),
     options
@@ -25,6 +26,8 @@ async function get (path) {
     throw new Error(`HTTP error ${response.status}: ${await response.text()}`)
   }
 }
+
+await ensureDir(new URL('./pages/files/', import.meta.url))
 
 const pagesPath = new URL('./pages/files/pages.json', import.meta.url)
 const pages = Array.from(
@@ -42,8 +45,6 @@ const pages = Array.from(
 )
 const pageNumLength = `${pages.length}`.length
 
-await ensureDir(new URL('./pages/files/', import.meta.url))
-
 const cssPath = new URL('./pages/files/base.css', import.meta.url)
 if (!(await exists(cssPath))) {
   await Deno.writeTextFile(
@@ -54,7 +55,7 @@ if (!(await exists(cssPath))) {
   )
 }
 
-for (const [i, { manifestitem }] of pages.entries()) {
+for (const [i, { manifestitem, label }] of pages.entries()) {
   const pageNum = (i + 1).toString().padStart(pageNumLength, '0')
   const rawHtmlPath = new URL(
     `./pages/files/${pageNum}-raw.html`,
@@ -92,7 +93,7 @@ for (const [i, { manifestitem }] of pages.entries()) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Page ${i + 1}</title>
+    <title>${label}</title>
 
     <link rel="stylesheet" href="./files/base.css">
     <style>
@@ -120,39 +121,32 @@ for (const [i, { manifestitem }] of pages.entries()) {
     </style>
     <style>
       body {
+        display: flex;
         overflow: auto;
       }
       body img {
         max-width: unset !important;
       }
-      .prev,
-      .next {
-        position: fixed;
-        top: 0;
-      }
-      .prev { left: 0; }
-      .next { right: 0; }
     </style>
   </head>
   <body>
     ${html.match(/<div class="textLayer">(.+?)<\/div>/)[0]}
     <img src="./files/${pageNum}.jpg" />
-    ${
-      i > 0
-        ? `<a class="prev" href="./${i
-            .toString()
-            .padStart(pageNumLength, '0')}.html">&lt;&lt;&lt;</a>`
-        : ''
-    }${
-      i < pages.length - 1
-        ? `<a class="next" href="./${(i + 2)
-            .toString()
-            .padStart(pageNumLength, '0')}.html" autofocus>&gt;&gt;&gt;</a>`
-        : ''
-    }
+    <script>
+      const img = document.querySelector('img')
+      img.addEventListener('load', () => {
+        window.parent.postMessage({ width: img.width, height: img.height, page: document.title }, '*')
+      })
+    </script>
   </body>
 </html>
 `
   )
-  if (i > 3) break
 }
+
+await Deno.writeTextFile(
+  new URL('./pages/index.html', import.meta.url),
+  (await Deno.readTextFile(new URL('./index.html', import.meta.url)))
+    .replace('000.html', `${'1'.padStart(pageNumLength, '0')}.html`)
+    .replace('123', pages.length.toString())
+)
