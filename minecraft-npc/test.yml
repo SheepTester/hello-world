@@ -1,0 +1,15 @@
+knight-dei:
+  name: Knight Dei
+  colour: 8aace8
+  head: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTAwNmU2NDYxYjkyZDJlMjQ4MGFjNGM3OWVhZGVjZTRmOTVkNTQ5MmVjMzBmYTliODdjYjkwMTY3NTQ3ZWYxNyJ9fX0=
+  villager:
+    type: plains
+    profession: armorer
+  dialogue:
+    - if: 'if entity @marked[distance=..7, nbt={ Inventory: [{ id: "minecraft:apple" }] }]'
+      messages:
+        - ['Hey ', @marked, '!']
+        - ['That apple is rotting.', ['Rotting!', { italic: true }]]
+    - messages:
+        - Hello, nerd. How are you?
+        - Scram, child. I must attend to more important matters.

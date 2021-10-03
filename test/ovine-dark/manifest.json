@@ -1,0 +1,69 @@
+{
+    "version": "1",
+    "manifest_version": 2,
+    "name": "Ovine dark theme",
+    "theme": {
+        "images": {
+            "theme_toolbar": "images/toolbar.png"
+        },
+        "colors": {
+            "frame": [
+                32,
+                34,
+                37
+            ],
+            "frame_inactive": [
+                54,
+                57,
+                63
+            ],
+            "frame_incognito": [
+                0,
+                0,
+                0
+            ],
+            "frame_incognito_inactive": [
+                33,
+                33,
+                33
+            ],
+            "bookmark_text": [
+                33,
+                150,
+                243
+            ],
+            "tab_background_text": [
+                114,
+                118,
+                125
+            ],
+            "tab_background_text_incognito": [
+                162,
+                162,
+                162
+            ],
+            "tab_text": [
+                255,
+                255,
+                255
+            ],
+            "toolbar": [
+                47,
+                49,
+                54
+            ],
+            "ntp_background": [
+                54,
+                57,
+                63
+            ]
+        },
+        "tints": {
+            "buttons": [
+                0.575,
+                0.9,
+                0.54
+            ]
+        }
+    }
+}

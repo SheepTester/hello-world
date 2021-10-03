@@ -1,0 +1,11 @@
+# Vim
+*~
+*.swp
+*.swo
+
+# atomic-management per-project configuration
+.atom/config.cson
+
+# Racket
+*.bak
+

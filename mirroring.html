@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <title> unicode mirroring</title>
+    <meta name=description content="Unicode mirroring characters in ltr and rtl is quite sophisticated">
+    <style>
+    div {
+      resize: horizontal;
+      border: 1px solid pink;
+      display: flex;
+      flex-direction: column;
+      width: 50ch;
+      padding: 20px;
+      resize: both;
+      overflow: auto;
+    }
+      textarea {
+        font-size: 2rem;
+        resize: none;
+      }
+    </style>
+  </head>
+  <body onload="rtl.value = ltr.value">
+    <p>for more info, see <a href="https://www.unicode.org/versions/Unicode13.0.0/ch04.pdf#page=21">unicode standard, ch 4</a></p>
+    <div>
+      <textarea id=ltr dir=ltr oninput="rtl.value=this.value" autofocus>[a, b) ]a, b[ ∫ ∲ ∛ ﴾﴿ →</textarea>
+    <br>
+    <textarea id=rtl dir=rtl oninput="ltr.value=this.value"></textarea>
+    </div>
+  </body>
+</html>

@@ -19,3 +19,14 @@ I've done this and pushed the result to [SheepTester/vanilla-worldgen](https://g
 ---
 
 I did not get prior permission to republish the zipped file on [slicedlime/examples](https://github.com/slicedlime/examples) and will take down that repository when asked.
+
+---
+
+For the [caves-and-cliffs branch](https://github.com/SheepTester/vanilla-worldgen/tree/caves-and-cliffs),
+
+```sh
+cd vanilla_worldgen
+git checkout caves-and-cliffs
+../url-unzip https://launcher.mojang.com/v1/objects/.../CavesAndCliffsPreview.zip
+git commit -m "..."
+```

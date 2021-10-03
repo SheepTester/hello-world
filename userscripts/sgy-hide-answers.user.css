@@ -1,0 +1,38 @@
+/* ==UserStyle==
+@name           Hide Schoology assessment answers
+@namespace      sheeptester.github.io
+@version        1.0.2
+@description    Hide the correct answer for reviewing
+@author         SheepTester
+==/UserStyle== */
+
+@-moz-document regexp("https://\\w+.schoology.com/course/\\d+/assessments/\\d+") {
+  /* Schoology class names are about as useful as the SELF program */
+  main article > article:not(:hover) > div:first-child > div:last-child,
+  main article > article:not(:hover) input[type=checkbox],
+  main article > article:not(:hover) input[type=radio],
+  main article > article:not(:hover) .lrn-label:before,
+  main article > article:not(:hover) .lrn-response-validate-wrapper:after,
+  main article > article:not(:hover) .lrn_clozedropdown_answer:after,
+  main article > article:not(:hover) .lrn_sort_block .lrn_item:after {
+    opacity: 0;
+  }
+  main article > article:not(:hover) .lrn_selected,
+  main article > article:not(:hover) .lrn_incorrect,
+  main article > article:not(:hover) .lrn_valid {
+    background: none;
+    border-left-color: transparent !important;
+  }
+  main article > article:not(:hover) .lrn_responseIndex {
+    background-color: dimgray !important;
+  }
+  main article > article:not(:hover) .lrn-response-validate-wrapper {
+    border-color: transparent !important;
+  }
+  main article > article:not(:hover) .lrn_widget.lrn_orderlist .lrn_btn_sort {
+    background: none !important;
+  }
+  main article > article:not(:hover) .lrn_suggested_answer_item {
+    display: none;
+  }
+}

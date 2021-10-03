@@ -1,0 +1,44 @@
+/* ==UserStyle==
+@name           Wide Minecraft Wiki (and hide ads)
+@namespace      sheeptester.github.io
+@version        1.0.2
+@description    The new design is not terrible at least
+@author         SheepTester
+==/UserStyle== */
+
+@-moz-document domain("minecraft.fandom.com") {
+  /* Right sidebar */
+  .page__right-rail,
+  /* Left bar */
+  .global-navigation,
+  /* Blue thing on bottom right */
+  #WikiaBar,
+  /* Fan feed at bottom of page (not really necessary but whatever) */
+  .mcf-wrapper,
+  /* Footer (also not necessary but meh) */
+  .wds-global-footer,
+  /* Ads */
+  #hivi_leaderboard,
+  #ds_cpp,
+  .top-ads-container,
+  .gpt-ad {
+    display: none !important;
+  }
+  body {
+    /* Remove margin that was made for ads */
+    margin-top: 0 !important;
+  }
+  /* For some reason this adds a black bar to the right side */
+  .has-uap .main-container {
+    position: unset;
+  }
+  
+  /** Remove weird space on left side */
+  .main-container {
+    margin-left: 0;
+    width: unset;
+  }
+  .fandom-sticky-header {
+    left: 0;
+  }
+}

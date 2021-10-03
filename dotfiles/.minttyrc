@@ -1,0 +1,11 @@
+BoldAsFont=yes
+ThemeFile=nord
+Transparency=high
+MiddleClickAction=paste
+Font=Consolas
+BoldAsColour=yes
+AllowBlinking=no
+ComposeKey=off
+CursorType=block
+ClicksPlaceCursor=yes
+BellFlash=no

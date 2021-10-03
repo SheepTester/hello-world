@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Upload a file</title>
+    <meta
+      name="description"
+      content="This page doesn't work on its own. You'll need to install a userscript first."
+    />
+
+    <link rel="stylesheet" type="text/css" href="/sheep3.css" />
+    <script src="/sheep3.js" charset="utf-8"></script>
+
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .empty {
+        color: rgba(255, 255, 255, 0.786);
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <form class="main" id="uploader">
+      <div class="progress-bar progress-done" id="progress"></div>
+      <fieldset class="container" id="fieldset">
+        <h1>Upload a file</h1>
+        <label class="text-label">
+          File
+          <input type="file" name="files" id="files" multiple />
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="compressed" id="compressed" checked />
+          Compress files before uploading?
+        </label>
+        <p><input type="submit" value="Upload" /></p>
+
+        <table id="hashes">
+          <tr class="table-heading">
+            <th>File name</th>
+            <th>File hash</th>
+          </tr>
+          <tr id="no-converted">
+            <td colspan="2" class="empty"><em>No converted files.</em></td>
+          </tr>
+        </table>
+      </fieldset>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js"></script>
+    <script>
+      if (window.parent === window) {
+        window.location.replace('./instructions.html')
+      }
+
+      const files = document.getElementById('files')
+      const compressCheckbox = document.getElementById('compressed')
+      const progress = document.getElementById('progress')
+      const submitForm = document.getElementById('uploader')
+      const fieldset = document.getElementById('fieldset')
+      const results = document.getElementById('hashes')
+      let noConverted = document.getElementById('no-converted')
+      let options
+      let fileNames
+      async function uploadFiles (files) {
+        if (files.length === 0) return
+
+        fieldset.disabled = true
+        progress.classList.remove('progress-done')
+        progress.classList.remove('progress-error')
+        progress.style.width = 0
+
+        fileNames = Array.from(files, file => file.name)
+        window.parent.postMessage(
+          {
+            type: 'upload',
+            blobs: compressCheckbox.checked
+              ? await Promise.all(
+                  Array.from(
+                    files,
+                    async file =>
+                      new Blob([pako.deflate(await file.arrayBuffer())])
+                  )
+                )
+              : Array.from(files, file => new Blob([file]))
+          },
+          '*'
+        )
+      }
+      submitForm.addEventListener('submit', e => {
+        e.preventDefault()
+        uploadFiles(files.files)
+      })
+      document.addEventListener('paste', event => {
+        uploadFiles(event.clipboardData.files)
+      })
+      window.addEventListener('message', ({ data }) => {
+        switch (data.type) {
+          case 'progress': {
+            progress.style.width =
+              ((data.blobIndex + data.percent) / fileNames.length) * 100 + '%'
+            break
+          }
+          case 'error': {
+            fieldset.disabled = false
+            progress.style.width = null
+            progress.classList.add('progress-error')
+            break
+          }
+          case 'done': {
+            fieldset.disabled = false
+            progress.style.width = null
+            progress.classList.add('progress-done')
+            if (data.hashes.length > 0 && noConverted) {
+              noConverted.remove()
+              noConverted = null
+            }
+            data.hashes.forEach((hash, i) => {
+              const tr = Object.assign(document.createElement('tr'))
+              tr.appendChild(
+                Object.assign(document.createElement('td'), {
+                  textContent: fileNames[i]
+                })
+              )
+              const td = document.createElement('td')
+              td.appendChild(
+                Object.assign(document.createElement('a'), {
+                  className: 'link-box',
+                  textContent: hash,
+                  href:
+                    `./?` +
+                    new URLSearchParams({
+                      hash,
+                      name: fileNames[i],
+                      compressed: compressCheckbox.checked
+                    }),
+                  target: '_blank'
+                })
+              )
+              tr.appendChild(td)
+              results.appendChild(tr)
+            })
+            break
+          }
+          default: {
+            console.warn('Received a strange message.', data)
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

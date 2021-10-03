@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detect inspect element (Node version)</title>
+</head>
+<body>
+  <p>Don't open devtools (inspect element)!! We will know.</p>
+  <script>
+    function devtools () {
+      const ws = new WebSocket(window.location.href.replace('http', 'ws'))
+      return new Promise(resolve => {
+        ws.addEventListener('message', ({ data }) => {
+          if (data === '[ok]') {
+            resolve(data)
+          } else {
+            const script = document.createElement('script')
+            script.src = `./test.js?id=${data}`
+            const onDone = () => {
+              script.remove()
+            }
+            script.addEventListener('load', onDone)
+            script.addEventListener('error', onDone)
+            document.head.append(script)
+          }
+        })
+      })
+    }
+    devtools().then(() => alert('You opened devtools!'))
+  </script>
+</body>
+</html>

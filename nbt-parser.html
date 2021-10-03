@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>nbt parser</title>
+    <meta name="description" content="parse nbt lol"/>
+    <style>
+      :root {
+        scroll-behavior: smooth;
+      }
+      .result {
+        font-family: 'Courier New', Courier, monospace;
+        padding: 20px;
+        border-radius: 5px;
+        border: 1px solid gray;
+        background-color: rgb(240, 240, 240);
+        white-space: pre-wrap;
+        margin-top: 8px;
+      }
+      .item > .list:not(.list-empty),
+      .item > .compound:not(.compound-empty) {
+        padding-left: calc(2ch - 1px);
+        border-left: 1px solid lightgray;
+      }
+      .name {
+        color: #7D1F7C;
+        font-weight: bold;
+      }
+      .string {
+        color: #B72619;
+      }
+      .number {
+        color: #1A1A9F;
+      }
+      .compound {
+        position: relative;
+      }
+      .list-item:not(:last-child) {
+        margin-bottom: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <p>thnaks to <a href="https://minecraft.fandom.com/wiki/NBT_format#NBT_file">wiki</a></p>
+    <p><label>select FILE <input type="file" id="file" accept=".dat,.dat_old,.nbt" /></label></p>
+    <script src="https://cdn.jsdelivr.net/npm/pako@2.0.4/dist/pako.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    const decoder = new TextDecoder()
+    // TODO: It's probably better to have an impure class that CONSUMES the values and automatically moves
+    // its cursor up every time it's read from (there could also be peek methods to avoid that)
+      function nbtToJs (dataView, { position = 0, tagId = null, getName = true, ...options} = {}) {
+        if (Number.isNaN(position)) throw new Error(`Position is NaN`)
+        // NOTE: Java likes signed integers /shrug
+        const {} = options
+        // tagId may be given by a list type
+        if (tagId === null) {
+          tagId = dataView.getInt8(position++)
+        }
+        let name
+        if (tagId !== 0 && getName) {
+          const length = dataView.getUint16(position)
+          position += 2
+          name = decoder.decode(dataView.buffer.slice(position, position += length))
+        }
+        switch (tagId) {
+          case 0: {
+            // end
+            return { position }
+          }
+          case 1: {
+            // byte
+            return { name, value: dataView.getInt8(position++), position }
+          }
+          case 2: {
+            // short
+            return { name, value: dataView.getInt16(position), position: position + 2 }
+          }
+          case 3: {
+            // int
+            return { name, value: dataView.getInt32(position), position: position + 4 }
+          }
+          case 4: {
+            // long
+            return { name, value: dataView.getBigInt64(position), position: position + 8 }
+          }
+          case 5: {
+            // float
+            return { name, value: dataView.getFloat32(position), position: position + 4 }
+          }
+          case 6: {
+            // double
+            return { name, value: dataView.getFloat64(position), position: position + 8 }
+          }
+          case 7: {
+            // byte array
+            const size = dataView.getInt32(position)
+            position += 4
+            return { name, value: new Int8Array(dataView.buffer.slice(position, position + size)), position: position + size }
+          }
+          case 8: {
+            // string
+            const length = dataView.getUint16(position)
+            position += 2
+            return { name, value: decoder.decode(dataView.buffer.slice(position, position + length)), position: position + length }
+          }
+          case 9: {
+            // list
+            const tagId = dataView.getInt8(position++)
+            const size = dataView.getInt32(position)
+            position += 4
+            const values = []
+            let value
+            for (let i =0; i < size; i++) {
+              ;({ value, position } = nbtToJs(dataView, { position, tagId, getName: false }))
+              values.push(value)
+            }
+            return { name, value: values, position }
+          }
+          case 10: {
+            // compound
+            const object = Object.create(null)
+            let value, tagName
+            do {
+              ;({ value, name: tagName, position } = nbtToJs(dataView, { position }))
+              if (value !== undefined) {
+                object[tagName] = value
+              }
+            } while (value !== undefined)
+            return { name, value: object, position }
+          }
+          case 11: {
+            // int arrays
+            const size = dataView.getInt32(position) * 4
+            position += 4
+            return { name, value: new Int32Array(dataView.buffer.slice(position, position + size)), position: position + size }
+          }
+          case 12: {
+            // long arrays
+            const size = dataView.getInt32(position) * 8
+            position += 4
+            return { name, value: new BigInt64Array(dataView.buffer.slice(position, position + size)), position: position + size }
+          }
+          default: {
+            throw new Error(`Unknown tag ID ${tagId}`)
+          }
+        }
+      }
+
+      function displayResult (value) {
+        if (typeof value === 'number' || typeof value === 'bigint') {
+          return $('<span class="number">').text(String(value))
+        } else if (typeof value === 'string') {
+          return $('<span class="string">').text(JSON.stringify(value))
+        } else if (Array.isArray(value)) {
+          if (value.length === 0) {
+            return $('<span class="list list-empty">[]</div>')
+          }
+          const inline = typeof value[0] !== 'object'
+          const elem = $('<div class="list">')
+          return elem.append(value.map((item, i) => {
+            const itemElem = inline
+              ? $('<span class="item list-item-inline">')
+              : $('<div class="item list-item">')
+            return itemElem.append(inline && i > 0 ? ', ' : '', displayResult(item))
+          }))
+        } else {
+          const entries = Object.entries(value)
+          if (entries.length === 0) {
+            return $('<span class="compound compound-empty">').append('{}')
+          }
+          const elem = $('<div class="compound">')
+          for (const [name, item] of entries) {
+            elem.append($('<div class="item compound-item">').append(
+              $('<span class="name">').text(name),
+              ' ',
+              displayResult(item)
+            ))
+          }
+          return elem
+        }
+      }
+      
+      file.onchange = async () => {
+        if (file.files[0]) {
+          const dataView = new DataView(await file.files[0].arrayBuffer())
+          const result = dataView.getUint16(0) === 0x1f8b
+            ? // 1f 8b is the magic header for gzip
+              nbtToJs(new DataView(pako.inflate(dataView.buffer).buffer))
+            : nbtToJs(dataView)
+          console.log(result.value)
+          const [elem] = displayResult(result.value).addClass('result')
+          $(document.body).append(elem)
+          elem.scrollIntoViewIfNeeded(false)
+        }
+      }
+    </script>
+  </body>
+</html>

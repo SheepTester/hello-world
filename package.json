@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "express-ws": "^5.0.2",
     "js-beautify": "^1.13.13",
     "nearley": "^2.20.1",
     "terser": "^5.7.0"

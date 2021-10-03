@@ -1,0 +1,120 @@
+"*":
+  "atom-discord":
+    elapsed:
+      send: false
+    rest:
+      largeImage: "default"
+      typeName: "editing-idle"
+    smallImage: {}
+    state: {}
+  "atom-easy-jsdoc":
+    beta: true
+  "atom-ide-outline":
+    initialDisplay: false
+  "atom-ide-ui":
+    "atom-ide-code-format":
+      formatOnType: false
+    "atom-ide-debugger":
+      showDebuggerOnBpSet: false
+    "atom-ide-diagnostics-ui": {}
+    "atom-ide-find-references": {}
+    "atom-ide-terminal":
+      black: "#1d1f21"
+      blue: "#81a2be"
+      cyan: "#8abeb7"
+      green: "#b5bd68"
+      magenta: "#b294bb"
+      red: "#cc6666"
+      white: "#c5c8c6"
+      yellow: "#f0c674"
+    hyperclick:
+      win32TriggerKeys: "altKey,metaKey"
+    use:
+      "atom-ide-diagnostics-ui": "always"
+      hyperclick: "never"
+  core:
+    allowPendingPaneItems: false
+    autoHideMenuBar: true
+    customFileTypes:
+      "source.rust": [
+        "rs"
+      ]
+      "source.ts": [
+        "ts"
+      ]
+    debugLSP: true
+    disabledPackages: [
+      "project-manager"
+      "language-svg"
+      "busy-signal"
+      "elm-format"
+      "language-babel"
+      "linter-rust"
+      "atom-ide-outline"
+      "atom-ide-signature-help"
+      "atom-ide-markdown-service"
+      "atom-ide-hyperclick"
+      "atom-ide-definitions"
+      "atom-ide-datatip"
+      "atom-ide-base"
+      "linter"
+      "linter-ui-default"
+    ]
+    editor:
+      multiCursorOnClick: true
+    telemetryConsent: "limited"
+    themes: [
+      "one-dark-ui"
+      "base16-tomorrow-dark-theme"
+    ]
+    uriHandlerRegistration: "always"
+    useProxySettingsWhenCallingApm: false
+    useTreeSitterParsers: false
+  editor:
+    atomicSoftTabs: false
+    invisibles:
+      cr: " "
+      eol: " "
+      space: " "
+    showInvisibles: true
+    softWrap: true
+    tabType: "soft"
+    zoomFontWhenCtrlScrolling: false
+  "elm-format":
+    showNotifications: true
+  elmjutsu:
+    alwaysCompileMain: true
+  "exception-reporting":
+    userId: "b9096bb3-7d1e-4191-a710-405838505b10"
+  "ide-rust": {}
+  "language-elm":
+    autocompleteEnabled: false
+    elmOraclePath: "C:\\Users\\seant\\AppData\\Roaming\\npm\\elm-oracle"
+  "linter-rust":
+    disableExecTimeout: true
+  "linter-ui-default":
+    alwaysTakeMinimumSpace: true
+    useBusySignal: false
+  "markdown-preview": {}
+  "spell-check": {}
+  teletype:
+    askBeforeJoiningPortalViaExternalApp: false
+  "tree-view": {}
+  welcome:
+    showOnStartup: false
+  whitespace: {}
+".elm.source":
+  editor:
+    autoIndentOnPaste: true
+    tabLength: 4
+".go.source":
+  editor:
+    tabType: "hard"
+".nearley.source":
+  editor:
+    tabType: "hard"
+".rust.source":
+  core:
+    useTreeSitterParsers: true
+  editor:
+    tabLength: 4

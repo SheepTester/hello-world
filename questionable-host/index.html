@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Load an uploaded file</title>
+    <meta
+      name="description"
+      content='This won&apos;t automatically download anything until you press the "Download" button.'
+    />
+
+    <link rel="stylesheet" type="text/css" href="/sheep3.css" />
+    <script src="/sheep3.js" charset="utf-8"></script>
+
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .generate-link,
+      .loading,
+      .preview {
+        display: none;
+      }
+      .section-generate-link .generate-link {
+        display: block;
+      }
+      .loading,
+      .preview {
+        height: 100%;
+      }
+      .section-loading .loading,
+      .section-preview .preview {
+        display: flex;
+        flex-direction: column;
+      }
+      .loading {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      .download-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 12px 32px;
+        background-color: #333333;
+      }
+      .flex {
+        flex: auto;
+      }
+      .actual-preview {
+        display: flex;
+        flex-direction: column;
+        flex: auto;
+      }
+      .actual-preview iframe,
+      .actual-preview video,
+      .actual-preview img {
+        height: 0;
+        flex: auto;
+      }
+      .actual-preview iframe {
+        border: none;
+        background-color: white;
+      }
+      .actual-preview img {
+        object-fit: contain;
+      }
+      .has-audio {
+        justify-content: center;
+        align-items: center;
+      }
+      .loading,
+      .no-preview-available,
+      .error {
+        display: none;
+      }
+      .show-loading,
+      .show-no-preview-available,
+      .show-error {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+      }
+      .show-loading .loading,
+      .show-no-preview-available .no-preview-available,
+      .show-error .error {
+        display: block;
+      }
+      .progress-bar {
+        position: fixed;
+        z-index: 10;
+        padding: 0 3px;
+        background-color: #60cdff;
+        margin: -3px;
+        height: 6px;
+        width: 100%;
+      }
+      .progress-error {
+        background-color: #ff99a4;
+        transition: width 0.5s, background-color 0.5s;
+      }
+      .progress-done {
+        opacity: 0;
+        transition: opacity 0.5s;
+      }
+    </style>
+  </head>
+  <body class="section-loading">
+    <div class="section loading">
+      <p>Loading.</p>
+      <noscript>
+        <p>(By the way, you'll need to enable JavaScript.)</p>
+      </noscript>
+    </div>
+    <form class="main section generate-link" method="GET">
+      <div class="container">
+        <h1 class="display">Generate a link</h1>
+        <p>*Required</p>
+        <label class="text-label">
+          File MD5 hash*
+          <input
+            type="text"
+            name="hash"
+            placeholder="24310a98bae36609aa4b184e0cd20988"
+            required
+            autofocus
+          />
+        </label>
+        <label class="text-label">
+          File name, with file extension
+          <input type="text" name="name" placeholder="nichodon-mixtape.mp3" />
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="compressed" />
+          Was the file uploaded compressed?
+        </label>
+        <input type="submit" value="Generate" />
+      </div>
+    </form>
+    <div class="section preview">
+      <div class="progress-bar" id="progress"></div>
+      <div class="download-bar">
+        <h1 class="title" id="file-name">File</h1>
+        <span class="flex"></span>
+        <a class="button" id="download-link">Download</a>
+      </div>
+      <div class="actual-preview" id="preview">
+        <p class="loading">Loading. <span id="percent">0.0</span>%</p>
+        <p class="no-preview-available">No preview available.</p>
+        <p class="error">There was a problem loading the file. Sucks.</p>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js"></script>
+    <script type="module">
+      import { download, downloadOld } from './upload-download.bundle.js'
+
+      const mimeTypes = {
+        iframe: {
+          pdf: 'application/pdf',
+          html: 'text/html'
+        },
+        video: {
+          mp4: 'video/mp4',
+          mpeg: 'video/mpeg',
+          webm: 'video/webm'
+        },
+        audio: {
+          weba: 'audio/webm',
+          mp3: 'audio/mpeg',
+          wav: 'audio/wav',
+          ogg: 'audio/ogg'
+        },
+        image: {
+          bmp: 'image/bmp',
+          gif: 'image/gif',
+          jpg: 'image/jpeg',
+          jpeg: 'image/jpeg',
+          png: 'image/png',
+          svg: 'image/svg+xml',
+          webp: 'image/webp'
+        }
+      }
+
+      document.body.classList.remove('section-loading')
+      const params = new URL(window.location).searchParams
+      const options = {
+        hash: params.get('hash'),
+        name: params.get('name'),
+        compressed:
+          params.get('compressed') !== 'false'
+            ? params.get('compressed')
+            : false
+      }
+      const elems = {
+        name: document.getElementById('file-name'),
+        downloadLink: document.getElementById('download-link'),
+        preview: document.getElementById('preview'),
+        progress: document.getElementById('progress'),
+        percent: document.getElementById('percent')
+      }
+      const hash = options.hash
+      if (hash) {
+        const fileName =
+          options.name ||
+          (hash.includes('.') ? 'file.' + hash.split('.').slice(-1)[0] : 'File')
+        elems.name.textContent = fileName
+        elems.downloadLink.download = fileName
+        document.body.classList.add('section-preview')
+        elems.preview.classList.add('show-loading')
+
+        let mimeType = ''
+        outer: for (const type of Object.values(mimeTypes)) {
+          for (const [extension, mime] of Object.entries(type)) {
+            if (fileName.endsWith('.' + extension)) {
+              mimeType = mime
+              break outer
+            }
+          }
+        }
+
+        const isType = Object.fromEntries(
+          Object.entries(mimeTypes).map(([type, extensions]) => {
+            for (const extension of Object.keys(extensions)) {
+              if (fileName.endsWith('.' + extension)) {
+                return [type, true]
+              }
+            }
+            return [type, false]
+          })
+        )
+
+        const handleProgress = progress => {
+          elems.progress.style.width = progress * 100 + '%'
+          elems.percent.textContent = (progress * 100).toFixed(1)
+        }
+        const handleDone = async file => {
+          if (options.compressed) {
+            file = new Blob(
+              [pako.inflate(new Uint8Array(await file.arrayBuffer()))],
+              { type: file.type }
+            )
+          }
+          const url = URL.createObjectURL(file)
+          elems.downloadLink.href = url
+          elems.preview.classList.remove('show-loading')
+          elems.progress.classList.add('progress-done')
+          if (isType.iframe) {
+            const iframe = document.createElement('iframe')
+            iframe.src = url
+            elems.preview.appendChild(iframe)
+          } else if (isType.video) {
+            const video = document.createElement('video')
+            video.src = url
+            video.controls = true
+            elems.preview.appendChild(video)
+          } else if (isType.audio) {
+            const audio = document.createElement('audio')
+            audio.src = url
+            audio.controls = true
+            elems.preview.classList.add('has-audio')
+            elems.preview.appendChild(audio)
+          } else if (isType.image) {
+            const image = document.createElement('img')
+            image.src = url
+            elems.preview.appendChild(image)
+          } else {
+            elems.preview.classList.add('show-no-preview-available')
+          }
+        }
+        const handleError = error => {
+          console.error(error)
+          elems.progress.style.width = null
+          elems.preview.classList.remove('show-loading')
+          elems.preview.classList.add('show-error')
+          elems.progress.classList.add('progress-error')
+        }
+        if (hash.includes('.')) {
+          downloadOld(hash.split('.').slice(0, -1), handleProgress, mimeType)
+            .then(handleDone)
+            .catch(handleError)
+        } else {
+          download(hash, handleProgress, mimeType)
+            .then(handleDone)
+            .catch(handleError)
+        }
+      } else {
+        document.body.classList.add('section-generate-link')
+      }
+    </script>
+  </body>
+</html>
