@@ -1,7 +1,7 @@
 import { ensureDir } from 'https://deno.land/std@0.109.0/fs/ensure_dir.ts'
 import { exists } from 'https://deno.land/std@0.109.0/fs/exists.ts'
 
-// $ deno run --allow-all deobf/rs/index.js
+// $ deno run --allow-all deobf/rs/index.js <cookie> <work ID>
 
 const onlyFans = atob('ZXB1Yg==')
 
@@ -149,4 +149,39 @@ await Deno.writeTextFile(
   (await Deno.readTextFile(new URL('./index.html', import.meta.url)))
     .replace('000.html', `${'1'.padStart(pageNumLength, '0')}.html`)
     .replace('123', pages.length.toString())
+)
+
+const outlinePath = new URL('./pages/files/metadata.json', import.meta.url)
+const { outline } = await Deno.readTextFile(outlinePath)
+  .then(JSON.parse)
+  .catch(async () => {
+    const metadata = await get(`/api/v2/${onlyFans}/${work}/`).then(r =>
+      r.json()
+    )
+    const { objects: outline } = await get(
+      `/api/v2/${atob(
+        'bmN4ZW50cnk='
+      )}/?${onlyFans}=${work}&limit=400&nav_list=${
+        metadata.toc_list.split('/')[4]
+      }&offset=0`
+    ).then(r => r.json())
+    const json = { metadata, outline }
+    await Deno.writeTextFile(outlinePath, JSON.stringify(json, null, 2))
+    return json
+  })
+
+const entries = {}
+const topLevel = []
+for (const { resource_uri: id, key, label, parent: parentId } of outline) {
+  const entry = { label, pageIndex: +key.match(/\d+/)[0], children: [] }
+  entries[id] = entry
+  if (parentId) {
+    entries[parentId].children.push(entry)
+  } else {
+    topLevel.push(entry)
+  }
+}
+await Deno.writeTextFile(
+  new URL('./pages/files/contents.json', import.meta.url),
+  JSON.stringify(topLevel, null, 2)
 )
