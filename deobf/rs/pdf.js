@@ -11,7 +11,7 @@ const {
 } = require('./pages/files/pages.json')
 const contents = require('./pages/files/contents.json')
 
-const htmlEscapes = { amp: '&', quot: '"' }
+const htmlEscapes = { amp: '&', quot: '"', apos: "'", lt: '<', gt: '>' }
 const fonts = {
   'sans-serif': 'Helvetica',
   serif: 'Times-Roman',
@@ -21,15 +21,19 @@ const fonts = {
 async function main () {
   doc.pipe(createWriteStream(resolve(__dirname, './out.pdf')))
 
-  function addOutlineItems (items, target) {
+  let i
+
+  function * addOutlineItems (items, target) {
+    if (target === doc) yield
     for (const { label, pageIndex, children } of items) {
+      while (i + 1 < pageIndex) yield
       const section = target.addItem(label, { expanded: true })
-      addOutlineItems(children, section)
+      yield * addOutlineItems(children, section)
     }
   }
-  addOutlineItems(contents, doc.outline)
+  const outlineItems = addOutlineItems(contents, doc.outline)
 
-  for (let i = 0; i < pageCount; i++) {
+  for (i = 0; i < pageCount; i++) {
     const pageId = (i + 1).toString().padStart(pageCount.toString().length, '0')
 
     // Hardcoding dimensions :( (idk how to get width/height from jpg)
@@ -81,7 +85,7 @@ async function main () {
       throw new Error('The <span> regex was not exhaustive:\n' + remains)
     }
 
-    if (i > 3) break
+    outlineItems.next()
   }
 
   doc.end()
