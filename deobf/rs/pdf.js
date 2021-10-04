@@ -1,15 +1,16 @@
-// $ node deobf/rs/pdf.js
+// $ node deobf/rs/pdf.js 'title' 'author'
 
 const { createWriteStream } = require('fs')
 const fs = require('fs/promises')
 const { resolve } = require('path')
 const PDFDocument = require('pdfkit')
-const doc = new PDFDocument({ autoFirstPage: false })
 
 const {
   meta: { total_count: pageCount }
 } = require('./pages/files/pages.json')
 const contents = require('./pages/files/contents.json')
+
+const [, , title = 'Literature', author = 'Obama'] = process.argv
 
 const htmlEscapes = { amp: '&', quot: '"', apos: "'", lt: '<', gt: '>' }
 const fonts = {
@@ -19,6 +20,11 @@ const fonts = {
 }
 
 async function main () {
+  const doc = new PDFDocument({
+    autoFirstPage: false,
+    info: { Title: title, Author: author }
+  })
+
   doc.pipe(createWriteStream(resolve(__dirname, './out.pdf')))
 
   let i
@@ -84,6 +90,9 @@ async function main () {
     if (remains.includes('span>')) {
       throw new Error('The <span> regex was not exhaustive:\n' + remains)
     }
+
+    // Comment out for plain text version
+    doc.image(resolve(__dirname, `./pages/files/${pageId}.jpg`), 0, 0)
 
     outlineItems.next()
   }
