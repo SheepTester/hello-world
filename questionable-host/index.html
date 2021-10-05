@@ -206,6 +206,7 @@
           (hash.includes('.') ? 'file.' + hash.split('.').slice(-1)[0] : 'File')
         elems.name.textContent = fileName
         elems.downloadLink.download = fileName
+        document.title = fileName
         document.body.classList.add('section-preview')
         elems.preview.classList.add('show-loading')
 
