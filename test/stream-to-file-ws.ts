@@ -13,10 +13,11 @@ console.log(`HTTP webserver running. Access it at: http://localhost:8080/`)
 await serve(
   async request => {
     const [, path = null] =
-      new URL(request.url).pathname.match(/^\/([\w.]+)$/) ?? []
+      new URL(request.url).pathname.match(/^\/([\w.-]+)$/) ?? []
     if (!path) {
-      return new Response(String.raw`The path must match /^\/([\w.]+)$/.`, {
-        status: 404
+      return new Response(String.raw`The path must match /^\/([\w.-]+)$/.`, {
+        status: 404,
+        headers: { 'Access-Control-Allow-Origin': '*' }
       })
     }
     try {
@@ -39,11 +40,22 @@ await serve(
       socket.addEventListener('close', () => {
         file.close()
       })
+      // response.headers.append('Access-Control-Allow-Origin', '*')
       return response
-    } catch {
-      return new Response('You may only open WebSocket connections with me.', {
-        status: 500
-      })
+    } catch (error) {
+      if (
+        error instanceof TypeError &&
+        error.message === "Invalid Header: 'upgrade' header must be 'websocket'"
+      ) {
+        return new Response(
+          'You may only open WebSocket connections with me.',
+          {
+            status: 400,
+            headers: { 'Access-Control-Allow-Origin': '*' }
+          }
+        )
+      }
+      throw error
     }
   },
   { addr: ':8080' }
