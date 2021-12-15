@@ -1,0 +1,13 @@
+/* ==UserStyle==
+@name           Expand UCSD account history
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    The account history table is kept very short and narrow for some reason. This allows it to expand fully and freely.
+@author         SheepTester
+==/UserStyle== */
+
+@-moz-document url-prefix("https://act.ucsd.edu/tritonPay/student/currentAccountActivity.htm"), url-prefix("https://act.ucsd.edu/tritonPay/student/priorMonth.htm") {
+  .arBalance1 {
+    height: unset;
+  }
+}
