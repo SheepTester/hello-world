@@ -12,7 +12,7 @@ fn main() {
         .collect::<Vec<Vec<_>>>();
 
     let mut visited = HashSet::new();
-    let mut distances = HashMap::from([((0, 0), map[0][0])]);
+    let mut distances = HashMap::from([((0, 0), 0)]);
 
     let mut row = 0;
     let mut column = 0;
