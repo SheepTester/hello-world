@@ -1,5 +1,6 @@
 use std::collections::{HashMap, HashSet};
 
+/// https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 fn main() {
     let map = include_str!("../../day-15-input.txt")
         .lines()
@@ -16,16 +17,17 @@ fn main() {
     let mut row = 0;
     let mut column = 0;
     let lowest_risk_path = loop {
-        let risk = map[row][column];
-        let mut neighbour_distances = vec![];
+        let distance = *distances
+            .get(&(row, column))
+            .expect("The distance to this position should've already been calculated.");
 
         let mut consider_neighbour = |neighbour_row: usize, neighbour_column: usize| {
             if visited.contains(&(neighbour_row, neighbour_column)) {
                 return;
             }
 
-            let calculated_distance = risk + map[neighbour_row][neighbour_column];
-            let closest_distance = distances
+            let calculated_distance = distance + map[neighbour_row][neighbour_column];
+            distances
                 .entry((neighbour_row, neighbour_column))
                 .and_modify(|distance| {
                     if calculated_distance < *distance {
@@ -33,7 +35,6 @@ fn main() {
                     }
                 })
                 .or_insert(calculated_distance);
-            neighbour_distances.push((neighbour_row, neighbour_column, *closest_distance));
         };
         if row > 0 {
             consider_neighbour(row - 1, column);
@@ -55,12 +56,13 @@ fn main() {
         }
         visited.insert((row, column));
 
-        let (next_row, next_column, _) = *neighbour_distances
+        let ((next_row, next_column), _) = distances
             .iter()
-            .min_by_key(|neighbour| neighbour.2)
-            .expect("It appears I do not have an unvisited neighbour.");
-        row = next_row;
-        column = next_column;
+            .filter(|(position, _)| !visited.contains(position))
+            .min_by_key(|(_, distance)| *distance)
+            .expect("There are no unvisited positions.");
+        row = *next_row;
+        column = *next_column;
     };
 
     println!("{}", lowest_risk_path);
