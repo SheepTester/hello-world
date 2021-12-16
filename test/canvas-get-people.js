@@ -36,16 +36,14 @@ for (const {
   })
 }
 
-let win
-do {
-  if (win) {
-    await new Promise(resolve => {
-      document.addEventListener('click', resolve, { once: true })
-      alert('Please click the page!')
-    })
-  }
+let win = window.open('about:blank')
+while (!win) {
+  await new Promise(resolve => {
+    document.addEventListener('click', resolve, { once: true })
+    alert('Please click the page!')
+  })
   win = window.open('about:blank')
-} while (!win.document)
+}
 win.document.documentElement.innerHTML = `<h1>${courseName}</h1><table>${
   Object.values(sections)
   .sort((a, b) => a.name.localeCompare(b.name))
