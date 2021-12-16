@@ -5,7 +5,7 @@ const users = []
 let page = 1
 let results
 do {
-  results = await fetch(`https://canvas.ucsd.edu/api/v1/courses/31030/users?${
+  results = await fetch(`https://canvas.ucsd.edu/api/v1/courses/${ENV.course.id}/users?${
     new URLSearchParams([
       ['include[]', 'avatar_url'],
       ['include[]', 'enrollments'],
@@ -35,11 +35,21 @@ for (const {
     id
   })
 }
-const win = window.open('about:blank')
+
+let win
+do {
+  if (win) {
+    await new Promise(resolve => {
+      document.addEventListener('click', resolve, { once: true })
+      alert('Please click the page!')
+    })
+  }
+  win = window.open('about:blank')
+} while (!win.document)
 win.document.documentElement.innerHTML = `<h1>${courseName}</h1><table>${
   Object.values(sections)
   .sort((a, b) => a.name.localeCompare(b.name))
-  .map(({ name, users }) => `<tr><td></td><th>${name}</th></tr>${
+  .map(({ name, users }) => `<tr><th colspan="2">${name}</th></tr>${
     users
     .map(({ avatar, name, id }) => `<tr><td>${
       avatar ? `<img src="${avatar}" /><span>=IMAGE(${JSON.stringify(avatar)})</span>` : ''
