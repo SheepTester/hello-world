@@ -1,47 +1,19 @@
-use std::collections::{HashMap, HashSet};
+use std::{
+    collections::{HashMap, HashSet},
+    env::args,
+};
 
-const PART_1: bool = false;
-
-/// https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-fn main() {
-    let map = include_str!("../../day-15-input.txt")
-        .lines()
-        .map(|line| {
-            line.chars()
-                .map(|char| char.to_digit(10).expect("I expected a digit."))
-                .collect()
-        })
-        .collect::<Vec<Vec<_>>>();
-    let get_risk = |row: usize, column: usize| {
-        if PART_1 {
-            map[row][column]
-        } else {
-            (map[row % map.len()][column % map[0].len()]
-                + (row / map.len()) as u32
-                + (column / map[0].len()) as u32
-                - 1)
-                % 9
-                + 1
-        }
-    };
-
+/// https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm /ˈdaɪkstrəz/
+fn dijkstras_algorithm<F>(mut get_risk: F, end_row: usize, end_column: usize) -> u32
+where
+    F: FnMut(usize, usize) -> u32,
+{
     let mut visited = HashSet::new();
     let mut distances = HashMap::from([((0, 0), 0)]);
 
-    let end_row = if PART_1 {
-        map.len() - 1
-    } else {
-        map.len() * 5 - 1
-    };
-    let end_column = if PART_1 {
-        map[0].len() - 1
-    } else {
-        map[0].len() * 5 - 1
-    };
-
     let mut row = 0;
     let mut column = 0;
-    let lowest_risk_path = loop {
+    loop {
         let distance = *distances
             .get(&(row, column))
             .expect("The distance to this position should've already been calculated.");
@@ -75,7 +47,7 @@ fn main() {
         }
 
         if row == end_row && column == end_column {
-            break distances
+            break *distances
                 .get(&(row, column))
                 .expect("The distance to the destination should've already been calculated.");
         }
@@ -88,7 +60,50 @@ fn main() {
             .expect("There are no unvisited positions.");
         row = *next_row;
         column = *next_column;
-    };
+    }
+}
 
-    println!("{}", lowest_risk_path);
+type RiskMap = Vec<Vec<u32>>;
+
+fn part_1(map: RiskMap) {
+    println!(
+        "{}",
+        dijkstras_algorithm(
+            |row: usize, column: usize| map[row][column],
+            map.len() - 1,
+            map[0].len() - 1
+        )
+    );
+}
+
+fn part_2_naive(map: RiskMap) {
+    println!(
+        "{}",
+        dijkstras_algorithm(
+            |row: usize, column: usize| (map[row % map.len()][column % map[0].len()]
+                + (row / map.len()) as u32
+                + (column / map[0].len()) as u32
+                - 1)
+                % 9
+                + 1,
+            map.len() * 5 - 1,
+            map[0].len() * 5 - 1
+        )
+    );
+}
+
+fn main() {
+    let map = include_str!("../../day-15-input.txt")
+        .lines()
+        .map(|line| {
+            line.chars()
+                .map(|char| char.to_digit(10).expect("I expected a digit."))
+                .collect()
+        })
+        .collect::<Vec<Vec<_>>>();
+
+    match args().next().as_ref().map(|str| str.as_str()) {
+        Some("part-2-naive") => part_2_naive(map),
+        _ => part_1(map),
+    }
 }
