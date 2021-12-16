@@ -137,22 +137,30 @@ class BitParser {
         }
       }
       switch (type) {
-        case 0: // sum
-          {return values.reduce((a, b) => a + b, 0)}
-        case 1: // product
-          {return values.reduce((a, b) => a * b, 1)}
-        case 2: // minimum
-          {return Math.min(...values)}
-        case 3: // maximum
-          {return Math.max(...values)}
-        case 5: // greater than
-          {return +(values[0] > values[1])}
-        case 6: // less than
-          {return +(values[0] < values[1])}
-        case 7: // equal
-          {return +(values[0] === values[1])}
-        default:
-          {throw new Error(`Unexpected packet type ${type}`)}
+        case 0: { // sum
+          return values.reduce((a, b) => a + b, 0)
+        }
+        case 1: { // product
+          return values.reduce((a, b) => a * b, 1)
+        }
+        case 2: { // minimum
+          return Math.min(...values)
+        }
+        case 3: { // maximum
+          return Math.max(...values)
+        }
+        case 5: { // greater than
+          return +(values[0] > values[1])
+        }
+        case 6: { // less than
+          return +(values[0] < values[1])
+        }
+        case 7: { // equal
+          return +(values[0] === values[1])
+        }
+        default: {
+          throw new Error(`Unexpected packet type ${type}`)
+        }
       }
     }
   }
