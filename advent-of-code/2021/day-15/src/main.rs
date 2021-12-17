@@ -53,10 +53,11 @@ where
                 .expect("The distance to the destination should've already been calculated.");
         }
         visited.insert((row, column));
+        // LOL oops
+        distances.remove(&(row, column));
 
         let ((next_row, next_column), d) = distances
             .iter()
-            .filter(|(position, _)| !visited.contains(position))
             .min_by_key(|(_, distance)| *distance)
             .expect("There are no unvisited positions.");
         row = *next_row;
