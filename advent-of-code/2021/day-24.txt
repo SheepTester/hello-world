@@ -1,0 +1,286 @@
+inp w0
+mul x 0  x = 0
+add x z  x = 0
+mod x 26 x = 0
+div z 1  z = 0
+add x 11 x = 11
+eql x w  11 != w -> x = 0
+eql x 0  x = 0 -> x = 1
+mul y 0  y = 0
+add y 25 y = 25
+mul y x  y = 25
+add y 1  y = 26
+mul z y  z = 0
+mul y 0  y = 0
+add y w  y = w
+add y 7  y = w + 7
+mul y x  y = w + 7
+add z y  z = w + 7
+
+inp w1
+mul x 0  x = 0
+add x z  x = w0 + 7)
+mod x 26 x = (w0 + 7) % 26
+div z 1  z = w0 + 7
+add x 14 x = (w0 + 7) % 26 + 14
+eql x w  (w0 + 7) % 26 + 14 != w1 -> x = 0
+eql x 0  x = 0 -> x = 1
+mul y 0  y = 0
+add y 25 y = 25
+mul y x  y = 25
+add y 1  y = 26
+mul z y  z = 26(w0 + 7)
+mul y 0  y = 0
+add y w  y = w1
+add y 8  y = w1 + 8
+mul y x  y = w1 + 8
+add z y  z = 26(w0 + 7) + w1 + 8
+
+inp w2
+mul x 0  x = 0
+add x z  x = 26(w0 + 7) + w1 + 8
+mod x 26 x = (26(w0 + 7) + w1 + 8) % 26
+div z 1
+add x 10
+eql x w  whatever + 10 != w2 -> x = 0
+eql x 0  yes -> x = 1
+mul y 0  y = 0
+add y 25 y = 25
+mul y x  y = 25
+add y 1  y = 26
+mul z y  z = 26(26(w0 + 7) + w1 + 8)
+mul y 0  y = 0
+add y w  y = w2 hmmm
+add y 16 y = w2 + 16
+mul y x
+add z y  z = 26(26(w0 + 7) + w1 + 8) + w2 + 16
+
+Hypothesis: z' = y1(z + w + y2)
+
+inp w3
+mul x 0
+add x z  x = something
+mod x 26 x = (w2 + 16) % 26 ah whatever
+div z 1
+add x 14
+eql x w  not equal
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1  26 again...
+mul z y
+mul y 0
+add y w
+add y 8  +8
+mul y x
+add z y  z = 26(26(26(w0 + 7) + w1 + 8) + w2 + 16) + w3 + 8
+
+inp w4
+mul x 0
+add x z
+mod x 26 x = (26(26(26(w0 + 7) + w1 + 8) + w2 + 16) + w3 + 8) % 26 = (w3 + 8) % 26
+div z 26 horrifying. z = (26(26(26(w0 + 7) + w1 + 8) + w2 + 16) + w3 + 8) / 26 = 26(26(w0 + 7) + w1 + 8) + w2 + 16 because w3 + 8 < 26
+add x -8 ooh, interesting. x = (w3 + 8) % 26 - 8 = w3
+eql x w  possibly! depends on w3 = w4. which is better?
+eql x 0  x = w3 != w4
+mul y 0  y = 0
+add y 25 y = 25
+mul y x  y = 0 or 25
+add y 1  y = 1 or 26
+mul z y  z = (1 or 26)(26(26(w0 + 7) + w1 + 8) + w2 + 16)
+mul y 0
+add y w
+add y 3  y = 3 + w4
+mul y x  y = 0 or (3 + w5) Lower is better, at this point. Let w3 == w4, so x = 0, so y = 0
+add z y  z = 26(26(w0 + 7) + w1 + 8) + w2 + 16
+
+inp w5
+mul x 0
+add x z
+mod x 26
+div z 1  this is standard
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y  z = 26(26(26(w0 + 7) + w1 + 8) + w2 + 16) + w5 + 12. hmm, I don't think this will eq 0
+
+inp w6
+mul x 0
+add x z
+mod x 26 x = (w5 + 12) % 26 = w5 + 12
+div z 26 z = 26(26(w0 + 7) + w1 + 8) + w2 + 16 ooh
+add x -11
+eql x w  w5 + 12 - 11 =? w6 -> w5 + 1 == w6
+eql x 0  we want x = 0 here. therefore, w5 + 1 == w6 (and w3 == w4)
+mul y 0
+add y 25
+mul y x  y = 0
+add y 1  y = 1
+mul z y  no op
+mul y 0
+add y w
+add y 1
+mul y x  y = 0
+add z y  no op, z = 26(26(w0 + 7) + w1 + 8) + w2 + 16 still
+
+inp w7
+mul x 0
+add x z
+mod x 26
+div z 1  rip
+add x 10
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 8
+mul y x
+add z y  z = 26(26(26(w0 + 7) + w1 + 8) + w2 + 16) + w7 + 8
+
+inp w8
+mul x 0
+add x z
+mod x 26 x = w7 + 8
+div z 26 z = 26(26(w0 + 7) + w1 + 8) + w2 + 16
+add x -6 
+eql x w  w7 + 8 - 6 = w7 + 2 ?= w8 -> w7 + 2 == w8
+eql x 0  -> x = 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 8
+mul y x
+add z y
+
+inp w9
+mul x 0
+add x z  z = x = 26(26(w0 + 7) + w1 + 8) + w2 + 16
+mod x 26 x = w2 + 16
+div z 26 z = 26(w0 + 7) + w1 + 8
+add x -9 x = w2 + 16 - 9 = w2 + 7 == w9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 14
+mul y x
+add z y
+
+inp w10
+mul x 0
+add x z
+mod x 26
+div z 1  aiya, z = 26(w0 + 7) + w1 + 8
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 4
+mul y x
+add z y  z = 26(26(w0 + 7) + w1 + 8) + w10 + 4
+
+inp w11
+mul x 0
+add x z  z = 26(26(w0 + 7) + w1 + 8) + w10 + 4
+mod x 26 x = w10 + 4
+div z 26 z = 26(w0 + 7) + w1 + 8
+add x -5 
+eql x w  w10 + 4 - 5 = w10 - 1 == w11
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 14
+mul y x
+add z y  z = 26(w0 + 7) + w1 + 8
+
+inp w12
+mul x 0
+add x z
+mod x 26 x = w1 + 8
+div z 26 z = w0 + 7
+add x -4
+eql x w  w1 + 8 - 4 = w1 + 4 == w12
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y  z = w0 + 7
+
+inp w13
+mul x 0
+add x z
+mod x 26 x = w0 + 7
+div z 26 z = 0 yayy
+add x -9
+eql x w  w0 + 7 - 9 = w0 - 2 == w13
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 6
+mul y x
+add z y
+
+Therefore,
+1. w3 == w4
+2. w5 + 1 == w6
+3. w7 + 2 == w8
+4. w2 + 7 == w9
+5. w10 - 1 == w11
+6. w1 + 4 == w12
+7. w0 - 2 == w13
+
+Part 1:
+          1111
+01234567890123
+95299897999897
+
+Part 2:
+          1111
+01234567890123
+31111121382151
