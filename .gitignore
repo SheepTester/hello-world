@@ -1,3 +1,10 @@
 node_modules
 package-lock.json
 ignored
+
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.synctex(busy)

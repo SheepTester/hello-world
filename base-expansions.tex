@@ -1,0 +1,131 @@
+\documentclass[a5paper, fleqn]{article}
+\usepackage[margin=1cm]{geometry}
+\setlength{\footskip}{0.5cm}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{fp}
+\usepackage{lineno}
+
+\usepackage{xcolor}
+\pagecolor[HTML]{0f172a}
+\color[HTML]{e2e8f0}
+
+\DeclareMathOperator{\half}{half}
+\DeclareMathOperator{\Div}{div}
+\DeclareMathOperator{\Mod}{mod}
+\DeclareMathOperator{\base}{base}
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\posint}{\mathbb{Z}^+}
+
+\begin{document}
+
+\section*{Recursively defining base $b$ expansion calculators}
+
+Our CSE 20 professor defined a bunch of procedures in pseudocode using rather
+imperative constructs such as \texttt{while} loops, even though it could be
+defined using some epic iterative recursion instead.
+
+\vspace{1em}
+
+\begin{linenumbers}
+  \textbf{procedure} $half(n: \text{a positive integer})$
+
+  $r := 0$
+
+  \textbf{while} $n > 1$
+
+  \vspace{-1em}
+  \begin{quote}
+    $r := r + 1$ \\
+    $n := n - 2$
+  \end{quote}
+  \vspace{-1em}
+
+  \textbf{return} $r$ \{$r$ holds the result of the operation\}
+
+\end{linenumbers}
+
+\vspace{1em}
+
+This could instead be defined with a piecewise function.
+\begin{align*}
+  \half'       & : \nat \times \nat \to \nat               \\
+  \half'(r, n) & = \begin{cases}
+                     \half'(r + 1, n - 2) & \text{if } n > 1 \\
+                     r                    & \text{otherwise}
+                   \end{cases} \\
+  \\
+  \half        & : \nat \to \nat                           \\
+  \half(n)     & = \half'(0, n)
+\end{align*}
+
+I'm going to generalize $\half$ to any divisor. It'll be the equivalent to the
+\textbf{div} operator, which does integer division.
+\begin{align*}
+  \Div'          & : \nat \times \nat \times \posint \to \nat    \\
+  \Div'(q, n, d) & = \begin{cases}
+                       \Div'(q + 1, n - d, d) & \text{if } n \ge d \\
+                       q                      & \text{otherwise}
+                     \end{cases} \\
+  \\
+  \Div           & : \nat \times \posint \to
+  \nat                                                           \\
+  \Div(n, d)     & = \Div'(0, n, d)
+\end{align*}
+
+Because $n = dq + r = d(n \;\textbf{div}\; d) + (n \;\textbf{mod}\; d)$, let's
+define a $\Mod$ function.
+\begin{align*}
+  \Mod       & : \nat \times \posint \to
+  \nat                                   \\
+  \Mod(n, d) & = n - d \cdot \Div(n, d)
+\end{align*}
+
+That's pretty poggers. My professor defined a procedure that calculates the
+integer part of $\log_b$. As another epic piecewise function,
+\begin{align*}
+  B              & = \left\{ b \in \posint \,\middle|\, b > 1 \right\}  \\
+  \\
+  \log'          & : \nat \times \nat \times B \to \nat                 \\
+  \log'(r, n, b) & = \begin{cases}
+                       \log'(r + 1, \Div(n, b), b) & \text{if } n > b - 1 \\
+                       r                           & \text{otherwise}
+                     \end{cases} \\
+  \\
+  \log           & : \nat \times B \to \nat                             \\
+  \log(n, b)     & = \log'(0, n, b)
+\end{align*}
+
+Before I can convert numbers to bases, I'll first define the set of all base $b$
+expansions of a natural number.
+
+First, let $D_b = \left\{ d \in \nat \,\middle|\, d < b \right\}$, the set of
+digits available. $D_b \subset E_b$. Then if $e \in E_b$, $d \in D_b$, and $e
+  \neq 0$, then $e \circ d \in E_b$. Also, for convenience, let $E_b \subset E_b'$
+and $\lambda \in E_b'$; in other words, $E_b'$ is $E_b$ but with the empty
+string.
+
+Finally, I think I'll implement the ``Least significant first'' algorithm for
+calculating the base $b$ expansion from the right.
+\begin{align*}
+  \base'          & : E_b' \times \nat \times B \to E_b           \\
+  \base'(a, q, b) & = \begin{cases}
+                        \base'(\Mod(q, b) \circ a, \Div(q, b), b) &
+                        \text{if } q \neq 0                         \\
+                        a                                         &
+                        \text{otherwise}
+                      \end{cases} \\
+  \\
+  \base           & : \nat \times B \to E_b                       \\
+  \base(n, b)     & = \begin{cases}
+                        0                     & \text{if } n = 0 \\
+                        \base'(\lambda, n, b) & \text{otherwise}
+                      \end{cases}
+\end{align*}
+
+\dots I think? CSE 20 is fun.
+
+\hfill{$\square$}
+
+\end{document}
