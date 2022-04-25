@@ -1,0 +1,146 @@
+\documentclass[a5paper, fleqn]{article}
+\usepackage[margin=0.5cm]{geometry}
+\setlength{\footskip}{0.25cm}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath} % math
+\usepackage{xcolor} % hex colours
+\usepackage{hanging} % hanging indents
+\usepackage{hyperref}
+
+% Colours from https://tailwindcss.com/docs/customizing-colors
+\definecolor{background}{HTML}{ffffff}
+\definecolor{primary}{HTML}{0f172a}
+\definecolor{secondary}{HTML}{334155}
+\definecolor{blue}{HTML}{0ea5e9}
+\definecolor{red}{HTML}{ef4444}
+\definecolor{green}{HTML}{84cc16}
+
+\pagecolor{background}
+\color{secondary}
+% https://stackoverflow.com/a/877670
+\renewcommand{\familydefault}{\sfdefault}
+% https://tex.stackexchange.com/a/14376
+\setlength{\parindent}{0pt}
+% https://tex.stackexchange.com/a/62497
+\renewcommand\labelitemi{---}
+% https://www.overleaf.com/learn/latex/Hyperlinks#Styles_and_colours
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    pdftitle={owo when the zeger},
+    pdfpagemode=FullScreen,
+    }
+
+% vocab term
+\newcommand{\vocab}[1]{\textbf{\textcolor{blue}{#1}}}
+% in a formula, for the notation being defined
+\newcommand{\defined}[1]{\textcolor{blue}{#1}}
+% red heading
+\newcommand{\heading}[1]{\textbf{\textcolor{red}{#1}}}
+% red text for emphasis, or variable in math expression
+\newcommand{\emf}[1]{\textcolor{red}{#1}}
+% side note
+\newcommand{\note}[1]{\textcolor{green}{#1}}
+% equation or variable in text
+\newcommand{\eq}[1]{\textcolor{red}{$#1$}}
+% note below component of equation
+\newcommand{\under}[2]{\textcolor{green}{\underbrace{\textcolor{secondary}{#1}}_\text{#2}}}
+% for long lines' hanging indent
+\newcommand{\wrap}{\hangpara{0.5cm}{1}}
+
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\rect}{rect}
+
+\begin{document}
+
+good morning. this is an equation sheet for ece 45 based on past lectures and quizzes. as it turns out, it is not efficient to have notes and my quiz work in the same notebook, nor is it efficient to keep copying formulas onto every page
+
+\section*{\textcolor{primary}{one}}
+
+zeger really finds these quite delicious. i will call these zeger fetishes
+\[2 \cos t = e^{jt} \emf{+} e^{-jt}\]
+\[2\emf{j} \sin t = e^{jt} \emf{-} e^{-jt}\]
+
+\section*{\textcolor{primary}{two}}
+
+\wrap to prove \vocab{linear}, is passing $Ax_1(t) + Bx_2(t)$ through the system the same as passing $x_1$ and $x_2$ individually and then doing $Ay_1(t) + By_2(t)$ on their outputs?
+
+\wrap to prove \vocab{time-invariant}, is passing $\hat{x}(t - t_0)$ the same as passing $\hat{x}$ and then
+
+\wrap \emf{tip} remove the extra coefficients first in case the magic happens far outside the Desmos view window
+
+\section*{\textcolor{primary}{three}}
+
+\vocab{fourier series}.
+\[f(t) = \sum_{n = -\infty}^{\infty} F_n e^{jn\omega_0 t}\]
+where $\omega_0 = \dfrac{2\pi}{T}$
+
+\vocab{fourier coefficients}. can be complex
+\[F_n = \frac{1}{T} \int_T f(t) e^{\emf{-}jk\omega_0 t} dt\]
+
+\wrap for sinusoids, you should use zeger fetishes to turn them into $e^{jt}$'s, which fit nicely with the $n\omega_0$'s in the fourier series thingy.
+
+\begin{tabular}{l | l}
+  \vocab{$f(t)$} & \vocab{$F_n$}                                              \\
+  \hline
+  $\cos (kt)$    & $F_{\pm 1} = \frac{1}{2}$, others $0$                      \\
+  $\sin (kt)$    & $F_{-1} = \frac{1}{2j}$, $F_1 = -\frac{1}{2j}$, others $0$
+\end{tabular}
+
+\begin{align*}
+  \vocab{trig form} & ~ \frac{1}{2} - \frac{1}{\pi} \sum_{n = 1}^\infty \frac{\sin(2\pi nt)}{n}                                                                 \\
+  \vocab{expt form} & ~ \frac{1}{2} + \frac{j}{2\pi} \sum_{n = 1}^\infty \frac{e^{j2\pi nt}}{n} + \frac{j}{2\pi} \sum_{n = -1}^{-\infty} \frac{e^{j2\pi nt}}{n}
+\end{align*}
+
+\begin{align*}
+  \vocab{time-shift property}     &  & f(t - t_0)                     & \leftrightarrow F_n e^{jn\omega_0 t_0}                                                             \\
+  \vocab{derivative property}     &  & f^\prime(t)                    & \leftrightarrow (jn\omega_0)F_n                                                                    \\
+  \vocab{multiplication property} &  & f(t) g(t)                      & \leftrightarrow \sum_{k = -\infty}^\infty F_k G_{n - k} ~ \note{\text{(discrete convolution sum)}} \\
+  \vocab{parseval's theorem}      &  & \frac{1}{T} \int_T |f(t)|^2 dt & \leftrightarrow \sum_{n = -\infty}^\infty |F_n|^2                                                  \\
+  \to                             &  & f^*(t)                         & \leftrightarrow F^*_{-n}
+\end{align*}
+
+\[X_n \to \vocab{$\boxed{H(\omega)}$} \to X_n \emf{H(n\omega_0)}\]
+
+don't forget that for $\sin$/$\cos$, most of the coefficients are 0, so can just deal with them manually
+
+also if you're getting a zero where you shouldn't, you probably made a sign error. redo it
+
+\wrap and don't forget that to find the magnitude of a complex number, square the \emf{components}, not $j$. ie you shouldn't be doing $j^2$. fool
+
+\section*{\textcolor{primary}{four}}
+
+\vocab{fourier transform} of \eq{f(t)}
+\[F(\omega) = \int_{-\infty}^\infty f(t) e^{\emf{-}j\omega t} dt\]
+
+\vocab{inverse fourier transform} of \eq{F(\omega)}
+\[f(t) = \emf{\frac{1}{2\pi}} \int_{-\infty}^\infty F(\omega) e^{j\omega t} d\omega\]
+
+\[X(\omega) \to \vocab{$\boxed{H(\omega)}$} \to X(\omega) \emf{H(\omega)}\]
+
+\[\sinc t = \frac{\sin t}{t} ~ \note{\text{(and $\sinc 0 = 1$)}}\]
+
+$\rect$ is a unit square (so it's 1 between $-\frac{1}{2}$ and $\frac{1}{2}$)
+
+if
+\[\delta(t) \to \vocab{$\boxed{H(\omega)}$} \to h(t)\]
+then
+\[x(t) \to \vocab{$\boxed{H(\omega)}$} \to \int_{-\infty}^\infty h(\tau) x(t - \tau) d\tau ~ \note{\text{(convolution integrals)}}\]
+
+\[\int_{-\infty}^\infty x(t) \delta(t - t_0) dt = x(t_0)\]
+spencer covered this. $x(t) \delta(t - t_0)$ is a dirac delta with area $x(t_0)$
+
+zeger says $u(0)$ can be 0 or 1 but he initially defined it to be 0 (and then graphed it at 1??)
+
+\begin{align*}
+  \rect(\frac{t}{t_0})  & \leftrightarrow t_0 \sinc(\frac{\omega t_0}{2}) \\
+  \delta(t)             & \leftrightarrow 1                               \\
+  1                     & \leftrightarrow 2 \pi \delta(t)                 \\
+  f(t - t_0)            & \leftrightarrow F(\omega) e^{-j\omega t_0}      \\
+  f(t) e^{j \omega_0 t} & \leftrightarrow F(\omega - \omega_0)
+\end{align*}
+
+camel recommends using a \href{https://ethz.ch/content/dam/ethz/special-interest/baug/ibk/structural-mechanics-dam/education/identmeth/fourier.pdf}{table (THIS IS A LINK)} for these
+
+\end{document}
