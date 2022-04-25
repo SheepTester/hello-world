@@ -1,0 +1,38 @@
+/* ==UserStyle==
+@name           GitHub Gist reader view
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    For reading annoying texts
+@author         SheepTester
+==/UserStyle== */
+
+@-moz-document domain("gist.github.com") {
+  :root {
+    color-scheme: light !important;
+  }
+  .Box-body {
+    background-color: white;
+    color: black;
+  }
+  .file {
+    margin: 0 !important;
+    border: none;
+  }
+  .file-header,
+  [itemprop="about"],
+  .pagehead,
+  .Header {
+    display: none !important;
+  }
+  .container-lg {
+    max-width: unset;
+    padding: 0 !important;
+  }
+  .markdown-body {
+    line-height: 2;
+    --color-border-default: #ddd;
+    max-width: 80ch;
+/*     hyphens: auto; */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", 'Helvetica Neue', Helvetica, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  }
+}
