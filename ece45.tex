@@ -143,4 +143,59 @@ zeger says $u(0)$ can be 0 or 1 but he initially defined it to be 0 (and then gr
 
 camel recommends using a \href{https://ethz.ch/content/dam/ethz/special-interest/baug/ibk/structural-mechanics-dam/education/identmeth/fourier.pdf}{table (THIS IS A LINK)} for these
 
+\section*{\textcolor{primary}{five}}
+
+\vocab{duality/symmetry property}
+\[F(t) \leftrightarrow 2\pi f(-\omega)\]
+
+\vocab{time derivative}
+\begin{align*}
+  \frac{df(t)}{dt} & \leftrightarrow j\omega F(\omega)                  \\
+  -jt f(t)         & \leftrightarrow \frac{dF(\omega)}{d\omega}         \\
+  t f(t)           & \leftrightarrow j \cdot \frac{dF(\omega)}{d\omega}
+\end{align*}
+
+\vocab{convolution}
+\begin{align*}
+  x(t) * y(t)
+   & = \int_{-\infty}^\infty x(\tau) y(t - \tau) d\tau \\
+   & = \int_{-\infty}^\infty x(t - \tau) y(\tau) d\tau \\
+\end{align*}
+
+\begin{align*}
+  x(t) * \under{h(t)}{impulse response}   & \leftrightarrow X(\omega) H(\omega)                                                                                                            \\
+  h(t) x(t)                               & \leftrightarrow \frac{1}{2\pi} X(\omega) * H(\omega)                                                                                           \\
+  X^*(t)                                  & \leftrightarrow X^*(\emf{-}\omega) ~ \note{\text{signals don't have to be real}}                                                               \\
+  X(-\omega)                              & = X^*(\omega) ~ \text{ONLY if \eq{x(t)} real!!}                                                                                                \\
+  f(-t)                                   & \leftrightarrow F(-\omega) ~ \vocab{time reversal}                                                                                             \\
+  x(t)\text{ real, even}                  & \leftrightarrow X(\omega)\text{ real, even}                                                                                                    \\
+  x(t)\text{ real, odd}                   & \leftrightarrow X(\omega)\text{ purely imaginary (i.e. \eq{Re[X(\omega)] = 0}), odd}                                                           \\
+  \int_{-\infty}^\infty |\emf{f(t)}|^2 dt & = \frac{1}{2\pi} \int_{-\infty}^\infty |\emf{F(\omega)}|^2 d\omega ~ \vocab{parseval's theorem for fourier transforms}                         \\
+  f(\emf{a}t)                             & \leftrightarrow \frac{1}{|\emf{a}|} F(\frac{\omega}{\emf{a}}) ~ \text{\vocab{time scaling} \note{(squishing function $\to$ higher frequency)}}
+\end{align*}
+
+\vocab{parseval's theorem for fourier transforms}
+\[\int_{-\infty}^\infty |\emf{f(t)}|^2 dt = \frac{1}{2\pi} \int_{-\infty}^\infty |\emf{F(\omega)}|^2 d\omega\]
+
+some more examples:
+\begin{align*}
+  \cos(\omega_0 t)  & \leftrightarrow \pi \delta(\omega - \omega_0) + \pi \delta(\omega + \omega_0)                     \\
+  \sin(\omega_0 t)  & \leftrightarrow \frac{\pi}{j} \delta(\omega - \omega_0) - \frac{\pi}{j} \delta(\omega + \omega_0) \\
+  \sinc(\omega_0 t) & \leftrightarrow \frac{\pi}{\omega_0} \rect\left(\frac{\omega}{2\omega_0}\right)                   \\
+  e^{-at} u(t)      & \leftrightarrow \frac{1}{a + j\omega} ~ \note{\text{(for $a > 0$)}}                               \\
+  \frac{1}{a + jt}  & \leftrightarrow 2\pi e^{a\omega} u(-\omega)
+\end{align*}
+
+some things from god spencer:
+\begin{itemize}
+  \item if they pass \eq{\delta(t)} into system, they're giving you \eq{h(t)}! i.e. the entire system
+  \item ``diagram'' refers to the $x(t) \to \boxed{H(\omega)} \to y(t)$ things
+  \item when multiplying rect funcs, take their intersection
+\end{itemize}
+\begin{align*}
+  \sin x \cos y              & = \frac{1}{2}(\sin(x + y) + \sin(x - y))                              \\
+  x(t) * \delta(t - \emf{a}) & = x(t - \emf{a})                                                      \\
+  (Ax(t) + By(t)) * z(t)     & = Ax(t) * z(t) + By(t) * z(t) ~ \note{\text{linearity of convlution}}
+\end{align*}
+
 \end{document}
