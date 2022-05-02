@@ -163,8 +163,8 @@ camel recommends using a \href{https://ethz.ch/content/dam/ethz/special-interest
 \end{align*}
 
 \begin{align*}
-  x(t) * \under{h(t)}{impulse response}   & \leftrightarrow X(\omega) H(\omega)                                                                                                            \\
-  h(t) x(t)                               & \leftrightarrow \frac{1}{2\pi} X(\omega) * H(\omega)                                                                                           \\
+  f(t) * \under{g(t)}{impulse response}   & \leftrightarrow F(\omega) G(\omega)                                                                                                            \\
+  f(t) g(t)                               & \leftrightarrow \frac{1}{2\pi} F(\omega) * G(\omega)                                                                                           \\
   X^*(t)                                  & \leftrightarrow X^*(\emf{-}\omega) ~ \note{\text{signals don't have to be real}}                                                               \\
   X(-\omega)                              & = X^*(\omega) ~ \text{ONLY if \eq{x(t)} real!!}                                                                                                \\
   f(-t)                                   & \leftrightarrow F(-\omega) ~ \vocab{time reversal}                                                                                             \\
@@ -189,6 +189,8 @@ some more examples:
 some things from god spencer:
 \begin{itemize}
   \item if they pass \eq{\delta(t)} into system, they're giving you \eq{h(t)}! i.e. the entire system
+        \[\delta(t) \to \textcolor{blue}{\boxed{H(\omega)}} \to h(t)\]
+        so $h(t) \leftrightarrow H(\omega)$ and $y(t) = x(t) * h(t)$ (a convolution) $\leftrightarrow X(\omega)H(\omega)$
   \item ``diagram'' refers to the $x(t) \to \boxed{H(\omega)} \to y(t)$ things
   \item when multiplying rect funcs, take their intersection
 \end{itemize}
