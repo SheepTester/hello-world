@@ -200,4 +200,59 @@ some things from god spencer:
   (Ax(t) + By(t)) * z(t)     & = Ax(t) * z(t) + By(t) * z(t) ~ \note{\text{linearity of convlution}}
 \end{align*}
 
+\emf{tip} don't forget that cosine is even $\cos t = \cos(-t)$ and sine is odd $-\sin t = \sin(-t)$!!!
+
+\section*{\textcolor{primary}{six}}
+
+\[e^{j\omega t} \to \textcolor{blue}{\boxed{h(t)}} \to e^{j\omega t} \textcolor{blue}{H(\omega)}\]
+
+convolution is commutative, distributive, associative
+
+\vocab{shift} property---$f(t - t_1) * h(t - t_2) = y(t - t_1 - t_2)$
+
+\vocab{derivative} property---$y^\prime(t) = f^\prime(t) * h(t) = f(t) * h^\prime(t)$, so $y^{\prime\prime}(t) = f^\prime(t) * h^\prime(t)$
+
+because commutative, order doesn't matter: $Y(\omega) = X(\omega) G(\omega) H(\omega)$
+\[x(t) \to \textcolor{blue}{\boxed{g(t)}} \to \textcolor{blue}{\boxed{h(t)}} \to y(t) = x(t) * g(t) * h(t)\]
+
+\[x(t) * \delta(t - t_0) = x(t - t_0)\]
+$\delta(t)$ acts as ``identity'' element
+
+\[f(t) \cos(\omega_0 t) \leftrightarrow \frac{1}{2} F(\omega - \omega_0) + F(\omega + \omega_0)\]
+
+\wrap convolving two squares (side 1, lower left origin) $f(t) = h(t) = \rect\left(t - \frac{1}{2}\right)$ produces a triangle (base 2, height 1, lower left origin) \[\rect\left(t - \frac{1}{2}\right) * \rect\left(t - \frac{1}{2}\right) = \begin{cases}
+    t     & \text{if} ~ 0 < t < 1 \\
+    2 - t & \text{if} ~ 1 < t < 2 \\
+    0     & \text{else}
+  \end{cases}\]
+
+\wrap convolving $x(t) = e^{-\emf{a}t} u(t)$, $h(t) = e^{-\emf{b}t} u(t)$ (downwards exponentials only for positive $t$) where \eq{a}, \eq{b} $> 0$ makes
+\[y(t) = \begin{cases}
+    \frac{e^{-at} - e^{-bt}}{b - a} \cdot u(t) & \text{if}~ a \neq b \\
+    te^{-bt} u(t)                              & \text{if}~ a = b
+  \end{cases}\]
+
+\wrap convolving $f(t) = A \rect\left(\frac{t}{2t_0}\right)$ (rectangle of height $A$ centred around origin from $-t_0$ to $t_0$) with itself produces triangle $g(t)$ centered around origin from $-2t_0$ to $2t_0$ w/ height $2A^2t_0$
+\[g(t) \leftrightarrow G(\omega) = F^2(\omega) = 4A^2t_0^2 \sinc^2(\omega t_0)\]
+
+fourier transform of fourier series
+\[f(t) = \sum_{n = -\infty}^\infty F_n e^{jn\omega_0 t} \leftrightarrow F(\omega) = \sum_{n = -\infty}^\infty F_n \cdot \emf{2\pi \delta}(\omega - n\underbrace{\omega_0}_{\frac{2\pi}{T}})\]
+sum of deltas w/ coeffs $2\pi F_n$, ``discrete''
+
+\wrap fourier transform of impulse $s(t)$ (inf sum of equally spaced deltas w/ equal area, maybe starting at 0):
+\[s(t) = \sum_{n = -\infty}^\infty \delta(t - n\emf{T}) = S(\omega) = \emf{\omega_0} \sum_{n = -\infty}^\infty \delta(\omega - n\underbrace{\emf{\omega_0}}_{\frac{2\pi}{\emf{T}}})\]
+
+\wrap from god spencer: to convolve, take one func (the ``simpler'' one, eg with more constants), flip it, then slide it along other func. @ every pt where smth changes, multiply the functions
+
+\wrap convolving $h(t)$, a triangle that's $h(t) = t$ only for $0 < t < 1$ and 0 elsewhere, with $u(t)$ produces
+\[y(t) = \begin{cases}
+    0             & t < 0     \\
+    \frac{t^2}{2} & 0 < t < 1 \\
+    \frac{1}{2}   & t > 1
+  \end{cases}\]
+
+\wrap and if a different $h_2(t)$ can be expressed in terms of an $h(t)$ we know, then can use convolution properties (above) to avoid doing integral bleh again
+
+\wrap don't forget about $Y(\omega) = X(\omega) H(\omega)$, and if finding a specific $y(t_0)$ then can just do $y(t_0) = \int_{-\infty}^\infty x(t_0 - \tau) h(\tau) d\tau$ directly
+
 \end{document}
