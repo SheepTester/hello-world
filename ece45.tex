@@ -81,13 +81,6 @@ where $\omega_0 = \dfrac{2\pi}{T}$
 
 \wrap for sinusoids, you should use zeger fetishes to turn them into $e^{jt}$'s, which fit nicely with the $n\omega_0$'s in the fourier series thingy.
 
-\begin{tabular}{l | l}
-  \vocab{$f(t)$} & \vocab{$F_n$}                                              \\
-  \hline
-  $\cos (kt)$    & $F_{\pm 1} = \frac{1}{2}$, others $0$                      \\
-  $\sin (kt)$    & $F_{-1} = \frac{1}{2j}$, $F_1 = -\frac{1}{2j}$, others $0$
-\end{tabular}
-
 \begin{align*}
   \vocab{trig form} & ~ \frac{1}{2} - \frac{1}{\pi} \sum_{n = 1}^\infty \frac{\sin(2\pi nt)}{n}                                                                 \\
   \vocab{expt form} & ~ \frac{1}{2} + \frac{j}{2\pi} \sum_{n = 1}^\infty \frac{e^{j2\pi nt}}{n} + \frac{j}{2\pi} \sum_{n = -1}^{-\infty} \frac{e^{j2\pi nt}}{n}
@@ -108,6 +101,21 @@ don't forget that for $\sin$/$\cos$, most of the coefficients are 0, so can just
 also if you're getting a zero where you shouldn't, you probably made a sign error. redo it
 
 \wrap and don't forget that to find the magnitude of a complex number, square the \emf{components}, not $j$. ie you shouldn't be doing $j^2$. fool
+
+\heading{example fourier series}
+
+here are some EXAMPLES because screw derivation, using resources $>>>$
+
+\begin{tabular}{l | l}
+  \vocab{$f(t)$} & \vocab{$F_n$}                                                                                                                                      \\
+  \hline
+  $\cos (kt)$    & $F_{\pm 1} = \frac{1}{2}$, others $0$                                                                                                              \\
+  $\sin (kt)$    & $F_{-1} = \frac{1}{2j}$, $F_1 = -\frac{1}{2j}$, others $0$                                                                                         \\
+  $|\sin t|$     & $\frac{2}{\pi} - \frac{4}{\pi} \sum_{n = 1}^\infty \frac{\cos(2nt)}{4n^2 - 1} = \frac{2}{\pi} \sum_{n = -\infty}^\infty \frac{e^{2jnt}}{1 - 4n^2}$ \\
+  triangle wave* & $F_0 = \frac{1}{2}$, others $\frac{j}{2\pi n}$
+\end{tabular}
+
+*triangle wave is $f(t) = t$ between 0 and 1, and it repeats
 
 \section*{\textcolor{primary}{four}}
 
@@ -134,10 +142,10 @@ spencer covered this. $x(t) \delta(t - t_0)$ is a dirac delta with area $x(t_0)$
 zeger says $u(0)$ can be 0 or 1 but he initially defined it to be 0 (and then graphed it at 1??)
 
 \begin{align*}
-  \rect(\frac{t}{t_0})  & \leftrightarrow t_0 \sinc(\frac{\omega t_0}{2}) \\
-  \delta(t)             & \leftrightarrow 1                               \\
-  1                     & \leftrightarrow 2 \pi \delta(t)                 \\
-  f(t - t_0)            & \leftrightarrow F(\omega) e^{-j\omega t_0}      \\
+  \rect(\frac{t}{t_0})  & \leftrightarrow t_0 \sinc(\frac{\omega t_0}{2})                                         \\
+  \delta(t)             & \leftrightarrow 1                                                                       \\
+  1                     & \leftrightarrow 2 \pi \delta(t)                                                         \\
+  f(t - t_0)            & \leftrightarrow F(\omega) e^{-j\omega t_0} ~ \text{\note{(SHIFT TIME/FREQUENCY!!!!!!)}} \\
   f(t) e^{j \omega_0 t} & \leftrightarrow F(\omega - \omega_0)
 \end{align*}
 
@@ -220,6 +228,8 @@ $\delta(t)$ acts as ``identity'' element
 
 \[f(t) \cos(\omega_0 t) \leftrightarrow \frac{1}{2} F(\omega - \omega_0) + F(\omega + \omega_0)\]
 
+\heading{convolution examples}
+
 \wrap convolving two squares (side 1, lower left origin) $f(t) = h(t) = \rect\left(t - \frac{1}{2}\right)$ produces a triangle (base 2, height 1, lower left origin) \[\rect\left(t - \frac{1}{2}\right) * \rect\left(t - \frac{1}{2}\right) = \begin{cases}
     t     & \text{if} ~ 0 < t < 1 \\
     2 - t & \text{if} ~ 1 < t < 2 \\
@@ -253,6 +263,37 @@ sum of deltas w/ coeffs $2\pi F_n$, ``discrete''
 
 \wrap and if a different $h_2(t)$ can be expressed in terms of an $h(t)$ we know, then can use convolution properties (above) to avoid doing integral bleh again
 
-\wrap don't forget about $Y(\omega) = X(\omega) H(\omega)$, and if finding a specific $y(t_0)$ then can just do $y(t_0) = \int_{-\infty}^\infty x(t_0 - \tau) h(\tau) d\tau$ directly
+\wrap don't forget about $Y(\omega) = X(\omega) H(\omega)$, and if finding a specific $y(t_0)$ then can just do $y(t_0) = \int_{-\infty}^\infty x(t_0 - \tau) h(\tau) d\tau$ directly \note{(this is actually useful)}
+
+\section*{\textcolor{primary}{seven}}
+
+\[\textcolor{blue}{S(\omega)} = \emf{\omega_s} \sum_{n = -\infty}^\infty \delta(\omega - n\emf{\omega_s})\]
+where \eq{T_s} sampling period, $\emf{\omega_s} = \frac{2\pi}{T_s}$ sampling frequency
+
+if you sample \eq{x(t)} at integer multiples of period \eq{T_s} it produces \eq{y(t) = x(t) s(t)}, whose fourier transform is
+\[\textcolor{blue}{Y(\omega)} = \frac{1}{\emf{T_s}} \sum_{n = -\infty}^\infty X(\omega - n\emf{\omega_s})\]
+
+there are also block diagrams but i don't know how to draw that in latex
+\begin{align*}
+  \emf{x(t)} \to & \,\textcolor{blue}{\bigotimes} \to \textcolor{blue}{\boxed{h(t)}} \to \emf{z(t)} \\
+                 & \uparrow                                                                         \\
+                 & \emf{s(t)}
+\end{align*}
+
+\begin{tabular}{ l|l }
+  \vocab{omega} & \vocab{what it means}                    \\
+  \hline
+  \eq{\omega_s} & sampling frequency                       \\
+  \eq{\omega_c} & cutoff frequencies of low-pass filter    \\
+  \eq{\omega_m} & maximum frequency for bandlimited thingy
+\end{tabular}
+
+so the reconstruction filter \eq{H(\omega)} (an ideal LPF) would be a rect from \eq{-\omega_c} to \eq{\omega_c}
+
+\emf{tip} from discussion: if a func is periodic, use its fourier coefficients
+
+for fourier coefficients, \eq{Y_n = X_n H(2\pi n)} (plug into fourier series formula)
+
+ahhhh
 
 \end{document}
