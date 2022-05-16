@@ -271,7 +271,7 @@ sum of deltas w/ coeffs $2\pi F_n$, ``discrete''
 where \eq{T_s} sampling period, $\emf{\omega_s} = \frac{2\pi}{T_s}$ sampling frequency
 
 if you sample \eq{x(t)} at integer multiples of period \eq{T_s} it produces \eq{y(t) = x(t) s(t)}, whose fourier transform is
-\[\textcolor{blue}{Y(\omega)} = \frac{1}{\emf{T_s}} \sum_{n = -\infty}^\infty X(\omega - n\emf{\omega_s})\]
+\[\textcolor{blue}{Y(\omega)} = \frac{1}{\emf{T_s}} \sum_{n = -\infty}^\infty X(\omega - n\emf{\omega_s}) ~ \note{\text{(FOURIER TRANSFORM OF $x(t) s(t)$)}}\]
 
 there are also block diagrams but i don't know how to draw that in latex
 \begin{align*}
@@ -295,5 +295,7 @@ so the reconstruction filter \eq{H(\omega)} (an ideal LPF) would be a rect from 
 for fourier coefficients, \eq{Y_n = X_n H(2\pi n)} (plug into fourier series formula)
 
 ahhhh
+
+careful! \eq{y(t)}/\eq{Y(\omega)} sometimes means \eq{x(t) s(t)}, sometimes means output of the lti system
 
 \end{document}
