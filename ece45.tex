@@ -3,6 +3,7 @@
 \setlength{\footskip}{0.25cm}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath} % math
+\usepackage{amssymb} % mathbb
 \usepackage{xcolor} % hex colours
 \usepackage{hanging} % hanging indents
 \usepackage{hyperref}
@@ -51,10 +52,19 @@
 
 \DeclareMathOperator{\sinc}{sinc}
 \DeclareMathOperator{\rect}{rect}
+\newcommand{\roc}{\text{ROC:}}
+\DeclareMathOperator{\re}{Re}
 
 \begin{document}
 
 good morning. this is an equation sheet for ece 45 based on past lectures and quizzes. as it turns out, it is not efficient to have notes and my quiz work in the same notebook, nor is it efficient to keep copying formulas onto every page
+
+also here's some dirac delta properties because I keep mixing them up:
+\begin{align*}
+  x(t) \delta(t - t_0)                          & = x(t_0) \delta(t) ~ \text{\note{(dirac delta w/ area $x(t_0)$)}} \\
+  \int_{-\infty}^\infty x(t) \delta(t - t_0) dt & = x(t_0)                                                          \\
+  x(t) * \delta(t - a)                          & = x(t - a)
+\end{align*}
 
 \section*{\textcolor{primary}{one}}
 
@@ -303,5 +313,57 @@ careful! \eq{y(t)}/\eq{Y(\omega)} sometimes means \eq{x(t) s(t)}, sometimes mean
 really hope there's no am radio stuff on the quiz \dots
 
 when finding fourier transform of a func being multiplied by a cos/sin, that's okay. it turns into deltas which are nice
+
+\section*{\textcolor{primary}{nine}}
+
+la place transforms!
+
+conventional names: $z = \under{\sigma}{real} + j\under{\omega}{imag component} \in \mathbb{C}$
+
+for determining whether an exponential explodes or converges,
+\[\lim_{t \to \infty} e^{\emf{z}t} = \begin{cases}
+    0                & \text{if} ~ \emf{\sigma} < 0 \\
+    \infty           & \text{if} ~ \emf{\sigma} > 0 \\
+    \text{undefined} & \text{if} ~ \emf{\sigma} = 0 \\
+  \end{cases}\]
+\[X(s) = \int_{-\infty}^\infty x(t) e^{-st} dt\]
+\eq{X(j\omega)} is fourier transf \note{(imaginary axis of $s$-plane)}
+
+these are FOURIER transforms:
+\begin{align*}
+  e^{-t} u(t) & \leftrightarrow \frac{1}{1 + j\omega} \\
+  e^t u(t)    & \leftrightarrow \text{nothing}
+\end{align*}
+but these are the tasty LAPLACE transforms:
+\begin{align*}
+  e^{-\emf{a}t} u(t)   & \leftrightarrow \frac{1}{s + \emf{a}}             & \roc & \re(s) > \re(-\emf{a})                & \note{\emf{a} \in \mathbb{C}}                   \\
+  -e^{-\emf{a}t} u(-t) & \leftrightarrow \frac{1}{s + \emf{a}}             & \roc & \re(s) < \re(-\emf{a})                                                                  \\
+  u(t)                 & \leftrightarrow \frac{1}{s}                       & \roc & \re(s) > 0                                                                              \\
+  -u(-t)               & \leftrightarrow \frac{1}{s}                       & \roc & \re(s) < 0                                                                              \\
+  \sin(\emf{a} t) u(t) & \leftrightarrow \frac{\emf{a}}{s^2 + \emf{a}^2}   & \roc & \re(s) > 0                            & \note{\emf{a} \in \mathbb{R}}                   \\
+  \cos(\emf{a} t) u(t) & \leftrightarrow \frac{s}{s^2 + \emf{a}^2}         & \roc & \re(s) > 0                                                                              \\
+  \delta(t)            & \leftrightarrow 1                                 & \roc & \, \text{all of $\mathbb{C}$}                                                           \\
+  e^{-\emf{a}|t|}      & \leftrightarrow \frac{-2\emf{a}}{s^2 - \emf{a}^2} & \roc & -\re(\emf{a}) < \re(s) < \re(\emf{a}) & \note{\emf{a} \in \mathbb{C}, \re(\emf{a}) > 0} \\
+\end{align*}
+ROC only cares about real component (so it's composed of vertical lines), and it doesn't include poles
+
+if ROC goes to $-\infty$, anti-causal/left-sided; to $\infty$, causal/right-sided; otherwise, if bounded between poles, 2-sided
+
+\heading{properties}
+\begin{align*}
+  \vocab{linearity}          &  & \emf{a} x(t) + \emf{b} y(t) & \leftrightarrow \emf{a} X(s) + \emf{b} Y(s) ~ \note{\text{(coefficients complex)}} \\
+  \vocab{derivative}         &  & -tx(t)                      & \leftrightarrow \frac{dX(s)}{ds} ~ \note{\text{(same ROC)}}                        \\
+                             &  & t^{\emf{n}} x(t)            & \leftrightarrow (-1)^{\emf{n}} \under{X^{(\emf{n})}}{$n$th derivative} (s)         \\
+  \vocab{shift in frequency} &  & e^{\emf{a}t} x(t)           & \leftrightarrow X(s - \emf{a})                                                     \\
+  \vocab{shift in time}      &  & x(t - \emf{a})              & \leftrightarrow e^{-\emf{a}s} X(s)
+\end{align*}
+
+partial fractions (for inverse LTs): to find \eq{A}, multiply both sides by denominator, plug in \eq{s} to make others zero
+\note{\[\frac{1}{(s + 2)(s - 1)} = \frac{A}{s + 2} + \frac{B}{s - 1} \to \frac{s + 2}{(s + 2)(s - 1)} = \frac{A(s + 2)}{s + 2} + \frac{B(s + 2)}{s - 1}, s = -2\]}
+if factor is squared, differentiate then plug in \eq{s}
+
+\emf{tip}: use derivative property to turn squares back into fractions, which can use for inverse LTs
+\[\under{t e^{-\emf{a}}}{causal}, \under{-t e^{-\emf{a} t} u(-t)}{anticausal} \leftrightarrow \frac{1}{(s + \emf{a})^2}\]
+\emf{tip}: if know \eq{\sigma}, multiply func by $e^{-\emf{\sigma} t}$ and see if it blows up as $t \to -\infty$ or $\infty$ (if so, doesn't converge)
 
 \end{document}
