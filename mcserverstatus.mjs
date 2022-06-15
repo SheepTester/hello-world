@@ -44,21 +44,25 @@ async function getStatus () {
  * @param {{ name: string; id: string; joined: boolean }[]} changes
  */
 async function announce (online, max, changes) {
-  return fetch(webhook, {
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      content: `${online}/${max} players are on now. I check every ten minutes.`,
-      username: 'iClicker attendance',
-      avatar_url: 'https://cravatar.eu/helmavatar/gabrycosta04/64.png',
-      embeds: changes.map(({ id, name, joined }) => ({
-        description: `**\`${name}\`** ${joined ? 'joined' : 'left'} the game.`,
-        color: joined ? 0x22c55e : 0xef4444,
-        footer: { text: id },
-        thumbnail: { url: `https://cravatar.eu/helmavatar/${id}/64.png` }
-      }))
-    }),
-    method: 'POST'
-  })
+  if (changes.length > 0) {
+    return fetch(webhook, {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        content: `${online}/${max} players are on now. I check every ten minutes.`,
+        username: 'iClicker attendance',
+        avatar_url: 'https://cravatar.eu/helmavatar/gabrycosta04/64.png',
+        embeds: changes.map(({ id, name, joined }) => ({
+          description: `**\`${name}\`** ${
+            joined ? 'joined' : 'left'
+          } the game.`,
+          color: joined ? 0x22c55e : 0xef4444,
+          footer: { text: id },
+          thumbnail: { url: `https://cravatar.eu/helmavatar/${id}/64.png` }
+        }))
+      }),
+      method: 'POST'
+    })
+  }
 }
 
 async function check () {
@@ -103,4 +107,4 @@ await fetch(webhook, {
   method: 'POST'
 })
 
-setInterval(check, 5000)
+setInterval(check, 10 * 60_000)
