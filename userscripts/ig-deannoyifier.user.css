@@ -2,7 +2,7 @@
 @name        Less annoying Instagram web experience
 @description Hides app download dialog and allows right clicking to save images and vidoes on posts
 @namespace   sheeptester.github.io
-@version     1.0.3
+@version     1.0.4
 @license     unlicense
 ==/UserStyle== */
 @-moz-document domain("instagram.com") {
@@ -12,8 +12,9 @@
     }
 
     /* Allows posts to be right clicked > open image in new tab */
-    ._9AhH0 {
-        display: none;
+    ._9AhH0,
+    ._aagw {
+        display: none !important;
     }
 
     /* Lower video play button so video behind can be accessed */
