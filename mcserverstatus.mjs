@@ -70,6 +70,7 @@ async function check () {
   const { online, max, players } = await getStatus()
   const joined = players.filter(id => !lastPlayers.includes(id))
   const left = lastPlayers.filter(id => !players.includes(id))
+  lastPlayers = players
   await announce(online, max, [
     ...joined.map(id => ({ id, name: usernames[id], joined: true })),
     ...left.map(id => ({ id, name: usernames[id], joined: false }))
