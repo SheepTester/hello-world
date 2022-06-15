@@ -10,53 +10,97 @@ if (process.argv.length < 4) {
 const [, , serverHost, webhook] = process.argv
 const [host, port] = serverHost.split(':')
 
-const client = await Client.connect(host, +port || NaN)
-client.send(
-  new PacketWriter(0x0)
-    .writeVarInt(404)
-    .writeString(host)
-    .writeUInt16(port)
-    .writeVarInt(State.Status)
-)
-client.send(new PacketWriter(0x0))
+/** @type {Record<string, string>} */
+const usernames = {}
 
-const response = await client.nextPacket(0x0)
-const {
-  players: { max, online, sample = [] }
-} = response.readJSON()
+/**
+ * @returns {{ max: number; online: number; players: string[] }}
+ */
+async function getStatus () {
+  const client = await Client.connect(host, +port || NaN)
+  client.send(
+    new PacketWriter(0x0)
+      .writeVarInt(404)
+      .writeString(host)
+      .writeUInt16(port)
+      .writeVarInt(State.Status)
+  )
+  client.send(new PacketWriter(0x0))
 
-fetch(webhook, {
-  headers: {
-    'Content-Type': 'application/json'
-  },
+  const response = await client.nextPacket(0x0)
+  const {
+    players: { max, online, sample = [] }
+  } = response.readJSON()
+  client.end()
+  for (const { name, id } of sample) {
+    usernames[id] = name
+  }
+  return { max, online, players: sample.map(({ id }) => id) }
+}
+
+/**
+ * @param {number} online
+ * @param {number} max
+ * @param {{ name: string; id: string; joined: boolean }[]} changes
+ */
+async function announce (online, max, changes) {
+  return fetch(webhook, {
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      content: `${online}/${max} players are on now. I check every ten minutes.`,
+      username: 'iClicker attendance',
+      avatar_url: 'https://cravatar.eu/helmavatar/gabrycosta04/64.png',
+      embeds: changes.map(({ id, name, joined }) => ({
+        description: `**\`${name}\`** ${joined ? 'joined' : 'left'} the game.`,
+        color: joined ? 0x22c55e : 0xef4444,
+        footer: { text: id },
+        thumbnail: { url: `https://cravatar.eu/helmavatar/${id}/64.png` }
+      }))
+    }),
+    method: 'POST'
+  })
+}
+
+async function check () {
+  console.log('Checked', new Date().toLocaleTimeString())
+  const { online, max, players } = await getStatus()
+  const joined = players.filter(id => !lastPlayers.includes(id))
+  const left = lastPlayers.filter(id => !players.includes(id))
+  await announce(online, max, [
+    ...joined.map(id => ({ id, name: usernames[id], joined: true })),
+    ...left.map(id => ({ id, name: usernames[id], joined: false }))
+  ])
+}
+
+/**
+ * @param {string[]} items
+ */
+function displayList (items, empty = '') {
+  switch (items.length) {
+    case 0:
+      return empty
+    case 1:
+    case 2:
+      return items.join(' and ')
+    default:
+      return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`
+  }
+}
+
+const { players } = await getStatus()
+let lastPlayers = players
+
+await fetch(webhook, {
+  headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    content: `I update every ten minutes. ${online}/${max} players are on right now.`,
+    content: `Hi. I'll be checking attendance now every ten minutes. So far, ${displayList(
+      players.map(id => `**\`${usernames[id]}\`**`),
+      'no one'
+    )} ${players.length <= 1 ? 'is' : 'are'} on \`${serverHost}\`.`,
     username: 'iClicker attendance',
-    avatar_url: 'https://cravatar.eu/helmavatar/gabrycosta04/64.png',
-    embeds: [
-      {
-        description: '**TheImmortal_Zodd** joined the game.',
-        color: 0x22c55e,
-        footer: {
-          text: '3460ee92-c43c-4cb5-98dc-1589dbedadee'
-        },
-        thumbnail: {
-          url: 'https://cravatar.eu/helmavatar/3460ee92-c43c-4cb5-98dc-1589dbedadee/64.png'
-        }
-      },
-      {
-        description: '**TheImmortal_Zodd** left the game.',
-        color: 0xef4444,
-        footer: {
-          text: '3460ee92-c43c-4cb5-98dc-1589dbedadee'
-        },
-        thumbnail: {
-          url: 'https://cravatar.eu/helmavatar/3460ee92-c43c-4cb5-98dc-1589dbedadee/64.png'
-        }
-      }
-    ]
+    avatar_url: 'https://cravatar.eu/helmavatar/gabrycosta04/64.png'
   }),
   method: 'POST'
 })
 
-client.end()
+setInterval(check, 5000)
