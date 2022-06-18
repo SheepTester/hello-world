@@ -48,16 +48,16 @@ async function announce (online, max, changes) {
     return fetch(webhook, {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        content: `${online}/${max} players are on now. I check every ten minutes.`,
+        content: `${online}/${max} players are on now. I check every five minutes.`,
         username: 'iClicker attendance',
         avatar_url: 'https://cravatar.eu/helmavatar/gabrycosta04/64.png',
         embeds: changes.map(({ id, name, joined }) => ({
-          description: `**\`${name}\`** ${
-            joined ? 'joined' : 'left'
-          } the game.`,
+          author: {
+            name: `${name} ${joined ? 'joined' : 'left'} the game.`,
+            icon_url: `https://cravatar.eu/helmavatar/${id}/64.png`
+          },
           color: joined ? 0x22c55e : 0xef4444,
-          footer: { text: id },
-          thumbnail: { url: `https://cravatar.eu/helmavatar/${id}/64.png` }
+          footer: { text: id }
         }))
       }),
       method: 'POST'
@@ -98,7 +98,7 @@ let lastPlayers = players
 await fetch(webhook, {
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    content: `Hi. I'll be checking attendance now every ten minutes. So far, ${displayList(
+    content: `Hi. I'll be checking attendance now every five minutes. So far, ${displayList(
       players.map(id => `**\`${usernames[id]}\`**`),
       'no one'
     )} ${players.length <= 1 ? 'is' : 'are'} on \`${serverHost}\`.`,
@@ -108,4 +108,4 @@ await fetch(webhook, {
   method: 'POST'
 })
 
-setInterval(check, 10 * 60_000)
+setInterval(check, 5 * 60_000)
