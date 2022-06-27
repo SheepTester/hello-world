@@ -45,20 +45,25 @@ async function getStatus () {
  */
 async function announce (online, max, changes) {
   if (changes.length > 0) {
+    const embeds = changes.map(({ id, name, joined }) => ({
+      author: {
+        name: `${name} ${joined ? 'joined' : 'left'} the game.`,
+        icon_url: `https://cravatar.eu/helmavatar/${id}/64.png`
+      },
+      color: joined ? 0x22c55e : 0xef4444
+    }))
     return fetch(webhook, {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        content: `${online}/${max} players are on now. I check every five minutes.`,
+        content: `${online}/${Math.max(
+          max,
+          0
+        )} players are on now. I check every five minutes.${
+          max === -1 ? ' **NOTE: Server is offline.**' : ''
+        }`,
         username: 'iClicker attendance',
         avatar_url: 'https://cravatar.eu/helmavatar/gabrycosta04/64.png',
-        embeds: changes.map(({ id, name, joined }) => ({
-          author: {
-            name: `${name} ${joined ? 'joined' : 'left'} the game.`,
-            icon_url: `https://cravatar.eu/helmavatar/${id}/64.png`
-          },
-          color: joined ? 0x22c55e : 0xef4444,
-          footer: { text: id }
-        }))
+        embeds
       }),
       method: 'POST'
     })
@@ -67,7 +72,12 @@ async function announce (online, max, changes) {
 
 async function check () {
   console.log('Checked', new Date().toLocaleTimeString())
-  const { online, max, players } = await getStatus()
+  const status = await getStatus().catch(() => ({
+    online: 0,
+    max: -1,
+    players: []
+  }))
+  const { online, max, players } = status
   const joined = players.filter(id => !lastPlayers.includes(id))
   const left = lastPlayers.filter(id => !players.includes(id))
   lastPlayers = players
