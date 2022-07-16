@@ -1,4 +1,5 @@
 # hello-world
+
 Innocent first test.
 
 I have no idea why I exist or why I'm here.
@@ -17,14 +18,14 @@ commit for camel
 
 The grades listed here are for the 2020–2021 school year.
 
-Grade | Graduation year
------ | ---------------
- 7th  | 2026
- 8th  | 2025
- 9th  | 2024
-10th  | 2023
-11th  | 2022
-12th  | 2021
+| Grade | Graduation year |
+| ----- | --------------- |
+| 7th   | 2026            |
+| 8th   | 2025            |
+| 9th   | 2024            |
+| 10th  | 2023            |
+| 11th  | 2022            |
+| 12th  | 2021            |
 
 ### Scraping sections from IC
 
@@ -41,6 +42,42 @@ Grade | Graduation year
 ## [creating diagrams](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams)
 
 Here is a simple flow chart:
+
+$$
+\DeclareMathOperator{\half}{half}
+\DeclareMathOperator{\Div}{div}
+\DeclareMathOperator{\Mod}{mod}
+\DeclareMathOperator{\base}{base}
+\begin{align*}
+  \Div'          & : \mathbb{N} \times \mathbb{N} \times \mathbb{Z}^+ \to \mathbb{N}    \\
+  \Div'(q, n, d) & = \begin{cases}
+                       \Div'(q + 1, n - d, d) & \text{if } n \ge d \\
+                       q                      & \text{otherwise}
+                     \end{cases} \\
+  \\
+  \Div           & : \mathbb{N} \times \mathbb{Z}^+ \to
+  \mathbb{N}                                                           \\
+  \Div(n, d)     & = \Div'(0, n, d) \\
+  \\
+  \Mod       & : \mathbb{N} \times \mathbb{Z}^+ \to
+  \mathbb{N}                                   \\
+  \Mod(n, d) & = n - d \cdot \Div(n, d) \\
+  \\
+  \base'          & : E_b' \times \mathbb{N} \times B \to E_b           \\
+  \base'(a, q, b) & = \begin{cases}
+                        \base'(\Mod(q, b) \circ a, \Div(q, b), b) &
+                        \text{if } q \neq 0                         \\
+                        a                                         &
+                        \text{otherwise}
+                      \end{cases} \\
+  \\
+  \base           & : \mathbb{N} \times B \to E_b                       \\
+  \base(n, b)     & = \begin{cases}
+                        0                     & \text{if } n = 0 \\
+                        \base'(\lambda, n, b) & \text{otherwise}
+                      \end{cases}
+\end{align*}
+$$
 
 ```mermaid
 graph TD;
@@ -64,11 +101,11 @@ graph TD;
         "type": "Polygon",
         "coordinates": [
           [
-              [-90,35],
-              [-90,30],
-              [-85,30],
-              [-85,35],
-              [-90,35]
+            [-90, 35],
+            [-90, 30],
+            [-85, 30],
+            [-85, 35],
+            [-90, 35]
           ]
         ]
       }
@@ -90,25 +127,37 @@ graph TD;
       "geometries": [
         {
           "type": "Point",
-          "properties": {"prop0": "value0"},
+          "properties": { "prop0": "value0" },
           "coordinates": [4000, 5000]
         },
         {
           "type": "LineString",
-          "properties": {"prop0": "value0", "prop1": 0},
+          "properties": { "prop0": "value0", "prop1": 0 },
           "arcs": [0]
         },
         {
           "type": "Polygon",
-          "properties": {"prop0": "value0",
-            "prop1": {"this": "that"}
-          },
+          "properties": { "prop0": "value0", "prop1": { "this": "that" } },
           "arcs": [[1]]
         }
       ]
     }
   },
-  "arcs": [[[4000, 0], [1999, 9999], [2000, -9999], [2000, 9999]],[[0, 0], [0, 9999], [2000, 0], [0, -9999], [-2000, 0]]]
+  "arcs": [
+    [
+      [4000, 0],
+      [1999, 9999],
+      [2000, -9999],
+      [2000, 9999]
+    ],
+    [
+      [0, 0],
+      [0, 9999],
+      [2000, 0],
+      [0, -9999],
+      [-2000, 0]
+    ]
+  ]
 }
 ```
 
