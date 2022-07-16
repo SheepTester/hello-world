@@ -1,1 +1,28 @@
 *.exe text
+
+# Make prose and data detectable by Linguist
+# https://github.com/github/linguist/blob/master/docs/overrides.md
+
+*.md linguist-detectable=true
+*.md linguist-documentation=false
+*.txt linguist-detectable=true
+*.txt linguist-documentation=false
+
+*.cson linguist-detectable=true
+*.cson linguist-documentation=false
+*.csv linguist-detectable=true
+*.csv linguist-documentation=false
+.gitattributes linguist-detectable=true
+.gitattributes linguist-documentation=false
+*.json linguist-detectable=true
+*.json linguist-documentation=false
+*.svg linguist-detectable=true
+*.svg linguist-documentation=false
+*.toml linguist-detectable=true
+*.toml linguist-documentation=false
+*.xml linguist-detectable=true
+*.xml linguist-documentation=false
+*.yml linguist-detectable=true
+*.yml linguist-documentation=false
+*.yaml linguist-detectable=true
+*.yaml linguist-documentation=false
