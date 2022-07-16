@@ -1,11 +1,10 @@
-// deno run --allow-read --allow-write test/freq-contacts.ts ~/Downloads/contacts.json
+// deno run --allow-read --allow-write test/freq-contacts.ts <contacts.json>
 // where contacts.json is from google-contacts-scrape.js
 
 const filePath = Deno.args[0]
 if (!filePath) throw new Error('Give the path to the contacts file please')
 
-const json: any = await Deno.readTextFile(filePath)
-  .then(JSON.parse)
+const json: any = await Deno.readTextFile(filePath).then(JSON.parse)
 
 class JsonFreqMap extends Map<any, string[]> {
   static MAX_ENTRIES = 10
@@ -55,12 +54,13 @@ class JsonFreqMap extends Map<any, string[]> {
       // Sort by descending commonness
       const entries = [...this].sort((a, b) => b[1].length - a[1].length)
       for (const [value, ids] of entries.slice(0, JsonFreqMap.MAX_ENTRIES)) {
-        display += indent
-          + (typeof value === 'string' ? JSON.stringify(value) : value)
-          + `: [${ids.length}] `
-          + ids.slice(0, JsonFreqMap.MAX_IDS).join(', ')
-          + (ids.length > JsonFreqMap.MAX_IDS ? ', ...' : '')
-          + '\n'
+        display +=
+          indent +
+          (typeof value === 'string' ? JSON.stringify(value) : value) +
+          `: [${ids.length}] ` +
+          ids.slice(0, JsonFreqMap.MAX_IDS).join(', ') +
+          (ids.length > JsonFreqMap.MAX_IDS ? ', ...' : '') +
+          '\n'
       }
       if (entries.length > JsonFreqMap.MAX_ENTRIES) {
         display += indent + '...: nonexhaustive\n'
@@ -79,7 +79,7 @@ class JsonFreqMap extends Map<any, string[]> {
   static analyse (jsonArray: any[]): JsonFreqMap {
     const map = new JsonFreqMap()
     for (const item of jsonArray) {
-      map.add(`${item[2][0][1]} <${item[9][0][1]}>`, item)
+      map.add(`${item[2]?.[0][1]} <${item[9][0][1]}>`, item)
     }
     return map
   }
@@ -92,6 +92,6 @@ await Deno.writeTextFile('./ignored/contacts-freq.yml', map.display())
 await Deno.writeTextFile(
   './ignored/contacts-uuid.txt',
   json
-    .map((item: any) => `${item[0]}: ${item[2][0][1]} <${item[9][0][1]}>`)
-    .join('\n') + '\n',
+    .map((item: any) => `${item[0]}: ${item[2]?.[0][1]} <${item[9][0][1]}>`)
+    .join('\n') + '\n'
 )
