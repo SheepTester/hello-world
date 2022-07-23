@@ -10,6 +10,7 @@ on:
 jobs:
   thing:
     runs-on: ubuntu-latest
+    environment: SECWET
     steps:
       - name: echo thing(s)
         run: |
