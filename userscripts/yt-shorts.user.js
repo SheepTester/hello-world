@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YT shorts -> watch
 // @namespace    https://sheeptester.github.io/
-// @version      1.0
+// @version      1.1
 // @description  Redirect YouTube shorts pages to normal video watch pages.
 // @author       SheepTester
 // @match        https://www.youtube.com/*
@@ -14,8 +14,11 @@
 ;(async () => {
   'use strict'
 
-  navigation.addEventListener('navigate', e => {
-    const match = new URLPattern('https://www.youtube.com/shorts/:video').exec(e.destination.url).pathname.groups.video
+  const check = url => {
+    const match = new URLPattern('https://www.youtube.com/shorts/:video').exec(url).pathname.groups.video
     window.location.replace(`/watch?v=${match}`)
-  })
+  }
+
+  check(window.location)
+  navigation.addEventListener('navigate', e => check(e.destination.url))
 })()
