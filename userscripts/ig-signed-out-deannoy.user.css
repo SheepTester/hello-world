@@ -1,15 +1,14 @@
 /* ==UserStyle==
 @name           Signed out Instagram deannoyifier
 @namespace      sheeptester.github.io
-@version        1.0.2
+@version        1.0.3
 @description    Allow scrolling far
 @author         SheepTester
 ==/UserStyle== */
 
 @-moz-document domain("instagram.com") {
   /* The thing that covers the screen when you scroll down too far and is like oh sign in pls */
-  .RnEpo._Yhr4,
-  .hwddc3l5 {
+  .RnEpo._Yhr4 {
     display: none;
   }
   /* force ability to scroll */
