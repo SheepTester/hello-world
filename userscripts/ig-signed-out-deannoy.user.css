@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Signed out Instagram deannoyifier
 @namespace      sheeptester.github.io
-@version        1.0.4
+@version        1.0.5
 @description    Allow scrolling far
 @author         SheepTester
 ==/UserStyle== */
@@ -32,7 +32,7 @@
   }
 }
 
-@-moz-document regexp("twitter.com/[^/]+/?$") {
+@-moz-document regexp("https?://twitter.com/[^/]+/?$") {
   /* Only prevent scrolling in the Twitter user timeline */
   :root {
     overflow: unset !important;
