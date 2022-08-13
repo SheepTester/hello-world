@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Signed out Instagram deannoyifier
 @namespace      sheeptester.github.io
-@version        1.0.3
+@version        1.0.4
 @description    Allow scrolling far
 @author         SheepTester
 ==/UserStyle== */
@@ -20,5 +20,21 @@
   .N9d2H,
   ._a3gq ._aa5t {
     display: none;
+  }
+}
+
+@-moz-document domain("twitter.com") {
+  /* Bottom blue bar asking you to sign in */
+  [data-testid="BottomBar"],
+  /* Pop-up that appears when you scroll down too far */
+  .r-1pjcn9w {
+    display: none;
+  }
+}
+
+@-moz-document regexp("twitter.com/[^/]+/?$") {
+  /* Only prevent scrolling in the Twitter user timeline */
+  :root {
+    overflow: unset !important;
   }
 }
