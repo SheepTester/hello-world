@@ -1,14 +1,22 @@
 /* ==UserStyle==
 @name           Signed out Instagram deannoyifier
 @namespace      sheeptester.github.io
-@version        1.0.5
+@version        1.0.6
 @description    Allow scrolling far
 @author         SheepTester
 ==/UserStyle== */
 
 @-moz-document domain("instagram.com") {
-  /* The thing that covers the screen when you scroll down too far and is like oh sign in pls */
-  .RnEpo._Yhr4 {
+  /* The thing that covers the screen when you scroll down too far and is like oh sign in pls AND posts in signed-in Instagram */
+  .th8rvtx1 {
+    display: none;
+  }
+  /* Don't hide the overlay if there's a close button */
+  .mczi3sny + .th8rvtx1 {
+    display: inherit;
+  }
+  /* ._-kb might be the class used for signed out users? hard to tell */
+  ._-kb .h4m39qi9 {
     display: none;
   }
   /* force ability to scroll */
@@ -17,8 +25,7 @@
     overflow: unset !important;
   }
   /* The log in to instagram banner at the bottom of the screen */
-  .N9d2H,
-  ._a3gq ._aa5t {
+  .cugdjhsh > ._aa5t {
     display: none;
   }
 }
@@ -27,7 +34,7 @@
   /* Bottom blue bar asking you to sign in */
   [data-testid="BottomBar"],
   /* Pop-up that appears when you scroll down too far */
-  .r-1pjcn9w {
+  .r-1pjcn9wREMOVE {
     display: none;
   }
 }
