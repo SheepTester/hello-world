@@ -1,0 +1,36 @@
+name: screaming
+on: # or just [workflow_dispatch]
+  workflow_dispatch:
+    inputs:
+      choz:
+        description: do you like democracy
+        required: true
+        default: definitely
+        type: choice
+        options:
+          - definitely
+          - yes
+          - of course
+      bol:
+        description: party preference
+        type: boolean
+      env:
+        description: prefered vacation hotspot
+        type: environment
+
+jobs:
+  thing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo things. create file
+        run: |
+          echo "lol $L"
+          echo "$L$L$L$L$L" > wow.txt
+          echo "$L$L$L$L" >> wow.txt
+        env:
+          L: ${{ inputs.choz }} ${{ inputs.bol }} ${{ inputs.env }}
+      - name: do the thing
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: file lol
+          path: wow.txt
