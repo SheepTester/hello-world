@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YT shorts -> watch
 // @namespace    https://sheeptester.github.io/
-// @version      1.3
+// @version      1.4
 // @description  Redirect YouTube shorts pages to normal video watch pages. Also redirects to old Reddit.
 // @author       SheepTester
 // @match        https://www.youtube.com/*
@@ -16,7 +16,8 @@
 ;(async () => {
   'use strict'
 
-  if (window.location.hostname === 'www.reddit.com' && '__firstCommentLoaded' in window) {
+  // Redirect new Reddit to old Reddit, but only on subreddit pages (not on pages like /poll/)
+  if (window.location.hostname === 'www.reddit.com' && '__firstCommentLoaded' in window && window.location.pathname.startsWith('/r/')) {
     window.location.replace(window.location.href.replace('www', 'old'))
     return
   }
