@@ -8,3 +8,8 @@ ignored
 *.log
 *.out
 *.synctex.gz
+
+
+# Added by cargo
+
+/target
