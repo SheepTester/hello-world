@@ -1,84 +1,52 @@
-fn main() {
-    println!(
-        "{:?}",
-        Solution::find_original_array(vec![1, 3, 4, 2, 6, 8])
-    );
-    println!("{:?}", Solution::find_original_array(vec![4, 4]));
-    println!("{:?}", Solution::find_original_array(vec![4, 8, 8, 4]));
-    println!(
-        "{:?}",
-        Solution::find_original_array(vec![1, 2, 3, 2, 4, 6, 2, 4, 6, 4, 8, 12])
-    );
+use std::collections::HashMap;
+
+struct AuthenticationManager {
+    time_to_live: i32,
+    map: HashMap<String, i32>,
 }
 
-struct Solution;
-
-impl Solution {
-    pub fn find_original_array(mut changed: Vec<i32>) -> Vec<i32> {
-        if changed.len() % 2 != 0 {
-            return vec![];
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl AuthenticationManager {
+    fn new(time_to_live: i32) -> Self {
+        Self {
+            time_to_live,
+            map: HashMap::new(),
         }
-        // let original = Vec::with_capacity(changed.len() / 2);
-        // ok so say there's [1, 2, 2, 4]
-        // my idea would make it [1, 1, 2]. hmmm
-        // could go from largest to smallest?
-        // sort: [4, 2, 2, 1]
-        // delete 4 / 2 in [2, 2, 1] -> [2, 1]
-        // delete 2 / 2 in [1] -> []
-        // if it can't delete then bad
-        // this contains the halved even numbers that are in the list
-        changed.sort();
-        let mut highest = changed.len() - 1;
-        'wah: for i in (0..changed.len()).rev() {
-            // the largest half of the array is the doubled or some insane
-            // undoubled
-            // [1, 2, 2, 3, 4, 6]
-            // [1, 2, 2,-1, 4, 3]
-            // [1, 2,-1,-1, 2, 3]
-            // there will only be doubled numbers between -1s, I think
-            if changed[i] == -1 {
-                // if lowest_unhalved == 0 {
-                //     // println!("{:?}, {}", changed, i);
-                //     break;
-                // }
-                // changed.swap(lowest_unhalved - 1, i);
-                continue;
-            }
-            if changed[i] % 2 != 0 {
-                // println!("is odd {:?}", changed);
-                return vec![];
-            }
-            changed[i] /= 2;
-            let last = changed[i];
-            for j in (0..i).rev() {
-                if changed[j] == last {
-                    // swap
-                    // changed.swap(j, i);
-                    // lowest_unhalved = j;
-                    changed[j] = -1;
-                    if i != highest {
-                        changed.swap(highest, i);
-                    }
-                    highest -= 1;
-                    continue 'wah;
-                }
-            }
-            // could not find odd num
-            // println!("couldn't find {:?}, {}  {}", changed, last, i);
-            return vec![];
-        }
-        // while let Some(last) = changed.last() {
-        //     if last % 2 == 0 {
-        //         match changed.indexof {
-        //             Some(_) => original.append(last / 2),
-        //             None => return vec![],
-        //         }
-        //     } else {
-        //         // there was no larger number that was double this large odd
-        //         // number
-        //         return vec![];
-        //     }
-        // }
-        changed[changed.len() / 2..].to_vec()
     }
+
+    fn generate(&mut self, token_id: String, current_time: i32) {
+        self.map.insert(token_id, current_time + self.time_to_live);
+    }
+
+    fn renew(&mut self, token_id: String, current_time: i32) {
+        let egg = self.time_to_live;
+        self.map.entry(token_id).and_modify(|e| {
+            if *e > current_time {
+                *e = current_time + egg;
+            }
+        });
+    }
+
+    fn count_unexpired_tokens(&mut self, current_time: i32) -> i32 {
+        self.map.retain(|_, v| *v > current_time);
+        self.map.len() as i32
+    }
+}
+
+fn main() {
+    // let obj = AuthenticationManager::new(timeToLive);
+    // obj.generate(tokenId, currentTime);
+    // obj.renew(tokenId, currentTime);
+    // let ret_3: i32 = obj.count_unexpired_tokens(currentTime);
+    let mut obj = AuthenticationManager::new(5); // Constructs the AuthenticationManager with timeToLive = 5 seconds.
+    obj.renew("aaa".to_string(), 1); // No token exists with tokenId "aaa" at time 1, so nothing happens.
+    obj.generate("aaa".to_string(), 2); // Generates a new token with tokenId "aaa" at time 2.
+    println!("{}", obj.count_unexpired_tokens(6)); // The token with tokenId "aaa" is the only unexpired one at time 6, so return 1.
+    obj.generate("bbb".to_string(), 7); // Generates a new token with tokenId "bbb" at time 7.
+    obj.renew("aaa".to_string(), 8); // The token with tokenId "aaa" expired at time 7, and 8 >= 7, so at time 8 the renew request is ignored, and nothing happens.
+    obj.renew("bbb".to_string(), 10); // The token with tokenId "bbb" is unexpired at time 10, so the renew request is fulfilled and now the token will expire at time 15.
+    println!("{}", obj.count_unexpired_tokens(15)); // The token with tokenId "bbb" expires at time 15, and the token with tokenId "aaa" expired at time 7, so currently no token is unexpired, so return 0.
 }
