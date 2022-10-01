@@ -1,13 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>large text</title>
+    <meta
+      name="description"
+      content="A large text field so you can show what you're typing to someone else if you can't speak (e.g. because you have a sore throat or are in lecture)."
+    />
+
+    <link rel="stylesheet" type="text/css" href="/sheep3.css" />
+    <script src="/sheep3.js" charset="utf-8"></script>
+
     <style>
-      html, body {
+      html {
         height: 100%;
-        width: 100%;
       }
       body {
+        min-height: 100%;
         display: flex;
         align-items: center;
         margin: 0;
@@ -18,6 +29,7 @@
         padding: 15px;
         word-break: break-word;
         background: #eee;
+        margin: 0;
       }
       :focus {
         outline: none;
@@ -25,6 +37,6 @@
     </style>
   </head>
   <body>
-    <p contenteditable="">text</p>
+    <p contenteditable autofocus>text</p>
   </body>
 </html>
