@@ -6,7 +6,7 @@ The Chrome Web Store [requires privacy policies][require] if a product handles u
 
 ## Two Crying Green V Forms
 
-Source code: https://github.com/SheepTester/two-crying-green-v-forms
+Source code: <https://github.com/SheepTester/two-crying-green-v-forms>
 
 ### Collected data
 
@@ -25,7 +25,7 @@ The transactions are stored in the user's browser. Transactions include the foll
 3. The amount of money charged or deposited.
 4. The account that the transaction was made to.
 
-Account transactions page: https://eacct-ucsd-sp.transactcampus.com/eAccounts/AccountTransaction.aspx
+Account transactions page: <https://eacct-ucsd-sp.transactcampus.com/eAccounts/AccountTransaction.aspx>
 
 ### Data use
 
