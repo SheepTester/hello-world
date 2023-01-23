@@ -5,18 +5,13 @@ import time
 import redpitaya_scpi as scpi
 
 rp_s = scpi.scpi(sys.argv[1])
-
-if len(sys.argv) > 2:
-    led = int(sys.argv[2])
-else:
-    led = 0
-
-print("Blinking LED[" + str(led) + "]")
-
-period = 1  # seconds
+print("we be a-connecting")
 
 while 1:
-    time.sleep(period / 2.0)
-    rp_s.tx_txt("DIG:PIN LED" + str(led) + "," + str(1))
-    time.sleep(period / 2.0)
-    rp_s.tx_txt("DIG:PIN LED" + str(led) + "," + str(0))
+    # LED 8 doesn't light
+    for led in range(0, 8):
+        rp_s.tx_txt(f"DIG:PIN LED{led},1")
+        time.sleep(0.2)
+    for led in range(0, 8):
+        rp_s.tx_txt(f"DIG:PIN LED{led},0")
+        time.sleep(0.2)
