@@ -32,20 +32,21 @@ const createStream = flags =>
 const stream = await createStream('ax')
   .then(stream => {
     stream.write(
-      locations
-        .flatMap(location =>
-          [
-            'datetime',
-            'busyness',
-            'people',
-            'isAvailable',
-            'capacity',
-            'hourSummary',
-            'isOpen',
-            'percentage'
-          ].map(field => `${location} ${field}`)
-        )
-        .join(',') + '\n'
+      'datetime,' +
+        locations
+          .flatMap(location =>
+            [
+              'busyness',
+              'people',
+              'isAvailable',
+              'capacity',
+              'hourSummary',
+              'isOpen',
+              'percentage'
+            ].map(field => `${location} ${field}`)
+          )
+          .join(',') +
+        '\n'
     )
     return stream
   })
