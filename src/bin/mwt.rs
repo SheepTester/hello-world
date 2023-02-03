@@ -1,6 +1,6 @@
 //! Based on Niema's Python implementation
 
-use std::{collections::HashMap, io::Read, mem::size_of_val};
+use std::{collections::HashMap, io::Read, mem::size_of_val, time::Instant};
 
 #[derive(Debug, Default)]
 struct Node {
@@ -31,7 +31,8 @@ impl Mwt {
         let mut total = 0;
         let mut to_visit = vec![&self.root];
         while let Some(curr) = to_visit.pop() {
-            total += size_of_val(curr);
+            // https://stackoverflow.com/a/62614320
+            total += size_of_val(&*curr);
             to_visit.extend(curr.chars.values());
         }
         total
@@ -40,18 +41,28 @@ impl Mwt {
 
 fn main() {
     // https://stackoverflow.com/a/45623133
-    let mut res =
-        reqwest::blocking::get("https://github.com/dwyl/english-words/raw/master/words.txt")
-            .unwrap();
+    let mut res = match reqwest::blocking::get(
+        "https://github.com/dwyl/english-words/raw/master/words.txt",
+    ) {
+        Ok(res) => res,
+        Err(err) => {
+            println!("{:#?}", err);
+            return;
+        }
+    };
     println!("i have obtained the words");
     let mut body = String::new();
     res.read_to_string(&mut body).unwrap();
     let words = body.trim().split('\n');
     println!("the words have been nicely diced up");
 
+    // https://stackoverflow.com/a/40953863
+    let start = Instant::now();
     let mut mwt = Mwt::new();
     for word in words {
         mwt.insert(word)
     }
-    println!("Size: {}", mwt.size());
+    let elapsed = start.elapsed();
+    println!("Build time: {:.2?}", elapsed);
+    println!("Size: {} bytes", mwt.size());
 }
