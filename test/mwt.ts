@@ -25,6 +25,8 @@ const words = await fetch(WORD_SOURCE)
   .then(r => r.text())
   .then(file => file.trim().split('\n'))
 const mwt = new Mwt()
+console.time()
 for (const word of words) {
   mwt.insert(word)
 }
+console.timeEnd()
