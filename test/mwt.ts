@@ -24,8 +24,10 @@ const WORD_SOURCE = 'https://github.com/dwyl/english-words/raw/master/words.txt'
 const words = await fetch(WORD_SOURCE)
   .then(r => r.text())
   .then(file => file.trim().split('\n'))
-const mwt = new Mwt()
+console.log('words obtained')
+
 console.time()
+const mwt = new Mwt()
 for (const word of words) {
   mwt.insert(word)
 }
