@@ -87,19 +87,10 @@ async function getApi<T> (path: string, ids: number[]): Promise<T[]> {
     .then(json => json[path])
 }
 const sections = await getApi<Section>('sections', course.sections)
-// sections.sort((a, b) => a.position - b.position)
-// const sectionIdMap = Object.fromEntries(
-//   sections.map(section => [section.id, section])
-// )
 const units = await getApi<Unit>(
   'units',
   sections.flatMap(section => section.units)
 )
-// units.sort((a, b) =>
-//   a.section === b.section
-//     ? a.position - b.position
-//     : sectionIdMap[a.section].position - sectionIdMap[b.section].position
-// )
 const unitIdMap = Object.fromEntries(units.map(unit => [unit.id, unit]))
 /** NOT in order! Do not iterate over this. */
 const lessons = await getApi<Lesson>(
@@ -112,8 +103,6 @@ const lessonIdMap = Object.fromEntries(
 const firstLessonMap = Object.fromEntries(
   sections.map(section => [unitIdMap[section.units[0]].lesson, section])
 )
-console.log(units.map(unit => lessonIdMap[unit.lesson].title))
-Deno.exit()
 
 console.log('<!DOCTYPE html><html lang="en"><head>')
 console.log(
@@ -138,7 +127,8 @@ for (const section of sections) {
 }
 console.log('</ol>')
 
-for (const lesson of lessons) {
+for (const unit of units) {
+  const lesson = lessonIdMap[unit.lesson]
   const section = firstLessonMap[lesson.id]
   if (section) {
     console.log(`<h2 id="${section.slug}">${section.title}</h2>`)

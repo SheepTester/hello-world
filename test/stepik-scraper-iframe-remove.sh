@@ -2,16 +2,20 @@
 
 # bash test/stepik-scraper-iframe-remove.sh ignored/cse100.html ignored/cse100-noiframe.html
 
-sed -e 's/<iframe/<x-iframe/' -e 's/iframe>/x-iframe>/' $1 > "$2"
+head --lines=3 $1 > $2
+echo '<style>' >> "$2"
+echo 'x-iframe {' >> "$2"
+echo '  display: flex;' >> "$2"
+echo '  flex-direction: column;' >> "$2"
+echo '  justify-content: center;' >> "$2"
+echo '  align-items: center;' >> "$2"
+echo '  border: 1px solid black;' >> "$2"
+echo '  min-height: 100px;' >> "$2"
+echo '}' >> "$2"
+echo '</style>' >> "$2"
+tail --lines=+4 $1 | sed -e 's/<iframe/<x-iframe/' -e 's/iframe>/x-iframe>/' >> "$2"
 echo '<script>' >> "$2"
 echo "for (const element of document.querySelectorAll('x-iframe')) {" >> "$2"
-echo "  Object.assign(element.style, {" >> "$2"
-echo "    display: 'flex'," >> "$2"
-echo "    flexDirection: 'column'," >> "$2"
-echo "    justifyContent: 'center'," >> "$2"
-echo "    alignItems: 'center'," >> "$2"
-echo "    border: '1px solid black'" >> "$2"
-echo "  })" >> "$2"
 echo "  element.append(" >> "$2"
 echo "    element.getAttribute('src')," >> "$2"
 echo "    Object.assign(document.createElement('button'), {" >> "$2"
