@@ -5,6 +5,19 @@ const ROOT = 'https://stepik.org'
 const [courseId] = Deno.args
 const cookie = `sessionid=${Deno.env.get('STEPIK_SESSIONID')}`
 
+function partition<T> (
+  array: T[],
+  getKey: (value: T) => string | number
+): Record<string, T[]> {
+  const result: Record<string, T[]> = {}
+  for (const item of array) {
+    const key = getKey(item)
+    result[key] ??= []
+    result[key].push(item)
+  }
+  return result
+}
+
 type StepikShoebox = {
   courses: {
     id: number
@@ -52,12 +65,6 @@ type Step = {
   }
 }
 
-console.log(`<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />`)
-
 const initData: StepikShoebox = await fetch(
   `${ROOT}/course/${courseId}/syllabus`,
   { headers: { cookie } }
@@ -66,10 +73,6 @@ const initData: StepikShoebox = await fetch(
   .then(html => html.match(/__stepik_shoebox__ = JSON\.parse\('(.+)'\)/)?.[1])
   .then(json => JSON.parse(JSON.parse(`"${json}"`)))
 const [course] = initData.courses
-
-console.log(`<title>${course.summary}</title>`)
-console.log('</head><body>')
-console.log(`<h1 id="${course.summary}">${course.title}</h1>`)
 
 async function getApi<T> (path: string, ids: number[]): Promise<T[]> {
   return fetch(
@@ -88,15 +91,60 @@ const units = await getApi<Unit>(
   'units',
   sections.flatMap(section => section.units)
 )
+const unitIdMap = Object.fromEntries(units.map(unit => [unit.id, unit]))
 const lessons = await getApi<Lesson>(
   'lessons',
   units.map(unit => unit.lesson)
 )
+const lessonIdMap = Object.fromEntries(
+  lessons.map(lesson => [lesson.id, lesson])
+)
+const firstLessonMap = Object.fromEntries(
+  sections.map(section => [unitIdMap[section.units[0]].lesson, section])
+)
+
+console.log('<!DOCTYPE html><html lang="en"><head>')
+console.log(
+  '<meta name="viewport" content="width=device-width, initial-scale=1" />'
+)
+console.log(`<title>${course.summary}</title>`)
+console.log('</head><body>')
+console.log(`<h1 id="${course.slug}">${course.title}</h1>`)
+console.log('<ol>')
+for (const section of sections) {
+  console.log('<li>')
+  console.log(`<a href="#${section.slug}">${section.title}</a>`)
+  console.log('<ol>')
+  for (const unit of section.units) {
+    const lesson = lessonIdMap[unitIdMap[unit].lesson]
+    console.log('<li>')
+    console.log(`<a href="#${lesson.slug}">${lesson.title}</a>`)
+    console.log('</li>')
+  }
+  console.log('</ol>')
+  console.log('</li>')
+}
+console.log('</ol>')
+
 for (const lesson of lessons) {
+  const section = firstLessonMap[lesson.id]
+  if (section) {
+    console.log(`<h2 id="${section.slug}">${section.title}</h2>`)
+  }
+  console.log(`<h3 id="${lesson.slug}">${lesson.title}</h3>`)
+
   const steps = await getApi<Step>('steps', lesson.steps)
+  let first = true
   for (const step of steps) {
     if (step.block.name === 'text') {
-      console.log(step.block)
+      if (first) {
+        first = false
+      } else {
+        console.log('<hr />')
+      }
+      console.log(step.block.text)
     }
   }
 }
+
+console.log('</body></html>')
