@@ -1,3 +1,16 @@
+-- cat red_pitaya_top.bit > /dev/xdevcfg
+
+-- +0x50 cafe food (ID)
+-- +0x54 Morse unit period
+-- +0x58 pulse period
+-- +0x5c pattern length
+-- +0x60..0x80 pattern
+-- +0x80 sample period
+-- +0x84 threshold
+-- +0x88 showing Morse code output or received IR
+-- +0x8c the position in the received samples' 256 bits
+-- +0x90..0xa0 received samples
+
 --------------------------------------------------------------------------------
 -- Company: FE
 -- Engineer: A. Trost
@@ -7,8 +20,7 @@
 -- Target Device: Red Pitaya
 -- Tool versions: Vivado 2020.1
 -- Description: Morse demo code
--- Sys Registers: 403_00050 ID & start; 00054 threshold; 00058 morse tick
---                    0005C pulse/sample; 00060 sampled data
+-- Sys Registers: NO
 --------------------------------------------------------------------------------
 
 library IEEE;
@@ -92,7 +104,7 @@ begin
                 unitCounter <= to_unsigned(0, 32);
                 pulseCounter <= to_unsigned(0, 32);
                 step <= to_unsigned(0, 8);
-                pulsing <= '0';
+                pulsing <= '1';
 
                 samplePeriod <= to_unsigned(2133, 32); -- 57.6 kHz samples by default
                 threshold <= to_signed(1200, 14); -- 3V of 20V by default (from the starter code)
@@ -126,15 +138,19 @@ begin
                 if sys_wen='1' then                 -- decode address & write registers
                     if sys_addr(19 downto 0)=X"00054" then
                         unitPeriod <= unsigned(sys_wdata);  -- 14-bit threshold
+                        unitCounter <= to_unsigned(0, 32);
                     elsif sys_addr(19 downto 0)=X"00058" then
                         pulsePeriod <= unsigned(sys_wdata);  -- 16-bit tick period
+                        pulseCounter <= to_unsigned(0, 32);
+                        pulsing <= '1';
                     elsif sys_addr(19 downto 0)=X"0005C" then
                         patternLength <= unsigned(sys_wdata(7 downto 0));  -- 16-bit pulse/sample period
                     elsif sys_addr(19 downto 5)=X"000"&"011" then
-                      pattern((to_integer(unsigned(sys_addr(4 downto 0))) + 31) downto to_integer(unsigned(sys_addr(4 downto 0)))) <= sys_wdata;
+                      pattern((to_integer(unsigned(sys_addr(4 downto 0))) * 8 + 31) downto (to_integer(unsigned(sys_addr(4 downto 0))) * 8)) <= sys_wdata;
 
                     elsif sys_addr(19 downto 0)=X"00080" then
                         samplePeriod <= unsigned(sys_wdata);
+                        sampleCounter <= to_unsigned(0, 32);
                     elsif sys_addr(19 downto 0)=X"00084" then
                         threshold <= signed(sys_wdata(13 downto 0));
 
@@ -158,17 +174,20 @@ begin
     dat_b_o <= "01111111111111" when morsing='1' else "00000000000000";               -- binary signal (not pulsed) - test
 
     -- last 7 bits + first 7 bits
-    trailing <= pattern(6 downto 0) & pattern((to_integer(patternLength) - 1) downto (to_integer(patternLength) - 7)) when showOutput='1'
-        else recording(6 downto 0) & recording(255 downto 249);
+    trailing <= pattern(6 downto 0) & pattern((to_integer(patternLength) - 1) downto (to_integer(patternLength) - 7))
+    -- when showOutput='1'
+      --  else recording(6 downto 0) & recording(255 downto 249)
+      ;
     led_out <=
       pattern((to_integer(step) + 7) downto to_integer(step))
           when step + 7 < patternLength and showOutput='1'
       else trailing(((to_integer(step) - to_integer(patternLength)) + 14) downto ((to_integer(step) - to_integer(patternLength)) + 7))
          when showOutput='1'
       else
-          recording((to_integer(recordStep) + 7) downto to_integer(recordStep))
-          when recordStep < 249 -- 256 - 7
-      else trailing((to_integer(recordStep) - 242) downto (to_integer(recordStep) - 249))
+        X"FF" when highEnough='1' else X"00"
+      --     recording((to_integer(recordStep) + 7) downto to_integer(recordStep))
+      --     when recordStep < 249 -- 256 - 7
+      -- else trailing((to_integer(recordStep) - 242) downto (to_integer(recordStep) - 249))
         ;
 
     sys_err <= '0';         -- ignore errors
