@@ -53,9 +53,12 @@ int main(int argc, char **argv) {
   int lastCount = In32(adr, 0x8c) & 0xff00;
   while (1) {
     for (int block = 0; block < 4; block++) {
+      printf("beginning of block %d cursor at %d\n", block,
+             In32(adr, 0x8c) & 0xff);
       // Wait until cursor is out of the block
       while (1) {
         unsigned int cursor = In32(adr, 0x8c) & 0xff;
+        printf("waiting for cursor %d to leave block %d\n", cursor, block);
         if (!(cursor >= block * 8 && cursor < (block + 1) * 8)) {
           break;
         }
@@ -72,6 +75,7 @@ int main(int argc, char **argv) {
         printf("%d,%d\n", index, b & (1 << i) == 0 ? 0 : 1);
         index++;
       }
+      printf("end of block %d, cursor at %d\n", block, In32(adr, 0x8c) & 0xff);
     }
     int count = In32(adr, 0x8c) & 0xff00;
     printf("hi: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);

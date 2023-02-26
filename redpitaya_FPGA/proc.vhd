@@ -128,9 +128,9 @@ begin
                 if unitCounter = unitPeriod then
                   unitCounter <= to_unsigned(0, 32);
                   step <= step + 1;
-                end if;
-                if step = patternLength then
-                  step <= to_unsigned(0, 8);
+                  if step = patternLength then
+                    step <= to_unsigned(0, 8);
+                  end if;
                 end if;
                 if pulseCounter = pulsePeriod then
                   pulseCounter <= to_unsigned(0, 32);
@@ -140,9 +140,9 @@ begin
                   sampleCounter <= to_unsigned(0, 32);
                   recording(to_integer(recordStep)) <= highEnough;
                   recordStep <= recordStep + 1; -- should automatically wrap around to 0
-                end if;
-                if recordStep = X"00" then
-                  recordCount <= recordCount + 1;
+                  if recordStep = X"00" then
+                    recordCount <= recordCount + 1;
+                  end if;
                 end if;
 
                 if sys_wen='1' then                 -- decode address & write registers
