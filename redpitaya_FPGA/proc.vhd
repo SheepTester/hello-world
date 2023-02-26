@@ -35,6 +35,11 @@ end proc;
 
 architecture Behavioral of proc is
 
+  -- LED output, write +0x88
+  signal showOutput: std_logic;
+    -- helper for wrapping around. it should be 7 + 7 = 14 bits
+  signal trailing: std_logic_vector(13 downto 0);
+
   -- TRANSMIT
    -- settings
     -- Write +0x54
@@ -55,12 +60,24 @@ architecture Behavioral of proc is
   signal morsing: std_logic;
   signal pulsing: std_logic;
 
-  -- signal samplePeriod: unsigned(31 downto 0); -- in cycles
-  -- signal threshold: signed(13 downto 0); -- whether dat_a_i is high enough to be ON
+  -- ACQUIRE AMOGN US
+     -- Write +0x80
+  signal samplePeriod: unsigned(31 downto 0); -- in cycles
+     -- Write +0x84
+  signal threshold: signed(13 downto 0); -- whether dat_a_i is high enough to be ON
+
+  -- state
+  signal sampleCounter: unsigned(31 downto 0);
+  signal highEnough: std_logic;
+    -- Read +0x8c
+  signal recordStep: unsigned(7 downto 0);
+    -- Read +0x90 .. 0xa0 (exclusive)
+  signal recording: std_logic_vector(255 downto 0);
+
 
 begin
 
-
+    highEnough <= '1' when signed(dat_a_i) > threshold else '0';
 
     -- registers, write & control logic
     main: process(clk_i)
@@ -69,13 +86,20 @@ begin
 
             if rstn_i = '0' then                    -- !!!!! Recalculate cperiod and dperiod for generating 57.6 kHz !!!!
                 unitPeriod <= to_unsigned(12288000, 32); -- 0.1s period by default
-                pulsePeriod <= to_unsigned(1755428, 32); -- a seventh of unitPeriod
+                pulsePeriod <= to_unsigned(877714, 32); -- 1/14 of unitPeriod
                 pattern <= (255 downto 28 => '0') & "1010100011101110111000101010"; -- SOS (34 units, including word break)
                 patternLength <= to_unsigned(34, 8);
                 unitCounter <= to_unsigned(0, 32);
                 pulseCounter <= to_unsigned(0, 32);
                 step <= to_unsigned(0, 8);
                 pulsing <= '0';
+
+                samplePeriod <= to_unsigned(2133, 32); -- 57.6 kHz samples by default
+                threshold <= to_signed(1200, 14); -- 3V of 20V by default (from the starter code)
+                recordStep <= to_unsigned(0, 8);
+                recording <= (others => '0');
+
+                showOutput <= '1';
              else
                 sys_ack <= sys_wen or sys_ren;      -- acknowledge transactions
 
@@ -86,12 +110,17 @@ begin
                   unitCounter <= to_unsigned(0, 32);
                   step <= step + 1;
                 end if;
+                if step = patternLength then
+                  step <= to_unsigned(0, 8);
+                end if;
                 if pulseCounter = pulsePeriod then
                   pulseCounter <= to_unsigned(0, 32);
                   pulsing <= not pulsing;
                 end if;
-                if step = patternLength then
-                  step <= to_unsigned(0, 8);
+                if sampleCounter = samplePeriod then
+                  sampleCounter <= to_unsigned(0, 32);
+                  recording(to_integer(recordStep)) <= highEnough;
+                  recordStep <= recordStep + 1; -- should automatically wrap around to 0
                 end if;
 
                 if sys_wen='1' then                 -- decode address & write registers
@@ -103,6 +132,14 @@ begin
                         patternLength <= unsigned(sys_wdata(7 downto 0));  -- 16-bit pulse/sample period
                     elsif sys_addr(19 downto 5)=X"000"&"011" then
                       pattern((to_integer(unsigned(sys_addr(4 downto 0))) + 31) downto to_integer(unsigned(sys_addr(4 downto 0)))) <= sys_wdata;
+
+                    elsif sys_addr(19 downto 0)=X"00080" then
+                        samplePeriod <= unsigned(sys_wdata);
+                    elsif sys_addr(19 downto 0)=X"00084" then
+                        threshold <= signed(sys_wdata(13 downto 0));
+
+                    elsif sys_addr(19 downto 0)=X"00088" then
+                        showOutput <= sys_wdata(0);
                     end if;
                end if;
             end if;
@@ -120,7 +157,19 @@ begin
     -- !!!!!! generate binary signal on output !!!!!!!!!
     dat_b_o <= "01111111111111" when morsing='1' else "00000000000000";               -- binary signal (not pulsed) - test
 
-    led_out <= pattern((to_integer(step) + 7) downto to_integer(step));
+    -- last 7 bits + first 7 bits
+    trailing <= pattern(6 downto 0) & pattern((to_integer(patternLength) - 1) downto (to_integer(patternLength) - 7)) when showOutput='1'
+        else recording(6 downto 0) & recording(255 downto 249);
+    led_out <=
+      pattern((to_integer(step) + 7) downto to_integer(step))
+          when step + 7 < patternLength and showOutput='1'
+      else trailing(((to_integer(step) - to_integer(patternLength)) + 14) downto ((to_integer(step) - to_integer(patternLength)) + 7))
+         when showOutput='1'
+      else
+          recording((to_integer(recordStep) + 7) downto to_integer(recordStep))
+          when recordStep < 249 -- 256 - 7
+      else trailing((to_integer(recordStep) - 242) downto (to_integer(recordStep) - 249))
+        ;
 
     sys_err <= '0';         -- ignore errors
 
@@ -134,6 +183,29 @@ begin
                     std_logic_vector(unitPeriod) when x"00054",        -- morse timing tick
                     std_logic_vector(pulsePeriod) when x"00058",        -- morse timing tick
                     X"000000" & std_logic_vector(patternLength) when x"0005C",        -- pulse/sample period
+                    pattern(31 downto 0) when X"00060", -- yeah.
+                    pattern(63 downto 32) when X"00064",
+                    pattern(95 downto 64) when X"00068",
+                    pattern(127 downto 96) when X"0006c",
+                    pattern(159 downto 128) when X"00070",
+                    pattern(191 downto 160) when X"00074",
+                    pattern(223 downto 192) when X"00078",
+                    pattern(255 downto 224) when X"0007c",
+
+                    std_logic_vector(samplePeriod) when x"00080",        -- morse timing tick
+                    std_logic_vector(resize(threshold, 32)) when x"00084",        -- morse timing tick
+                    X"000000" & std_logic_vector(recordStep) when x"0008c",        -- morse timing tick
+                    recording(31 downto 0) when X"00090",
+                    recording(63 downto 32) when X"00094",
+                    recording(95 downto 64) when X"00098",
+                    recording(127 downto 96) when X"0009c",
+                    recording(159 downto 128) when X"000a0",
+                    recording(191 downto 160) when X"000a4",
+                    recording(223 downto 192) when X"000a8",
+                    recording(255 downto 224) when X"000ac",
+
+                    X"000000" & "0000000" & showOutput when x"00088",        -- morse timing tick
+
                     X"04200690" when others;
                     -- You cannot read the pattern back because I dont know how (see attempts above)
 --        end if;
