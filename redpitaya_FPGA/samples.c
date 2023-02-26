@@ -12,10 +12,12 @@ void Out32(void *adr, int offset, int value) {
   *((uint32_t *)(adr + offset)) = value;
 }
 
-int In32(void *adr, int offset) { return *((uint32_t *)(adr + offset)); }
+unsigned int In32(void *adr, int offset) {
+  return *((uint32_t *)(adr + offset));
+}
 
-int In16(void *adr, int offset) {
-  int r;
+unsigned int In16(void *adr, int offset) {
+  unsigned int r;
   r = *((uint32_t *)(adr + offset));
   if (r > 32767)
     return r - 65536;
@@ -43,6 +45,35 @@ int main(int argc, char **argv) {
 
   /* enable scope, wait 1s and read & print samples */ /* SAMPLE CODE */
   Out32(adr, 0x50, 1);
+
+  printf("index,sample\n");
+
+  // Split the eight pointers into four blocks of 8 bytes
+  int block = 0;
+  int index = 0;
+  while (1) {
+    // Wait until cursor is out of the block
+    while (1) {
+      unsigned int cursor = In32(adr, 0x8c);
+      if (!(cursor >= block * 8 && cursor < (block + 1) * 8)) {
+        break;
+      }
+    }
+
+    unsigned int a = In32(adr, 0x90 + block * 8);
+    unsigned int b = In32(adr, 0x90 + block * 8 + 4);
+
+    for (int i = 0; i < 8; i++) {
+      printf("%d,%d\n", index, a & (1 << i) == 0 ? 0 : 1);
+      index++;
+    }
+    for (int i = 0; i < 8; i++) {
+      printf("%d,%d\n", index, b & (1 << i) == 0 ? 0 : 1);
+      index++;
+    }
+
+    block = (block + 1) % 4;
+  }
 
   sleep(1);
   printf("x, y\n");

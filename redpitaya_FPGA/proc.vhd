@@ -1,3 +1,4 @@
+-- scp project/redpitaya.runs/impl_1/red_pitaya_top.tcl .bit root@169.254.128.192:~/
 -- cat red_pitaya_top.bit > /dev/xdevcfg
 
 -- +0x50 cafe food (ID)
@@ -8,7 +9,7 @@
 -- +0x80 sample period
 -- +0x84 threshold
 -- +0x88 showing Morse code output or received IR
--- +0x8c the position in the received samples' 256 bits
+-- +0x8c the position of the cursor in the 256 bits of received samples
 -- +0x90..0xa0 received samples
 
 --------------------------------------------------------------------------------
@@ -110,6 +111,7 @@ begin
                 threshold <= to_signed(1200, 14); -- 3V of 20V by default (from the starter code)
                 recordStep <= to_unsigned(0, 8);
                 recording <= (others => '0');
+                sampleCounter <= to_unsigned(0, 32);
 
                 showOutput <= '1';
              else
@@ -117,6 +119,7 @@ begin
 
                 unitCounter <= unitCounter + 1;
                 pulseCounter <= pulseCounter + 1;
+                sampleCounter <= sampleCounter + 1;
 
                 if unitCounter = unitPeriod then
                   unitCounter <= to_unsigned(0, 32);
