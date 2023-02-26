@@ -2,9 +2,13 @@ import sys
 import paramiko
 from paramiko.client import SSHClient
 
+# import flask
+
 if len(sys.argv) != 2:
     print(f"Usage: python {sys.argv[0]} <Red Pitaya IP>")
     exit()
+
+# IP = "rp-f0ada4.local"
 
 
 def send(command: str) -> str:
@@ -147,7 +151,33 @@ def set_pattern(string: str) -> None:
         )
 
 
-set_pattern("sus ")
+# set_pattern("among us ")
+
 
 # print(Addresses.read(Addresses.PATTERN_LENGTH))
 # Addresses.write(Addresses.SHOW_OUTPUT, 0)
+
+
+from flask import Flask, request, send_file, jsonify
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def hello_world():
+    return send_file("index.html")
+
+
+@app.route("/set-morse", methods=["POST"])
+def show_post():
+    set_pattern(request.json["morse"])
+    return "lmao"
+
+
+@app.route("/amongus.webp")
+def image():
+    return send_file("amongus.webp")
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", debug=True)
