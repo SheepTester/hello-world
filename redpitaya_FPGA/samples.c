@@ -49,38 +49,46 @@ int main(int argc, char **argv) {
   printf("index,sample\n");
 
   // Split the eight pointers into four blocks of 8 bytes
-  int block = 0;
   int index = 0;
+  int lastCount = In32(adr, 0x8c) & 0xff00;
   while (1) {
-    // Wait until cursor is out of the block
-    while (1) {
-      unsigned int cursor = In32(adr, 0x8c);
-      if (!(cursor >= block * 8 && cursor < (block + 1) * 8)) {
-        break;
+    for (int block = 0; block < 4; block++) {
+      // Wait until cursor is out of the block
+      while (1) {
+        unsigned int cursor = In32(adr, 0x8c) & 0xff;
+        if (!(cursor >= block * 8 && cursor < (block + 1) * 8)) {
+          break;
+        }
+      }
+
+      unsigned int a = In32(adr, 0x90 + block * 8);
+      unsigned int b = In32(adr, 0x90 + block * 8 + 4);
+
+      for (int i = 0; i < 8; i++) {
+        printf("%d,%d\n", index, a & (1 << i) == 0 ? 0 : 1);
+        index++;
+      }
+      for (int i = 0; i < 8; i++) {
+        printf("%d,%d\n", index, b & (1 << i) == 0 ? 0 : 1);
+        index++;
       }
     }
-
-    unsigned int a = In32(adr, 0x90 + block * 8);
-    unsigned int b = In32(adr, 0x90 + block * 8 + 4);
-
-    for (int i = 0; i < 8; i++) {
-      printf("%d,%d\n", index, a & (1 << i) == 0 ? 0 : 1);
-      index++;
+    int count = In32(adr, 0x8c) & 0xff00;
+    printf("hi: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);
+    printf("hi: %d, %d\n", lastCount, count);
+    while ((In32(adr, 0x8c) & 0xff00) == lastCount) {
+      printf("hmm: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);
     }
-    for (int i = 0; i < 8; i++) {
-      printf("%d,%d\n", index, b & (1 << i) == 0 ? 0 : 1);
-      index++;
-    }
-
-    block = (block + 1) % 4;
+    printf("hi: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);
+    break;
   }
 
-  sleep(1);
-  printf("x, y\n");
-  for (i = 0; i < 255; i++) {
-    d = In16(adr, 0x60);
-    printf("%d, %d\n", i, d);
-  }
+  // sleep(1);
+  // printf("x, y\n");
+  // for (i = 0; i < 255; i++) {
+  //   d = In16(adr, 0x60);
+  //   printf("%d, %d\n", i, d);
+  // }
 
   munmap(adr, sysconf(_SC_PAGESIZE));
   return 0;

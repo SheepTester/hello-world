@@ -9,7 +9,8 @@
 -- +0x80 sample period
 -- +0x84 threshold
 -- +0x88 showing Morse code output or received IR
--- +0x8c the position of the cursor in the 256 bits of received samples
+-- +0x8c the position of the cursor in the 256 bits of received samples (lowest byte)
+--       number of loops the cursor has made (second lowest byte)
 -- +0x90..0xa0 received samples
 
 --------------------------------------------------------------------------------
@@ -84,6 +85,8 @@ architecture Behavioral of proc is
   signal highEnough: std_logic;
     -- Read +0x8c
   signal recordStep: unsigned(7 downto 0);
+    -- Read +0xac
+  signal recordCount: unsigned(7 downto 0);
     -- Read +0x90 .. 0xa0 (exclusive)
   signal recording: std_logic_vector(255 downto 0);
 
@@ -110,6 +113,7 @@ begin
                 samplePeriod <= to_unsigned(2133, 32); -- 57.6 kHz samples by default
                 threshold <= to_signed(1200, 14); -- 3V of 20V by default (from the starter code)
                 recordStep <= to_unsigned(0, 8);
+                recordCount <= to_unsigned(0, 8);
                 recording <= (others => '0');
                 sampleCounter <= to_unsigned(0, 32);
 
@@ -136,6 +140,9 @@ begin
                   sampleCounter <= to_unsigned(0, 32);
                   recording(to_integer(recordStep)) <= highEnough;
                   recordStep <= recordStep + 1; -- should automatically wrap around to 0
+                end if;
+                if recordStep = X"00" then
+                  recordCount <= recordCount + 1;
                 end if;
 
                 if sys_wen='1' then                 -- decode address & write registers
@@ -216,7 +223,7 @@ begin
 
                     std_logic_vector(samplePeriod) when x"00080",        -- morse timing tick
                     std_logic_vector(resize(threshold, 32)) when x"00084",        -- morse timing tick
-                    X"000000" & std_logic_vector(recordStep) when x"0008c",        -- morse timing tick
+                    X"0000" & std_logic_vector(recordCount) & std_logic_vector(recordStep) when x"0008c",        -- morse timing tick
                     recording(31 downto 0) when X"00090",
                     recording(63 downto 32) when X"00094",
                     recording(95 downto 64) when X"00098",
