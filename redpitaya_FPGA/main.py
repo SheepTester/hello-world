@@ -179,5 +179,14 @@ def image():
     return send_file("amongus.webp")
 
 
+@app.route("/set-speed", methods=["POST"])
+def show_post2():
+    speed = request.json["speed"]  # actually Hz
+    period = int(122_880_000 / speed)
+    Addresses.write(Addresses.MORSE_UNIT_PERIOD, period)
+    Addresses.write(Addresses.PULSE_PERIOD, int(period / 14))
+    return "lmao"
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

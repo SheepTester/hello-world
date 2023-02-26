@@ -50,20 +50,36 @@
         justify-content: center;
         align-items: center;
         background-color: #1e293b;
+        gap: 40px;
       }
       form {
         display: flex;
         border-radius: 100px;
-        overflow: hidden;
+        /* overflow: hidden; */
         box-shadow: -5px -5px 20px rgba(255, 255, 255, 0.1),
           5px 5px 20px rgba(0, 0, 0, 0.5);
+        align-items: center;
+      }
+      form :first-child {
+        border-top-left-radius: 100px;
+        border-bottom-left-radius: 100px;
+      }
+      form :last-child {
+        border-top-right-radius: 100px;
+        border-bottom-right-radius: 100px;
+      }
+      .number {
+        padding-right: 10px;
+      }
+      span {
+        padding-right: 20px;
       }
       input {
         height: 50px;
         padding: 0 20px;
       }
-      input[type='text'] {
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
+      input[type='submit'] {
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
       }
       input[type='submit']:hover {
         background-color: rgba(255, 255, 255, 0.05);
@@ -90,6 +106,10 @@
         z-index: -1;
         top: 0;
         left: 0;
+      }
+      .number {
+        width: 30px;
+        text-align: right;
       }
     </style>
   </head>
@@ -162,46 +182,82 @@
       paint()
     </script>
     <script type="module">
-      import { h, render } from 'https://esm.sh/preact@10.13.0'
+      import { h, render, Fragment } from 'https://esm.sh/preact@10.13.0'
       import { useState } from 'https://esm.sh/preact@10.13.0/hooks'
 
       function App () {
         const [morse, setMorse] = useState('')
+        const [speed, setSpeed] = useState('10')
         const [loading, setLoading] = useState(false)
 
         return h(
-          'form',
-          {
-            onSubmit: e => {
-              const formData = new FormData(e.currentTarget)
-              setLoading(true)
-              fetch('/set-morse', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  morse: formData.get('morse') + ' '
+          Fragment,
+          null,
+          h(
+            'form',
+            {
+              onSubmit: e => {
+                // const formData = new FormData(e.currentTarget)
+                setLoading(true)
+                fetch('/set-morse', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ morse })
+                }).finally(() => {
+                  setLoading(false)
                 })
-              }).finally(() => {
-                setLoading(false)
-              })
-              e.preventDefault()
-            }
-          },
-          h('input', {
-            type: 'text',
-            name: 'morse',
-            placeholder: 'Message',
-            value: morse,
-            onInput: e => setMorse(e.currentTarget.value),
-            disabled: loading
-          }),
-          h('input', {
-            type: 'submit',
-            value: 'Set',
-            disabled: loading
-          })
+                e.preventDefault()
+              }
+            },
+            h('input', {
+              type: 'text',
+              // name: 'morse',
+              placeholder: 'Message',
+              value: morse,
+              onInput: e => setMorse(e.currentTarget.value),
+              disabled: loading
+            }),
+            h('input', {
+              type: 'submit',
+              value: 'Set',
+              disabled: loading
+            })
+          ),
+          h(
+            'form',
+            {
+              onSubmit: e => {
+                // const formData = new FormData(e.currentTarget)
+                setLoading(true)
+                fetch('/set-speed', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ speed: +speed })
+                }).finally(() => {
+                  setLoading(false)
+                })
+                e.preventDefault()
+              }
+            },
+            h('input', {
+              type: 'text',
+              placeholder: 'Morse units per second',
+              class: 'number',
+              value: speed,
+              onInput: e => setSpeed(e.currentTarget.value),
+              disabled: loading
+            }),
+            h('span', null, 'Hz'),
+            h('input', {
+              type: 'submit',
+              value: 'Set',
+              disabled: loading
+            })
+          )
         )
       }
 
