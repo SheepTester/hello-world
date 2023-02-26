@@ -130,13 +130,24 @@ morse = {
 
 def set_pattern(string: str) -> None:
     binary = (
-        " ".join(morse.get(c) or "/" for c in string.upper())
+        (" ".join(morse.get(c) or "/" for c in string.upper()) + " ")
         .replace(".", "10")
         .replace("-", "1110")
         .replace(" ", "00")
         .replace("/", "00")
-    )
+    )[::-1]
+    Addresses.write(Addresses.PATTERN_LENGTH, len(binary))
+    binary = binary.rjust(256, "0")
+    print(binary)
+    for i in range(0, 8):
+        print(binary[-i * 32 - 32 : -i * 32 or len(binary)])
+        Addresses.write(
+            Addresses.PATTERN_START + i * 4,
+            int(binary[-i * 32 - 32 : -i * 32 or len(binary)], 2),
+        )
 
 
-print(Addresses.read(Addresses.PATTERN_LENGTH))
-Addresses.write(Addresses.SHOW_OUTPUT, 0)
+set_pattern("sus ")
+
+# print(Addresses.read(Addresses.PATTERN_LENGTH))
+# Addresses.write(Addresses.SHOW_OUTPUT, 0)
