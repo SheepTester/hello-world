@@ -50,7 +50,15 @@ int main(int argc, char **argv) {
 
   // Split the eight pointers into four blocks of 8 bytes
   int index = 0;
-  int lastCount = In32(adr, 0x8c) & 0xff00;
+  // int lastCount = In32(adr, 0x8c) & 0xff00;
+  while (1) {
+    unsigned int cursor = In32(adr, 0x8c) & 0xff;
+    if (!(cursor >= 0 && cursor < 64)) {
+      // printf("we may start now\n");
+      break;
+    }
+    printf("waiting for cursor %d to enter block 0 (start)\n", cursor);
+  }
   while (1) {
     for (int block = 0; block < 4; block++) {
       printf("beginning of block %d cursor at %d\n", block,
@@ -58,32 +66,33 @@ int main(int argc, char **argv) {
       // Wait until cursor is out of the block
       while (1) {
         unsigned int cursor = In32(adr, 0x8c) & 0xff;
-        printf("waiting for cursor %d to leave block %d\n", cursor, block);
-        if (!(cursor >= block * 8 && cursor < (block + 1) * 8)) {
+        if (!(cursor >= block * 64 && cursor < (block + 1) * 64)) {
+          // printf("we may continue now\n");
           break;
         }
+        printf("waiting for cursor %d to leave block %d\n", cursor, block);
       }
 
       unsigned int a = In32(adr, 0x90 + block * 8);
       unsigned int b = In32(adr, 0x90 + block * 8 + 4);
 
       for (int i = 0; i < 8; i++) {
-        printf("%d,%d\n", index, a & (1 << i) == 0 ? 0 : 1);
+        printf("%d,%d\n", index, (a & (1 << i)) == 0 ? 0 : 1);
         index++;
       }
       for (int i = 0; i < 8; i++) {
-        printf("%d,%d\n", index, b & (1 << i) == 0 ? 0 : 1);
+        printf("%d,%d\n", index, (b & (1 << i)) == 0 ? 0 : 1);
         index++;
       }
       printf("end of block %d, cursor at %d\n", block, In32(adr, 0x8c) & 0xff);
     }
     int count = In32(adr, 0x8c) & 0xff00;
-    printf("hi: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);
-    printf("hi: %d, %d\n", lastCount, count);
-    while ((In32(adr, 0x8c) & 0xff00) == lastCount) {
-      printf("hmm: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);
-    }
-    printf("hi: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);
+    // printf("hi: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);
+    // printf("hi: %d, %d\n", lastCount, count);
+    // while ((In32(adr, 0x8c) & 0xff00) == lastCount) {
+    //   printf("hmm: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);
+    // }
+    // printf("hi: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);
     break;
   }
 
