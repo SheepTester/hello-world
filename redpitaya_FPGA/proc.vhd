@@ -1,4 +1,4 @@
--- scp project/redpitaya.runs/impl_1/red_pitaya_top.tcl .bit root@169.254.128.192:~/
+-- scp project/redpitaya.runs/impl_1/red_pitaya_top.bit root@rp-f0ada4.local:~
 -- cat red_pitaya_top.bit > /dev/xdevcfg
 
 -- +0x50 cafe food (ID)

@@ -6,45 +6,68 @@ if len(sys.argv) != 2:
     print(f"Usage: python {sys.argv[0]} <Red Pitaya IP>")
     exit()
 
-client = SSHClient()
-client.load_system_host_keys()
-client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-client.connect(sys.argv[1], username="root", password="root")
-stdin, stdout, stderr = client.exec_command("cat red_pitaya_top.bit > /dev/xdevcfg")
+
+def send(command: str) -> str:
+    client = SSHClient()
+    client.load_system_host_keys()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect(sys.argv[1], username="root", password="root")
+    print(command)
+    _, stdout, _ = client.exec_command(command)
+    value = stdout.read().decode()
+    client.close()
+    return value
+
+
+send("cat red_pitaya_top.bit > /dev/xdevcfg")
+
+# stdin, stdout, stderr = client.exec_command(
+#     "echo 127.0.0.1 localhost $(hostname) >> /etc/hosts"
+# )
+# print(stdout.read().decode())
 # print(stdout.channel.recv_exit_status())
 # stdin.close()
 
 
 class Addresses:
     BASE = 0x40300000
-    ID = 0x50
-    MORSE_UNIT_PERIOD = 0x54
-    PULSE_PERIOD = 0x58
-    PATTERN_LENGTH = 0x5C
-    PATTERN_START = 0x60
-    PATTERN_END = 0x80
-    SAMPLE_PERIOD = 0x80
-    THRESHOLD = 0x84
-    SHOW_OUTPUT = 0x88
-    SAMPLING_CURSOR = 0x8C
-    SAMPLE_START = 0x90
-    SAMPLE_END = 0xA0
+    ID = BASE + 0x50
+    MORSE_UNIT_PERIOD = BASE + 0x54
+    PULSE_PERIOD = BASE + 0x58
+    PATTERN_LENGTH = BASE + 0x5C
+    PATTERN_START = BASE + 0x60
+    PATTERN_END = BASE + 0x80
+    SAMPLE_PERIOD = BASE + 0x80
+    THRESHOLD = BASE + 0x84
+    SHOW_OUTPUT = BASE + 0x88
+    SAMPLING_CURSOR = BASE + 0x8C
+    SAMPLE_START = BASE + 0x90
+    SAMPLE_END = BASE + 0xA0
 
     def write(address: int, value: int) -> None:
-        stdin, _, _ = client.exec_command(f"~/monitor {address} {value}")
+        # print(f"/opt/redpitaya/bin/monitor {hex(address)} {value}")
+        # stdin, _, _ = client.exec_command(
+        #     f"/opt/redpitaya/bin/monitor {hex(address)} {value}"
+        # )
+        # stdin.write("root\n")
         # stdin.close()
+        send(f"/opt/redpitaya/bin/monitor {hex(address)} {value}")
 
     def read(address: int) -> int:
-        print(f"~/monitor {address}")
+        # print(f"/opt/redpitaya/bin/monitor {hex(address)}")
         # exit()
-        stdin, stdout, _ = client.exec_command(f"sudo ~/monitor {address}")
-        stdin.write("root\n")
-        # stdin.close()
-        print(stdout.channel.recv_exit_status())
-        value = stdout.read().decode().strip()
-        print(value)
-        print(stderr.read().decode())
-        return int(value)
+        # stdin, stdout, _ = client.exec_command(
+        #     f"/opt/redpitaya/bin/monitor {hex(address)}"
+        # )
+        value = send(f"/opt/redpitaya/bin/monitor {hex(address)}").strip()
+        # stdin.write("root\n")
+        # # stdin.flush()
+        # # stdin.close()
+        # print(stdout.channel.recv_exit_status())
+        # value = stdout.read().decode().strip()
+        # print(value)
+        # print(stderr.read().decode())
+        return int(value, 0)
 
 
 morse = {
