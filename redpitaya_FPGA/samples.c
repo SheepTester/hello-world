@@ -57,12 +57,12 @@ int main(int argc, char **argv) {
       // printf("we may start now\n");
       break;
     }
-    printf("waiting for cursor %d to enter block 0 (start)\n", cursor);
+    // printf("waiting for cursor %d to enter block 0 (start)\n", cursor);
   }
-  while (1) {
+  for (int i = 0; i < argc - 1 || argc <= 1; i++) {
     for (int block = 0; block < 4; block++) {
-      printf("beginning of block %d cursor at %d\n", block,
-             In32(adr, 0x8c) & 0xff);
+      // printf("beginning of block %d cursor at %d\n", block,
+      //  In32(adr, 0x8c) & 0xff);
       // Wait until cursor is out of the block
       while (1) {
         unsigned int cursor = In32(adr, 0x8c) & 0xff;
@@ -70,7 +70,8 @@ int main(int argc, char **argv) {
           // printf("we may continue now\n");
           break;
         }
-        printf("waiting for cursor %d to leave block %d\n", cursor, block);
+        // printf("waiting for cursor %d to leave block %d\n", cursor,
+        // block);
       }
 
       unsigned int a = In32(adr, 0x90 + block * 8);
@@ -84,16 +85,16 @@ int main(int argc, char **argv) {
         printf("%d,%d\n", index, (b & (1 << i)) == 0 ? 0 : 1);
         index++;
       }
-      printf("end of block %d, cursor at %d\n", block, In32(adr, 0x8c) & 0xff);
+      // printf("end of block %d, cursor at %d\n", block, In32(adr, 0x8c)
+      // & 0xff);
     }
-    int count = In32(adr, 0x8c) & 0xff00;
+    // int count = In32(adr, 0x8c) & 0xff00;
     // printf("hi: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);
     // printf("hi: %d, %d\n", lastCount, count);
     // while ((In32(adr, 0x8c) & 0xff00) == lastCount) {
     //   printf("hmm: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);
     // }
     // printf("hi: %d, %d\n", lastCount, In32(adr, 0x8c) & 0xff00);
-    break;
   }
 
   // sleep(1);
