@@ -1,12 +1,11 @@
+// node test/chem43a.js <webhook url>
+
 const tellServer = content =>
-  fetch(
-    'https://discord.com/api/webhooks/986454683415633920/8TShTmiurZLDq8bv726i1IbR9eQovH_jc4uG7PVEqsLU_w-acD5Fw2dmPLwminhVGya9',
-    {
-      method: 'POST',
-      body: JSON.stringify({ content }),
-      headers: { 'Content-Type': 'application/json' }
-    }
-  )
+  fetch(process.argv[2], {
+    method: 'POST',
+    body: JSON.stringify({ content }),
+    headers: { 'Content-Type': 'application/json' }
+  })
 
 const url =
   'https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudentResult.htm?selectedTerm=SP23&tabNum=tabs-crs&courses=CHEM+43A'
