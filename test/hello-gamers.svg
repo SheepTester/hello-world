@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480" fill="red">
+  <style xmlns="http://www.w3.org/2000/svg">
+  text {
+    font-family: Comic Sans MS;
+    font-size: 80px;
+    animation: wow .5s linear infinite;
+    transform-origin: 50% 50%;
+  }
+  @keyframes wow {
+    from {
+      transform: perspective(500px) rotateY(0deg);
+    }
+    to {
+      transform: perspective(500px) rotateY(360deg);
+    }
+  }
+</style><text xmlns="http://www.w3.org/2000/svg" x="0" y="240">hello gamers</text>
+</svg>
