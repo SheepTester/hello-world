@@ -1,6 +1,6 @@
 # hello-world
 
-imao
+![imao](./test/hello-gamers.svg)
 
 Innocent first test.
 
