@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>hard hacc</title>
+    <meta name="description" content="No description yet." />
+
+    <style>
+      body {
+        background-color: black;
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
+          'Segoe UI Emoji', 'Segoe UI Symbol';
+      }
+      #wow {
+        height: 3200px;
+        width: 200px;
+        display: flex;
+        position: fixed;
+        bottom: -160px;
+        left: 50%;
+        transform: translateX(-50%) perspective(500px) translateY(1600px)
+          rotateZ(calc(var(--tilt) * -0.1)) translateY(-1600px)
+          translateZ(400px) rotateX(30deg) rotateY(var(--tilt));
+        transform-origin: bottom;
+        --tilt: 0deg;
+        gap: 1px;
+        padding: 0 1px;
+      }
+      .row {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex-direction: column;
+        flex: 1 0 0;
+        padding: 10px;
+        padding-bottom: 80px;
+        position: relative;
+      }
+      .line {
+        width: 1px;
+        background-color: white;
+      }
+      .square {
+        aspect-ratio: 1 / 1;
+        border-radius: 5px;
+        width: 70px;
+      }
+      .target {
+        box-sizing: border-box;
+        border: 1px dashed grey;
+      }
+      .obstacle {
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        background-color: deepskyblue;
+      }
+      .active {
+        border: 1px solid yellow;
+        box-shadow: 0 0 10px yellow, inset 0 0 10px yellow;
+      }
+      #lmao {
+        text-align: center;
+        font-size: 100px;
+      }
+      #note {
+        position: fixed;
+        left: 0;
+        right: 0;
+        max-width: 500px;
+        margin: 0 auto;
+        text-align: center;
+        top: 80px;
+      }
+      #score {
+        position: fixed;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 50px;
+        margin: 0;
+        top: 30px;
+      }
+      #reset {
+        -webkit-appearance: none;
+        appearance: none;
+        border: none;
+        background: none;
+        color: inherit;
+        font: inherit;
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.5);
+        padding: 2px 5px;
+      }
+      .qs {
+        background-color: rgba(255, 111, 250, 0.8);
+        height: 30px;
+        position: absolute;
+        left: 2px;
+        right: 2px;
+        background-image: url('./chevron-right.svg');
+        background-size: contain;
+        animation: slide linear 0.5s infinite;
+      }
+      .qs-left {
+        background-image: url('./chevron-left.svg');
+        animation-direction: reverse;
+      }
+      @keyframes slide {
+        from {
+          background-position: 0;
+        }
+        to {
+          background-position: 30px;
+        }
+      }
+      #status {
+        position: absolute;
+        bottom: 80px;
+        display: flex;
+        justify-content: space-evenly;
+        height: 30px;
+        align-items: center;
+        margin-bottom: 100px;
+        left: 10px;
+        right: 10px;
+      }
+      .wowzers {
+        width: 3px;
+        border-radius: 5px;
+        height: 100%;
+        background-color: white;
+      }
+      .particle {
+        position: fixed;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        box-sizing: border-box;
+        border-style: solid;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="score"></h1>
+    <div id="wow">
+      <span class="line"></span>
+      <div class="row" id="left-row">
+        <div class="square target" id="left"></div>
+      </div>
+      <span class="line"></span>
+      <div class="row" id="right-row">
+        <div class="square target" id="right"></div>
+      </div>
+      <span class="line"></span>
+      <div id="status"></div>
+    </div>
+    <div id="particles"></div>
+    <div id="note">Click or tap anywhere to connect to the USB.</div>
+    <button id="reset">restart</button>
+    <script src="./main.js" type="module"></script>
+  </body>
+</html>
