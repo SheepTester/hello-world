@@ -8,12 +8,19 @@
     <meta name="description" content="No description yet." />
 
     <style>
+      html,
       body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
         background-color: black;
         color: white;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
           'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
           'Segoe UI Emoji', 'Segoe UI Symbol';
+        touch-action: none;
+        user-select: none;
       }
       #wow {
         height: 3200px;
@@ -163,7 +170,7 @@
       <div id="status"></div>
     </div>
     <div id="particles"></div>
-    <div id="note">Click or tap anywhere to connect to the USB.</div>
+    <div id="note">Click or tap anywhere to start.</div>
     <button id="reset">restart</button>
     <script src="./main.js" type="module"></script>
   </body>

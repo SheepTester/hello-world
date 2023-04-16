@@ -1,5 +1,5 @@
 {
-  "audio": "./among.mp3",
+  "audio": "https://assets.scratch.mit.edu/c2c6cd914a3874b37b856b09f053d4c8.mp3",
   "obstacles": [
     { "type": "left", "time": 1.86 },
     { "type": "left", "time": 2.09 },

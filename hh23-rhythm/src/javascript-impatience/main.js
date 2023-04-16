@@ -264,17 +264,18 @@ function didItHit (side) {
 }
 
 async function connect () {
-  const port = await navigator.serial.requestPort().catch(() => null)
-  if (port === null) {
-    return
-  }
   document.getElementById('note').remove()
-  await port.open({ baudRate: 115200 })
   audio.play()
   let wasLeft = false
   let wasRight = false
   let slideDown = null
-  for await (const entry of packets(port)) {
+  let lastEntry = {
+    leftBtn: false,
+    rightBtn: false,
+    sliderPressed: false,
+    sliderPos: 0.5
+  }
+  function accept (entry) {
     if (entry.leftBtn) {
       left.classList.add('active')
       if (!wasLeft) {
@@ -333,6 +334,45 @@ async function connect () {
     }
     target = entry.sliderPressed ? { pos: entry.sliderPos } : null
   }
+  document.addEventListener('pointerdown', e => {
+    lastEntry.sliderPressed = true
+    lastEntry.sliderPos = Math.max(
+      Math.min((e.clientX - window.innerWidth / 2) / 300 + 0.5, 1),
+      0
+    )
+    accept(lastEntry)
+  })
+  document.addEventListener('pointermove', e => {
+    lastEntry.sliderPos = Math.max(
+      Math.min((e.clientX - window.innerWidth / 2) / 300 + 0.5, 1),
+      0
+    )
+    accept(lastEntry)
+  })
+  const pointerEnd = () => {
+    lastEntry.sliderPressed = false
+    accept(lastEntry)
+  }
+  document.addEventListener('pointerup', pointerEnd)
+  document.addEventListener('pointercancel', pointerEnd)
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') {
+      lastEntry.leftBtn = true
+      accept(lastEntry)
+    } else if (e.key === 'ArrowRight') {
+      lastEntry.rightBtn = true
+      accept(lastEntry)
+    }
+  })
+  document.addEventListener('keyup', e => {
+    if (e.key === 'ArrowLeft') {
+      lastEntry.leftBtn = false
+      accept(lastEntry)
+    } else if (e.key === 'ArrowRight') {
+      lastEntry.rightBtn = false
+      accept(lastEntry)
+    }
+  })
 }
 document.addEventListener('click', connect, { once: true })
 
