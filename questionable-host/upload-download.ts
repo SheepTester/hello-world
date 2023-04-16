@@ -8,9 +8,9 @@ class HttpError extends Error {
 
   static async from (response: Response): Promise<HttpError> {
     return new HttpError(
-      `HTTP error ${response.status} for ${
-        response.url
-      }. ${await response.text().catch(() => 'Could not get response text.')}`
+      `HTTP error ${response.status} for ${response.url}. ${await response
+        .text()
+        .catch(() => 'Could not get response text.')}`
     )
   }
 }
@@ -39,16 +39,59 @@ const CHUNK_SIZE = MAX_SIZE - 24
  */
 const SERVER = 'https://assets.scratch.mit.edu/'
 
+export type UploadFileResult = {
+  hashBytes: ArrayBuffer
+  hash: string
+  url: string
+}
+
 /**
- * Upload a file to Scratch's asset servers. Returns the md5 hash of the first
- * chunk.
+ * Upload a file directly to Scratch's asset servers, without any additional
+ * metadata.
  *
- * `scratchSessionsId` is required if uploading outside the browser. Specifying
- * it in the browser won't do anything because you can't set the cookie header
- * in front-end JS.
+ * This means the Blob must conform with the 10MB limit, and for some file
+ * types, Scratch may enforce that the file is well-formed.
+ */
+export async function uploadFile (
+  buffer: ArrayBuffer,
+  scratchSessionsId?: string,
+  extension = 'wav'
+): Promise<UploadFileResult> {
+  const md5 = new Md5().update(buffer)
+  // NOTE: .digest() is not pure and calling it multiple times changes the
+  // hash
+  const hashBytes = md5.digest()
+  const hash = encodeToString(new Uint8Array(hashBytes))
+
+  const url = SERVER + hash + '.' + extension
+  const response = await fetch(url, {
+    method: 'POST',
+    credentials: 'include',
+    headers: scratchSessionsId
+      ? {
+          cookie: `scratchsessionsid=${scratchSessionsId}`
+        }
+      : {},
+    body: buffer
+  })
+
+  if (!response.ok) {
+    throw await HttpError.from(response)
+  }
+
+  return { hashBytes, hash, url }
+}
+
+/**
+ * Upload a file to Scratch's asset servers, split into 10MB chunks. Returns the
+ * md5 hash of the first chunk.
  *
- * `onProgress` is a bit chopier than when downloading because the Fetch API
- * does not support progress events for uploading.
+ * @param scratchSessionsId is required if uploading outside the browser.
+ * Specifying it in the browser won't do anything because you can't set the
+ * cookie header in front-end JS.
+ *
+ * @param onProgress is a bit chopier than when downloading because the Fetch
+ * API does not support progress events for uploading.
  *
  * NOTE: Scratch prohibits the bytes "<script"; if your file might contain it
  * (especially if it is an HTML file), then you probably should encode it
@@ -81,27 +124,9 @@ export async function upload (
       // Chunk data
       file.slice(byteIndex, byteIndex + CHUNK_SIZE)
     ])
-
-    const md5 = new Md5().update(await blob.arrayBuffer())
-    // NOTE: .digest() is not pure and calling it multiple times changes the
-    // hash
-    nextChunkHash = md5.digest()
-    const hash = encodeToString(new Uint8Array(nextChunkHash))
-
-    const response = await fetch(SERVER + hash + '.wav', {
-      method: 'POST',
-      credentials: 'include',
-      headers: scratchSessionsId
-        ? {
-            cookie: `scratchsessionsid=${scratchSessionsId}`
-          }
-        : {},
-      body: blob
-    })
-
-    if (!response.ok) {
-      throw await HttpError.from(response)
-    }
+    nextChunkHash = (
+      await uploadFile(await blob.arrayBuffer(), scratchSessionsId, 'wav')
+    ).hashBytes
   }
 
   if (onProgress) onProgress(1)
@@ -113,7 +138,7 @@ export async function upload (
  * Download a file from Scratch's asset servers given the md5 hash of the first
  * chunk.
  *
- * `onProgress` is given a value between 0 and 1.
+ * @param onProgress is given a value between 0 and 1.
  */
 export async function download (
   hash: string,
@@ -191,7 +216,7 @@ export async function download (
  * Download a file uploaded using the old userscript,
  * https://github.com/SheepTester/hello-world/blob/master/userscripts/skracxteamgxenanto.user.js
  *
- * `onProgress` is given a value between 0 and 1.
+ * @param onProgress is given a value between 0 and 1.
  */
 export async function downloadOld (
   hashes: string[],
@@ -233,4 +258,27 @@ export async function downloadOld (
   }
   if (onProgress) onProgress(1)
   return new Blob(parts, { type })
+}
+
+if (import.meta.main) {
+  if (Deno.args.length !== 1) {
+    console.log(
+      'Usage: SCRATCHSESSIONSID=<scratchsessionsid> deno run questionable-host/upload-download.ts <file>'
+    )
+    Deno.exit(1)
+  }
+  const scratchSessionsId = Deno.env.get('SCRATCHSESSIONSID')
+  if (!scratchSessionsId) {
+    console.log(
+      'The SCRATCHSESSIONSID environment variable should be set to your `scratchsessionsid` cookie.'
+    )
+    Deno.exit(1)
+  }
+  const file = await Deno.readFile(Deno.args[0])
+  const { url } = await uploadFile(
+    file.buffer,
+    scratchSessionsId,
+    Deno.args[0].split('.').at(-1)
+  )
+  console.log(url)
 }
