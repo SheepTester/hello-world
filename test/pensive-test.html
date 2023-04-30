@@ -1,10 +1,9 @@
 <script async src="/pensive.js" onload="console.log('tag loaded')"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){console.log(arguments); dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-9NWSPRKVS1');
+  window.dataLayer = [['js', new Date()], ['config', 'G-9NWSPRKVS1']];
+  for (const layer of window.dataLayer) {
+    layer.callee = true
+  }
   
   document.addEventListener('DOMContentLoaded', () => console.log('DOMContentLoaded'))
 </script>
