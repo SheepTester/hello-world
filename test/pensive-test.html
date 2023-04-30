@@ -4,6 +4,11 @@
   for (const layer of window.dataLayer) {
     layer.callee = true
   }
+  const protect = [...window.dataLayer]
+  Object.prototype.toString.call = arg => {
+    if (protect.includes(arg)) return '[object Arguments]'
+    else return Function.prototype.call.call(Object.prototype.toString, arg)
+  }
   
   document.addEventListener('DOMContentLoaded', () => console.log('DOMContentLoaded'))
 </script>
