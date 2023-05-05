@@ -1,28 +1,25 @@
 // math doer
-int func1373(unsigned long a0, unsigned long long a1) {
-  unsigned long long v0; // [bp-0x28]
-  unsigned int i;        // [bp-0x14]
+int func1373(unsigned long add_thing, unsigned long long start) {
+  unsigned long long timer; // [bp-0x28]
+  unsigned int i;           // [bp-0x14]
   // [bp-0x10], Other Possible Types: unsigned long, unsigned long long
   void *result;
-  void *v4;              // rcx
-  unsigned long long v6; // rcx
+  void *t1;              // rcx
+  unsigned long long t2; // rcx
 
-  v0 = a1;
+  timer = start;
   result = 0;
   for (unsigned int i = 0; i < 64; i++) {
-    v4 = result * 2;
-    result = (result * 2 - ((result * 2) * 9139 >> 64) >> 1) +
-                 ((result * 2) * 9139 >> 64) >>
-             62;
-    result = v4 - result * 9223372036854771239;
-    if (v0 < 0) {
-      v6 = result + a0;
-      result = (result + a0 - ((result + a0) * 9139 >> 64) >> 1) +
-                   ((result + a0) * 9139 >> 64) >>
-               62;
-      result = v6 - result * 9223372036854771239;
+    t1 = result * 2;
+    int t3 = (t1 * 0x23B3 >> 64);
+    result = (t1 - t3 >> 1) + t3 >> 62;
+    result = t1 - result * 0x7FFFFFFFFFFFEE27;
+    if (timer < 0) {
+      t2 = result + add_thing;
+      result = (t2 - (t2 * 0x23B3 >> 64) >> 1) + (t2 * 0x23B3 >> 64) >> 62;
+      result = t2 - result * 0x7FFFFFFFFFFFEE27;
     }
-    v0 *= 2;
+    timer *= 2;
   }
   return (unsigned int)result;
 }
