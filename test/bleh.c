@@ -1,37 +1,30 @@
 // math doer
-int func1373(unsigned long add_thing, unsigned long long start) {
-  unsigned long long timer; // [bp-0x28]
-  unsigned int i;           // [bp-0x14]
-  // [bp-0x10], Other Possible Types: unsigned long, unsigned long long
-  void *result;
-  void *t1;              // rcx
-  unsigned long long t2; // rcx
+int64_t func1373(int64_t add_thing, int64_t start) {
+  int64_t timer = start;
+  int64_t result = 0;
+  int64_t t1, t2, t3;
 
-  timer = start;
-  result = 0;
-  for (unsigned int i = 0; i < 64; i++) {
+  // shifting binds loosely
+  for (int i = 0; i < 64; i++) {
     t1 = result * 2;
-    int t3 = (t1 * 0x23B3 >> 64);
+    t3 = (t1 * 0x23B3 >> 64);
     result = (t1 - t3 >> 1) + t3 >> 62;
     result = t1 - result * 0x7FFFFFFFFFFFEE27;
-    if (timer < 0) {
+    if (timer < 0) { // so timer is signed
       t2 = result + add_thing;
       result = (t2 - (t2 * 0x23B3 >> 64) >> 1) + (t2 * 0x23B3 >> 64) >> 62;
       result = t2 - result * 0x7FFFFFFFFFFFEE27;
     }
     timer *= 2;
   }
-  return (unsigned int)result;
+  return result;
 }
 
-__int64 __fastcall sub_1373(__int64 a1, __int64 a2) {
-  __int64 v2;     // rdx
-  __int64 v3;     // rdx
-  int i;          // [rsp+14h] [rbp-Ch]
-  __int64 result; // [rsp+18h] [rbp-8h]
-
-  result = 0;
-  for (i = 0; i <= 63; ++i) {
+int64_t sub_1373(int64_t a1, int64_t a2) {
+  int64_t v2;
+  int64_t v3;
+  int64_t result = 0;
+  for (int i = 0; i <= 63; ++i) {
     v2 = (0x23B3 * (2 * result)) >> 64;
     result = 2 * result -
              0x7FFFFFFFFFFFEE27 * ((v2 + ((2 * result - v2) >> 1)) >> 62);
@@ -42,6 +35,28 @@ __int64 __fastcall sub_1373(__int64 a1, __int64 a2) {
     }
     a2 *= 2;
   }
+  return result;
+}
+
+int64_t function_1373(int64_t a1, int64_t a2) {
+  int32_t i = 0;      // 0x142e
+  int64_t timer = a2; // 0x1373
+  // int64_t v3 = 0;     // 0x139b
+  // int64_t v4 = v3;    // 0x13e1
+  for (i = 0; i < 64; i++) {
+    // 0x1397
+    // v3 = 2 * result;
+    // v4 = 2 * result;
+    // if (timer < 0) {
+    //   // 0x13e3
+    // }
+    // v4 = timer < 0 ? 2 * result + a1 : 2 * result;
+    // 0x142a
+    result = timer < 0 ? 2 * result + a1 : 2 * result;
+    i++;
+    timer *= 2;
+  }
+  // 0x143c
   return result;
 }
 
@@ -74,8 +89,8 @@ int64_t func1645(int64_t *arg) {
 }
 
 // if *0x3038 != 0x73B8E98D1B3879A2:
-// v0 = func1309() -> 8 random bytes
-// v3 = func1373(*0x3030, v0)
-// v2 = func1373(func1373(*0x3028, 11), v0)
+// v0 = func1309() -> 8 random bytes (64-bit int)
+// *0x3030 = func1373(*0x3030, v0)
+// *0x3028 = func1373(func1373(*0x3028, 11), v0)
 // ++*0x3038
 // func1645(*0x3020)
