@@ -8,7 +8,8 @@ int64_t func1373(int64_t add_thing, int64_t start) {
   for (int i = 0; i < 64; i++) {
     t1 = result * 2;
     t3 = (t1 * 0x23B3 >> 64);
-    result = (t1 - t3 >> 1) + t3 >> 62;
+    // result = ((t1 - t3) / 2 + t3) >> 62;
+    result = (result + t3 / 2) >> 62;
     result = t1 - result * 0x7FFFFFFFFFFFEE27;
     if (timer < 0) { // so timer is signed
       t2 = result + add_thing;

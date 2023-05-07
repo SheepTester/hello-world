@@ -261,29 +261,29 @@ Disassembly of section .text:
     1383:	48 c7 45 f8 00 00 00 00 	mov    QWORD PTR [rbp-0x8],0x0
     138b:	c7 45 f4 00 00 00 00 	mov    DWORD PTR [rbp-0xc],0x0
     1392:	e9 9b 00 00 00       	jmp    1432 <getrandom@plt+0x222>
-    1397:	48 8b 45 f8          	mov    rax,QWORD PTR [rbp-0x8]  ; a = *(rbp-0x8)
-    139b:	48 8d 0c 00          	lea    rcx,[rax+rax*1]          ; c = *(a + *a), it seems?
-    139f:	ba b3 23 00 00       	mov    edx,0x23b3               ; d = 0x23b3 (u32)
-    13a4:	48 89 c8             	mov    rax,rcx                  ; a = c
-    13a7:	48 f7 e2             	mul    rdx                      ; d, a = a * 0x23b3 (unsigned)
-    13aa:	48 89 c8             	mov    rax,rcx                  ; a = c
-    13ad:	48 29 d0             	sub    rax,rdx                  ; a -= 0x23b3
-    13b0:	48 d1 e8             	shr    rax,1                    ; a >>= 1 (sign bit copied)
-    13b3:	48 01 d0             	add    rax,rdx                  ; a += d
+    1397:	48 8b 45 f8          	mov    rax,QWORD PTR [rbp-0x8]  ;           a = *(rbp-0x8)
+    139b:	48 8d 0c 00          	lea    rcx,[rax+rax*1]          ; c = 2 * result
+    139f:	ba b3 23 00 00       	mov    edx,0x23b3               ;           d = 0x23b3 (u32)
+    13a4:	48 89 c8             	mov    rax,rcx                  ;           a = c
+    13a7:	48 f7 e2             	mul    rdx                      ; d = result * 0x23b3 * 2 >> 64          d, _ = c * 0x23b3 (unsigned)
+    13aa:	48 89 c8             	mov    rax,rcx                  ;           a = c
+    13ad:	48 29 d0             	sub    rax,rdx                  ;           a = c - (result * 0x23b3 * 2 >> 64)
+    13b0:	48 d1 e8             	shr    rax,1                    ;           a /= 2 (sign bit copied)
+    13b3:	48 01 d0             	add    rax,rdx                  ; a = (c - d) / 2 + d = 0.5c - 0.5d + d = (result + d) / 2
     13b6:	48 c1 e8 3e          	shr    rax,0x3e                 ; a >>= 62
-    13ba:	48 89 45 f8          	mov    QWORD PTR [rbp-0x8],rax  ; *(rbp-0x8) = a
-    13be:	48 8b 45 f8          	mov    rax,QWORD PTR [rbp-0x8]  ; a = *(rbp-0x8)
+    13ba:	48 89 45 f8          	mov    QWORD PTR [rbp-0x8],rax  ;           result = a
+    13be:	48 8b 45 f8          	mov    rax,QWORD PTR [rbp-0x8]  ;           a = *(rbp-0x8)
     13c2:	48 ba 27 ee ff ff ff ff ff 7f 	movabs rdx,0x7fffffffffffee27 ; d = 0x7fffffffffffee27
     13cc:	48 0f af d0          	imul   rdx,rax                  ; d *= a (signed)
     13d0:	48 89 c8             	mov    rax,rcx                  ; a = c
     13d3:	48 29 d0             	sub    rax,rdx                  ; a -= d
-    13d6:	48 89 45 f8          	mov    QWORD PTR [rbp-0x8],rax  ; *(rbp-0x8) = a
-    13da:	48 8b 45 e0          	mov    rax,QWORD PTR [rbp-0x20] ; *(rbp-0x20) =
+    13d6:	48 89 45 f8          	mov    QWORD PTR [rbp-0x8],rax  ; result = 2 * result - 0x7fffffffffffee27 * result
+    13da:	48 8b 45 e0          	mov    rax,QWORD PTR [rbp-0x20] ; a = timer *(rbp-0x20)
     13de:	48 85 c0             	test   rax,rax                  ; (same as cmp apparently)
-    13e1:	79 47                	jns    142a <getrandom@plt+0x21a> ; skip if positive, i.e., IF a < 0:
+    13e1:	79 47                	jns    142a <getrandom@plt+0x21a> ; skip if positive, i.e., IF timer < 0:
     13e3:	48 8b 55 f8          	mov    rdx,QWORD PTR [rbp-0x8]  ; d = *(rbp-0x8)
     13e7:	48 8b 45 e8          	mov    rax,QWORD PTR [rbp-0x18] ; a = *(rbp-0x18)
-    13eb:	48 8d 0c 02          	lea    rcx,[rdx+rax*1]          ; c = *(d + *a)
+    13eb:	48 8d 0c 02          	lea    rcx,[rdx+rax*1]          ; c = a + d
     13ef:	ba b3 23 00 00       	mov    edx,0x23b3               ; d = 0x23b3 (u32)
     13f4:	48 89 c8             	mov    rax,rcx                  ; a = c
     13f7:	48 f7 e2             	mul    rdx                      ; d, a *= a * d
