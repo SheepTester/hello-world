@@ -1,7 +1,7 @@
-const width = 49
-const height = 20
-const gateCount = 4
-const windowCount = 10
+const width = +(prompt('Width:') || 49)
+const height = +(prompt('Height:') || 20)
+const gateCount = +(prompt('Gates:') || 4)
+const windowCount = +(prompt('Windows:') || 10)
 
 const towerEnd = height - 2
 
