@@ -1,0 +1,13 @@
+/* ==UserStyle==
+@name           go away Reddit video loading circle
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    it shows up while the video is playing sometimes
+@author         SheepTester
+==/UserStyle== */
+
+@-moz-document domain("reddit.com") {
+  .buffering-controls {
+    display: none;
+  }
+}
