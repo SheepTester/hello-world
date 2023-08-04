@@ -2,7 +2,7 @@
 @name        Less annoying Instagram web experience
 @description Hides app download dialog and allows right clicking to save images and vidoes on posts
 @namespace   sheeptester.github.io
-@version     1.0.6
+@version     1.0.7
 @license     unlicense
 ==/UserStyle== */
 @-moz-document domain("instagram.com") {
@@ -26,4 +26,9 @@
     ._aakh {
         bottom: 50%;
     }
+  
+  video ~ div {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }
