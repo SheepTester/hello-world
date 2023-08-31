@@ -1,23 +1,24 @@
 /* ==UserStyle==
 @name           Signed out Instagram deannoyifier
 @namespace      sheeptester.github.io
-@version        1.0.6
+@version        2.0.0
 @description    Allow scrolling far
 @author         SheepTester
 ==/UserStyle== */
 
 @-moz-document domain("instagram.com") {
-  /* The thing that covers the screen when you scroll down too far and is like oh sign in pls AND posts in signed-in Instagram */
-  .th8rvtx1 {
+  /* The thing that covers the screen when you scroll down too far and is like oh sign in pls */
+  .x1n2onr6.xzkaem6:not(:has([aria-label="Close"])) * {
     display: none;
   }
-  /* Don't hide the overlay if there's a close button */
-  .mczi3sny + .th8rvtx1 {
-    display: inherit;
-  }
-  /* ._-kb might be the class used for signed out users? hard to tell */
-  ._-kb .h4m39qi9 {
-    display: none;
+  .x1n2onr6.xzkaem6:not(:has([aria-label="Close"]))::after {
+    content: 'Note: Modal hidden by userstyle.';
+    position: fixed;
+    z-index: 10;
+    pointer-events: none;
+    left: 10px;
+    bottom: 10px;
+    color: red;
   }
   /* force ability to scroll */
   body,
@@ -25,23 +26,7 @@
     overflow: unset !important;
   }
   /* The log in to instagram banner at the bottom of the screen */
-  .cugdjhsh > ._aa5t {
+  .xoegz02 {
     display: none;
-  }
-}
-
-@-moz-document domain("twitter.com") {
-  /* Bottom blue bar asking you to sign in */
-  [data-testid="BottomBar"],
-  /* Pop-up that appears when you scroll down too far */
-  .r-1pjcn9wREMOVE {
-    display: none;
-  }
-}
-
-@-moz-document regexp("https?://twitter.com/[^/]+/?$") {
-  /* Only prevent scrolling in the Twitter user timeline */
-  :root {
-    overflow: unset !important;
   }
 }
