@@ -1,17 +1,17 @@
 /* ==UserStyle==
 @name           Signed out Instagram deannoyifier
 @namespace      sheeptester.github.io
-@version        2.0.0
+@version        2.0.1
 @description    Allow scrolling far
 @author         SheepTester
 ==/UserStyle== */
 
 @-moz-document domain("instagram.com") {
   /* The thing that covers the screen when you scroll down too far and is like oh sign in pls */
-  .x1n2onr6.xzkaem6:not(:has([aria-label="Close"])) * {
+  .x1n2onr6.xzkaem6:not(:has([aria-label="Close"])):not(:has(._a9--._a9_1)) * {
     display: none;
   }
-  .x1n2onr6.xzkaem6:not(:has([aria-label="Close"]))::after {
+  .x1n2onr6.xzkaem6:not(:has([aria-label="Close"])):not(:has(._a9--._a9_1))::after {
     content: 'Note: Modal hidden by userstyle.';
     position: fixed;
     z-index: 10;
