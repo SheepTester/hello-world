@@ -1,0 +1,48 @@
+<button onclick="play()">play!!</button>
+
+<h1>info!!</h1>
+
+<ul>
+  <li>this is <strong>scottie s1</strong> sstv image!!</li>
+  <li>i am not sure what it looks like, but it should be a bunch of vertical bars, each 10 px wide, with various colors</li>
+</ul>
+
+<script>
+
+  let c
+
+  function play () {
+    c ??= new AudioContext()
+
+    o = c.createOscillator()
+    o.connect(c.destination)
+    start = time = c.currentTime + 0.1
+    freq = (f, t) => {
+      o.frequency.setValueAtTime(f, time)
+      time += t / 1000
+    }
+    for (const tone of [1900, 1500, 1900, 1500, 2300, 1500, 2300, 1500, ]) freq(tone, 100)
+    freq(1900, 300)
+    freq(1200, 10)
+    freq(1900, 300)
+    freq(1200, 30)
+    martin = 60
+    bits = [...(martin .toString(2) .padStart(7, '0'))].reverse()
+    bits.push(bits.reduce((cum, curr) => cum ^ +curr, 0))
+    for (const b of bits) freq(+b === 1 ? 1100 : 1300, 30)
+    freq(1200, 30)
+    // https://radio.clubs.etsit.upm.es/blog/2019-08-10-sstv-scottie1-encoder/
+      freq(1200, 9)
+    for (let y = 240; y--;) {
+      freq(1500, 1.5)
+      for (let i = 32; i--;) freq(i % 2 === 0 ? 1500 : 2300, 0.432 * 10)
+      freq(1500, 1.5)
+      for (let i = 32; i--;) freq(i % 3 === 0 ? 1500 : 2300, 0.432 * 10)
+      freq(1200, 9)
+      freq(1500, 1.5)
+      for (let i = 32; i--;) freq(i % 5 === 0 ? 1500 : 2300, 0.432 * 10)
+    }
+    o.start(start)
+    o.stop(time)
+  }
+</script>
