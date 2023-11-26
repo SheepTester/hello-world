@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         YT shorts -> watch, old Reddit, desktop Wikipedia
 // @namespace    https://sheeptester.github.io/
-// @version      1.8
-// @description  Redirect YouTube shorts pages to normal video watch pages. Also redirects to old Reddit.
+// @version      1.9
+// @description  Redirect YouTube shorts pages to normal video watch pages. Also redirects to old Reddit unless URL ends in ?force-new.
 // @author       SheepTester
 // @match        https://www.youtube.com/*
 // @match        https://www.reddit.com/*
@@ -19,6 +19,10 @@
   'use strict'
 
   if (window.location.hostname === 'www.reddit.com') {
+    // Ignore if `keep-new` is in the query part of the URL
+    if (window.location.search.includes('force-new')) {
+      return
+    }
     // Redirect new Reddit to old Reddit, but only on subreddit pages (not on pages like /poll/)
     if (/^\/([ru]|user)\//.test(window.location.pathname) && !document.documentElement.hasAttribute('xml:lang')) {
       window.location.replace(window.location.href.replace('www', 'old'))
