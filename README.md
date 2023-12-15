@@ -2,6 +2,23 @@
 
 ![imao](./test/hello-gamers.svg)
 
+## RULES FOR CONTRIBUTING
+
+> [!TIP]
+> i really like cake
+
+> [!NOTE]
+> there was a
+
+> [!IMPORTANT]
+> it was sunny today
+
+> [!CAUTION]
+> i suggest you try number 3. it is very sweet and not too spicy
+
+> [!WARNING]
+> you can push off reading the rest of this if you want
+
 Innocent first test.
 
 I have no idea why I exist or why I'm here.
@@ -12,7 +29,7 @@ TestEdit
 
 dummy edit
 
-yet anotre
+yet anotre `#badBAD`
 
 commit for camel
 
