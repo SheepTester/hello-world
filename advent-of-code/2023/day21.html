@@ -1,0 +1,39 @@
+<input type=file accept="*.txt" id=ww>
+<script>
+
+	onerror = (...args)=>alert(JSON.stringify(args))
+//	alert('succ')
+</script>
+<script>
+	ww.onchange = async e => {
+		try{
+const fole = await ww.files[0].text()
+		let grid = fole.trim().split(/\r?\n/).map(d=> d.split(''))
+					const step = old => {
+						const nw = old.map(l=> l.map(l => l==='S'?'.' : l))
+							//structuredClone (old)
+						const set=(r,c,v)=> nw[r]?.[c]==='.'&&(nw[r][c]=v)
+for (const [r, row] of old.entries())
+						for (const [c, col] of row.entries())
+						{if (col==='S'){
+set(r-1,c,'S')
+set(r+1,c,'S')
+set(r,c-1,'S')
+set(r,c+1,'S')
+						}
+						
+						}
+						return nw
+					}
+		for(let i =64;i--;) grid=step(grid)
+		let s=0
+for (const [r, row] of grid.entries())
+						for (const [c, col] of row.entries())
+				if (col==='S')s++
+		alert(s)
+		}catch(err){
+alert(err.stack)
+		}
+	}
+	//alert(3)
+</script>
