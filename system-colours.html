@@ -37,10 +37,16 @@ span.append(bigger, '#'+chans.slice(0, 3).map(n => n.toString(16).padStart(2, '0
 
 </script>
 <style>
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+    }
+  }
   body {
   font-family: sans-serif;
   display: grid;
   grid-template-areas: 'light dark' 'desc desc';
+  grid-template-columns: 1fr 1fr;
   margin: 0;
   }
   article {
