@@ -4,26 +4,53 @@ const depColours = ["ActiveBorder", "ActiveCaption", "AppWorkspace", "Background
 const mozColours = ["-moz-ButtonDefault", "-moz-ButtonHoverFace", "-moz-ButtonHoverText", "-moz-CellHighlight", "-moz-CellHighlightText", "-moz-Combobox", "-moz-ComboboxText", "-moz-Dialog", "-moz-DialogText", "-moz-dragtargetzone", "-moz-EvenTreeRow", "-moz-html-CellHighlight", "-moz-html-CellHighlightText", "-moz-mac-accentdarkestshadow", "-moz-mac-accentdarkshadow", "-moz-mac-accentface", "-moz-mac-accentlightesthighlight", "-moz-mac-accentlightshadow", "-moz-mac-accentregularhighlight", "-moz-mac-accentregularshadow", "-moz-mac-chrome-active", "-moz-mac-chrome-inactive", "-moz-mac-focusring", "-moz-mac-menuselect", "-moz-mac-menushadow", "-moz-mac-menutextselect", "-moz-MenuHover", "-moz-MenuHoverText", "-moz-MenuBarText", "-moz-MenuBarHoverText", "-moz-nativehyperlinktext", "-moz-OddTreeRow", "-moz-win-communicationstext", "-moz-win-mediatext", "-moz-win-accentcolor", "-moz-win-accentcolortext"]
 const mozPrefColours = ["-moz-activehyperlinktext", "-moz-default-background-color", "-moz-default-color", "-moz-hyperlinktext", "-moz-visitedhyperlinktext"]
 
-function wow (name) {
+const defer = []
+function wow (name, ) {
+  const dark = String(this) === 'dark'
+  // console.log(dark)
 const span = document.createElement('div')
 span.style.backgroundColor = name
 const bigger = document.createElement('span')
 bigger.textContent = name
-document.body.appendChild(span)
+document.currentScript.parentElement.appendChild(span)
+// if (defer.length === 0) 
+//   window.requestAnimationFrame(() => defer.forEach(a => a()))
+// defer.push(() => {
   const col = window.getComputedStyle(span).backgroundColor
-  const chans = col.match(/\d+/g).map(Number)
-  if (chans.length !== 3) {
+  const chans = col.match(/\d+(?:\.\d+)?/g).map(Number)
+  if (chans.length !== 3 && chans.length !== 4 || chans[3]===0) {
     span.style.color = 'red'
     span.append(bigger)
     return
   }
-span.append(bigger, '#'+chans.map(n => n.toString(16).padStart(2, '0')).join(''))
+span.append(bigger, '#'+chans.slice(0, 3).map(n => n.toString(16).padStart(2, '0')).join('') + (chans[3] ? Math.round(chans[3] * 0xff).toString(16).padStart(2, '0') :''))
   const sum = chans.reduce((a, b) => a + b)
-  if (sum < 255 * 3 / 2) span.style.color = 'white'
+  if (sum < 255 * 3 / 2) {
+    if (!dark) {
+      span.style.color = 'white'
+    }
+  } else if (dark) {
+    span.style.color = 'black'
+  }
+// })
 }
+
 </script>
 <style>
-  body { font-family: sans-serif;}
+  body {
+  font-family: sans-serif;
+  display: grid;
+  grid-template-areas: 'light dark' 'desc desc';
+  margin: 0;
+  }
+  article {
+  padding: 8px;
+  color: CanvasText;
+  background-color: Canvas;
+}
+h1 {
+  font-size: 2em;
+}
 div {
 display: inline-flex;
 flex-direction: column;
@@ -35,14 +62,29 @@ span {
 font-size: 2em;
 }
 </style>
-<h1>System colours</h1>
+<article style="color-scheme: light; grid-area: light;">
+  <h1>Light theme</h1>
+<h2>System colours</h2>
 <script>sysColours.forEach(wow)</script>
-<h1>Deprecated system colours</h1>
+<h2>Deprecated system colours</h2>
 <script>depColours.forEach(wow)</script>
-<h1>Mozilla System Color Extensions</h1>
+<h2>Mozilla System Color Extensions</h2>
 <script>mozColours.forEach(wow)</script>
-<h1>Mozilla Color Preference Extensions</h1>
+<h2>Mozilla Color Preference Extensions</h2>
 <script>mozPrefColours.forEach(wow)</script>
-<p>
+</article>
+<article style="color-scheme: dark; grid-area: dark;">
+  <h1>Dark theme</h1>
+  <h2>System colours</h2>
+<script>sysColours.forEach(wow, 'dark')</script>
+<!-- Firefox HighlightText is the same as currentColor -->
+<h2>Deprecated system colours</h2>
+<script>depColours.forEach(wow, 'dark')</script>
+<h2>Mozilla System Color Extensions</h2>
+<script>mozColours.forEach(wow, 'dark')</script>
+<h2>Mozilla Color Preference Extensions</h2>
+<script>mozPrefColours.forEach(wow, 'dark')</script>
+</article>
+<p style="grid-area: desc;">
 Thanks to <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#system_colors">MDN</a>
 </p>
