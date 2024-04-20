@@ -6,30 +6,26 @@
 // Error: Could not open library: Could not open library: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.32' not found (required by /home/sheep/.cache/deno/plug/https/github.com/ca5f22309759238252351f9be046c2fe0145354ddfb7f7a85ff783475f26edda.so)
 // import { createOgImage } from 'https://raw.githubusercontent.com/Zaubrik/portrait/5efe4252bb526dda4db86e570660be1ef8acb96c/og_image.ts'
 import { voices } from './voices.ts'
-import { createCanvas } from 'https://deno.land/x/canvas@v1.4.1/mod.ts'
+import {
+  createCanvas,
+  loadImage
+} from 'https://deno.land/x/canvas@v1.4.1/mod.ts'
 
-const canvas = createCanvas(300, 300)
+const image = await loadImage('./ucsd-commencement-voices/bg.png')
+
+const canvas = createCanvas(image.width(), image.height())
 const ctx = canvas.getContext('2d')
 
-// Set line width
-ctx.lineWidth = 10
+ctx.drawImage(image, 0, 0)
 
-// Wall
-ctx.strokeRect(75, 140, 150, 110)
-
-// Door
-ctx.fillRect(130, 190, 40, 60)
-
-// Roof
-ctx.beginPath()
-ctx.moveTo(50, 140)
-ctx.lineTo(150, 60)
-ctx.lineTo(250, 140)
-ctx.closePath()
-ctx.stroke()
-
-ctx.fillStyle = 'red'
-ctx.fillText('hello', 100, 100)
+ctx.fillStyle = 'white'
+ctx.font = '80px whatever'
+const { width } = ctx.measureText('Kai M. (Narration) [Now ID 32]')
+ctx.fillText(
+  'Kai M. (Narration) [Now ID 32]',
+  (canvas.width - width) / 2,
+  (canvas.height + 50) / 2
+)
 
 await Deno.writeFile('ucsd-commencement-voices/image.png', canvas.toBuffer())
 
