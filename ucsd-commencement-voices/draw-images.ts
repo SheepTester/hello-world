@@ -13,31 +13,15 @@ import {
 
 const image = await loadImage('./ucsd-commencement-voices/bg.png')
 
-const canvas = createCanvas(image.width(), image.height())
-const ctx = canvas.getContext('2d')
-
-ctx.drawImage(image, 0, 0)
-
-ctx.fillStyle = 'white'
-ctx.font = '80px whatever'
-const { width } = ctx.measureText('Kai M. (Narration) [Now ID 32]')
-ctx.fillText(
-  'Kai M. (Narration) [Now ID 32]',
-  (canvas.width - width) / 2,
-  (canvas.height + 50) / 2
-)
-
-await Deno.writeFile('ucsd-commencement-voices/image.png', canvas.toBuffer())
-
 for (const name of Object.values(voices)) {
   const path = `ucsd-commencement-voices/images/${name}.png`
 
-  // const exists = await Deno.stat(path)
-  //   .then(() => true)
-  //   .catch(() => false)
-  // if (exists) {
-  //   continue
-  // }
+  const exists = await Deno.stat(path)
+    .then(() => true)
+    .catch(() => false)
+  if (exists) {
+    continue
+  }
 
   // https://dev.zaubrik.com/og-image/Jimmy_J%20(Conversational).png?theme=Dark&font-size=80px&image=https%3A%2F%2Ffiles.readme.io%2F7e10e8c-small-WSL_Logo_White_1.png&height=60
   // const url = `https://dev.zaubrik.com/og-image/${encodeURIComponent(
@@ -64,4 +48,14 @@ for (const name of Object.values(voices)) {
   //   )
   // )
   // await Deno.writeFile(path, png)
+
+  const canvas = createCanvas(image.width(), image.height())
+  const c = canvas.getContext('2d')
+  c.drawImage(image, 0, 0)
+  c.fillStyle = 'white'
+  c.font = '80px whatever'
+  const { width } = c.measureText(name)
+  c.fillText(name, (canvas.width - width) / 2, (canvas.height + 50) / 2)
+  await Deno.writeFile(path, canvas.toBuffer())
+  canvas.dispose()
 }
