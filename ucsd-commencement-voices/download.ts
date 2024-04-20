@@ -1,3 +1,5 @@
+// deno run --allow-net --allow-write ucsd-commencement-voices/download.ts
+
 import { voices } from './voices.ts'
 
 const text = 'Sean'
