@@ -1,0 +1,18 @@
+
+
+<input type=url id=url value="violin-screech-sound-effect-made-with-Voicemod.mp3" name=audio>
+
+
+<button style="font-size: 50px" id=play>play sound</button>
+
+<script>
+
+	play.onclick=e=>{
+		a = new Audio(url.value)
+		a.onload=()=>{
+			a.play()
+		}
+
+	}
+
+</script>
