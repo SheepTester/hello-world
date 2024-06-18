@@ -5,7 +5,7 @@
 ## RULES FOR CONTRIBUTING
 
 > [!TIP]
-> i really like cake
+> i really like  cake
 
 > [!NOTE]
 > there was a
