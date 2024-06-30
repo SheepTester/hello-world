@@ -1,0 +1,26 @@
+<noscript>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=BitcoinMiner"></script>
+  <script src="//cdn.polyfill.io/v1/polyfill.min.js" async defer></script>
+  <script src="https://cdn.polyfill.io/v3/polyfill.js" async defer></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js"></script>
+</noscript>
+
+
+<script src="https://polyfill.io/v3/polyfill.min.js" type="ignore"></script>
+
+<title>Bitcoin Miner</title>
+
+<script>
+  window.ai = window.ai || {
+    predictor: () => new BitcoinMiner(),
+  }
+
+  const miner = window.ai.predictor(`Create a bitcoin miner with the following API:
+
+  class BitcoinMiner {
+    /** Begin mining bitcoin */
+    start(): void
+  }`)
+  miner.start()
+</script>
