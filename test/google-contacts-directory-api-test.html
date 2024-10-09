@@ -149,6 +149,7 @@
                 // 'DIRECTORY_SOURCE_TYPE_UNSPECIFIED'
               ],
               readMask: 'names,emailAddresses',
+              pageSize: 1000,
               pageToken: undefined
             })
             .getPromise()
@@ -162,6 +163,7 @@
         console.log(nextPageToken, people)
         document.getElementById('content').innerText = `${people
           .map(
+            // https://developers.google.com/people/api/rest/v1/people#Person
             ({ emailAddresses, names }) =>
               `${names
                 .map(({ displayName }) => displayName)
