@@ -1,0 +1,39 @@
+// Place your key bindings in this file to override the defaults
+[
+  {
+    "key": "ctrl+tab",
+    "command": "workbench.action.nextEditorInGroup"
+  },
+  {
+    "key": "ctrl+shift+tab",
+    "command": "workbench.action.previousEditorInGroup"
+  },
+  {
+    "key": "ctrl+m",
+    // Mainly to disable the default command that toggles tab key accessibility
+    // mode
+    "command": "editor.action.jumpToBracket"
+  },
+  {
+    "key": "ctrl+0",
+    "command": "workbench.action.zoomReset"
+  },
+  {
+    "key": "ctrl+alt+s",
+    "command": "workbench.action.files.saveWithoutFormatting"
+  },
+  // LaTeX Workshop has a lot of ctrl+L chords
+  // Removing it by readding this rule because it "weights more"
+  // https://github.com/microsoft/vscode/issues/12187#issuecomment-262433905
+  {
+    "key": "ctrl+l",
+    "command": "expandLineSelection",
+    "when": "textInputFocus"
+  },
+  {
+    // Pressing escape in a markdown file makes it show an error
+    "key": "escape",
+    // https://stackoverflow.com/a/43192261
+    "command": "-language-julia.clearCurrentInlineResult"
+  }
+]
