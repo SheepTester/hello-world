@@ -34,8 +34,9 @@
       /* exported handleSignoutClick */
 
       // TODO(developer): Set to client ID and API key from the Developer Console
-      const CLIENT_ID = '<YOUR_CLIENT_ID>'
-      const API_KEY = '<YOUR_API_KEY>'
+      const CLIENT_ID =
+        '39298609199-aeeoi7f4q4qmn8bvprqqgfke5u7s4bm3.apps.googleusercontent.com'
+      const API_KEY = 'AIzaSyAuZsqstoc2ZQ9iPeARwH3pi3yapkdGbeY'
 
       // Discovery doc URL for APIs used by the quickstart
       const DISCOVERY_DOC =
@@ -43,7 +44,7 @@
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      const SCOPES = 'https://www.googleapis.com/auth/contacts.readonly'
+      const SCOPES = 'https://www.googleapis.com/auth/directory.readonly'
 
       let tokenClient
       let gapiInited = false
@@ -139,28 +140,36 @@
         let response
         try {
           // Fetch first 10 files
-          response = await gapi.client.people.people.connections.list({
-            resourceName: 'people/me',
-            pageSize: 10,
-            personFields: 'names,emailAddresses'
-          })
+          response = await gapi.client.people.people
+            .listDirectoryPeople({
+              // https://developers.google.com/people/api/rest/v1/people/listDirectoryPeople
+              sources: [
+                'DIRECTORY_SOURCE_TYPE_DOMAIN_CONTACT',
+                'DIRECTORY_SOURCE_TYPE_DOMAIN_PROFILE'
+                // 'DIRECTORY_SOURCE_TYPE_UNSPECIFIED'
+              ],
+              readMask: 'names,emailAddresses',
+              pageToken: undefined
+            })
+            .getPromise()
+          console.log(response)
         } catch (err) {
-          document.getElementById('content').innerText = err.message
+          console.log(err)
+          document.getElementById('content').innerText = err.stack
           return
         }
-        const connections = response.result.connections
-        if (!connections || connections.length == 0) {
-          document.getElementById('content').innerText = 'No connections found.'
-          return
-        }
-        // Flatten to string to display
-        const output = connections.reduce((str, person) => {
-          if (!person.names || person.names.length === 0) {
-            return `${str}Missing display name\n`
-          }
-          return `${str}${person.names[0].displayName}\n`
-        }, 'Connections:\n')
-        document.getElementById('content').innerText = output
+        const { people, nextPageToken } = response.result
+        console.log(nextPageToken, people)
+        document.getElementById('content').innerText = `${people
+          .map(
+            ({ emailAddresses, names }) =>
+              `${names
+                .map(({ displayName }) => displayName)
+                .join(' ')}: ${emailAddresses
+                .map(({ value }) => value)
+                .join(' ')}`
+          )
+          .join('\n')}\n\nNext page: ${nextPageToken}`
       }
     </script>
     <script
