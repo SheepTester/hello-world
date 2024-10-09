@@ -17,7 +17,7 @@ const cookie = await fetch('https://finance.ucsd.edu/Home/UpdateTerm', {
 )
 console.error('get table', cookie)
 const html = await fetch('https://finance.ucsd.edu/Home/ListFunded', {
-  headers: { cookie, referer: 'https://finance.ucsd.edu/Home/ListFunded' }
+  headers: { cookie }
 }).then(r => r.text())
 console.error(html.length)
 await fs.writeFile('/home/sheep/fin.html', html)
