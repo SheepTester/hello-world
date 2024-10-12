@@ -26,6 +26,7 @@
     <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
 
     <pre id="content" style="white-space: pre-wrap"></pre>
+    <pre id="example" style="white-space: pre-wrap"></pre>
 
     <script type="text/javascript">
       /* exported gapiLoaded */
@@ -148,7 +149,37 @@
                 'DIRECTORY_SOURCE_TYPE_DOMAIN_PROFILE'
                 // 'DIRECTORY_SOURCE_TYPE_UNSPECIFIED'
               ],
-              readMask: 'names,emailAddresses',
+              readMask: [
+                'addresses',
+                'ageRanges',
+                'biographies',
+                'birthdays',
+                'calendarUrls',
+                'clientData',
+                'coverPhotos',
+                'emailAddresses',
+                'events',
+                'externalIds',
+                'genders',
+                'imClients',
+                'interests',
+                'locales',
+                'locations',
+                'memberships',
+                'metadata',
+                'miscKeywords',
+                'names',
+                'nicknames',
+                'occupations',
+                'organizations',
+                'phoneNumbers',
+                'photos',
+                'relations',
+                'sipAddresses',
+                'skills',
+                'urls',
+                'userDefined'
+              ].join(','),
               pageSize: 1000,
               pageToken: undefined
             })
@@ -172,6 +203,11 @@
                 .join(' ')}`
           )
           .join('\n')}\n\nNext page: ${nextPageToken}`
+        document.getElementById('example').innerText = JSON.stringify(
+          people[0],
+          null,
+          2
+        )
       }
     </script>
     <script
