@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>NFC reader</title>
+    <meta name="description" content="yee" />
+
+    <style>
+      /* TEMP */
+    </style>
+  </head>
+  <body>
+    <p>Please tap your card!</p>
+    <button id="scan">start scanning</button>
+    <script>
+      // const rx = new WebSocket(`ws://${window.location.hostname}:3000/`);
+      // const tx = new WebSocket(`ws://${window.location.hostname}:3001/`);
+      let reader;
+      try {
+        reader = new NDEFReader();
+      } catch {
+        document.write("⚠️ Browser does not support <code>NDEFReader</code>.");
+      }
+      reader.addEventListener("reading", (e) => {
+        new Audio("./success.wav").play();
+        const audio = new Audio("./scan-success.mp3");
+        audio.volume = 0.7;
+        audio.play();
+        rx.send(JSON.stringify({ TapCard: { serial_num: e.serialNumber } }));
+      });
+      reader.addEventListener("readingerror", () => {
+        new Audio("./error.wav").play();
+        const audio = new Audio("./scan-error.mp3");
+        audio.volume = 0.7;
+        audio.play();
+        // rx.send(
+        //   JSON.stringify({
+        //     type: "tap-card-error",
+        //   })
+        // );
+      });
+      scan.onclick = () =>
+        reader.scan().then(() => {
+          scan.disabled = true;
+          new Audio("./scan-ready.mp3").play();
+        });
+    </script>
+  </body>
+</html>
