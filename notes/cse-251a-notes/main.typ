@@ -3,6 +3,7 @@
 #let indent = h(1cm)
 #let blue = rgb("#0ea5e9")
 #let pink = rgb("#ffa1ad")
+#let gold = rgb("#ffd230")
 
 #let title = "CSE 251A notes"
 
@@ -326,10 +327,10 @@ to solve:
   ]
   then loss func is
   $
-  L(#w) = sum_(i=1)^n (y^((i)) - #w dot #x^((i)))^2 = ||y - X #w||^2_2
+  L(#w) = sum_(i=1)^n (y^((i)) - #w dot #x^((i)))^2 = #text(fill: gold)[$||y - X #w||^2_2$]
   -> (y - X #w)^T (y-X#w)
   $
-  minimized at $#w = (X^T X)^-1 (X^T y)$
+  minimized at #text(fill: gold)[$#w = (X^T X)^(-1) (X^T y)$]
 
 generalization: given *training set* $(x^((1)), y^((1))), dots, (x^((n)), y^((n))) in RR^d times RR$, find lin func given by $w in RR^d, b in RR$ minimizing squared loss
 
@@ -404,7 +405,7 @@ $f : RR^d -> RR, s : RR -> RR$
 $
 Pr(y = 1 | x) &= 1 / (1 + e^(-(w dot x + b)))\
 Pr(y = -1 | x) &= 1 / (1 + e^(w dot x + b))\
-#text(fill: pink)[$Pr(y | x) &= 1 / (1 + e^(-y(w dot x + b)))$] #sym.star\
+#text(fill: gold)[$Pr(y | x) &= 1 / (1 + e^(-y(w dot x + b)))$] #sym.star\
 $
 for data $x in RR^d$, binary labels $y in {-1, 1}$, model parametrized by $w in RR^d, b in RR$ (learned from data)
 
@@ -446,6 +447,79 @@ $
 
 logistic regression approach: code a positive review as $+1$, neg as $-1$
 
+== Summary
+
+Ideal weight vector $w = (X^T X)^(-1) X^T y$, where $X$ is the data matrix. This is $#math.op("arg min", limits: true)_(w in RR^d) L(w)$, the weight with the least loss, so $min_w L(w) = L("arg min"_(w in RR^d) L(w))$..
+
+Training loss: $||X w - y||^2$
+
+If $f(w) = log(g(w, x_i))$, then $gradient f(w) = x_i / g(w, x_i)$ it seems.
+
+Gradient descent update step: $w_(t+1) = w_t - eta_t gradient L(w)$, where $L(w)$ is the loss function.
+
+Ridge regression has a regularization parameter. This is its loss: $L(w) = sum_(i=1)^n (y^((i)) - (w^T x^((i))))^2 + lambda ||w||^2_2$ ("$L_2$"), or $+ lambda ||w||_1$ ("$L_1$"). Less regularization means a greater likelihood of overfitting. $L_1$ is better for sparse (mostly uncorrelated) parameter vectors.
+
 = Convex Optimization
 
 == Convexity and Optimization
+
+#TODO
+
+[slide: Backtracking Line Search]
+
+*backtracking line search*
+
++ pick $accent(alpha, tilde) > 0, c in (0, 1), rho in (0, 1)$, descent direction $d_t$
++ set $alpha = accent(alpha, tilde)$
++ repeat until $f(x_t + a d_t) <= f(x_t) + c alpha gradient f(x_t)^T d_t$, $alpha <- rho alpha$
++ terminate with $eta_t = alpha$
+
+- for grad descent $d_t = -gradient f(x_t)$, but algo applies #TODO
+
+*subgradient method*, for if $f$ not differentiable everywhere (e.g. LI reg)
+
+- use "subgradient" to desc along instead of gradient
+- like gradient descent, but with small caveats
+
+as a warmup, *subderivative* of $f$ (convex func on $RR$) at $x_0$ is real num $c$ where:
+$
+f(x) - f(x_)
+ >= c(x - x_0)
+$
+
+- if $f$ differentiable at $x_0$, subderivative is $f'(x)$
+- else, there's set of subderivatives $[a, b]$ where
+  $
+  a &= lim_(x -> x_0^#text(fill: pink)[-]) (f(x) - f(x_0)) / (x - x_0) \
+  b &= lim_(x -> x_0^#text(fill: pink)[+]) (f(x) - f(x_0)) / (x - x_0)
+  $
+
+*subdifferential $partial f(x_0)$*: set of all #TODO
+
+*subgradient*: for real-valued convex func $f : RR^d -> R$, $v in RR^d$ is subgradient iff $f(x) - f(x_0) >= v^T (x - x_0)$
+
+$partial f(x_0)$: set of all subgradients at $x_0$
+
+*convergence* guaranteed for small enough const step size (scaled by gradient norm), but must maintain $f^((t))_"best" = min(f^((t-1))_"best", f(x_t))$, i.e. best solution so fa
+
+#TODO ??
+
+*logistic regression* gradient descent update:
+$
+w_(t+1) = w_t + eta sum_(i=1)^n (y^((i)) x^((i))) / (1 + exp(y^((i)) w^T x^((i))))
+$
+
+#let X(i) = $x^((#i))$
+#let Y(i) = $y^((#i))$
+
+many ML problems: $f(w) = sum^n_(i=1) g(w, x^((i)), y^((i))) = EE_(i~U(1, dots, u))[g(w, #X[i], #Y[i])]$. computing $gradient f(w_t)$ req an entire pass over training data, computationally expensive when training set large (e.g. logistic regression)
+
+*stochastic gradient method*: given data pts $(#X[1], #Y[1]), dots, (#X[n], #Y[n])$. at opt step $t$, pick $i in {1, dots, n}$ uniformly at random, $w_(t+1) = w_t - eta_t gradient g(w_t, #X[i], #Y[i]))$
+
+#TODO?
+
+a func $f$ is *$m$-strongly convex* iff for all $x, y in RR^d$ and $0 <= lambda <= 1$, we have
+$
+f(lambda x + (1 - lambda)y) <= lambda f(x) + (1 - lambda) f(y) - m/2 lambda (1 - lambda) ||x - y||_2^2
+$
+$m = 0$ gives regular convexity
