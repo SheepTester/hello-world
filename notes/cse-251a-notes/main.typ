@@ -749,3 +749,21 @@ $
 in general just expand out the multiplications and dot products maybe. for $max$ treat it like piecewise
 
 for SGD, an epoch means going through the entire dataset (randomly)
+
+#pagebreak(weak: true)
+= Quiz 4
+
+#TODO
+
+*learning problem*: given training data $(x^((1)), y^((1))), dots, (x^((n)), y^((n))) in RR^d times {-1, +1}$, find $w in RR^d, b in RR$ where $y^((i)) (w dot x^((i)) + b) > 0$ (*"linear score of $x$"*) for all $i$
+
+by scaling $w, b$, can equivly ask for $y^((i)) (w dot x^((i)) + b) >= 1$ for all $i$
+
+$
+1 / epsilon y^((i)) (w dot x^((i)) + b) &= epsilon dot 1/epsilon > 0 \
+y^((i)) ( w/epsilon dot x^((i)) + b/epsilon) &= 1
+$
+
+maximize margin $gamma = 1/(||w||_2)$
+
+- $w dot x + b = 0$ is $gamma$ away from $w dot x + b = -1$ and $w dot x + b = 1$ delineating boundaries of two labels
