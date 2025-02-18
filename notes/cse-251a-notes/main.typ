@@ -247,6 +247,8 @@ assumption may not hold when shifting distribution:
 - $mu$ changing, $eta$ fixed, e.g. diff handwriting/speech distribs
 - $mu, eta$ both change, e.g. doc categorization (politics, sports, etc.)
 
+
+#pagebreak(weak: true)
 = Linear Prediction
 
 == Linear regression
@@ -459,22 +461,96 @@ Gradient descent update step: $w_(t+1) = w_t - eta_t gradient L(w)$, where $L(w)
 
 Ridge regression has a regularization parameter. This is its loss: $L(w) = sum_(i=1)^n (y^((i)) - (w^T x^((i))))^2 + lambda ||w||^2_2$ ("$L_2$"), or $+ lambda ||w||_1$ ("$L_1$"). Less regularization means a greater likelihood of overfitting. $L_1$ is better for sparse (mostly uncorrelated) parameter vectors.
 
+#pagebreak(weak: true)
 = Convex Optimization
 
 == Convexity and Optimization
 
-#TODO
+*optimization*: given $f : RR^D -> RR$, find $min_(w in RR^d) f(w)$ and $w^* = arg min_(w in RR^d) f(w)$, where $f$ continuous, differentiable, etc
 
-[slide: Backtracking Line Search]
+eg to select weights to minimize loss
+
+analogues:
+
+- 1st derivative -> gradient $gradient f(x)$
+- 2nd derivative -> *Hessian* $gradient^2 f(x)$, $d times d$ matrix
+  - $
+    gradient^2 f(x)_(i i) = (partial^2 f(x)) / (partial x^2_i)
+    $
+  - $
+    gradient^2 f(x)_(i j) = (partial^2 f(x)) / (partial x_i partial x_j)
+    $ when $i != j$
+
+$w^*$ locally optimal when:
+
+- necessary conditions: $gradient f(w^*) = 0, gradient^2 f(w^*)$ *positive semidefinite (PSD)*
+  - for $d times d$ matrix $A$, when for all $d times 1$ vectors $z$, $z^T A z text(>=, fill: pink) 0$
+  - i.e. if $exists B in RR^(d times m), m <= d$ where $A = B B^T$ => $A$ is PSD
+- sufficient conditions: $gradient f(w^*) = 0, gradient^2 f(w^*)$ *positive definite (PD)*
+  - for $d times d$ matrix $A$, when for all $d times 1$ vectors $z$, $z^T A z text(>, fill: pink) 0$
+
+*convex*:
+
+- for set $S subset.eq RR^d$, iff for any $x, y in S$ and any $0 <= lambda <= 1$
+  $
+  (lambda x + (1 - lambda) y) in S
+  $
+  #image("image.png", width: 3in)
+- for func $f subset.eq RR^d -> RR$, iff for any $x, y in RR^d$ and any $0 <= lambda <= 1$
+  $
+  f(lambda x + (1 - lambda) y) <= lambda f(x) + (1 - lambda) f(y)
+  $
+
+properties of convex funcs:
+
+- if $f$ differentiable, then for any $x, y$
+  $
+  f(y) - f(x) >= gradient f(x)^T (y - x)
+  $
+  "$f$ lies above gradient"
+
+- if $f$ doubly differentiable at $x$, then $gradient^2 f(x)$ PSD
+
+- benefits:
+
+  - local minima are global minima
+  - optimal solutions all connected (i.e. think of flat bottom)
+  - can always go "downhill" to optimal sol
+
+*gradient descent*: algo, go "downward" along gradient dir
+
+- $w_0 =$ arb pt in $RR^d$
+- iterate: $w_t(t+1) = w_t text(-, fill: pink) eta_t gradient f(w_t)$
+
+  $eta_t$ called "learning rate"/"step size"
+
+  - too small -> slow convergence, too big -> sol bounces around
+  - in practice, set $eta$ to small const, trial and error
+  - or backtracking line search (L-BLGS), much slower but doesn't require automatic step size selection
 
 *backtracking line search*
 
-+ pick $accent(alpha, tilde) > 0, c in (0, 1), rho in (0, 1)$, descent direction $d_t$
-+ set $alpha = accent(alpha, tilde)$
-+ repeat until $f(x_t + a d_t) <= f(x_t) + c alpha gradient f(x_t)^T d_t$, $alpha <- rho alpha$
++ pick $accent(alpha, macron) > 0, c in (0, 1), rho in (0, 1)$, descent dir $d$
++ set $alpha = accent(alpha, macron)$
++ repeat until //$f(x_t + alpha d_t) <= f(x_t) + epsilon$
+  $f(x + alpha d_t) <= f(x_t) + c alpha gradient f(x_t)^T d_t$:
+  $alpha <- rho alpha$
 + terminate with $eta_t = alpha$
 
-- for grad descent $d_t = -gradient f(x_t)$, but algo applies #TODO
+- for grad desc, $d_t = -gradient f(x_t)$, but algo applies even if not going exactly opp to gradient; any dir where $f$ decreases works
+- stop when decrease in $f$ is sufficient (hyperparameter $c$)
+- in general, better to spend more resources finding better directions to descend along than refining step size
+  
+// [slide: Backtracking Line Search]
+
+// *backtracking line search*
+
+// + pick $accent(alpha, tilde) > 0, c in (0, 1), rho in (0, 1)$, descent direction $d_t$
+// + set $alpha = accent(alpha, tilde)$
+// + repeat until $f(x_t + a d_t) <= f(x_t) + c alpha gradient f(x_t)^T d_t$, $alpha <- rho alpha$
+// + terminate with $eta_t = alpha$
+
+// - for grad descent $d_t = -gradient f(x_t)$, but algo applies #TODO
 
 *subgradient method*, for if $f$ not differentiable everywhere (e.g. LI reg)
 
@@ -483,7 +559,7 @@ Ridge regression has a regularization parameter. This is its loss: $L(w) = sum_(
 
 as a warmup, *subderivative* of $f$ (convex func on $RR$) at $x_0$ is real num $c$ where:
 $
-f(x) - f(x_)
+f(x) - f(x_0)
  >= c(x - x_0)
 $
 
@@ -494,15 +570,20 @@ $
   b &= lim_(x -> x_0^#text(fill: pink)[+]) (f(x) - f(x_0)) / (x - x_0)
   $
 
-*subdifferential $partial f(x_0)$*: set of all #TODO
+*subdifferential $partial f(x_0)$*: set of all subderivatives at $x_0$// #TODO
 
 *subgradient*: for real-valued convex func $f : RR^d -> R$, $v in RR^d$ is subgradient iff $f(x) - f(x_0) >= v^T (x - x_0)$
 
 $partial f(x_0)$: set of all subgradients at $x_0$
 
-*convergence* guaranteed for small enough const step size (scaled by gradient norm), but must maintain $f^((t))_"best" = min(f^((t-1))_"best", f(x_t))$, i.e. best solution so fa
+*convergence* guaranteed for small enough const step size (scaled by gradient norm), but must maintain $f^((t))_"best" = min(f^((t-1))_"best", f(x_t))$, i.e. best solution so far (slow)
 
-#TODO ??
+// #TODO ??
+
+*linear regression* gradient desc update:
+$
+w_(t+1) = w_t + 2 eta X (y - X w_t)
+$
 
 *logistic regression* gradient descent update:
 $
@@ -514,12 +595,157 @@ $
 
 many ML problems: $f(w) = sum^n_(i=1) g(w, x^((i)), y^((i))) = EE_(i~U(1, dots, u))[g(w, #X[i], #Y[i])]$. computing $gradient f(w_t)$ req an entire pass over training data, computationally expensive when training set large (e.g. logistic regression)
 
-*stochastic gradient method*: given data pts $(#X[1], #Y[1]), dots, (#X[n], #Y[n])$. at opt step $t$, pick $i in {1, dots, n}$ uniformly at random, $w_(t+1) = w_t - eta_t gradient g(w_t, #X[i], #Y[i]))$
+*stochastic gradient method (SGD)*: given data pts $(#X[1], #Y[1]), dots, (#X[n], #Y[n])$. at opt step $t$,
+- pick $i in {1, dots, n}$ uniformly at random
+- $w_(t+1) = w_t - eta_t gradient g(w_t, #X[i], #Y[i]))$
 
-#TODO?
+// #TODO?
+
+- $f(w_(t+1))$ may not be $<= f(w_t)$, but on avg will lower $f(w)$
+- typically needs multiple passes over data (epochs)
+- $eta_t$ has to be diminishing for variance to go to $0$ as $t -> infinity$
+
+can improve with mini-batches: instead of picking single $i$, pick random subset of indices for e/ update. has lower variance than SGD
+
+- i.e., at each time step $t$, let $B_t =$ random subset of ${1, dots, n}$
+
+  $
+  w_(t+1) = w_t - eta_t sum_(i in B_t) 1/(|B_t|) gradient g(w_t, x^((i)), y^((i)))
+  $
 
 a func $f$ is *$m$-strongly convex* iff for all $x, y in RR^d$ and $0 <= lambda <= 1$, we have
 $
 f(lambda x + (1 - lambda)y) <= lambda f(x) + (1 - lambda) f(y) - m/2 lambda (1 - lambda) ||x - y||_2^2
 $
-$m = 0$ gives regular convexity
+$m = 0$ gives regular convexity (otherwise, prohibits flat bottoms)
+
+- if $f$ differentiable, definition equivalent to:
+  $
+  f(y) >= f(x) + gradient f(x)^T &(y-x) + m/2 ||y - x||^2_2 \
+  (gradient f(y) - gradient f(x))^T &(y-x) >= m ||x-y||^2_2
+  $
+
+- if $f$ doubly differentiable, definition equiv to
+  $
+  gradient^2 f(x) - m I
+  $
+  is PSD for all $x$
+  
+ex:
+$
+f(x) &= lambda/2 ||x||^2_2 &&#[?] \
+f(w) &= lambda/2 ||w||^2_2 + ||X w - y||^2_2 &&#[$lambda$-strongly convex]\
+f(w) &= lambda/2 ||w||^2_2 + 1/2 sum_i log(1 + exp(-y^((i)) w^T x^((i)))) #h(0.5cm) &&#[$lambda$-strongly convex]
+$
+
+strongly convex optimization has faster convergence (for SGD, GD, etc)
+
+note: if $A - m I$ and $B$ both PSD, then $A + B - m I$ also PSD
+
+if $f$ $m$-strongly convex, $y$ convex, $w_1 = arg min_w f(w), w_2 = arg min_w f(w) + g(w)$, then
+$
+||w_1 + w_2|| <= (max_w ||gradient g(w)||) / m
+$
+
+i.e. $L_2$ regularization implies stability; changing few data pts doesn't change sol much
+
+*constrained optimization*
+$
+min_(x in RR^n) f(x) \
+"where" cases(
+  c_i (x) = 0"," i in E & "(equality constraints)",
+  c_i (x) >= 0"," i in I & "(inequality constraints)"
+)
+$
+
+*feasible set* $Omega = {x | forall_(i in E) c_i (x)=0, forall_(i in I) c_i(x) >=0 }$
+
+how to know if $x$ is (local) sol
+
++ single equality constraint, $c_1(x) = 0$
+
+  // $x$ is local sol if for small $s$, either $f(x+s) > f(x)$ or $x + s in.not Omega$
+
+  // suppose exists small step $s$ where (i.e. not opt $x$) $c_1(x+s) = c_1(x)=0$ and $f(x+s) < f(x)$.
+  // then $c_1(x+s) approx c_1(x) + gradient c_1(x)^T s = 0$
+  // and $f(x +s)<f(x)$ implies $0>f(x+s)-f(x) approx gradient f(x)^T s$
+
+  optimality conditions: $gradient f(x) = lambda_1 gradient c_1 (x)$ for some scalar $lambda_1$
+
++ simple inequality constraint, $c_1(x)>=0$
+
+  $gradient f(x) = lambda_1 gradient c_1 (x) $ for $lambda_1 >= 0$
+
++ general condition
+
+  *Lagrangian function*
+  $
+  cal(L) (x,lambda) = f(x) - sum_(i in E union I) lambda_i c_i(x)
+  $
+
+  *karush-kuhn-tucker (KKT) conditions*: 
+  at local sol $x^*$ under some conds, hay lagrange multipliers $lambda^*$ where
+  $
+  gradient_x cal(L) (x^*, lambda^*) = 0 #h(0.5cm)& \
+  c_i(x^* ) = 0  #h(0.5cm) &forall_i in E \
+  c_i(x^*) >= 0 #h(0.5cm) &forall_i in I \
+  lambda_i^* >= 0  #h(0.5cm) & forall_u in I \ // typo?
+  lambda^*_i c_i (x^*) = 0  #h(0.5cm) & forall_i in E union I #h(0.5cm)//#[)]
+  $
+  last one: "complementary slackness," either $lambda_i^* = 0$ or $c_i (x^*) > 0$
+
+== Perceptron
+
+for binary linear classifier $x in RR^d, y in {-1,+1}$, decision boundary $w dot x + b = 0$, so on pt $x$, predict $"sign"(w dot x + b)$. classifier correct if $y(w dot x + b) > 0$
+
+potential loss func: no loss if correct, loss $= -y(w dot x + b)$
+
+fit classifier to training set with SGD, update with one data pt at a time. no update if correct.
+
+*perceptron algorithm*
+
++ init $w = 0, b=0 $
++ keep cyc thru training data $(x, y)$
+  
+  if $y(w dot x + b) <= 0$ (mislabelled),
+  $
+  w &= w + y x <- w_(t+1) = w_t - gradient g(w_t) \
+  b &= b + y
+  $
+
+convergence: let $R = max ||x^((i))||$. suppose hay unit vec $w^*$ and some (margin) $gamma > 0$ where
+$
+y^((i)) (w^* dot x^((i))) >= gamma "for all" i
+$
+then perceptron algo converges within $R^2 / gamma^2$ updates
+
+== Summary (for quiz)
+
+need to memorize
+
+hessian:
+
+$
+gradient^2 f(x)_(i i) = cases(
+  (partial^2 f(x)) / (partial x^2_i) "when" i = j,
+  (partial^2 f(x)) / (partial x_i partial x_j) "when" i != j
+)
+$
+
+convexity:
+
+$
+lambda x + (1 - lambda) y in S & "for sets" \
+f(lambda x + (1 - lambda) y) <= lambda f(x) + (1 - lambda) f(y) & "for funcs" \
+gradient^2 f(x) "is PSD" & "for funcs (doubly differentiable), i.e." \
+z^T (gradient^2 f(x)) z >= 0  &  "for all" d times 1 "vectors" \
+$
+
+note:
+$
+(partial) / (partial x_i) x^T x &= 2x_i \
+gradient x^T M x &= 2 M x "somehow, at least when" M "is PSD"
+$
+in general just expand out the multiplications and dot products maybe. for $max$ treat it like piecewise
+
+for SGD, an epoch means going through the entire dataset (randomly)
