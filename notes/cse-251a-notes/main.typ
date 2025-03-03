@@ -9,7 +9,7 @@
 
 // formatting options: https://typst.app/docs/tutorial/formatting/#page-setup
 // https://piazza.com/class/m5bnm9b0buy1qv/post/81
-#set page(paper: "a5", margin: 1cm, fill: rgb("#0f172a"))
+#set page(paper: "a4", margin: 1cm, fill: rgb("#0f172a"))
 #set text(font: "Inter", fill: text-color, size: 11pt)
 #set document(title: title, author: "sean")
 #set par(spacing: 1em, 
@@ -22,6 +22,9 @@
 
 #show figure.caption: content => block(emph(content), width: 80%)
 #show quote: set align(center)
+// https://forum.typst.app/t/is-it-possible-to-have-the-equations-shown-aligned-left-with-an-indentation/2839
+// #show math.equation.where(block: true): pad.with(left: .5cm)
+#show math.equation.where(block: true): set align(left)
 
 #set math.mat(delim: "[")
 
@@ -750,10 +753,25 @@ in general just expand out the multiplications and dot products maybe. for $max$
 
 for SGD, an epoch means going through the entire dataset (randomly)
 
+== For project 2
+
+$
+gradient_w L(w) = sum_(i=1)^n [(exp(-y^((i)) (w dot x^((i))))) / (1 + exp(-y^((i)) (w dot x^((i))))) * (-y^((i)) x^((i)))]
+\
+gradient_w L(w) = -sum_(i=1)^n [y^((i)) x^((i)) * (exp(-y^((i)) (w dot x^((i))))) / (1 + exp(-y^((i)) (w dot x^((i)))))]
+\
+gradient_w L(w) = -sum_(i=1)^n [y^((i)) x^((i)) * exp(-y^((i)) (w dot x^((i)))) / (1 + exp(-y^((i)) (w dot x^((i))))) ]
+\
+gradient_w L(w) = -sum_(i=1)^n [y^((i)) x^((i)) * σ(-y^((i)) (w dot x^((i))))]
+
+$
+
 #pagebreak(weak: true)
 = Quiz 4
 
-#TODO
+== Support Vector Machines (SVM)
+
+for linearly separable dataset, generally many possible separating hyperplanes, perceptron guaranteed to find one of them. but perhaps we want one w most buffer around it
 
 *learning problem*: given training data $(x^((1)), y^((1))), dots, (x^((n)), y^((n))) in RR^d times {-1, +1}$, find $w in RR^d, b in RR$ where $y^((i)) (w dot x^((i)) + b) > 0$ (*"linear score of $x$"*) for all $i$
 
@@ -763,7 +781,94 @@ $
 1 / epsilon y^((i)) (w dot x^((i)) + b) &= epsilon dot 1/epsilon > 0 \
 y^((i)) ( w/epsilon dot x^((i)) + b/epsilon) &= 1
 $
+$
+w' = w/epsilon, b' = b/epsilon
+$
 
-maximize margin $gamma = 1/(||w||_2)$
+maximize margin $gamma = 1/(||w||_2)$ by minimizing $||w||$
 
 - $w dot x + b = 0$ is $gamma$ away from $w dot x + b = -1$ and $w dot x + b = 1$ delineating boundaries of two labels
+
+*maximum-margin linear classifier*: where $cal(Y) = {-1, +1}$
+$
+min_(w in RR^d, b in RR) ||w||^2 "where" y^((i)) (w dot x^((i)) + b) >= 1 "for all" i = 1, 2, dots, n
+$
+
+- this is an *convex optimization problem*: convex objective func, linear constraints
+- -> optimal sol can be found efficiently, *duality* gives info about sol
+
+*support vectors*: training points right on margin, i.e. $y^((i)) (w dot x^((i)) +b ) = 1$
+
+- solution $w$ is func of just support vecs $
+  w = sum_(i=1)^n alpha_i y^((i)) x^((i))
+  $
+  where $alpha_i$ nonzero only for support vecs
+
+in non-separable case, e/ data pt $x^((i))$ allowed some *slack $xi_i$*:
+
+$
+min_(w in RR^d, b in RR, xi in RR^n) ||w||^2 + C sum_(i=1)^n |xi_i| "where" dots " " xi >= 0
+$
+
+== Multiclass classification
+
+*binary* logistic regression: for $cal(X) = RR^d$, classifier given by $w in RR^d, b in RR$,
+$
+Pr(y=1|x) = (e^(w dot x + b)) / (1 + e^(w dot x + b))
+$
+
+for labels $cal(Y) = {1, 2, dots, k}$, specify classifier by $w_1, dots, w_k in RR^d, b_1, dots, b_k in RR$:
+$
+Pr(y = j|k) 
+&= e^(w_j dot x + b_j) / (sum_(i=1)^k e^(w_i dot x + b_i)) \ 
+&prop e^(w_j dot x + b_j) \
+$
+
+to predict, given pt $x$, predict label 
+$
+op("arg max", limits: #true)_j Pr(y=j|x) = op("arg max", limits: #true)_j (w_j dot x + b_j)
+$
+
+=== Multiclass logistic regression
+
+/ label space: $cal(Y) = {1, 2, dots, k}
+  $
+/ parameterized classifier: $w_1, dots, w_k in RR^d, b_1, dots, b_k in RR$:
+  $
+  Pr(y=j|x) = e^(w_j dot x + b_j) / (e^(w_1 dot x + b_1) + dots + e^(w_k dot x + b_k))
+  $
+/ prediction: given pt $x$, predict label
+  $
+  op("arg max", limits: #true)_j "" (w_j dot x + b_j)
+  $
+/ learning: given $(x^((i)), y^((i))), dots, (x^((n)), y^((n)))$, find $w_1, dots, w_k in RR^d, b_1, dots, b_k in RR$ that maximize
+  $
+  product_(i=1)^n Pr(y^((i))|x^((i)))
+  $
+  taking negative $log$ gives convex minimization problem
+
+=== Multiclass perceptron
+
+learning: given training set,
+
+- init $w_1 = dots = w_k = 0, b_1 = dots = b_k = 0$
+- repeat while some training pt $(x, y)$ misclassified:
+  $
+  "for correct label" y": "&& w_y &= w_y + x \
+  && b_y &= b_y + 1 \
+  "for predicted label" accent(y, hat)": "&& w_accent(y, hat) &= w_accent(y, hat) - x \
+  && b_accent(y, hat) &= b_accent(y, hat) - 1 \
+  $
+
+=== Multiclass SVM
+
+learning: given training set,
+
+$
+min_(w_1, dots, w_k in RR^d, b_1, dots, b_k in RR, xi in RR^n)
+sum_(j=1)^k ||w_j||^2 + C sum_(i=1)^n xi_i
+$
+where $w_(y^((i))) dot x^((i)) + b_(y^((i))) - w_y dot x^((i)) - b_y >= 1 - xi_i$ for all $i$, all $y != y^((i))$, $xi >= 0$
+
+also a convex optimization problem
+
