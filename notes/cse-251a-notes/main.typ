@@ -872,3 +872,19 @@ where $w_(y^((i))) dot x^((i)) + b_(y^((i))) - w_y dot x^((i)) - b_y >= 1 - xi_i
 
 also a convex optimization problem
 
+== Quiz notes
+
+hard SVM = no slack (because it makes Taylor hard), soft SVM = slack
+
+*perceptrons* find any dividing line "decision boundary" between datasets. *SVMs* maximize the margins around the line (so it'll probably find just one line); the points on this margin are the *supporting vectors*. removing other points wont change the SVM
+
+lines:
+
+- $w^top x + b = plus.minus 1$ margin lines
+- $w^top x + b = 0$ decision boundary
+
+points past their margin line (for soft SVMs) are also supporting vectors. more slack -> further from margin line. slack $> 1$ means it's across the decision boundary
+
+for slack: large $C$ penalizes slack more, so more weird points means you'd want smaller $C$
+
+hard SVM may not have a solution / won't converge
