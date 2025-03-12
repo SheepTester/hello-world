@@ -888,3 +888,200 @@ points past their margin line (for soft SVMs) are also supporting vectors. more 
 for slack: large $C$ penalizes slack more, so more weird points means you'd want smaller $C$
 
 hard SVM may not have a solution / won't converge
+
+#page_break
+= Quiz 5
+
+// == Multiclass Classification
+
+== Kernel Methods
+
+what if systematic deviation, but not linearly separable. eg boundary is $x_1 = x_2^2 + 5$. quadratic in $x = (x_1, x_2)$, but linear in $Phi(x) = (x_1, x_2, x_1^2, x_2^2, x_1 x_2)$
+
+*basis expansion*: embed data in higher-dimensional feature space. then can use linear classifier
+
+for *quadratic* boundary, augment regular features with more terms:
+$
+Phi(x) = (x_1, dots, x_d, x_1^2, dots, x_d^2, x_1 x_2, x_1 x_3, dots, x_(d-1) x_d)
+$
+
+perceptron with basis expansion, learning in higher dimensional space:
+
+- $w = 0, b = 0$
+- while some $y(w dot Phi(x) + b) <= 0$:
+  - $w = w + y Phi(x)$
+  - $b = b + y$
+
+issue: number of features increased dramatically
+
+*kernel trick*: implement this without ever writing down vector in high-dimensional space:
+
+- $w = 0, b = 0$
+- while some $text(fill: pink, y^((i))) (w dot Phi(text(fill: pink, x^((i)))) + b) <= 0$:
+  - $w = w + text(fill: pink, y^((i))) Phi(text(fill: pink, x^((i))))$
+  - $b = b + text(fill: pink, y^((i)))$
+
++ represent $w$ in *dual* form: $alpha = (alpha_1, dots, alpha_n)$
+  $
+  w = sum_(j=1)^n alpha_j y^((j)) Phi(x^((j)))
+  $
+
++ compute $w dot Phi(x)$ using dual repr
+  $
+  w dot Phi(x) = sum_(j=1)^n alpha_j y^((j)) (Phi(x^((j))) dot Phi(x))
+  $
+
++ comp $Phi(x) dot Phi(z)$ without ever writing out $Phi(x)$ or $Phi(z)$
+
+example: in 2D, $x = (x_1, x_2)$, so $Phi(x) = (1, sqrt(2) x_1, sqrt(2) x_2, x_1^2, x_2^2, sqrt(2) x_1 x_2)$
+
+- $
+  Phi(x) dot Phi(z) = (1 + x dot z)^2
+  $
+
+- takes time proportional to original dimension
+
+=== Kernel perceptron
+
+learning from data $(x^((1)), y^((i))), dots, (x^((n)), y^((n))) in cal(X) times {-1, 1}$
+
+*primal form*: see "kernel trick" above
+
+*dual form*: $w = sum_j alpha_j y^((j)) Phi(x^((j)))$ where $alpha in RR^n$
+
+- $alpha = 0, b = 0$
+- while some $i$ has $y^((i)) (sum_j alpha_j y^((j)) Phi(x^((j))) dot Phi(x^((i))) + b) <= 0$:
+  - $alpha_i = alpha_i + 1$
+  - $b = b + y^((i))$
+
+to classify new point $x$: $"sign"(sum_j alpha_j y^((j)) Phi(x^((j))) dot Phi(x) + b)$
+
+=== Kernel SVM
+
+for SVMs:
+
+- primal (see previous quizzes)
+
+- dual:
+  $
+  max_(alpha in RR^n) sum_(i=1)^n alpha_i - sum_(i,j=1)^n alpha_i alpha_j y^((i)) y^((j)) (underbrace(x^((i)) dot x^((j)), k(x^((i)), x^((j)))))
+  "such that"
+  sum_(i=1)^n alpha_i y^((i)) = 0, 0 <= alpha_i <= C
+  $
+
+  solution: $w = sum_i alpha_i y^((i)) x^((i))$
+
++ *basis expansion*: map $x |-> Phi(x)$
+
++ *learning*: solve dual problem (see "dual" above)
+
+  yields $w = sum_i alpha_i y^((i)) x^((i))$, offset $b$ "also follows"
+
++ *classification*: given new pt $x$, classify as
+  $
+  "sign"(sum_i alpha_i y^((i)) (underbrace(Phi(x^((i))) dot Phi(x), k(x^((i)), x))) + b)
+  $
+
+=== Polynomial decision boundaries
+
+when decision surface is polynomial of order $p$,
+
+- let $Phi(x)$ consist of all terms of order $<= p$, e.g. $x_1 x_2^2 x_3^(p-3)$
+
+- degree-$p$ polynomial in $x$ <=> linear in $Phi(x)$
+
+- same trick works: $Phi(x) dot Phi(z) = (1 + x dot z)^p$
+
+- *kernel function* $k(x, z) = (1 + x dot z)^p$
+
+=== String kernels
+
+for sequence data like protein seqs, text docs, input space $cal(X) = {A,C,G,T}^*$
+
+use infinite-dimensional embedding for var-length seqs $x$
+
+for e/ substr $s$, def feature
+$
+Phi_s (x) = "# times substr" s "appears in" x
+$
+
+let $Phi(x)$ be vec of one coord for e/ str
+$
+Phi(x) = (Phi_s (x) : "all strs" s)
+$
+
+- ex: embedding of "aardvark" has features $Phi_"ar" ("aardvark") = 2, Phi_"th" ("aardvark") = 0, dots$
+
+lin classifier based on such features very expressive
+
+to comp $k(x,z) = Phi(x) dot Phi(z)$, for e/ substr $s$ of $x$, count how often $s$ appears in $z$
+
+- with DP, takes $O(|x| dot |z|)$
+
+never explicitly construct embedding $Phi(x)$, instead use *kernel function* $k(x,z) = Phi(x) dot Phi(z)$
+
+- think of it as _measure of similarity_ entre $x, z$
+
+- rewrite learning algo and final classifier in terms of $k$
+
+=== Choosing kernel function
+
+final classifier is *similarity-weighted vote*:
+$
+F(x) = alpha_1 y^((1)) k(x^((1)), x) + dots.c + a_n y^((n)) k(x^((n)), x)
+$
+(plus offset term $b$)
+
+can't choose $k$ as any sim func, need $k(x,z) = Phi(x) dot Phi(z)$ for _some_ embedding $Phi$
+
+*gaussian kernel/RBF kernel*: popular sim func
+$
+k(x, z) = e^(-(||x-z||^2) / s^2)
+$
+where $s$ is adjustable scale param
+
+- as $s arrow.t infinity$, kernel $-> 1$
+- as $s arrow.b 0$, kernel $-> 0$
+- with more data, #TODO
+
+=== Postscript
+
++ customized kernels
+  - for diff domains (NLP, bio, speech)
+  - over diff structures (seqs, sets, graphs)
++ learning kernel func
+  - given set of plausible kernels, find lin comb that works well
++ speeding up learning, prediction
+  - $n times n$ kernel matrix $k(x^((i)), x^((j)))$ bottleneck for large $n$
+  - idea:
+    - go back to primal space
+    - replace embedding $Phi$ w low-dim mapping $accent(Phi, tilde)$ where
+      $
+      accent(Phi, tilde)(x) dot accent(Phi, tilde)(z) approx Phi(x) dot Phi(z)
+      $
+    can be done by e.g. writing $Phi$ in fourier basis, randomly sampling features
+
+== Neural Networks
+
+architecture:
+
+- graph with $x$ at bottom, $y$ on top, middle layers $h^((1)), dots, h^((l))$ mixing inputs from prev layer
+
+how $h$ computed from $z_1, dots, z_m$:
+$
+h = sigma(w_1 z_1 + dots.c + w_m z_m + b)
+$
+$sigma(dot.c)$ is nonlinear *activation function*, e.g. rectified linear:
+$
+sigma(u) = cases(
+  u & "if" u >= 0,
+  0 & "otherwise"
+)
+$
+
+common activation funcs:
+
+- threshold func / heaviside step func
+  $
+  sigma(u)
+  $
