@@ -1034,6 +1034,8 @@ $
 
 can't choose $k$ as any sim func, need $k(x,z) = Phi(x) dot Phi(z)$ for _some_ embedding $Phi$
 
+*mercer's condition*: same as requiring that for any finite set of pts $x^((1)), dots, x^((m))$, the $m times m$ sim matrix $K$ given by $K_(i j) = k(x^((i)), x^((j)))$ is PSD
+
 *gaussian kernel/RBF kernel*: popular sim func
 $
 k(x, z) = e^(-(||x-z||^2) / s^2)
@@ -1042,6 +1044,7 @@ where $s$ is adjustable scale param
 
 - as $s arrow.t infinity$, kernel $-> 1$
 - as $s arrow.b 0$, kernel $-> 0$
+- bigger $s$, more smooth; small $s$, more spiky 
 - with more data, #TODO
 
 === Postscript
@@ -1083,5 +1086,49 @@ common activation funcs:
 
 - threshold func / heaviside step func
   $
-  sigma(u)
+  sigma(z) = cases(1 & "if" z >= 0, 0 & "otherwise")
   $
+  
+- sigmoid
+  $
+  sigma(z) = 1/(1+ e^(-z))
+  $
+
+- hyperbolic tangent
+  $
+  sigma(z) = tanh(z)
+  $
+
+- ReLU (rectified linear unit)
+  $
+  sigma(z) = max(0, z)
+  $
+
+why do we need nonlinear activation funcs? idk.. i dont think it matters! last quizzzzzz
+
+#page_break
+== Quiz shit
+
+$A$ is PSD (to determine if a function is a kernel) when for all vecs $v$, $v^top A v >= 0$. $A$ may be non-negative but it may still not be PSD
+
+$Phi$ is "feature map" to a vector; $x, z$ don't need to be vectors (could be strings)
+
+$
+k(x,z) = Phi(x) dot Phi(z) = sum_(i=1)^n Phi_i (x) Phi_i (z)
+$
+
+when creating a new kernel you can change its $Phi$'s length. consider its sum form. use square roots to halve constants
+
+// PSD matrices are symmetric
+
+kernel properties:
+$
+k'(x, z) &= a space.thin k(x, z) + b space.thin l(x, z); a, b > 0 & phi.alt'(x) &= sqrt(a) phi.alt(x) circle.tiny sqrt(b) psi(x) = (sqrt(a) phi.alt_1 (x), 
+//sqrt(a) phi.alt_2 (x), 
+dots, sqrt(a) phi.alt_m (x), sqrt(b) psi_1 (x), 
+//sqrt(b) psi_2 (x), 
+dots, sqrt(b) psi_n (x)) \
+k'(x, z) &= k(x, z) space.thin l(x, z) & phi.alt'_((i,j))(x) &= phi.alt_i (x) psi_j (x) \
+$
+
+// $;$
