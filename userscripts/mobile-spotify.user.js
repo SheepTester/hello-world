@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Spotify mobile thingy
 // @namespace    https://sheeptester.github.io/
-// @version      0.1.0
+// @version      0.1.1
 // @description  get spotify desktop to work on firefox mobile
 // @author       Sean
 // @match        *://open.spotify.com/*
@@ -23,6 +23,18 @@
         get () {
             //console.log(new Error('ua'))
             return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
+        }
+    })
+    Object.defineProperty(navigator, 'platform', {
+        get () {
+            //console.log(new Error('platform'))
+            return 'Win32'
+        }
+    })
+    Object.defineProperty(navigator, 'appVersion', {
+        get () {
+            console.log(new Error('appVersion'))
+            return '5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
         }
     })
 })();
