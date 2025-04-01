@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Spotify mobile thingy (0.1.2)
+// @name         Spotify on Firefox mobile
 // @namespace    https://sheeptester.github.io/
-// @version      0.1.2
+// @version      0.1.3
 // @description  get spotify desktop to work on firefox mobile
 // @author       Sean
 // @match        *://open.spotify.com/*
@@ -60,4 +60,18 @@
             return '5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
         }
     })
+
+    Object.defineProperty(location, 'reload', {
+        get () {
+            return () => alert('reload attempted')
+        }
+    })
+
+    window.addEventListener("beforeunload", function (e) {
+        var confirmationMessage = 'It looks like you have been editing something. '
+        + 'If you leave before saving, your changes will be lost.';
+
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
 }()
