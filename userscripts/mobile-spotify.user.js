@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Spotify mobile thingy
+// @name         Spotify mobile thingy (0.1.2)
 // @namespace    https://sheeptester.github.io/
-// @version      0.1.1
+// @version      0.1.2
 // @description  get spotify desktop to work on firefox mobile
 // @author       Sean
 // @match        *://open.spotify.com/*
@@ -10,8 +10,8 @@
 // @run-at       document-start
 // ==/UserScript==
 
-(function() {
-    'use strict';
+!function () {
+    'use strict'
 
     Object.defineProperty(window, 'devicePixelRatio', {
         get () {
@@ -25,9 +25,32 @@
             return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
         }
     })
+    Object.defineProperty(navigator, 'userAgentData', {
+        get () {
+            //console.log(new Error('ua'))
+            return {
+                "brands": [
+                    {
+                        "brand": "Chromium",
+                        "version": "134"
+                    },
+                    {
+                        "brand": "Not:A-Brand",
+                        "version": "24"
+                    },
+                    {
+                        "brand": "Google Chrome",
+                        "version": "134"
+                    }
+                ],
+                "mobile": false,
+                "platform": "Windows"
+            }
+        }
+    })
     Object.defineProperty(navigator, 'platform', {
         get () {
-            //console.log(new Error('platform'))
+            console.log(new Error('platform'))
             return 'Win32'
         }
     })
@@ -37,4 +60,4 @@
             return '5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
         }
     })
-})();
+}()
