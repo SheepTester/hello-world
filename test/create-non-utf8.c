@@ -2,7 +2,7 @@
 #include <cstdio>
 
 int main() {
-  const char file_name[] = {'\xff', '.', 't', 'x', 't', '\0'};
+  const char file_name[] = {'\xff', '\0'};
   // https://stackoverflow.com/a/11574035/28188730
   FILE *f = fopen(file_name, "w");
   if (f == NULL) {
@@ -24,4 +24,13 @@ int main() {
   fprintf(f, "A character: %c\n", c);
 
   fclose(f);
+
+  const char file_name2[] = {'\xfe', '\0'};
+  FILE *f2 = fopen(file_name2, "w");
+  if (f2 == NULL) {
+    printf("Error opening file!\n");
+    return 1;
+  }
+  fprintf(f2, "hello lol");
+  fclose(f2);
 }
