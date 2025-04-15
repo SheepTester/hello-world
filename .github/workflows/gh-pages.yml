@@ -30,13 +30,13 @@ jobs:
         run: |
           # Jekyll is apparently required to run as root, so _site ends up being owned by root and thus read-only
           # https://github.com/actions/jekyll-build-pages/issues/18
-          cp -r _site site2
+          cp -r _site _site2
 
-          find site2/ -type f | sed 's/site2\\//https:\\/\\/sheeptester.github.io\\/hello-world\\//' > site2/sitemap.txt
+          find _site2/ -type f | sed 's|_site2\//https:\/\/sheeptester.github.io\/hello-world\//' > _site2/sitemap.txt
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./site2"
+          path: "./_site2"
   deploy:
     runs-on: ubuntu-latest
     needs: build
