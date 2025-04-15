@@ -12,6 +12,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Delete files
+        run: |
+          rm test/*.oof
+          node --experimental-strip-types .github/workflows/remove-files.mts DELETE
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Build
