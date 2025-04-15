@@ -28,15 +28,15 @@ jobs:
         uses: actions/jekyll-build-pages@v1
       - name: Create sitemap.txt
         run: |
-          pwd
-          echo ${{ github.workspace }}
-          echo $GITHUB_WORKSPACE
-          stat .git || true
-          stat _site || true
+          # Jekyll is apparently required to run as root, so _site ends up being owned by root and thus read-only
+          # https://github.com/actions/jekyll-build-pages/issues/18
+          cp -r _site _site2
 
-          find _site/ -type f | sed 's/_site\\//https:\\/\\/sheeptester.github.io\\/hello-world\\//' > _site/sitemap.txt
+          find _site2/ -type f | sed 's/_site2\\//https:\\/\\/sheeptester.github.io\\/hello-world\\//' > _site2/sitemap.txt
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./_site2"
   deploy:
     runs-on: ubuntu-latest
     needs: build
