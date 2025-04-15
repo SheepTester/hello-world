@@ -31,7 +31,8 @@ jobs:
           pwd
           echo ${{ github.workspace }}
           echo $GITHUB_WORKSPACE
-          ln -s /github/workspace/_site/ _site
+          stat .git || true
+          stat _site || true
 
           find _site/ -type f | sed 's/_site\\//https:\\/\\/sheeptester.github.io\\/hello-world\\//' > _site/sitemap.txt
       - name: Upload artifact
