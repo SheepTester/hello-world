@@ -59,6 +59,7 @@ async function walk(dir: string, topLevel = false) {
 
 await walk(".", true);
 console.log(
+  "extensions:",
   Array.from(extensions, (a) => (a === null ? "<none>" : a))
     .sort()
     .join(" · ")

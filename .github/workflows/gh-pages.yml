@@ -18,6 +18,8 @@ jobs:
           node-version: 22
       - name: Delete files
         run: |
+          mv LICENSE LICENSE.md
+
           rm test/*.oof
           node --experimental-strip-types .github/workflows/remove-files.mts DELETE
       - name: Setup Pages
@@ -26,6 +28,8 @@ jobs:
         uses: actions/jekyll-build-pages@v1
       - name: Create sitemap.txt
         run: |
+          pwd
+          touch _site/sitemap.txt
           find _site/ -type f | sed 's/_site\\//https:\\/\\/sheeptester.github.io\\/hello-world\\//' > _site/sitemap.txt
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
