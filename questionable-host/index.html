@@ -274,7 +274,7 @@
             const list = document.createElement('ul')
             zip.forEach((relPath, entry) => {
               const li = document.createElement('li')
-              li.textContent = zipEntry.name
+              li.textContent = entry.name
               list.append(li)
             })
             elems.preview.append(list)
