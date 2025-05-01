@@ -1,4 +1,4 @@
-#set page(columns: 2)
+#set page(columns: 2, margin: 0.5in, paper: "us-letter")
 #set raw(theme: "bw.tmTheme")
 
 = cheat sheet
@@ -27,11 +27,23 @@ server:
 - `bind`: binds socket to port given, port
 - `listen`: sets socket to passive, given backlog. network activity begins
 - `accept`: blocks until connection. returns new socket
-- `send`, `recv`
+- / `recv`/`read`: blocks until data available. returns bytes read, may be less than $n$. if 0, socket closed.
+  / `send`/`write`: blocks until all data sent (can happen if send queue full). returns when data copied to send queue, not necessarily off machine yet
 - `close`
 
-/ `recv`/`read`: blocks until data available. returns bytes read, may be less than $n$. if 0, socket closed.
-/ `send`/`write`: blocks until all data sent (can happen if send queue full). returns when data copied to send queue, not necessarily off machine yet
+/ bandwidth: number of bits per unit of time in channel, available over link
+/ throughput: bandwidth available to application, i.e. subtract protocol headers
+/ latency: propagation + transmit + queue
+  / propagation: distance #math.div speed of light in medium. can't control
+  / transmit: 1 bit #math.div bandwidth. how long to modulate bit onto channel. minor impact
+  / queue: (queuing delay/time) time waiting in switches or routers behind other traffic (traffic jam)
+/ overhead: seconds for CPU to put message on wire
+/ error rate: probability that msg won't arrive intact
+
+- computer architecture: base $2$ (mega $2^20$, kilo $2^10$). Mbps = megabytes per second
+- computer networks: base $10$ (mega $10^6$, kilo $10^3$). Mbps = megabits per second
+
+/ hedged requests: after 95% of responses return, send another request for stragglers, cancel slower request. helps with tail tolerance and variance
 
 #place(
   bottom,
