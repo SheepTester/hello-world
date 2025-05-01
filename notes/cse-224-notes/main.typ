@@ -1,3 +1,5 @@
+// https://typst.app/project/rvqCixpWd4PjBwI9zYO50e
+
 #set heading(numbering: "1.")
 #set enum(numbering: "1.a.")
 
@@ -5,7 +7,7 @@
 
 at a glance:
 
-+  Tue April 1: Intro, motivation, and logistics
++ Tue April 1: Intro, motivation, and logistics
 + Thu April 3: Go Programming Fundamentals
   1. Introduction and Go basics
   2. Reading and Writing Files in Go (Basic I/O)
@@ -229,6 +231,7 @@ client (like caller in phone call):
     - `AF_INET` (or `PK_INET`): IPv4 addr family, want internet protocol. `AF_INET6` for IPv6
     - `SOCK_STREAM` for streaming socket type, means TCP (as opposed to `SOCK_DGRAM`)
     - `sock < 0` means fail
+    - allocates resources in OS, including send and receive queue. size configurable at OS level, 4--8 MB for linux
   - call `connect`, initiate connection request to server given IP addr, port number
     - client does 3-way handshake: client sends SYN packet, server replies with SYN ACK packet, then client responds with its own ACK packet, and the connection is established
     - high overhead especially from transmission, so usually when connection open, try to keep it open and do many operations through it, not a connection for every little op
@@ -263,6 +266,7 @@ client (like caller in phone call):
     - this course will only worry about blocking
   - for non-blocking sockets, `sent_bytes` may not equal `data_len`, if kernel doesn't have enough space and accepts partial data, so must retry for unsent data
   - `sent_bytes < 0` means fail
+  - last `0` is a flag we dont care about
 - client eventually calls `close`, initiating teardown process, making server also close connection
   - graceful close has its own packets involved
 
@@ -319,3 +323,159 @@ server (like person answering in phone call)
 
 continues in lecture 5...
 
+=== socket queues
+
+`send()` -> send queue -> receive queue -> `recv()`
+
+- `send` copies data into send queue, then `send` returns. up to TCP protocol to convey data from send queue to receive queue on other end
+  - how TCP? CSE 123
+  - on return, data may not have left machine yet
+  - TCP will not guarantee that the data is sent to the server app, just its host
+- in server, `recv` copies data out of receive queue
+- data sent in packets of like 1.5 kB, so send call data might be sent in multiple packets
+  - in past, every time you call `send` it'll send at least one packet
+  - now a heuristic nagle's algorithm will hold onto packets for brief moment to see if more data coming, then sends it
+  - same packet may have data from multiple send calls. but we dont have control over that assignment
+- no correspondence between size/number of send and receive calls. like writing chunks to file then reading from it
+
+when does blocking occur?
+
+- if `data_len >` send queue size, `send()` blocks until `data_len -` send queue size transferred to receive queue
+- if `data_len >` send queue + receive queue sizes, `send()` blocks until receiver calls `recv()` enough to read in `data_len -` (send queue + receive queue sizes)
+
+deadlock cases:
+
+- both sides call `recv()` w/o sending data
+- both sides send each other enough data to fill up each other's send and receive queues
+  - to avoid, usually roles established depending on protocol
+
+= lecture 5: protocols
+
+/ protocol: explicit, implicit conventions for how to communicate (but not what communicated). allows for different architectures/OSes/byte ordering to communicate
+/ service interface: one layer of a protocol, how one layer communicates with other at same layer
+/ interface: between layers. eg HTTP talks to TCP at layer below it
+
+protocols come from standards bodies (eg ISO), community efforts (eg bitcoin), corporations/industry (zoom, games)
+
+can be specified with english prose, BNF, state transition diagram, message sequence diagram, packet format (bits in table)
+
+/ operation: action can perform in protocol's service interface, e.g. "submit vote"
+/ message: encoding of op or data according to protocol's wire format, e.g. xml, json, binary
+/ framing: writing/reading msgs from stream so messages can be separated. find bytes corresponding to single message, add context to msg so other side can determine msg boundaries
+/ parsing/encoding/decoding: converting between msg and app-level data structure
+
+options for framing:
+
+/ explicit length: length first. but how big should length be?
+  - keep reading until have $n$ bytes of request data
+  - write length of message, then message
+  - read length, then read that many bytes (security?)
+/ delimiter: delimiter at end. but if delimiter in msg?
+  - scan for delimiters in a loop
+  - write message, then delimiter
+  - read into buffer until delimiter found. return message to higher layer
+
+main loop of server:
+
+```go
+remaining := ""
+buf := make([]byte, 1024)
+for {
+  if hasFullRequest(remaining) {
+    parse(remaining)
+    remaining = removeRequest(remaining)
+  }
+  size, err := c.Read(buf)
+  data := buf[:size]
+  remaining = remaining + string(data)
+}
+```
+
+= lecture 6
+
+== performance metrics
+
+/ bandwidth: number of bits per unit of time in channel, available over link
+/ throughput: bandwidth available to application, i.e. subtract protocol headers
+/ latency: propagation + transmit + queue
+  / propagation: distance #math.div speed of light in medium. can't control
+  / transmit: 1 bit #math.div bandwidth. how long to modulate bit onto channel. minor impact
+  / queue: (queuing delay/time) time waiting in switches or routers behind other traffic (traffic jam). lots of people using internet, gotta wait your turn. network hierarchy of access points/routers to egress point. if two packets arrive at same time, one must wait. can minimize if smart
+/ overhead: seconds for CPU to put message on wire
+/ error rate: probability that msg won't arrive intact
+
+- computer architecture: base $2$ (mega $2^20$, kilo $2^10$). Mbps = megabytes per second
+- computer networks: base $10$ (mega $10^6$, kilo $10^3$). Mbps = megabits per second
+
+=== tools
+
+`ping` tests if other side alive and gets round trip latency (RTT)
+
+`iperf3` times how long to send $n$ bytes to other side, calculates throughput
+
+== tail latency problem (paper we were supposed to read)
+
+for web search indexing, dataset sharded across nodes
+
+- want to look for a term. could have client query all servers, which sucks, and also need to know about all servers. lots of work. and exposes internal org stuff to client
+- real life: aggregation/front end server interacting with clients, handles internal connection management on their behalf. can forward query in parallel to all servers it knows about. then maybe present info to user
+
+paper authors found that the more servers they added, not much performance gain
+
+avg time 10 ms, but 99th percentile latency was one second. big problem apparently. because when aggregator does parallel requests, when one of the servers has latency of one second, then the user-facing latency is one second. more servers they add, more likely to encounter bad performance: latency variability is magnified at service level
+
+could take out consistently slow servers, but slowness could vary from request to request
+
+factors for variable response time: CPU cores, processor caches, memory bandwidth, network switches, shared file systems, scheduled daemons, data reconstruction in FS, periodic log compactions, periodic garbage collection, queuing in servers and network switches, throttling due to thermal CPU effects, random access in SSD, power saving modes, switching to active mode, etc.
+
+solution: wait until 95% of "leaf" requests return then call it done, skip the rest. because 5% of servers contribute 50% of latency. good for when answer is not exact (e.g. search queries, social media)
+
+other optimizations:
+
+- tied\/*hedged requests* (like betting): for the 5% slow machines, send another request and hope it comes back faster. problem: may induce more load. then allow a cancellation mechanism to the slower node to delete request
+
+=== reducing component variability
+
+/ differentiate service classes: have two queues, one for more important requests (e.g. premium users, non-interactive requests)
+/ high level queuing: aggregator avoids sending requests to node if it's taking a while to respond to requests
+/ reduce head-of-line blocking: break complicated requests into smaller pieces
+/ synchronize disruption: do background activities (e.g. GC) at same time so everyone experiences disruption at once, not spread across node
+
+hardware only gets more diverse, so need to tolerate variability
+
+higher bandwidth reduces per-msg overhead, makes it more likely cancellation msgs received in time
+
+=== canary requests
+
+when updating code, roll it out to only a few servers, then see if requests fail. if not, continue
+
+== memcached (lecture 7)
+
+"mem cache D"
+
+/ memcached: open source software running on node, accepts network connections, simple cache. like lossy hashmap, can store most commonly accessed key value pairs. on access they're pulled right from RAM. when RAM fills up, eviction policy evicts older least recently used items. used to accelerate apps
+  - simple `get()`, `put()` interface
+  - caches popular/expensive requests
+  - LRU replacement policy
+  - data stored in RAM, so access is fast
+  - may be running on same host, diff port, or separate phys machine, or several machines
+
+queries go to memcached first. on hit, result returned very quickly
+
+```py
+def get_thing(id):
+    thing = memcached_get(f"thing: {id}")
+    if thing: return thing
+
+    thing = fetch_thing_from_database(id)
+    memcached_set(f"thing: {id}", thing)
+    return thing
+```
+
+same tail tolerance issue happens if you have $S$ memcached servers and wait until all servers return. if service time $~ N(mu, sigma)$
+
+lesson: everything will have variance within and outside our control. how you want to handle it will determine how you build your application
+
+and memcached is useful to be aware of
+
+= lecture 7: RPC
