@@ -31,7 +31,7 @@
           <input type="file" name="files" id="files" multiple />
         </label>
         <label class="checkbox-label">
-          <input type="checkbox" name="compressed" id="compressed" checked />
+          <input type="checkbox" name="compressed" id="compressed" />
           Compress files before uploading?
         </label>
         <p><input type="submit" value="Upload" /></p>
@@ -53,6 +53,7 @@
         window.location.replace('./instructions.html')
       }
 
+      const MAX_SIZE = 10 * 1000 * 1000 - 1
       const files = document.getElementById('files')
       const compressCheckbox = document.getElementById('compressed')
       const progress = document.getElementById('progress')
@@ -93,10 +94,13 @@
       })
       files.addEventListener('change', () => {
         if (!compressCheckboxEdited) {
-          compressCheckbox.checked = files.files.some(
+          // Auto-check the compress option if the files are large and aren't
+          // already compressed
+          compressCheckbox.checked = Array.from(files.files).every(
             file =>
               file.type !== 'application/gzip' &&
-              file.type !== 'application/zip'
+              file.type !== 'application/zip' &&
+              file.size > MAX_SIZE
           )
         }
       })
