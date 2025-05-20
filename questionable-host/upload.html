@@ -60,6 +60,7 @@
       const fieldset = document.getElementById('fieldset')
       const results = document.getElementById('hashes')
       let noConverted = document.getElementById('no-converted')
+      let compressCheckboxEdited = false
       let options
       let fileNames
       async function uploadFiles (files) {
@@ -76,17 +77,29 @@
             type: 'upload',
             blobs: compressCheckbox.checked
               ? await Promise.all(
-                  Array.from(
-                    files,
-                    async file =>
-                      new Blob([pako.deflate(await file.arrayBuffer())])
-                  )
+                Array.from(
+                  files,
+                  async file =>
+                    new Blob([pako.deflate(await file.arrayBuffer())])
                 )
+              )
               : Array.from(files, file => new Blob([file]))
           },
           '*'
         )
       }
+      compressCheckbox.addEventListener('input', () => {
+        compressCheckboxEdited = true
+      })
+      files.addEventListener('change', () => {
+        if (!compressCheckboxEdited) {
+          compressCheckbox.checked = files.files.some(
+            file =>
+              file.type !== 'application/gzip' &&
+              file.type !== 'application/zip'
+          )
+        }
+      })
       submitForm.addEventListener('submit', e => {
         e.preventDefault()
         uploadFiles(files.files)

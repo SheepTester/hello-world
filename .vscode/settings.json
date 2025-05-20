@@ -1,10 +1,11 @@
 {
-  "deno.enable": false,
+  "deno.enable": true,
   "deno.lint": false,
   "deno.unstable": false,
   "deno.suggest.imports.hosts": {
     "https://deno.land": true
   },
+  "prettier.prettierPath": "./node_modules/prettierx",
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter"
   },

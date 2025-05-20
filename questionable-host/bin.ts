@@ -1,6 +1,6 @@
 // deno run ./bin.ts
 
-// @deno-types="https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/types/pako/index.d.ts"
+// @deno-types="https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/pako/index.d.ts"
 import {
   deflate,
   inflate
@@ -124,8 +124,8 @@ if (!mode || mode.startsWith('-')) {
     const scratchSessionsId: string | undefined = sessionId
       ? sessionId
       : sessionIdPath
-      ? (await Deno.readTextFile(sessionIdPath)).trim()
-      : Deno.env.get('SCRATCHSESSIONSID')
+        ? (await Deno.readTextFile(sessionIdPath)).trim()
+        : Deno.env.get('SCRATCHSESSIONSID')
     if (!scratchSessionsId) {
       throw new TypeError(
         [
@@ -152,11 +152,13 @@ if (!mode || mode.startsWith('-')) {
     const hash = await upload(blob, scratchSessionsId, handleProgress)
     if (outputDownloadUrl) {
       console.log(
-        `https://sheeptester.github.io/hello-world/questionable-host/?${new URLSearchParams({
-          hash,
-          name: filePath !== undefined ? basename(String(filePath)) : 'file',
-          compressed: compress
-        })}`
+        `https://sheeptester.github.io/hello-world/questionable-host/?${new URLSearchParams(
+          {
+            hash,
+            name: filePath !== undefined ? basename(String(filePath)) : 'file',
+            compressed: compress
+          }
+        )}`
       )
     } else {
       console.log(hash)
@@ -188,7 +190,7 @@ if (!mode || mode.startsWith('-')) {
         '',
         'Download a file and output it to stdout.',
         '',
-        '  deno run --allow-net ./bin.ts download  24310a98bae36609aa4b184e0cd20988 \\',
+        '  deno run --allow-net ./bin.ts download 24310a98bae36609aa4b184e0cd20988 \\',
         '    > ./path/to/file',
         '',
         'USAGE:',

@@ -1,4 +1,4 @@
-// deno bundle upload-download.ts | terser --compress toplevel --mangle toplevel > upload-download.bundle.js
+// deno bundle upload-download.ts | terser --compress --mangle --module > upload-download.bundle.js
 
 import { Md5 } from 'https://deno.land/std@0.95.0/hash/md5.ts'
 import { encodeToString } from 'https://deno.land/std@0.95.0/encoding/hex.ts'
@@ -68,9 +68,7 @@ export async function uploadFile (
     method: 'POST',
     credentials: 'include',
     headers: scratchSessionsId
-      ? {
-          cookie: `scratchsessionsid=${scratchSessionsId}`
-        }
+      ? { cookie: `scratchsessionsid=${scratchSessionsId}` }
       : {},
     body: buffer
   })
@@ -102,12 +100,23 @@ export async function upload (
   scratchSessionsId?: string,
   onProgress?: (percent: number) => void
 ): Promise<string> {
+  if (file.size <= MAX_SIZE) {
+    onProgress?.(0)
+    const { hash } = await uploadFile(
+      await file.arrayBuffer(),
+      scratchSessionsId,
+      'wav'
+    )
+    onProgress?.(1)
+    return `${hash}.`
+  }
+
   const totalChunks = Math.ceil(file.size / CHUNK_SIZE)
   // The last chunk's hash will just be zeroes
   let nextChunkHash = new ArrayBuffer(16)
   // Start from end of chunk backwards because the chunks form a linked list
   for (let i = totalChunks - 1; i >= 0; i--) {
-    if (onProgress) onProgress((totalChunks - 1 - i) / totalChunks)
+    onProgress?.((totalChunks - 1 - i) / totalChunks)
 
     const byteIndex = i * CHUNK_SIZE
 
@@ -129,7 +138,7 @@ export async function upload (
     ).hashBytes
   }
 
-  if (onProgress) onProgress(1)
+  onProgress?.(1)
 
   return encodeToString(new Uint8Array(nextChunkHash))
 }
@@ -145,7 +154,7 @@ export async function download (
   onProgress?: (percent: number) => void,
   type?: string
 ): Promise<Blob> {
-  if (onProgress) onProgress(0)
+  onProgress?.(0)
 
   const parts = []
   let byteCount = 0
@@ -226,7 +235,7 @@ export async function downloadOld (
   const parts = []
   let i = 0
   for (const hash of hashes) {
-    if (onProgress) onProgress(i / hashes.length)
+    onProgress?.(i / hashes.length)
 
     const response = await fetch(`${SERVER}internalapi/asset/${hash}.wav/get/`)
     if (!response.ok) {
@@ -256,7 +265,7 @@ export async function downloadOld (
     }
     i++
   }
-  if (onProgress) onProgress(1)
+  onProgress?.(1)
   return new Blob(parts, { type })
 }
 
