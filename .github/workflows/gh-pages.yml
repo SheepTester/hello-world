@@ -32,11 +32,11 @@ jobs:
           # https://github.com/actions/jekyll-build-pages/issues/18
           cp -r _site _site2
 
-          find hello-world/ -type f -print0 | \
+          find _site2/ -type f -print0 | \
             while IFS= read -r -d '' file; do
-              url_path=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "${file#hello-world/}")
+              url_path=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "${file#_site2/}")
               echo "https://sheeptester.github.io/hello-world/$url_path"
-            done > hello-world/sitemap.txt
+            done > _site2/sitemap.txt
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
