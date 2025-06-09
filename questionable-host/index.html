@@ -200,6 +200,17 @@
         }
       }
 
+      function getMime (fileName) {
+        for (const type of Object.values(mimeTypes)) {
+          for (const [extension, mime] of Object.entries(type)) {
+            if (fileName.endsWith('.' + extension)) {
+              return mime
+            }
+          }
+        }
+        return ''
+      }
+
       document.body.classList.remove('section-loading')
       const params = new URL(window.location).searchParams
       const options = {
@@ -228,15 +239,7 @@
         document.body.classList.add('section-preview')
         elems.preview.classList.add('show-loading')
 
-        let mimeType = ''
-        outer: for (const type of Object.values(mimeTypes)) {
-          for (const [extension, mime] of Object.entries(type)) {
-            if (fileName.endsWith('.' + extension)) {
-              mimeType = mime
-              break outer
-            }
-          }
-        }
+        const mimeType = getMime(fileName)
 
         const isType = Object.fromEntries(
           Object.entries(mimeTypes).map(([type, extensions]) => {
@@ -301,7 +304,9 @@
                     e.preventDefault()
                     a.href = ''
                     const blob = await entry.async('blob')
-                    a.href = URL.createObjectURL(blob)
+                    a.href = URL.createObjectURL(
+                      new Blob([blob], { type: getMime(entry.name) })
+                    )
                     a.click()
                   },
                   { once: true }
