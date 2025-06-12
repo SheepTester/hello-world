@@ -992,3 +992,99 @@ wtf is traceroute
 i feel like i have learned nothing from this
 
 = lecture 15: 2PC
+
+what if tritontube metadata store crashes? we are doomed.
+
+replicate database. but could get inconsistent replicas
+
+ACID:
+/ atomicity: all parts of transaction execute, or none at all
+/ consistency: transaction only commits if invariants are preserved
+/ isolation: transaction executes as if executed by itself (other transactions will not interfere with this one)
+/ durability: transaction effects not lost after execution
+
+for multiple nodes:
+
+/ straw man protocol: simple approach:
+  + client tells transaction coordinator to go
+  + transaction coordinator tells individual nodes what to do
+    - on receiving messages, the nodes perform actions
+  + transaction coordinator tells client OK
+  what could go wrong
+  - individual node can realize transaction is invalid
+  - node may not exist anymore
+  - node crashes before receiving msg
+  - best-effort network to a node fails
+  - transaction coordinator crashes in the middle of a transaction
+/ _correct_ atomic commit protocol: (in two phase commit, "two" comes from two phases not two nodes. can work with any number of nodes)
+  + client tells transaction coordinator to go
+  + transaction coordinator tells relevant nodes to prepare
+  + nodes reply yes or no
+  + transaction coordinator can send message, either commit (if all say yes) or abort (if one says no)
+    - abort message will make the node forget about it
+    - commit message makes node commit
+    - nodes keep state after preparing
+  + transaction coordinator tells client OK or failed
+  correct bc neither can commit until both agreed to commit
+  
+transaction coordinator and nodes have notion of committing. want 2 properties:
+/ safety: if one commits, no one aborts. if one aborts, no one commits. if servers don't crash, all processes reach same decision
+/ liveness: if no failures, A and B can commit, then action commits. if failures, reach a conclusion ASAP. if failures eventually repaired, every participant eventually reaches decision
+
+2PC performance issues:
+/ timeout: what if node is up but doesn't receive expected message because other node crashed or network down
+  - when TC waits for yes/no from nodes, can safely abort after timeout
+    - this is conservative, might be network problem. preserves correctness, sacrifices performance
+  - nodes waiting for commit or abort from TC
+    - if it had sent no, it can safely abort
+    - if it had sent yes, cannot unilaterally abort/commit. so waiting forever
+  / server termination protocol: consider node waiting for commit/abort from TC and had responded yes. node can ask other nodes for their status:
+    - other node does not reply. no decision, wait for TC
+    - other node received commit/abort from TC: agree with TC's decision
+    - other node hasn't voted yet or voted no: both abort
+      - TC hasn't yet decided to commit
+    - other node voted yes: both must wait for TC because TC might've decided to abort due to timeout
+  assumes all nodes are correct and won't lie. this is failure mode where assume network or nodes fail, but when they never operate incorrectly ("fail stop failure model", very simple, not appropriate for all systems but very common)
+/ reboot: node crashed, rebooting, need to clean up. can't back out of commit if already decided
+  - TC could crash after saying commit
+  - node crashes after saying yes
+  if all nodes knew state before crash, can use termination protocol (above), then use write-ahead log to record state to disk
+  - there exists syscalls to block until actually written to disk instead of memory cache (e.g. Go `Sync()`)
+  - if everything rebooted, reachable, TC can just check for commit record on disk and re-send action
+  - if TC has no commit record on disk, abort: didn't send any commit messages
+  - if nodes don't have yes record on disk, abort: haven't voted yes so TC hasn't committed yet
+  - if yes record on disk, execute termination protocol. might block
+
+if transaction coordinator is down, whole system is dead. this is why we will be talking about RAFT
+
+/ two-phase commit (2PC): the above recovery protocol with non-volatile logging
+  - safety: all hosts reach same decision, no commit until all say yes
+  - liveness: if no failures and all say yes, then commit
+    - but if failures 2PC might block
+    - TC must be up to decide
+  - doesn't tolerate faults well, must wait for repair
+    - is building block for other larger scale fault tolerant approach, but not the only approach
+
+coming up next: consistent lock step transactions. nodes elect new TC when a TC goes down
+
+= lecture 16: RAFT
+
+ideas:
+
+- adapt 2PC to save data
+- assume TC doesn't fail for now
+- replicate data across multiple servers
+
+network partitions: some network or host error prevents replicas from communicating w e/o
+- 2PC only works if all nodes can be contacted
+- but if some replicas cant be contacted
+
+updatable data can have associated version number, so all server replicas have `(data, version)`
+- suppose user can only reach some replicas
+
+/ quorum-based protocols: tell client data version was updated after subset of servers get update
+  - form *read quorum* of size $N_R$. contact them and read their versions. select highest as correct version
+  - form *write quorum* of size $N_W$. contact them, inc highest version from that set, write new version to servers in write quorum
+  like pidgeonhole principle, select quorum sizes cleverly so there's always non zero intersection between them
+
+  not perfect because some nodes will go down. if too many go down, then intersection will go away. only relaxing requirements, not eliminating it
