@@ -1082,9 +1082,167 @@ network partitions: some network or host error prevents replicas from communicat
 updatable data can have associated version number, so all server replicas have `(data, version)`
 - suppose user can only reach some replicas
 
+== quorums
+
 / quorum-based protocols: tell client data version was updated after subset of servers get update
   - form *read quorum* of size $N_R$. contact them and read their versions. select highest as correct version
   - form *write quorum* of size $N_W$. contact them, inc highest version from that set, write new version to servers in write quorum
   like pidgeonhole principle, select quorum sizes cleverly so there's always non zero intersection between them
 
   not perfect because some nodes will go down. if too many go down, then intersection will go away. only relaxing requirements, not eliminating it
+
+  constraints, where $N =$ \# replicas, $N_R$ = \# replicas in read quorum, $N_W =$ \# replicas in write quorum
+
+  to read/write to quorums, get corresponding locks on the quorum nodes
+
+  / quorum consensus: write ops can be propagated in bg to replicas not in quorum, assumes eventual repair  of any network partition
+
+  operations slowed by necessity of first gathering a quorum, but better than sending writes to all replicas. quorum sys lets you   only contact subset of replicas
+
+  examples with 5 nodes:
+  - 3 read, 3 write. balanced
+  - 5 read, 1 write. writes are very fast, so writing a lot cheaper than reading
+  - 1 read, 5 write. "*ROWA*" (read one, write all). so writes are expensive not only bc you need to contact all nodes but also have to prevent readers
+
+  observations:
+  - sys resilient to crash of $f <= N/2 -1$ servers
+  - read lock doesn't block readers, multiple readers can concurrently read
+    - each reader can read a different subset of nodes
+  - two diff write ops cant proceed at same time, so write ops are serialized
+  - reads don't overlap with writes bc intersection of read and write is nonempty ??? so every read op returns latest version written
+
+== state machine
+  
+/ state machine replication: e/ machine starts in same initial state, executing same reqs (deterministic). requires consensus among all participants to execute in same order. produces same output
+
+in RAFT, want odd number 3+ replicas. even is allowed but won't help you because need majority consensus. 5 is typical, but could have 7, 9, etc
+
+components of a RAFT replica server:
+/ state machine: represents state of system
+/ replicated log: history of all commands, all updates to state machine. allows all replicas to be in sync. so all nodes would be within one update of e/o
+/ consensus module: communicate with other nodes to make sure log is consistent. ensures proper log replication. gets consensus among other nodes to update log. like write quorum, doing write op on majority of nodes
+  - leader reaches out, communicates with majority of nodes, agree on accepting new command, append to end of logs. once leader hears back from majority of nodes that they accepted update, it can apply it to state machine and respond to client. after client leaves, leader lets other nodes know that commit happened
+
+// week 9 thu
+== election
+
+leader is nice because makes system easier to reason about. requires leader election step, but once you have leader, state space that you have to explore/reason about becomes much smaller
+- leader elections are rare because failures are uncommon
+- not all consensus protocols/approaches have leaders
+- allows decomposition into normal operation and leader changes
+- simplifies normal operation because no conflicts between nodes
+- more efficient than leader-less approaches (e.g. raw quorum replication)
+- obvious way to handle non-determinism (leader gets to choose)
+
+server states: each either
+/ leader: handles all client interactions, log replications. normally 1 leader
+/ follower: completely passive. normally $n - 1$ followers
+/ candidate: used to elect new leader
+adding more nodes only makes it more fault tolerant, so 5 is common. doesn't add more capacity or improve performance
+
+RPC operations:
+/ AppendEntries(): leader uses this to push new operations to replicated state machines, and to tell other nodes it is leader
+/ RequestVote(): used when system starts up, or leader fails to elect new leader, or leader unreachable due to network partition, to elect new leader
+
++ servers start out as followers
++ leaders send heartbeats (empty `AppendEntries` RPC) to maintain authority
++ if `electionTimeout` elapses w no RPCs (100--500ms), follower assumes leader has crashed, starts election (which makes it a candidate)
+  - candidate can time out and start new election if no one wins election
+  - could discover that rest of cluster has elected a different candidate, when it asks leader to elect them, so can step down back to follower
++ get majority (more than half, i.e. not plurality, tie is not a win) of votes and become leader
+  - majority of all nodes, including those who failed. so if 2 of 5 nodes go down, still need 3 to agree
+  - if leader discovers another node has become leader with higher term, it will step down back to follower
+
+/ terms (epochs): time divided into terms, with election (either fails or 1 leader, or normal operation under 1 leader)
+  - not a fixed interval. could be several days or a few min
+  - each server maintains current term value
+  - to identify obsolete info
+
+during election, client requests are rejected or delayed. enforces strong consistency. but sometimes you are ok with accidentally losing info (e.g. shopping cart) so stuff like dynamoDB have weak consistency
+
+=== elections
+
++ start election: inc current term, change to candidate state, vote for self
++ send `RequestVote` to all servers. retry until:
+  - receive votes from majority of servers $->$ become leader, send `AppendEntries` heartbeats to all servers
+  - receive RPC from valid leader $->$ return to follower state
+  - no one wins election, election timeout elapses $->$ inc term, start new election
+    - timeout is fixed (e.g. \~500 ms), but much larger than round trip between nodes (e.g. \~100 ms)
+
+when node receives `RequestVote` RPC before they send their own out, for term bigger than their own, then they vote for that node
+
+properties:
+/ safety: max one winner (in a term) allowed
+  - e/ server only votes once per term (persists on disk so if it crashes then reboots and gets another vote request for same term, it won't vote again)
+  - 2 diff candidates can't get majorities in same term
+/ liveness: some candidate must eventually win
+  - e/ choose election timeouts randomly in $[T, 2T]$
+  - one usually initiates, wins election before others start
+  - works well if $T >>$ network RTT
+
+want time for election to be bigger than time between heartbeats
+
+when a leader of a previous term tries to send heartbeat to follower of future term, the follower will respond that it failed and that they're in a new term now, so the leader will be like ok, update its term, and become a follower
+
+a term may have no leader (since each election attempt inc the term)
+
+== logs
+
+each log entry has index, term, command. stored on disk to survive crashes
+
+entry *committed* if known to be stored on majority of servers. durable/stable, will eventually be executed by state machine. once committed, can tell client about it
+
+normal operation:
++ client sends command to leader
++ leader appends command to log
++ leader sends `AppendEntries` RPCs to followers
++ new entry committed
++ leader passes command to state machine
++ sends result to client
++ leader piggybacks commitment to followers in later `AppendEntries`
++ followers pass committed commands to state machines
+
+but what if follower crashed/slow? leader retries RPCs until they succeed
+
+in common case, performance optimal: one successful RPC to any majority of servers
+
+properties:
+/ highly coherent: if log entries on diff servers have same index and term $->$ same command, and logs are also identical for all preceding entries. if given entry committed, all preceding also committed
+  - won't have holes in logs
+  - commands must be done in order
+/ consistency check: `AppendEntries` has index and term of prev entry. follower must have matching entry; otherwise, it rejects. implements induction step, ensures coherency
+/ safety requirement: once log entry applied to state machine, no other state machine may apply diff value for that log entry. $->$
+  - leaders never overwrite entries in their logs
+  - only entries in leader log can get committed
+  - entries must be committed before applying to state machine
+  i.e., committed (restrictions on commitment) $->$ present in future leader's logs (restrictions on leader election)
+
+log inconsistency can happen due to leader changes. new leader's log is truth; immediately resume normal operation
+- will eventually make follower's logs identical to leader's
+- old leader may have left entries partially replicated
+- multiple crashes may lead to many wrong log entries
+
+elect candidate most likely to contain all committed entries:
+- in `RequestVote`, candidates include index and term of last log entry
+- voter denies vote if its own log is "more complete" (newer term or same term, higher index)
+- leader will have "most complete" log among electing majority
+
+when elected, it'll overwrite log entries in other nodes
+
+leader decides entry is committed when:
++ entry stored on majority (not necessarily appended by that leader)
++ $>=1$ new entry from leader's term is also on majority
+
+leader keeps `nextIndex` for e/ follower: index of next log entry to send to that follower, initialized to $1 +$ leader's last index
+- if `AppendEntries` consistency check fails, dec `nextIndex`, try again
+
+terms are used to detect stale leaders/candidates: each RPC has sender's term
+- if sender's term < receiver $->$ receiver rejects RPC
+- if receiver's term < sender $->$ receiver reverts to follower, updates term, processes RPC
+
+client protocol:
++ send commands to leader.
+  if leader unknown, contact any server to get redirected to leader
++ leader only responds after command logged, committed, executed
++ if request times out (e.g. bc leader crashed), client reissues command to new leader (after poss. redirect)
++ ensures *at-most-once semantics* even w leader failures: client should embed unique ID in each command, included in log entry, in case leader crashes between executing command and responding
