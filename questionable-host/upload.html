@@ -140,17 +140,15 @@
                 })
               )
               const td = document.createElement('td')
+              const params = { hash, name: fileNames[i] }
+              if (compressCheckbox.checked) {
+                params.compressed = true
+              }
               td.appendChild(
                 Object.assign(document.createElement('a'), {
                   className: 'link-box',
                   textContent: hash,
-                  href:
-                    `./?` +
-                    new URLSearchParams({
-                      hash,
-                      name: fileNames[i],
-                      compressed: compressCheckbox.checked
-                    }),
+                  href: `./?` + new URLSearchParams(params),
                   target: '_blank'
                 })
               )

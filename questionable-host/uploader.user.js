@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         File uploader
 // @namespace    https://sheeptester.github.io/
-// @version      1.0.1
+// @version      1.1.0
 // @description  Go to https://scratch.mit.edu/questionable-host to upload a file.
 // @author       SheepTester
 // @match        https://scratch.mit.edu/about/?questionable-host
@@ -16,26 +16,25 @@
 
   const { upload } = await import(HOST + '/upload-download.bundle.js')
 
-  while (document.head.firstChild) {
-    document.head.removeChild(document.head.firstChild)
+  const main = document.getElementById('view')
+  while (main.firstChild) {
+    main.removeChild(main.firstChild)
   }
-  while (document.body.firstChild) {
-    document.body.removeChild(document.body.firstChild)
-  }
+  const sheet =
+    window.document.styleSheets[window.document.styleSheets.length - 1]
+  sheet.insertRule('#view { padding: 0; }', sheet.cssRules.length)
+  sheet.insertRule(':root { color-scheme: dark; }', sheet.cssRules.length)
 
   const iframe = document.createElement('iframe')
   iframe.src = HOST + '/upload.html'
   Object.assign(iframe.style, {
     border: 'none',
-    position: 'fixed',
-    top: 0,
-    left: 0,
     width: '100%',
-    height: '100%'
+    height: 'calc(100vh - 50px)',
+    minHeight: '680px'
   })
-  document.body.appendChild(iframe)
+  main.appendChild(iframe)
   document.body.scrollTo(0, 0)
-  document.body.style.fontSize = 0
   document.title = 'File uploader'
   iframe.focus()
   window.addEventListener('message', ({ data }) => {

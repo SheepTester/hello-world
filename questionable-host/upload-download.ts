@@ -1,4 +1,4 @@
-// deno bundle upload-download.ts | terser --compress --mangle --module > upload-download.bundle.js
+// deno bundle questionable-host/upload-download.ts | terser --compress --mangle --module > questionable-host/upload-download.bundle.js
 
 import { Md5 } from 'https://deno.land/std@0.95.0/hash/md5.ts'
 import { encodeToString } from 'https://deno.land/std@0.95.0/encoding/hex.ts'
@@ -16,7 +16,7 @@ class HttpError extends Error {
 }
 
 /** Maximum size of an asset on Scratch in bytes = 10 MB */
-const MAX_SIZE = 10 * 1000 * 1000 - 1
+export const MAX_SIZE = 10 * 1000 * 1000 - 1
 
 /**
  * The size of the header, in bytes, at the start of each chunk.
@@ -151,7 +151,7 @@ export async function upload (
  */
 export async function download (
   hash: string,
-  onProgress?: (percent: number) => void,
+  onProgress?: (percent: number, totalBytes?: number) => void,
   type?: string
 ): Promise<Blob> {
   onProgress?.(0)
@@ -213,7 +213,7 @@ export async function download (
       byteCount += bytes.length
 
       if (onProgress && totalBytes) {
-        onProgress(byteCount / totalBytes)
+        onProgress(byteCount / totalBytes, totalBytes)
       }
     }
   }
@@ -229,13 +229,13 @@ export async function download (
  */
 export async function downloadOld (
   hashes: string[],
-  onProgress?: (percent: number) => void,
+  onProgress?: (percent: number, totalCount: number) => void,
   type?: string
 ): Promise<Blob> {
   const parts = []
   let i = 0
   for (const hash of hashes) {
-    onProgress?.(i / hashes.length)
+    onProgress?.(i / hashes.length, hashes.length)
 
     const response = await fetch(`${SERVER}internalapi/asset/${hash}.wav/get/`)
     if (!response.ok) {
@@ -260,12 +260,12 @@ export async function downloadOld (
 
       if (onProgress) {
         loaded += result.value.length
-        onProgress((i + loaded / responseSize) / hashes.length)
+        onProgress((i + loaded / responseSize) / hashes.length, hashes.length)
       }
     }
     i++
   }
-  onProgress?.(1)
+  onProgress?.(1, hashes.length)
   return new Blob(parts, { type })
 }
 
