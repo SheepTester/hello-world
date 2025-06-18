@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YT shorts -> watch, old Reddit, desktop Wikipedia
 // @namespace    https://sheeptester.github.io/
-// @version      1.9
+// @version      1.10
 // @description  Redirect YouTube shorts pages to normal video watch pages. Also redirects to old Reddit unless URL ends in ?force-new.
 // @author       SheepTester
 // @match        https://www.youtube.com/*
@@ -33,17 +33,36 @@
     if (page) {
       window.location.replace(`?sort=${page[1]}&t=all`)
     }
-  } else if (window.location.hostname.endsWith('.wikipedia.org')) {
+  } else if (window.location.hostname.endsWith('.wikipedia.org') && window.innerWidth > 600) {
     // Redirect to desktop Wikipedia
     window.location.replace(window.location.href.replace('.m.', '.'))
   } else {
     // Redirect YouTube shorts to normal video page
-    const check = url => {
-      const videoId = new URLPattern('https://www.youtube.com/shorts/:video').exec(url)?.pathname.groups.video
-      if (videoId) window.location.replace(`/watch?v=${videoId}`)
+    const check = (url, callback) => {
+      const videoId = new URLPattern({ pathname: '/shorts/:video' }).exec(url)?.pathname.groups.video
+      if (videoId) callback(new URL(`/watch?v=${videoId}`, url))
     }
 
-    check(window.location)
-    navigation.addEventListener('navigate', e => check(e.destination.url))
+    check(window.location, redirect => window.location.redirect(redirect))
+    navigation.addEventListener('navigate', e => {
+      check(e.destination.url, redirect => {
+        event.intercept({
+          handler () {
+            navigation.navigate(redirect, { history: 'replace' })
+          }
+        })
+      })
+    })
+
+    const updateLinks = () => {
+      for (const link of document.getElementsByTagName('a')) {
+        check(link.href, url => {
+          link.href = url
+          // link.target = '_blank'
+        })
+      }
+    }
+    // window.addEventListener('pointerdown', updateLinks)
+    window.addEventListener('pointermove', updateLinks)
   }
 })()
