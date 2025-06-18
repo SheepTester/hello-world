@@ -69,7 +69,7 @@
         margin: 0;
         padding: 20px;
         white-space: pre-wrap;
-        word-break: break-word;
+        word-break: break-all;
       }
       .has-audio {
         justify-content: center;
@@ -204,7 +204,9 @@
           zip: 'application/zip'
         },
         text: {
-          txt: 'text/plain'
+          txt: 'text/plain',
+          json: 'application/json',
+          csv: 'text/csv'
         }
       }
 
