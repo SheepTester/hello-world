@@ -1,0 +1,28 @@
+/* ==UserStyle==
+@name           old reddit mobile friendly
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    make buttons fatter
+@author         sean
+==/UserStyle== */
+
+@-moz-document domain("reddit.com") {
+    .expando-button {
+        transform: scale(2);
+        margin: 20px;
+    }
+    [data-event-action="comments"] {
+        padding: 10px !important;
+        border: 1px solid red;
+        background: #f001;
+        display: inline-block;
+        margin: 0 10px;
+    }
+    .comment .expand {
+        display: inline-block;
+        padding: 10px;
+        border: 1px solid red;
+        background: #f001;
+        margin-right: 20px;
+    }
+}
