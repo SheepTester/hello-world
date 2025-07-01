@@ -1,0 +1,93 @@
+{
+  "albumMetadata": [{
+    "title": "Axolotl Meat II",
+    "access": "private",
+    "date": {
+      "timestampSeconds": "1464394884",
+      "formatted": "May 28, 2016, 12:21:24 AM UTC"
+    },
+    "creationTime": {
+      "timestampSeconds": "1464394884",
+      "formatted": "May 28, 2016, 12:21:24 AM UTC"
+    }
+  }, {
+    "title": "2015-12-24",
+    "access": "private",
+    "date": {
+      "timestampSeconds": "1451008519",
+      "formatted": "Dec 25, 2015, 1:55:19 AM UTC"
+    },
+    "creationTime": {
+      "timestampSeconds": "1451008519",
+      "formatted": "Dec 25, 2015, 1:55:19 AM UTC"
+    }
+  }, {
+    "title": "2015-08-22",
+    "access": "private",
+    "date": {
+      "timestampSeconds": "1440275921",
+      "formatted": "Aug 22, 2015, 8:38:41 PM UTC"
+    },
+    "creationTime": {
+      "timestampSeconds": "1440275921",
+      "formatted": "Aug 22, 2015, 8:38:41 PM UTC"
+    }
+  }, {
+    "title": "Axolotl Video Call. ",
+    "access": "private",
+    "date": {
+      "timestampSeconds": "1438813124",
+      "formatted": "Aug 5, 2015, 10:18:44 PM UTC"
+    },
+    "creationTime": {
+      "timestampSeconds": "1438813124",
+      "formatted": "Aug 5, 2015, 10:18:44 PM UTC"
+    }
+  }, {
+    "title": "2015-04-01",
+    "access": "private",
+    "date": {
+      "timestampSeconds": "1427931797",
+      "formatted": "Apr 1, 2015, 11:43:17 PM UTC"
+    },
+    "creationTime": {
+      "timestampSeconds": "1427931797",
+      "formatted": "Apr 1, 2015, 11:43:17 PM UTC"
+    }
+  }, {
+    "title": "2015-04-01",
+    "access": "private",
+    "date": {
+      "timestampSeconds": "1427931696",
+      "formatted": "Apr 1, 2015, 11:41:36 PM UTC"
+    },
+    "creationTime": {
+      "timestampSeconds": "1427931696",
+      "formatted": "Apr 1, 2015, 11:41:36 PM UTC"
+    }
+  }, {
+    "title": "Loud Media",
+    "description": "FOR ALL SOUNDS!",
+    "access": "protected",
+    "date": {
+      "timestampSeconds": "1419187150",
+      "formatted": "Dec 21, 2014, 6:39:10 PM UTC"
+    },
+    "creationTime": {
+      "timestampSeconds": "1482098718",
+      "formatted": "Dec 18, 2016, 10:05:18 PM UTC"
+    }
+  }, {
+    "title": "Useless Stuff",
+    "description": "Stuff that I don\u0027t need from untitled documents to experimental spreadsheets.",
+    "access": "protected",
+    "date": {
+      "timestampSeconds": "1411087666",
+      "formatted": "Sep 19, 2014, 12:47:46 AM UTC"
+    },
+    "creationTime": {
+      "timestampSeconds": "1462411854",
+      "formatted": "May 5, 2016, 1:30:54 AM UTC"
+    }
+  }]
+}
