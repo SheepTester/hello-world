@@ -2,7 +2,7 @@
 use std::io;
 
 
-fn getint() -> i32{
+fn getint() -> i64{
     let mut w = String::new();
    io::stdin()
     .read_line(&mut w)
@@ -12,18 +12,18 @@ fn getint() -> i32{
 
 fn main(){
 let wow = getint();
-let mut he:Vec<(i32,i32)> = 
+let mut he:Vec<(i64,i64)> = 
     (0..wow).map(|i| (i,getint())).collect();
 //let hell= vec![];
  he.sort_by_key(|e| -e.1);
-let mut fac = 1;
-let mut i = 0;
-let mut res : Vec<(i32,i32)>=vec![];
+let mut fac:i64= 1;
+let mut i:i64 = 0;
+let mut res : Vec<(i64,i64)>=vec![];
 while let Some(next) = he
     .pop() {
 while i < next.1 {
 i+=1;
-    fac=fac*i% 998244353;
+    fac=(fac.checked_mul(i).expect(format!("overflpw {}*{}", fac, i).as_str()))% 998244353;
     }
 res.push((next.0,fac));
     }
