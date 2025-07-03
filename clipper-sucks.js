@@ -3,7 +3,8 @@ const webhook = process.argv[3]
 console.log('asking about', citNum, 'will update', webhook)
 
 let i = 0
-setInterval(() => {
+let done = false
+const id = setInterval(() => {
   fetch('https://www.pticket.com/scripts/Autobahn.exe/Execute', {
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
@@ -17,6 +18,9 @@ setInterval(() => {
     method: 'POST'
   }).then(r =>
     r.text().then(async html => {
+      if (done) {
+        return
+      }
       if (html.includes('No citations match the supplied criteria.')) {
         process.stdout.write('no citation ')
         i++
@@ -35,6 +39,8 @@ setInterval(() => {
         }
         return
       }
+      clearInterval(id)
+      done = true
       await fetch(webhook, {
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
@@ -45,7 +51,6 @@ setInterval(() => {
         })
       })
       console.log('\ndone :)')
-      process.exit(0)
     })
   )
 }, 10)
