@@ -2,5 +2,6 @@
 
 int main() {
 	int a;
-	printf("%s", (char *)(&a) + 1);
+	printf("%s", (char *)(main));
+	//printf("%s", (char *)(&a + 1));
 }

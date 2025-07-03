@@ -1,0 +1,31 @@
+/* ==UserStyle==
+@name           old reddit mobile and touch friendly
+@namespace      sheeptester.github.io
+@version        1.1.0
+@description    make buttons fatter
+@author         sean
+==/UserStyle== */
+
+@-moz-document domain("reddit.com") {
+    .expando-button {
+        transform: scale(2);
+        margin: 30px;
+    }
+    [data-event-action="comments"],
+    .comment .expand,
+    .media-gallery .gallery-nav-bar .gallery-navigation {
+        padding: 10px !important;
+        border: 1px solid red;
+        background: #f001;
+        display: inline-block;
+    }
+    [data-event-action="comments"] {
+        margin: 0 10px;
+    }
+    .comment .expand {
+        margin-right: 20px;
+    }
+    .media-gallery .gallery-nav-bar .gallery-navigation {
+        margin: 10px;
+    }
+}
