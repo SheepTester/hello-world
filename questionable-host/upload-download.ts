@@ -15,8 +15,11 @@ class HttpError extends Error {
   }
 }
 
-/** Maximum size of an asset on Scratch in bytes = 10 MB */
-export const MAX_SIZE = 10 * 1000 * 1000
+/**
+ * Maximum size of an asset on Scratch in bytes = 10 MB - 1 byte (10 MB does not
+ * work)
+ */
+export const MAX_SIZE = 10 * 1000 * 1000 - 1
 
 /**
  * The size of the header, in bytes, at the start of each inode-like chunk.
@@ -40,7 +43,7 @@ const LINKED_HEADER_SIZE = HASH_SIZE + 8
  * Size of each chunk of the file to be uploaded to Scratch. This excludes the
  * 24-byte header.
  */
-const CHUNK_SIZE = MAX_SIZE - LINKED_HEADER_SIZE
+const LINKED_CHUNK_SIZE = MAX_SIZE - LINKED_HEADER_SIZE
 
 /**
  * Scratch's asset server host.
@@ -119,23 +122,23 @@ export async function upload (
     return `${hash}.`
   }
 
-  let chunkCount = Math.ceil(file.byteLength / CHUNK_SIZE)
+  let chunkCount = Math.ceil(file.byteLength / MAX_SIZE)
   const potentialMainChunkStorage =
-    CHUNK_SIZE - (INODE_HEADER_SIZE + (chunkCount - 1) * HASH_SIZE)
+    MAX_SIZE - (INODE_HEADER_SIZE + (chunkCount - 1) * HASH_SIZE)
   let offset = 0
-  if (potentialMainChunkStorage <= file.byteLength % CHUNK_SIZE) {
+  if (potentialMainChunkStorage <= file.byteLength % MAX_SIZE) {
     // We can save a chunk by storing it in the main chunk
     chunkCount--
     offset = potentialMainChunkStorage
   } else {
     // Might as well try storing as much data in the main chunk as we can
-    offset = CHUNK_SIZE - (INODE_HEADER_SIZE + chunkCount * HASH_SIZE)
+    offset = MAX_SIZE - (INODE_HEADER_SIZE + chunkCount * HASH_SIZE)
   }
 
   let loaded = 0
   const parts = Array.from({ length: chunkCount }, (_, i) => {
     const { hashBytes, promise } = uploadFile(
-      file.slice(offset + i * CHUNK_SIZE, offset + (i + 1) * CHUNK_SIZE),
+      file.slice(offset + i * MAX_SIZE, offset + (i + 1) * MAX_SIZE),
       scratchSessionsId,
       'wav'
     )
@@ -155,7 +158,7 @@ export async function upload (
   const view = new DataView(temp.buffer)
   view.setBigUint64(0, BigInt(file.byteLength))
   view.setUint32(8, chunkCount)
-  main.set(temp.slice(1, 8), 0)
+  main.set(temp.slice(2, 8), 0)
   main.set(temp.slice(9, 12), 6)
   for (const [i, { hashBytes }] of parts.entries()) {
     main.set(new Uint8Array(hashBytes), INODE_HEADER_SIZE + i * HASH_SIZE)
@@ -374,7 +377,7 @@ export async function downloadLinkedList (
             totalBytes = bytesLeft
           }
           // Determine whether this is the last chunk
-          if (bytesLeft <= CHUNK_SIZE) {
+          if (bytesLeft <= LINKED_CHUNK_SIZE) {
             nextHash = null
           }
         }
