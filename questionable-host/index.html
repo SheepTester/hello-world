@@ -280,10 +280,10 @@
           }
         }
 
-        const handleProgress = (isOld, progress, total) => {
+        const handleProgress = (sizeType, progress, total) => {
           elems.progress.style.width = progress * 100 + '%'
           elems.percent.textContent = (progress * 100).toFixed(1)
-          if (isOld) {
+          if (sizeType === 'old') {
             elems.totalEstimate.textContent = ` ~${total * MAX_SIZE} MB`
           } else {
             elems.totalEstimate.textContent =
@@ -369,7 +369,7 @@
         if (hash.includes('.')) {
           downloadConcat(
             hash.split('.').slice(0, -1),
-            handleProgress.bind(null, true),
+            handleProgress.bind(null, 'old'),
             mimeType
           )
             .then(handleDone)
@@ -377,13 +377,13 @@
         } else if (hash.startsWith('i')) {
           downloadInode(
             hash.slice(1),
-            handleProgress.bind(null, true),
+            handleProgress.bind(null, 'new'),
             mimeType
           )
             .then(handleDone)
             .catch(handleError)
         } else {
-          downloadLinkedList(hash, handleProgress.bind(null, false), mimeType)
+          downloadLinkedList(hash, handleProgress.bind(null, 'new'), mimeType)
             .then(handleDone)
             .catch(handleError)
         }
