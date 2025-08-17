@@ -170,8 +170,8 @@
     ></script>
     <script type="module">
       import {
-        download,
-        downloadOld,
+        downloadLinked,
+        downloadConcat,
         MAX_SIZE
       } from './upload-download.bundle.js'
 
@@ -366,7 +366,7 @@
           elems.progress.classList.add('progress-error')
         }
         if (hash.includes('.')) {
-          downloadOld(
+          downloadConcat(
             hash.split('.').slice(0, -1),
             handleProgress.bind(null, true),
             mimeType
@@ -374,7 +374,7 @@
             .then(handleDone)
             .catch(handleError)
         } else {
-          download(hash, handleProgress.bind(null, false), mimeType)
+          downloadLinked(hash, handleProgress.bind(null, false), mimeType)
             .then(handleDone)
             .catch(handleError)
         }

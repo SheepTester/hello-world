@@ -19,14 +19,19 @@ class HttpError extends Error {
 export const MAX_SIZE = 10 * 1000 * 1000 - 1
 
 /**
- * The size of the header, in bytes, at the start of each chunk.
+ * The size of the header, in bytes, at the start of each inode-like chunk.
+ */
+const INODE_HEADER_SIZE = 15
+
+/**
+ * The size of the header, in bytes, at the start of each linked-list chunk.
  *
  * It consists of:
  * - 16 bytes for the MD5 hash of the next chunk
  * - 8 bytes representing an u64 of the total file size (excluding the unlinked,
  *   prior chunks)
  */
-const HEADER_SIZE = 24
+const LINKED_HEADER_SIZE = 24
 
 /**
  * Size of each chunk of the file to be uploaded to Scratch. This excludes the
@@ -43,6 +48,7 @@ export type UploadFileResult = {
   hashBytes: ArrayBuffer
   hash: string
   url: string
+  promise: Promise<void>
 }
 
 /**
@@ -52,11 +58,11 @@ export type UploadFileResult = {
  * This means the Blob must conform with the 10MB limit, and for some file
  * types, Scratch may enforce that the file is well-formed.
  */
-export async function uploadFile (
+function uploadFile (
   buffer: ArrayBuffer,
   scratchSessionsId?: string,
   extension = 'wav'
-): Promise<UploadFileResult> {
+): UploadFileResult {
   const md5 = new Md5().update(buffer)
   // NOTE: .digest() is not pure and calling it multiple times changes the
   // hash
@@ -64,20 +70,22 @@ export async function uploadFile (
   const hash = encodeToString(new Uint8Array(hashBytes))
 
   const url = SERVER + hash + '.' + extension
-  const response = await fetch(url, {
-    method: 'POST',
-    credentials: 'include',
-    headers: scratchSessionsId
-      ? { cookie: `scratchsessionsid=${scratchSessionsId}` }
-      : {},
-    body: buffer
-  })
 
-  if (!response.ok) {
-    throw await HttpError.from(response)
+  return {
+    hashBytes,
+    hash,
+    url,
+    promise: fetch(url, {
+      method: 'POST',
+      credentials: 'include',
+      headers: scratchSessionsId
+        ? { cookie: `scratchsessionsid=${scratchSessionsId}` }
+        : {},
+      body: buffer
+    }).then(response =>
+      response.ok ? undefined : HttpError.from(response).then(Promise.reject)
+    )
   }
-
-  return { hashBytes, hash, url }
 }
 
 /**
@@ -96,51 +104,68 @@ export async function uploadFile (
  * somehow before uploading it.
  */
 export async function upload (
-  file: Blob,
+  file: ArrayBuffer,
   scratchSessionsId?: string,
   onProgress?: (percent: number) => void
 ): Promise<string> {
-  if (file.size <= MAX_SIZE) {
+  if (file.byteLength <= MAX_SIZE) {
     onProgress?.(0)
-    const { hash } = await uploadFile(
-      await file.arrayBuffer(),
-      scratchSessionsId,
-      'wav'
-    )
+    const { hash, promise } = uploadFile(file, scratchSessionsId, 'wav')
+    await promise
     onProgress?.(1)
     return `${hash}.`
   }
 
-  const totalChunks = Math.ceil(file.size / CHUNK_SIZE)
-  // The last chunk's hash will just be zeroes
-  let nextChunkHash = new ArrayBuffer(16)
-  // Start from end of chunk backwards because the chunks form a linked list
-  for (let i = totalChunks - 1; i >= 0; i--) {
-    onProgress?.((totalChunks - 1 - i) / totalChunks)
-
-    const byteIndex = i * CHUNK_SIZE
-
-    // A u64 containing the number of bytes starting from this chunk
-    // A DataView is required to make it reliably big-endian
-    const bytesLeft = new DataView(new ArrayBuffer(8))
-    bytesLeft.setBigUint64(0, BigInt(file.size - byteIndex))
-
-    // Chunk data
-    const blob = new Blob([
-      // md5 hash of the next chunk
-      nextChunkHash,
-      bytesLeft,
-      // Chunk data
-      file.slice(byteIndex, byteIndex + CHUNK_SIZE)
-    ])
-    nextChunkHash = (
-      await uploadFile(await blob.arrayBuffer(), scratchSessionsId, 'wav')
-    ).hashBytes
+  let chunkCount = Math.ceil(file.byteLength / CHUNK_SIZE)
+  const potentialMainChunkStorage =
+    CHUNK_SIZE - (INODE_HEADER_SIZE + (chunkCount - 1) * 16)
+  let offset = 0
+  if (potentialMainChunkStorage <= file.byteLength % CHUNK_SIZE) {
+    // We can save a chunk by storing it in the main chunk
+    chunkCount--
+    offset = potentialMainChunkStorage
+  } else {
+    // Might as well try storing as much data in the main chunk as we can
+    offset = CHUNK_SIZE - (INODE_HEADER_SIZE + chunkCount * 16)
   }
 
-  onProgress?.(1)
+  let loaded = 0
+  const parts = Array.from({ length: chunkCount }, (_, i) => {
+    const { hashBytes, promise } = uploadFile(
+      file.slice(offset + i * CHUNK_SIZE, offset + (i + 1) * CHUNK_SIZE),
+      scratchSessionsId,
+      'wav'
+    )
+    return {
+      hashBytes,
+      promise: promise.then(() => {
+        loaded++
+        onProgress?.(loaded / (chunkCount + 1))
+      })
+    }
+  })
 
-  return encodeToString(new Uint8Array(nextChunkHash))
+  const main = new Uint8Array(INODE_HEADER_SIZE + offset)
+  const temp = new Uint8Array(12)
+  const view = new DataView(temp.buffer)
+  view.setBigUint64(0, BigInt(file.byteLength))
+  view.setUint32(8, chunkCount)
+  main.set(temp.slice(1, 8), 0)
+  main.set(temp.slice(9, 12), 6)
+  main.set(new Uint8Array(file, 0, offset), INODE_HEADER_SIZE)
+
+  const { hash, promise } = uploadFile(main, scratchSessionsId, 'wav')
+  await promise
+  loaded++
+  onProgress?.(loaded / (chunkCount + 1))
+
+  await Promise.all(parts.map(({ promise }) => promise))
+  return `i${hash}`
+}
+
+type InodePart = {
+  promise: Promise<Uint8Array[]>
+  bytesLoaded: number
 }
 
 /**
@@ -149,7 +174,141 @@ export async function upload (
  *
  * @param onProgress is given a value between 0 and 1.
  */
-export async function download (
+export async function downloadInode (
+  hash: string,
+  onProgress?: (percent: number, totalBytes?: number) => void,
+  type?: string
+): Promise<Blob> {
+  onProgress?.(0)
+
+  const response = await fetch(`${SERVER}internalapi/asset/${hash}.wav/get/`)
+  if (!response.ok) {
+    throw await HttpError.from(response)
+  }
+  if (!response.body) {
+    throw new Error('No response body')
+  }
+
+  const parts: InodePart[] = []
+  const mainParts: Uint8Array[] = []
+  let mainBytesLoaded = 0
+  const updateProgress = () => {
+    if (!onProgress) {
+      return
+    }
+    const bytesLoaded =
+      mainBytesLoaded + parts.reduce((cum, curr) => cum + curr.bytesLoaded, 0)
+    onProgress(bytesLoaded / fileSize, fileSize)
+  }
+  const fetchPart = async (hash: string, part: { bytesLoaded: number }) => {
+    const parts: Uint8Array[] = []
+    const response = await fetch(`${SERVER}internalapi/asset/${hash}.wav/get/`)
+    if (!response.ok) {
+      throw await HttpError.from(response)
+    }
+    if (!response.body) {
+      throw new Error('No response body')
+    }
+
+    const reader = response.body.getReader()
+    while (true) {
+      const result = await reader.read()
+      if (result.done) break
+      parts.push(result.value)
+      part.bytesLoaded += result.value.length
+      updateProgress()
+    }
+    return parts
+  }
+  const handleHash = (hashBytes: Uint8Array) => {
+    const part = { bytesLoaded: 0 }
+    parts.push(
+      Object.assign(part, {
+        promise: fetchPart(encodeToString(hashBytes), part)
+      })
+    )
+  }
+
+  const header = new Uint8Array(INODE_HEADER_SIZE)
+  let headerBytesRead = 0
+  let fileSize = 0
+  let hashesLeft = 0
+
+  let unfinishedHash: Uint8Array | null = null
+  const reader = response.body.getReader()
+  while (true) {
+    const result = await reader.read()
+    if (result.done) break
+
+    let byteIndex = 0
+    if (headerBytesRead < INODE_HEADER_SIZE) {
+      header.set(result.value, headerBytesRead)
+      byteIndex = Math.min(
+        result.value.length,
+        INODE_HEADER_SIZE - headerBytesRead
+      )
+      headerBytesRead += byteIndex
+      if (headerBytesRead >= INODE_HEADER_SIZE) {
+        const temp = new Uint8Array(12)
+        temp.set(header.slice(0, 6), 2)
+        temp.set(header.slice(6, 9), 9)
+        const view = new DataView(temp.buffer)
+        fileSize = Number(view.getBigUint64(0))
+        hashesLeft = view.getUint32(8)
+      }
+    }
+    if (headerBytesRead < INODE_HEADER_SIZE) {
+      // still need to read more header
+      continue
+    }
+
+    if (unfinishedHash) {
+      const hashBytes = new Uint8Array(16)
+      hashBytes.set(unfinishedHash)
+      hashBytes.set(result.value.slice(byteIndex), unfinishedHash.length)
+      const filled = unfinishedHash.length + result.value.length - byteIndex
+      if (filled < 16) {
+        unfinishedHash = unfinishedHash.slice(0, filled)
+        updateProgress()
+        continue
+      } else {
+        handleHash(hashBytes)
+        byteIndex += 16 - unfinishedHash.length
+        unfinishedHash = null
+      }
+    }
+    while (hashesLeft > 0 && byteIndex + 16 <= result.value.length) {
+      handleHash(new Uint8Array(result.value.slice(byteIndex, byteIndex + 16)))
+      byteIndex += 4
+      hashesLeft++
+    }
+    if (hashesLeft > 0) {
+      unfinishedHash = result.value.slice(byteIndex)
+      updateProgress()
+      continue
+    }
+
+    mainParts.push(result.value.slice(byteIndex))
+    mainBytesLoaded += result.value.length - byteIndex
+    updateProgress()
+  }
+
+  return new Blob(
+    [
+      ...mainParts,
+      ...(await Promise.all(parts.map(({ promise }) => promise))).flat()
+    ],
+    { type }
+  )
+}
+
+/**
+ * Download a file from Scratch's asset servers given the md5 hash of the first
+ * chunk.
+ *
+ * @param onProgress is given a value between 0 and 1.
+ */
+export async function downloadLinkedList (
   hash: string,
   onProgress?: (percent: number, totalBytes?: number) => void,
   type?: string
@@ -172,7 +331,7 @@ export async function download (
     }
 
     const reader = response.body.getReader()
-    const header = new Uint8Array(HEADER_SIZE)
+    const header = new Uint8Array(LINKED_HEADER_SIZE)
     let headerPos = 0
     while (true) {
       const result = await reader.read()
@@ -227,7 +386,7 @@ export async function download (
  *
  * @param onProgress is given a value between 0 and 1.
  */
-export async function downloadOld (
+export async function downloadConcat (
   hashes: string[],
   onProgress?: (percent: number, totalCount: number) => void,
   type?: string

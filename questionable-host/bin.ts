@@ -9,7 +9,11 @@ import { parse } from 'https://deno.land/std@0.101.0/flags/mod.ts'
 import { iter, writeAll } from 'https://deno.land/std@0.101.0/io/util.ts'
 import { basename } from 'https://deno.land/std@0.102.0/path/mod.ts'
 import { handleProgress } from './handle-progress.ts'
-import { upload, download, downloadOld } from './upload-download.ts'
+import {
+  upload,
+  downloadLinkedList,
+  downloadConcat
+} from './upload-download.ts'
 
 const [mode, ...args] = Deno.args
 
@@ -221,9 +225,12 @@ if (!mode || mode.startsWith('-')) {
     const strHash = String(hash)
     let file
     if (strHash.includes('.') || strHash.includes('-')) {
-      file = await downloadOld(strHash.split(/[-.]/).slice(0, -1), onProgress)
+      file = await downloadConcat(
+        strHash.split(/[-.]/).slice(0, -1),
+        onProgress
+      )
     } else {
-      file = await download(strHash, onProgress)
+      file = await downloadLinkedList(strHash, onProgress)
     }
     let bytes = new Uint8Array(await file.arrayBuffer())
     if (compressed) {
