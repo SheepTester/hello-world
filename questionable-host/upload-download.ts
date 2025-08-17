@@ -145,14 +145,17 @@ export async function upload (
     }
   })
 
-  const main = new Uint8Array(INODE_HEADER_SIZE + offset)
+  const main = new Uint8Array(INODE_HEADER_SIZE + chunkCount * 16 + offset)
   const temp = new Uint8Array(12)
   const view = new DataView(temp.buffer)
   view.setBigUint64(0, BigInt(file.byteLength))
   view.setUint32(8, chunkCount)
   main.set(temp.slice(1, 8), 0)
   main.set(temp.slice(9, 12), 6)
-  main.set(new Uint8Array(file, 0, offset), INODE_HEADER_SIZE)
+  for (const [i, { hashBytes }] of parts.entries()) {
+    main.set(new Uint8Array(hashBytes), INODE_HEADER_SIZE + i * 16)
+  }
+  main.set(new Uint8Array(file, 0, offset), INODE_HEADER_SIZE + chunkCount * 16)
 
   const { hash, promise } = uploadFile(main, scratchSessionsId, 'wav')
   await promise
@@ -278,13 +281,14 @@ export async function downloadInode (
       } else {
         handleHash(hashBytes)
         byteIndex += moreBytes
+        hashesLeft--
         unfinishedHash = null
       }
     }
     while (hashesLeft > 0 && byteIndex + 16 <= result.value.length) {
       handleHash(new Uint8Array(result.value.slice(byteIndex, byteIndex + 16)))
       byteIndex += 4
-      hashesLeft++
+      hashesLeft--
     }
     if (hashesLeft > 0) {
       unfinishedHash = result.value.slice(byteIndex)
