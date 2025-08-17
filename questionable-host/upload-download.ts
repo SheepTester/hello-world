@@ -242,11 +242,11 @@ export async function downloadInode (
 
     let byteIndex = 0
     if (headerBytesRead < INODE_HEADER_SIZE) {
-      header.set(result.value, headerBytesRead)
       byteIndex = Math.min(
         result.value.length,
         INODE_HEADER_SIZE - headerBytesRead
       )
+      header.set(result.value.slice(0, byteIndex), headerBytesRead)
       headerBytesRead += byteIndex
       if (headerBytesRead >= INODE_HEADER_SIZE) {
         const temp = new Uint8Array(12)
@@ -265,7 +265,11 @@ export async function downloadInode (
     if (unfinishedHash) {
       const hashBytes = new Uint8Array(16)
       hashBytes.set(unfinishedHash)
-      hashBytes.set(result.value.slice(byteIndex), unfinishedHash.length)
+      const moreBytes = 16 - unfinishedHash.length
+      hashBytes.set(
+        result.value.slice(byteIndex, byteIndex + moreBytes),
+        unfinishedHash.length
+      )
       const filled = unfinishedHash.length + result.value.length - byteIndex
       if (filled < 16) {
         unfinishedHash = unfinishedHash.slice(0, filled)
@@ -273,7 +277,7 @@ export async function downloadInode (
         continue
       } else {
         handleHash(hashBytes)
-        byteIndex += 16 - unfinishedHash.length
+        byteIndex += moreBytes
         unfinishedHash = null
       }
     }
