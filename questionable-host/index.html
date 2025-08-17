@@ -170,7 +170,7 @@
     ></script>
     <script type="module">
       import {
-        downloadLinked,
+        downloadLinkedList,
         downloadConcat,
         downloadInode,
         MAX_SIZE
@@ -383,7 +383,7 @@
             .then(handleDone)
             .catch(handleError)
         } else {
-          downloadLinked(hash, handleProgress.bind(null, false), mimeType)
+          downloadLinkedList(hash, handleProgress.bind(null, false), mimeType)
             .then(handleDone)
             .catch(handleError)
         }
