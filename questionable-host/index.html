@@ -284,7 +284,9 @@
           elems.progress.style.width = progress * 100 + '%'
           elems.percent.textContent = (progress * 100).toFixed(1)
           if (sizeType === 'old') {
-            elems.totalEstimate.textContent = ` ~${total * MAX_SIZE} MB`
+            elems.totalEstimate.textContent = ` ~${displaySize(
+              total * MAX_SIZE
+            )}`
           } else {
             elems.totalEstimate.textContent =
               total !== undefined ? ' ' + displaySize(total) : ''
