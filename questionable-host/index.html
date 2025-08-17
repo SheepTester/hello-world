@@ -172,6 +172,7 @@
       import {
         downloadLinked,
         downloadConcat,
+        downloadInode,
         MAX_SIZE
       } from './upload-download.bundle.js'
 
@@ -368,6 +369,14 @@
         if (hash.includes('.')) {
           downloadConcat(
             hash.split('.').slice(0, -1),
+            handleProgress.bind(null, true),
+            mimeType
+          )
+            .then(handleDone)
+            .catch(handleError)
+        } else if (hash.startsWith('i')) {
+          downloadInode(
+            hash.slice(1),
             handleProgress.bind(null, true),
             mimeType
           )
