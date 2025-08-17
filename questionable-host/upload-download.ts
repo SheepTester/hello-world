@@ -443,10 +443,11 @@ if (import.meta.main) {
     Deno.exit(1)
   }
   const file = await Deno.readFile(Deno.args[0])
-  const { url } = await uploadFile(
-    file.buffer,
+  const { url, promise } = uploadFile(
+    file.buffer.slice(file.byteOffset, file.byteOffset + file.byteLength),
     scratchSessionsId,
     Deno.args[0].split('.').at(-1)
   )
+  await promise
   console.log(url)
 }

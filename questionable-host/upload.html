@@ -78,13 +78,15 @@
             type: 'upload',
             blobs: compressCheckbox.checked
               ? await Promise.all(
-                Array.from(
-                  files,
-                  async file =>
-                    new Blob([pako.deflate(await file.arrayBuffer())])
-                )
+                Array.from(files, async file => {
+                  const compressed = pako.deflate(await file.arrayBuffer())
+                  return compressed.buffer.slice(
+                    compressed.byteOffset,
+                    compressed.byteOffset + compressed.byteLength
+                  )
+                })
               )
-              : Array.from(files, file => new Blob([file]))
+              : await Promise.all(Array.from(files, file => file.arrayBuffer()))
           },
           '*'
         )
