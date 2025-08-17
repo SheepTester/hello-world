@@ -16,12 +16,15 @@ class HttpError extends Error {
 }
 
 /** Maximum size of an asset on Scratch in bytes = 10 MB */
-export const MAX_SIZE = 10 * 1000 * 1000 - 1
+export const MAX_SIZE = 10 * 1000 * 1000
 
 /**
  * The size of the header, in bytes, at the start of each inode-like chunk.
  */
 const INODE_HEADER_SIZE = 15
+
+/** Length of a hash in bytes */
+const HASH_SIZE = 16
 
 /**
  * The size of the header, in bytes, at the start of each linked-list chunk.
@@ -31,13 +34,13 @@ const INODE_HEADER_SIZE = 15
  * - 8 bytes representing an u64 of the total file size (excluding the unlinked,
  *   prior chunks)
  */
-const LINKED_HEADER_SIZE = 24
+const LINKED_HEADER_SIZE = HASH_SIZE + 8
 
 /**
  * Size of each chunk of the file to be uploaded to Scratch. This excludes the
  * 24-byte header.
  */
-const CHUNK_SIZE = MAX_SIZE - 24
+const CHUNK_SIZE = MAX_SIZE - LINKED_HEADER_SIZE
 
 /**
  * Scratch's asset server host.
@@ -118,7 +121,7 @@ export async function upload (
 
   let chunkCount = Math.ceil(file.byteLength / CHUNK_SIZE)
   const potentialMainChunkStorage =
-    CHUNK_SIZE - (INODE_HEADER_SIZE + (chunkCount - 1) * 16)
+    CHUNK_SIZE - (INODE_HEADER_SIZE + (chunkCount - 1) * HASH_SIZE)
   let offset = 0
   if (potentialMainChunkStorage <= file.byteLength % CHUNK_SIZE) {
     // We can save a chunk by storing it in the main chunk
@@ -126,7 +129,7 @@ export async function upload (
     offset = potentialMainChunkStorage
   } else {
     // Might as well try storing as much data in the main chunk as we can
-    offset = CHUNK_SIZE - (INODE_HEADER_SIZE + chunkCount * 16)
+    offset = CHUNK_SIZE - (INODE_HEADER_SIZE + chunkCount * HASH_SIZE)
   }
 
   let loaded = 0
@@ -145,7 +148,9 @@ export async function upload (
     }
   })
 
-  const main = new Uint8Array(INODE_HEADER_SIZE + chunkCount * 16 + offset)
+  const main = new Uint8Array(
+    INODE_HEADER_SIZE + chunkCount * HASH_SIZE + offset
+  )
   const temp = new Uint8Array(12)
   const view = new DataView(temp.buffer)
   view.setBigUint64(0, BigInt(file.byteLength))
@@ -153,9 +158,12 @@ export async function upload (
   main.set(temp.slice(1, 8), 0)
   main.set(temp.slice(9, 12), 6)
   for (const [i, { hashBytes }] of parts.entries()) {
-    main.set(new Uint8Array(hashBytes), INODE_HEADER_SIZE + i * 16)
+    main.set(new Uint8Array(hashBytes), INODE_HEADER_SIZE + i * HASH_SIZE)
   }
-  main.set(new Uint8Array(file, 0, offset), INODE_HEADER_SIZE + chunkCount * 16)
+  main.set(
+    new Uint8Array(file, 0, offset),
+    INODE_HEADER_SIZE + chunkCount * HASH_SIZE
+  )
 
   const { hash, promise } = uploadFile(main, scratchSessionsId, 'wav')
   await promise
@@ -266,15 +274,15 @@ export async function downloadInode (
     }
 
     if (unfinishedHash) {
-      const hashBytes = new Uint8Array(16)
+      const hashBytes = new Uint8Array(HASH_SIZE)
       hashBytes.set(unfinishedHash)
-      const moreBytes = 16 - unfinishedHash.length
+      const moreBytes = HASH_SIZE - unfinishedHash.length
       hashBytes.set(
         result.value.slice(byteIndex, byteIndex + moreBytes),
         unfinishedHash.length
       )
       const filled = unfinishedHash.length + result.value.length - byteIndex
-      if (filled < 16) {
+      if (filled < HASH_SIZE) {
         unfinishedHash = unfinishedHash.slice(0, filled)
         updateProgress()
         continue
@@ -285,9 +293,11 @@ export async function downloadInode (
         unfinishedHash = null
       }
     }
-    while (hashesLeft > 0 && byteIndex + 16 <= result.value.length) {
-      handleHash(new Uint8Array(result.value.slice(byteIndex, byteIndex + 16)))
-      byteIndex += 4
+    while (hashesLeft > 0 && byteIndex + HASH_SIZE <= result.value.length) {
+      handleHash(
+        new Uint8Array(result.value.slice(byteIndex, byteIndex + HASH_SIZE))
+      )
+      byteIndex += HASH_SIZE
       hashesLeft--
     }
     if (hashesLeft > 0) {
@@ -352,12 +362,12 @@ export async function downloadLinkedList (
         const relativeHeaderEnd = header.length - headerPos
         header.set(bytes.slice(0, relativeHeaderEnd), headerPos)
         headerPos += bytes.length
-        if (headerPos >= 16) {
-          nextHash = encodeToString(header.slice(0, 16))
+        if (headerPos >= HASH_SIZE) {
+          nextHash = encodeToString(header.slice(0, HASH_SIZE))
         }
         if (headerPos >= header.length) {
           const view = new DataView(header.buffer)
-          const bytesLeft = Number(view.getBigUint64(16))
+          const bytesLeft = Number(view.getBigUint64(HASH_SIZE))
           // If this is the first chunk, then the bytes left should be the total
           // size of the file
           if (!totalBytes) {
