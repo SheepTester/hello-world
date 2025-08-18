@@ -50,7 +50,7 @@ const LINKED_CHUNK_SIZE = MAX_SIZE - LINKED_HEADER_SIZE
  */
 const SERVER = 'https://assets.scratch.mit.edu/'
 
-export type UploadFileResult = {
+type UploadFileResult = {
   hashBytes: ArrayBuffer
   hash: string
   url: string
