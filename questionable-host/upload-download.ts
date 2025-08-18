@@ -126,7 +126,7 @@ export async function upload (
   const potentialMainChunkStorage =
     MAX_SIZE - (INODE_HEADER_SIZE + (chunkCount - 1) * HASH_SIZE)
   let offset = 0
-  if (potentialMainChunkStorage <= file.byteLength % MAX_SIZE) {
+  if (file.byteLength % MAX_SIZE <= potentialMainChunkStorage) {
     // We can save a chunk by storing it in the main chunk
     chunkCount--
     offset = potentialMainChunkStorage

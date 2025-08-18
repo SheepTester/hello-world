@@ -1,13 +1,17 @@
 use std::{collections::HashMap, process::exit};
 
 use dialoguer::{Input, Password, theme::ColorfulTheme};
+use indicatif::ProgressBar;
 use keyring::Entry;
 use reqwest::{Client, Response};
+use tokio::fs::File;
 
-use crate::util::MyResult;
+use crate::{load::upload, util::MyResult};
 
 mod load;
 mod util;
+
+const SERVICE_NAME: &str = "questionable-host";
 
 fn get_cookie(response: &Response, cookie_name: &str) -> Option<String> {
     for header_value in response.headers().get_all("set-cookie") {
@@ -28,8 +32,24 @@ fn get_cookie(response: &Response, cookie_name: &str) -> Option<String> {
     None
 }
 
+fn set_if_absent<F>(entry_name: &str, get_value: F) -> MyResult<String>
+where
+    F: FnOnce() -> MyResult<String>,
+{
+    let entry = Entry::new(SERVICE_NAME, entry_name)?;
+    match entry.get_password() {
+        Ok(value) => Ok(value),
+        Err(keyring::Error::NoEntry) => {
+            let value = get_value()?;
+            entry.set_password(&value)?;
+            Ok(value)
+        }
+        Err(err) => Err(err)?,
+    }
+}
+
 async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
-    let entry = Entry::new("questionable-host", "scratchsessionsid")?;
+    let entry = Entry::new(SERVICE_NAME, "scratchsessionsid")?;
     let mut session_id = match entry.get_password() {
         Ok(password) => Some(password),
         Err(keyring::Error::NoEntry) => None,
@@ -48,14 +68,16 @@ async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
                 exit(1);
             };
 
-            let username: String = Input::with_theme(&ColorfulTheme::default())
-                .with_prompt("Username")
-                .interact_text()
-                .unwrap();
-            let password = Password::with_theme(&ColorfulTheme::default())
-                .with_prompt("Password")
-                .interact()
-                .unwrap();
+            let username = set_if_absent("username", || {
+                Ok(Input::with_theme(&ColorfulTheme::default())
+                    .with_prompt("Username")
+                    .interact_text()?)
+            })?;
+            let password = set_if_absent("password", || {
+                Ok(Password::with_theme(&ColorfulTheme::default())
+                    .with_prompt("Password")
+                    .interact()?)
+            })?;
 
             let mut body = HashMap::new();
             body.insert("username", username);
@@ -117,7 +139,16 @@ async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
 async fn main() -> MyResult<()> {
     let client = Client::new();
 
-    println!("Hello, world! {}", get_scratch_sessions_id(&client).await?);
+    let session_id = get_scratch_sessions_id(&client).await?;
+    let bar = ProgressBar::new(1);
+    let mut file = File::open("../target/debug/questionable-host").await?;
+    let hash = upload(&client, &mut file, &session_id, |progress, total| {
+        bar.set_position(progress as u64);
+        bar.set_length(total as u64);
+    })
+    .await?;
+    bar.finish();
+    println!("Uploaded! {hash}");
 
     Ok(())
 }

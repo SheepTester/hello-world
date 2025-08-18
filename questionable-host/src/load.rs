@@ -68,17 +68,17 @@ pub async fn upload<F>(
     on_progress: F,
 ) -> MyResult<String>
 where
-    F: Fn(f32) + Copy,
+    F: Fn(usize, usize) + Copy,
 {
-    on_progress(0.0);
     let size = file.metadata().await?.size() as usize;
 
     if size <= MAX_SIZE {
+        on_progress(0, 1);
         let mut buffer = Vec::new();
         file.read_to_end(&mut buffer).await?;
         let (hash, future) = upload_file(client, buffer, scratch_sessions_id);
         future.await?;
-        on_progress(1.0);
+        on_progress(1, 1);
         return Ok(format!("{hash:x?}."));
     }
 
@@ -86,7 +86,7 @@ where
         let chunk_count = size.div_ceil(MAX_SIZE);
         let potential_main_chunk_storage =
             MAX_SIZE - (INODE_HEADER_SIZE + (chunk_count - 1) * HASH_SIZE);
-        if potential_main_chunk_storage < size % MAX_SIZE {
+        if size % MAX_SIZE <= potential_main_chunk_storage {
             (chunk_count - 1, potential_main_chunk_storage)
         } else {
             (
@@ -95,6 +95,7 @@ where
             )
         }
     };
+    on_progress(0, chunk_count + 1);
 
     let mut first_buffer = vec![0; offset];
     file.read_exact(&mut first_buffer).await?;
@@ -111,7 +112,7 @@ where
         parts.push((hash, async move {
             let result = future.await;
             let new_value = loaded.fetch_add(1, Ordering::Relaxed) + 1;
-            on_progress(new_value as f32 / (chunk_count + 1) as f32);
+            on_progress(new_value, chunk_count + 1);
             result
         }));
     }
@@ -128,7 +129,7 @@ where
     let (hash, future) = upload_file(client, main_chunk, scratch_sessions_id);
     future.await?;
     let new_value = loaded.fetch_add(1, Ordering::Relaxed) + 1;
-    on_progress(new_value as f32 / (chunk_count + 1) as f32);
+    on_progress(new_value, chunk_count + 1);
 
     for (_, future) in parts {
         future.await?;
