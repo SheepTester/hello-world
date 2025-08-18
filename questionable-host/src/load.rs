@@ -46,12 +46,15 @@ fn upload_file(
     (md5, async move {
         let response = client
             .post(format!("{SERVER}{md5:x?}.wav"))
-            .header("cookie", format!("scratchsessionsid={scratch_sessions_id}"))
+            .header(
+                "cookie",
+                format!("scratchsessionsid=\"{scratch_sessions_id}\""),
+            )
             .body(buffer)
             .send()
             .await?;
         if !response.status().is_success() {
-            let error_text = format!("HTTP error {} for {}", response.status(), response.url());
+            let error_text = format!("HTTP {} error for {}", response.status(), response.url());
             Err(format!("{error_text}. {}", response.text().await?))?;
         }
         Ok(())
@@ -59,6 +62,7 @@ fn upload_file(
 }
 
 pub async fn upload<F>(
+    client: &Client,
     file: &mut File,
     scratch_sessions_id: &str,
     on_progress: F,
@@ -68,12 +72,11 @@ where
 {
     on_progress(0.0);
     let size = file.metadata().await?.size() as usize;
-    let client = reqwest::Client::new();
 
     if size <= MAX_SIZE {
         let mut buffer = Vec::new();
         file.read_to_end(&mut buffer).await?;
-        let (hash, future) = upload_file(&client, buffer, scratch_sessions_id);
+        let (hash, future) = upload_file(client, buffer, scratch_sessions_id);
         future.await?;
         on_progress(1.0);
         return Ok(format!("{hash:x?}."));
@@ -103,7 +106,7 @@ where
         let length = MAX_SIZE.min(size - start_index);
         let mut buffer = vec![0; length];
         file.read_exact(&mut buffer).await?;
-        let (hash, future) = upload_file(&client, buffer, scratch_sessions_id);
+        let (hash, future) = upload_file(client, buffer, scratch_sessions_id);
         let loaded = loaded.clone();
         parts.push((hash, async move {
             let result = future.await;
@@ -122,7 +125,7 @@ where
     }
     (&mut main_chunk[INODE_HEADER_SIZE + chunk_count * HASH_SIZE..]).copy_from_slice(&first_buffer);
 
-    let (hash, future) = upload_file(&client, main_chunk, scratch_sessions_id);
+    let (hash, future) = upload_file(client, main_chunk, scratch_sessions_id);
     future.await?;
     let new_value = loaded.fetch_add(1, Ordering::Relaxed) + 1;
     on_progress(new_value as f32 / (chunk_count + 1) as f32);
