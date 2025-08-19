@@ -146,9 +146,9 @@ async fn main() -> MyResult<()> {
         .next()
         .unwrap_or_else(|| String::from("questionable-host"));
     let (Some(operation), Some(argument), None) = (args.next(), args.next(), args.next()) else {
-        eprintln!("Usage:");
-        eprintln!("    {executable_name} upload <path>");
-        eprintln!("    {executable_name} download <hash> > <path>");
+        eprintln!("Questionable Host CLI v{}", env!("CARGO_PKG_VERSION"));
+        eprintln!("$ {executable_name} upload <path>");
+        eprintln!("$ {executable_name} download <hash> > <path>");
         exit(1);
     };
 
