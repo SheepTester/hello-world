@@ -26,26 +26,34 @@ jobs:
         with:
           name: linux
           path: output/*
-  build-windows:
-    runs-on: windows-latest
+  prep-for-windows:
+    runs-on: ubuntu-latest
     steps:
-      # https://stackoverflow.com/a/63742773
-      - run: git config --global core.protectNTFS false
       - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
         with:
-          # repo contains weird paths
-          sparse-checkout: |
+          name: windows-prep
+          path: |
             questionable-host/
             src/
-            Cargo.toml
             Cargo.lock
+            Cargo.toml
+  build-windows:
+    needs:
+      - prep-for-windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: windows-prep
       - name: Build
         run: |
+          cd prep-for-windows
           cargo build -p questionable-host --release
       - uses: actions/upload-artifact@v4
         with:
           name: windows
-          path: target/release/questionable-host.exe
+          path: prep-for-windows/target/release/questionable-host.exe
   release:
     needs:
       - build-linux
