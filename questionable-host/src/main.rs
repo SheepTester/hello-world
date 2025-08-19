@@ -1,7 +1,7 @@
 use std::{collections::HashMap, env::args, process::exit, sync::Arc};
 
 use dialoguer::{Input, Password, theme::ColorfulTheme};
-use indicatif::ProgressBar;
+use indicatif::{ProgressBar, ProgressStyle};
 use keyring::Entry;
 use reqwest::{Client, Response};
 use tokio::{fs::File, io::stdout};
@@ -152,7 +152,10 @@ async fn main() -> MyResult<()> {
         exit(1);
     };
 
-    let bar = ProgressBar::new(1);
+    let bar = ProgressBar::new(1).with_style(
+        ProgressStyle::default_bar()
+            .template("[{elapsed_precise}] {wide_bar:.cyan/blue} {decimal_bytes} / {decimal_total_bytes} ({decimal_bytes_per_sec}) ")?,
+    );
     let handle_progress = {
         let bar = bar.clone();
         move |progress, total| {
