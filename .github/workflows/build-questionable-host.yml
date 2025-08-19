@@ -29,6 +29,8 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
+      # https://stackoverflow.com/a/63742773
+      - run: git config --global core.protectNTFS false
       - uses: actions/checkout@v4
         with:
           # repo contains weird paths
@@ -60,8 +62,8 @@ jobs:
         run: echo "VERSION=$(cargo pkgid | cut -d "#" -f2 | cut -d "@" -f2)" >> $GITHUB_ENV
       - name: Bump version and push tag
         run: |
-          git tag -a "questionable-host-${{ env.VERSION }}" -m "questionable host ${{ env.VERSION }}"
-          git push --tags
+          git tag -a "questionable-host-${{ env.VERSION }}" -m "questionable host ${{ env.VERSION }}" || true
+          git push --tags || true
       - name: Produce output
         run: |
           ls -R
