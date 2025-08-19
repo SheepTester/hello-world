@@ -51,7 +51,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: windows
-          path: prep-for-windows/target/release/questionable-host.exe
+          path: target/release/questionable-host.exe
   release:
     needs:
       - build-linux
