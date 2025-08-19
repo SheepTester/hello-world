@@ -83,9 +83,20 @@ jobs:
           body: |
             ## Installation
 
+            it depends...
+
+            ### Android, Termux
+
             ```sh
-            curl -L "https://github.com/SheepTester/video-sort-ai/releases/download/questionable-host-${{ env.VERSION }}/questionable-host-aarch64-linux-android" > questionable-host
-            chmod +x video-sort
+            curl -L "https://github.com/SheepTester/hello-world/releases/download/questionable-host-${{ env.VERSION }}/questionable-host-aarch64-linux-android" > questionable-host
+            chmod +x questionable-host
+            ```
+
+            ### Linux, x86
+
+            ```sh
+            curl -L "https://github.com/SheepTester/hello-world/releases/download/questionable-host-${{ env.VERSION }}/questionable-host-x86_64-unknown-linux-gnu" > questionable-host
+            chmod +x questionable-host
             ```
 
             ## What's changed?
