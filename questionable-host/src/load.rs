@@ -8,7 +8,7 @@ use std::{
 
 use md5::{Digest, compute};
 use reqwest::Client;
-use tokio::{fs::File, io::AsyncReadExt};
+use tokio::{fs::File, io::AsyncReadExt, spawn};
 
 use crate::util::MyResult;
 
@@ -38,9 +38,9 @@ const LINKED_CHUNK_SIZE: usize = MAX_SIZE - LINKED_HEADER_SIZE;
 const SERVER: &str = "https://assets.scratch.mit.edu/";
 
 fn upload_file(
-    client: &Client,
+    client: Arc<Client>,
     buffer: Vec<u8>,
-    scratch_sessions_id: &str,
+    scratch_sessions_id: String,
 ) -> (Digest, impl Future<Output = MyResult<()>>) {
     let md5 = compute(&buffer);
     (md5, async move {
@@ -62,13 +62,13 @@ fn upload_file(
 }
 
 pub async fn upload<F>(
-    client: &Client,
+    client: Arc<Client>,
     file: &mut File,
     scratch_sessions_id: &str,
     on_progress: F,
 ) -> MyResult<String>
 where
-    F: Fn(usize, usize) + Copy,
+    F: Fn(usize, usize) + Clone + Send + 'static,
 {
     let size = file.metadata().await?.size() as usize;
 
@@ -76,7 +76,7 @@ where
         on_progress(0, 1);
         let mut buffer = Vec::new();
         file.read_to_end(&mut buffer).await?;
-        let (hash, future) = upload_file(client, buffer, scratch_sessions_id);
+        let (hash, future) = upload_file(client, buffer, String::from(scratch_sessions_id));
         future.await?;
         on_progress(1, 1);
         return Ok(format!("{hash:x?}."));
@@ -107,14 +107,18 @@ where
         let length = MAX_SIZE.min(size - start_index);
         let mut buffer = vec![0; length];
         file.read_exact(&mut buffer).await?;
-        let (hash, future) = upload_file(client, buffer, scratch_sessions_id);
+        let (hash, future) = upload_file(client.clone(), buffer, String::from(scratch_sessions_id));
         let loaded = loaded.clone();
-        parts.push((hash, async move {
-            let result = future.await;
-            let new_value = loaded.fetch_add(1, Ordering::Relaxed) + 1;
-            on_progress(new_value, chunk_count + 1);
-            result
-        }));
+        let on_progress = on_progress.clone();
+        parts.push((
+            hash,
+            spawn(async move {
+                let result = future.await;
+                let new_value = loaded.fetch_add(1, Ordering::Relaxed) + 1;
+                on_progress(new_value, chunk_count + 1);
+                result
+            }),
+        ));
     }
 
     let mut main_chunk = vec![0; INODE_HEADER_SIZE + chunk_count * HASH_SIZE + offset];
@@ -126,13 +130,13 @@ where
     }
     (&mut main_chunk[INODE_HEADER_SIZE + chunk_count * HASH_SIZE..]).copy_from_slice(&first_buffer);
 
-    let (hash, future) = upload_file(client, main_chunk, scratch_sessions_id);
+    let (hash, future) = upload_file(client, main_chunk, String::from(scratch_sessions_id));
     future.await?;
     let new_value = loaded.fetch_add(1, Ordering::Relaxed) + 1;
     on_progress(new_value, chunk_count + 1);
 
     for (_, future) in parts {
-        future.await?;
+        future.await??;
     }
 
     Ok(format!("i{hash:x?}"))

@@ -1,4 +1,4 @@
-use std::{collections::HashMap, process::exit};
+use std::{collections::HashMap, process::exit, sync::Arc};
 
 use dialoguer::{Input, Password, theme::ColorfulTheme};
 use indicatif::ProgressBar;
@@ -142,9 +142,12 @@ async fn main() -> MyResult<()> {
     let session_id = get_scratch_sessions_id(&client).await?;
     let bar = ProgressBar::new(1);
     let mut file = File::open("../target/debug/questionable-host").await?;
-    let hash = upload(&client, &mut file, &session_id, |progress, total| {
-        bar.set_position(progress as u64);
-        bar.set_length(total as u64);
+    let hash = upload(Arc::new(client), &mut file, &session_id, {
+        let bar = bar.clone();
+        move |progress, total| {
+            bar.set_position(progress as u64);
+            bar.set_length(total as u64);
+        }
     })
     .await?;
     bar.finish();
