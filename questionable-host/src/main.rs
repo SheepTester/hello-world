@@ -173,7 +173,13 @@ async fn main() -> MyResult<()> {
                 download_inode(client, &argument[1..], stdout(), handle_progress).await?;
             } else if argument.contains('.') {
                 let mut hashes = argument.split('.').collect::<Vec<_>>();
-                hashes.pop();
+                if let Some(ext) = hashes.pop() {
+                    if ext.len() > 10 {
+                        eprintln!(
+                            "Warning: '{ext}' is treated as a file extension and will be ignored."
+                        )
+                    }
+                }
                 download_concat(client, &hashes, stdout(), handle_progress).await?;
             } else {
                 download_linked_list(&client, &argument, stdout(), handle_progress).await?;

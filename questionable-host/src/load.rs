@@ -9,7 +9,7 @@ use std::{
 };
 
 use async_stream::stream;
-use futures_util::{StreamExt, TryStreamExt};
+use futures_util::{StreamExt, TryStreamExt, stream::once};
 use md5::{Digest, compute};
 use reqwest::{Body, Client};
 use tokio::{
@@ -224,8 +224,7 @@ pub async fn download_inode(
             }
             let mut stream = response.bytes_stream();
             let mut buffer = Vec::new();
-            while let Some(chunk) = stream.next().await {
-                let chunk = chunk?;
+            while let Some(chunk) = stream.try_next().await? {
                 on_progress(
                     downloaded.fetch_add(chunk.len(), Ordering::Relaxed) + chunk.len(),
                     file_size,
@@ -235,9 +234,11 @@ pub async fn download_inode(
             Ok::<Vec<u8>, BoxedError>(buffer)
         }));
     }
-    let mut stream = stream.into_inner();
-    while let Some(chunk) = stream.next().await {
-        let chunk = chunk?;
+    let mut stream = match stream.into_inner_with_chunk() {
+        (stream, Some(chunk)) => once(async { Ok(chunk) }).chain(stream).boxed(),
+        (stream, None) => stream.boxed(),
+    };
+    while let Some(chunk) = stream.try_next().await? {
         on_progress(
             downloaded.fetch_add(chunk.len(), Ordering::Relaxed) + chunk.len(),
             file_size,
@@ -287,9 +288,11 @@ pub async fn download_linked_list(
             None
         };
         total_size = total_size.max(bytes_left);
-        let mut stream = stream.into_inner();
-        while let Some(chunk) = stream.next().await {
-            let chunk = chunk?;
+        let mut stream = match stream.into_inner_with_chunk() {
+            (stream, Some(chunk)) => once(async { Ok(chunk) }).chain(stream).boxed(),
+            (stream, None) => stream.boxed(),
+        };
+        while let Some(chunk) = stream.try_next().await? {
             downloaded += chunk.len();
             on_progress(downloaded, total_size);
             output.write_all(&chunk).await?;
@@ -325,8 +328,7 @@ pub async fn download_concat(
             let mut stream = response.bytes_stream();
             let mut buffer = Vec::new();
             let mut total = 0;
-            while let Some(chunk) = stream.next().await {
-                let chunk = chunk?;
+            while let Some(chunk) = stream.try_next().await? {
                 on_progress(
                     downloaded.fetch_add(chunk.len(), Ordering::Relaxed) + chunk.len(),
                     assumed_size,
