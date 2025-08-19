@@ -1,10 +1,10 @@
-use std::{collections::HashMap, process::exit, sync::Arc};
+use std::{collections::HashMap, env::args, process::exit, sync::Arc};
 
 use dialoguer::{Input, Password, theme::ColorfulTheme};
 use indicatif::ProgressBar;
 use keyring::Entry;
 use reqwest::{Client, Response};
-use tokio::fs::File;
+use tokio::{fs::File, io::stdout};
 
 use crate::{
     load::{download_inode, upload},
@@ -141,32 +141,53 @@ async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
 #[tokio::main]
 async fn main() -> MyResult<()> {
     let client = Arc::new(Client::new());
+    let mut args = args();
+    let executable_name = args
+        .next()
+        .unwrap_or_else(|| String::from("questionable-host"));
+    let (Some(operation), Some(argument), None) = (args.next(), args.next(), args.next()) else {
+        eprintln!("Usage:");
+        eprintln!("    {executable_name} upload <path>");
+        eprintln!("    {executable_name} download <hash> > <path>");
+        exit(1);
+    };
 
     let bar = ProgressBar::new(1);
-    if false {
-        let session_id = get_scratch_sessions_id(&client).await?;
-        let mut file = File::open("../target/debug/questionable-host").await?;
-        let hash = upload(client, &mut file, &session_id, {
-            let bar = bar.clone();
-            move |progress, total| {
-                bar.set_position(progress as u64);
-                bar.set_length(total as u64);
+    match operation.as_str() {
+        "upload" => {
+            let session_id = get_scratch_sessions_id(&client).await?;
+            let mut file = File::open(argument).await?;
+            let hash = upload(client, &mut file, &session_id, {
+                let bar = bar.clone();
+                move |progress, total| {
+                    bar.set_position(progress as u64);
+                    bar.set_length(total as u64);
+                }
+            })
+            .await?;
+            bar.finish();
+            println!("{hash}");
+        }
+        "download" => {
+            if !argument.starts_with('i') {
+                eprintln!("Unsupported hash '{argument}'.");
+                exit(1)
             }
-        })
-        .await?;
-        println!("Uploaded! {hash}");
-    } else {
-        let file = File::create("./test.out").await?;
-        download_inode(client, "b9802487dc0ff4110364c1ee17565172", file, {
-            let bar = bar.clone();
-            move |progress, total| {
-                bar.set_position(progress as u64);
-                bar.set_length(total as u64);
-            }
-        })
-        .await?;
+            download_inode(client, "b9802487dc0ff4110364c1ee17565172", stdout(), {
+                let bar = bar.clone();
+                move |progress, total| {
+                    bar.set_position(progress as u64);
+                    bar.set_length(total as u64);
+                }
+            })
+            .await?;
+            bar.finish();
+        }
+        _ => {
+            eprintln!("Unsupported operation '{operation}'.");
+            exit(1)
+        }
     }
-    bar.finish();
 
     Ok(())
 }
