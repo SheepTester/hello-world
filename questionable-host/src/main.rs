@@ -7,7 +7,7 @@ use reqwest::{Client, Response};
 use tokio::{fs::File, io::stdout};
 
 use crate::{
-    load::{download_inode, upload},
+    load::{download_concat, download_inode, upload},
     util::MyResult,
 };
 
@@ -153,34 +153,32 @@ async fn main() -> MyResult<()> {
     };
 
     let bar = ProgressBar::new(1);
+    let handle_progress = {
+        let bar = bar.clone();
+        move |progress, total| {
+            bar.set_position(progress as u64);
+            bar.set_length(total as u64);
+        }
+    };
     match operation.as_str() {
         "upload" => {
             let session_id = get_scratch_sessions_id(&client).await?;
             let mut file = File::open(argument).await?;
-            let hash = upload(client, &mut file, &session_id, {
-                let bar = bar.clone();
-                move |progress, total| {
-                    bar.set_position(progress as u64);
-                    bar.set_length(total as u64);
-                }
-            })
-            .await?;
+            let hash = upload(client, &mut file, &session_id, handle_progress).await?;
             bar.finish();
             println!("{hash}");
         }
         "download" => {
-            if !argument.starts_with('i') {
+            if argument.starts_with('i') {
+                download_inode(client, &argument[1..], stdout(), handle_progress).await?;
+            } else if argument.contains('.') {
+                let mut hashes = argument.split('.').collect::<Vec<_>>();
+                hashes.pop();
+                download_concat(client, &hashes, stdout(), handle_progress).await?;
+            } else {
                 eprintln!("Unsupported hash '{argument}'.");
                 exit(1)
             }
-            download_inode(client, "b9802487dc0ff4110364c1ee17565172", stdout(), {
-                let bar = bar.clone();
-                move |progress, total| {
-                    bar.set_position(progress as u64);
-                    bar.set_length(total as u64);
-                }
-            })
-            .await?;
             bar.finish();
         }
         _ => {

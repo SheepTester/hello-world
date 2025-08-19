@@ -200,14 +200,14 @@ pub async fn download_inode(
     let downloaded = Arc::new(AtomicUsize::new(0));
     on_progress(0, file_size);
 
-    let mut parts = Vec::new();
+    let mut handles = Vec::new();
     for _ in 0..hash_count {
         let mut hash = [0; HASH_SIZE];
         stream.read_exact(&mut hash).await?;
         let client = client.clone();
         let on_progress = on_progress.clone();
         let downloaded = downloaded.clone();
-        parts.push(spawn(async move {
+        handles.push(spawn(async move {
             let response = client
                 .get(format!(
                     "{SERVER}internalapi/asset/{:x}.wav/get/",
@@ -244,9 +244,58 @@ pub async fn download_inode(
         );
         output.write_all(&item).await?;
     }
-    for part in parts {
-        output.write_all(&part.await??).await?;
+    for handle in handles {
+        output.write_all(&handle.await??).await?;
     }
 
+    Ok(())
+}
+
+pub async fn download_concat(
+    client: Arc<Client>,
+    hashes: &[&str],
+    mut output: impl AsyncWrite + Unpin,
+    on_progress: impl Fn(usize, usize) + Send + Clone + 'static,
+) -> MyResult<()> {
+    let downloaded = Arc::new(AtomicUsize::new(0));
+    let assumed_size = hashes.len() * MAX_SIZE;
+    let mut handles = Vec::new();
+    for hash in hashes {
+        let client = client.clone();
+        let on_progress = on_progress.clone();
+        let downloaded = downloaded.clone();
+        let url = format!("{SERVER}internalapi/asset/{hash}.wav/get/");
+        handles.push(spawn(async move {
+            let response = client.get(url).send().await?;
+            if !response.status().is_success() {
+                Err(format!(
+                    "HTTP {} error for {}",
+                    response.status(),
+                    response.url()
+                ))?;
+            }
+            let mut stream = response.bytes_stream();
+            let mut buffer = Vec::new();
+            let mut total = 0;
+            while let Some(item) = stream.next().await {
+                let item = item?;
+                on_progress(
+                    downloaded.fetch_add(item.len(), Ordering::Relaxed) + item.len(),
+                    assumed_size,
+                );
+                total += item.len();
+                buffer.extend(item);
+            }
+            let remaining = MAX_SIZE - total;
+            on_progress(
+                downloaded.fetch_add(remaining, Ordering::Relaxed) + remaining,
+                assumed_size,
+            );
+            Ok::<Vec<u8>, BoxedError>(buffer)
+        }));
+    }
+    for handle in handles {
+        output.write_all(&handle.await??).await?;
+    }
     Ok(())
 }
