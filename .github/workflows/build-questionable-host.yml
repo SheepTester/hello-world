@@ -30,6 +30,13 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # repo contains weird paths
+          sparse-checkout: |
+            questionable-host/
+            src/
+            Cargo.toml
+            Cargo.lock
       - name: Build
         run: |
           cargo build -p questionable-host --release

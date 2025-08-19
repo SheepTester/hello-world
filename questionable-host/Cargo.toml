@@ -10,6 +10,7 @@ futures-util = "0.3.31"
 indicatif = "0.18.0"
 keyring = { version = "3.6.3", features = ["windows-native", "linux-native"] }
 md5 = "0.8.0"
+openssl = { version = "0.10.73", features = ["vendored"] }
 reqwest = { version = "0.12.23", features = ["json", "stream"] }
 tokio = { version = "1.47.1", features = ["full"] }
 tokio-util = "0.7.16"
