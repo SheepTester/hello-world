@@ -7,7 +7,7 @@ use reqwest::{Client, Response};
 use tokio::{fs::File, io::stdout};
 
 use crate::{
-    load::{download_concat, download_inode, upload},
+    load::{download_concat, download_inode, download_linked_list, upload},
     util::MyResult,
 };
 
@@ -176,8 +176,7 @@ async fn main() -> MyResult<()> {
                 hashes.pop();
                 download_concat(client, &hashes, stdout(), handle_progress).await?;
             } else {
-                eprintln!("Unsupported hash '{argument}'.");
-                exit(1)
+                download_linked_list(&client, &argument, stdout(), handle_progress).await?;
             }
             bar.finish();
         }

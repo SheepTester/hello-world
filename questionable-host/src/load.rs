@@ -224,28 +224,76 @@ pub async fn download_inode(
             }
             let mut stream = response.bytes_stream();
             let mut buffer = Vec::new();
-            while let Some(item) = stream.next().await {
-                let item = item?;
+            while let Some(chunk) = stream.next().await {
+                let chunk = chunk?;
                 on_progress(
-                    downloaded.fetch_add(item.len(), Ordering::Relaxed) + item.len(),
+                    downloaded.fetch_add(chunk.len(), Ordering::Relaxed) + chunk.len(),
                     file_size,
                 );
-                buffer.extend(item);
+                buffer.extend(chunk);
             }
             Ok::<Vec<u8>, BoxedError>(buffer)
         }));
     }
     let mut stream = stream.into_inner();
-    while let Some(item) = stream.next().await {
-        let item = item?;
+    while let Some(chunk) = stream.next().await {
+        let chunk = chunk?;
         on_progress(
-            downloaded.fetch_add(item.len(), Ordering::Relaxed) + item.len(),
+            downloaded.fetch_add(chunk.len(), Ordering::Relaxed) + chunk.len(),
             file_size,
         );
-        output.write_all(&item).await?;
+        output.write_all(&chunk).await?;
     }
     for handle in handles {
         output.write_all(&handle.await??).await?;
+    }
+
+    Ok(())
+}
+
+pub async fn download_linked_list(
+    client: &Client,
+    hash: &str,
+    mut output: impl AsyncWrite + Unpin,
+    on_progress: impl Fn(usize, usize),
+) -> MyResult<()> {
+    let mut next_hash = Some(String::from(hash));
+    let mut total_size = 0;
+    let mut downloaded = 0;
+
+    while let Some(hash) = next_hash {
+        let response = client
+            .get(format!("{SERVER}internalapi/asset/{hash}.wav/get/"))
+            .send()
+            .await?;
+        if !response.status().is_success() {
+            Err(format!(
+                "HTTP {} error for {}",
+                response.status(),
+                response.url()
+            ))?;
+        }
+        let mut stream = StreamReader::new(
+            response
+                .bytes_stream()
+                .map_err(|err| Error::new(ErrorKind::Other, err)),
+        );
+        let mut header = [0; LINKED_HEADER_SIZE];
+        stream.read_exact(&mut header).await?;
+        let bytes_left = u64::from_be_bytes(header[HASH_SIZE..].try_into()?).try_into()?;
+        next_hash = if bytes_left > LINKED_CHUNK_SIZE {
+            Some(format!("{:x}", Digest(header[0..HASH_SIZE].try_into()?)))
+        } else {
+            None
+        };
+        total_size = total_size.max(bytes_left);
+        let mut stream = stream.into_inner();
+        while let Some(chunk) = stream.next().await {
+            let chunk = chunk?;
+            downloaded += chunk.len();
+            on_progress(downloaded, total_size);
+            output.write_all(&chunk).await?;
+        }
     }
 
     Ok(())
@@ -277,14 +325,14 @@ pub async fn download_concat(
             let mut stream = response.bytes_stream();
             let mut buffer = Vec::new();
             let mut total = 0;
-            while let Some(item) = stream.next().await {
-                let item = item?;
+            while let Some(chunk) = stream.next().await {
+                let chunk = chunk?;
                 on_progress(
-                    downloaded.fetch_add(item.len(), Ordering::Relaxed) + item.len(),
+                    downloaded.fetch_add(chunk.len(), Ordering::Relaxed) + chunk.len(),
                     assumed_size,
                 );
-                total += item.len();
-                buffer.extend(item);
+                total += chunk.len();
+                buffer.extend(chunk);
             }
             let remaining = MAX_SIZE - total;
             on_progress(
