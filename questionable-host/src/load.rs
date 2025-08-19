@@ -1,7 +1,6 @@
 use std::{
     convert::Infallible,
     io::{Error, ErrorKind},
-    os::unix::fs::MetadataExt,
     sync::{
         Arc,
         atomic::{AtomicUsize, Ordering},
@@ -83,7 +82,7 @@ pub async fn upload(
     scratch_sessions_id: &str,
     on_progress: impl Fn(usize, usize) + Clone + Send + Sync + 'static,
 ) -> MyResult<String> {
-    let size = file.metadata().await?.size() as usize;
+    let size = file.metadata().await?.len() as usize;
     on_progress(0, size);
     let uploaded = Arc::new(AtomicUsize::new(0));
     let handle_progress = move |bytes_uploaded| {
