@@ -47,9 +47,7 @@ jobs:
         with:
           name: windows-prep
       - name: Build
-        run: |
-          cd prep-for-windows
-          cargo build -p questionable-host --release
+        run: cargo build -p questionable-host --release
       - uses: actions/upload-artifact@v4
         with:
           name: windows
