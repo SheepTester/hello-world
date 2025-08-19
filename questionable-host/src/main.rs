@@ -6,7 +6,10 @@ use keyring::Entry;
 use reqwest::{Client, Response};
 use tokio::fs::File;
 
-use crate::{load::upload, util::MyResult};
+use crate::{
+    load::{download_inode, upload},
+    util::MyResult,
+};
 
 mod load;
 mod util;
@@ -137,21 +140,33 @@ async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
 
 #[tokio::main]
 async fn main() -> MyResult<()> {
-    let client = Client::new();
+    let client = Arc::new(Client::new());
 
-    let session_id = get_scratch_sessions_id(&client).await?;
     let bar = ProgressBar::new(1);
-    let mut file = File::open("../target/debug/questionable-host").await?;
-    let hash = upload(Arc::new(client), &mut file, &session_id, {
-        let bar = bar.clone();
-        move |progress, total| {
-            bar.set_position(progress as u64);
-            bar.set_length(total as u64);
-        }
-    })
-    .await?;
+    if false {
+        let session_id = get_scratch_sessions_id(&client).await?;
+        let mut file = File::open("../target/debug/questionable-host").await?;
+        let hash = upload(client, &mut file, &session_id, {
+            let bar = bar.clone();
+            move |progress, total| {
+                bar.set_position(progress as u64);
+                bar.set_length(total as u64);
+            }
+        })
+        .await?;
+        println!("Uploaded! {hash}");
+    } else {
+        let file = File::create("./test.out").await?;
+        download_inode(client, "b9802487dc0ff4110364c1ee17565172", file, {
+            let bar = bar.clone();
+            move |progress, total| {
+                bar.set_position(progress as u64);
+                bar.set_length(total as u64);
+            }
+        })
+        .await?;
+    }
     bar.finish();
-    println!("Uploaded! {hash}");
 
     Ok(())
 }

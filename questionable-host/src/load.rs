@@ -1,5 +1,6 @@
 use std::{
     convert::Infallible,
+    io::{Error, ErrorKind},
     os::unix::fs::MetadataExt,
     sync::{
         Arc,
@@ -8,11 +9,17 @@ use std::{
 };
 
 use async_stream::stream;
+use futures_util::{StreamExt, TryStreamExt};
 use md5::{Digest, compute};
 use reqwest::{Body, Client};
-use tokio::{fs::File, io::AsyncReadExt, spawn};
+use tokio::{
+    fs::File,
+    io::{AsyncReadExt, AsyncWrite, AsyncWriteExt},
+    spawn,
+};
+use tokio_util::io::StreamReader;
 
-use crate::util::MyResult;
+use crate::util::{BoxedError, MyResult};
 
 /// Maximum size of an asset on Scratch in bytes = 10 MB - 1 byte (10 MB does
 /// not work)
@@ -39,19 +46,16 @@ const LINKED_CHUNK_SIZE: usize = MAX_SIZE - LINKED_HEADER_SIZE;
 /// Scratch's asset server host.
 const SERVER: &str = "https://assets.scratch.mit.edu/";
 
-fn upload_file<F>(
+fn upload_file(
     client: Arc<Client>,
     buffer: Vec<u8>,
     scratch_sessions_id: String,
-    on_progress: F,
-) -> (Digest, impl Future<Output = MyResult<()>>)
-where
-    F: Fn(usize) + Send + 'static,
-{
+    on_progress: impl Fn(usize) + Send + 'static,
+) -> (Digest, impl Future<Output = MyResult<()>>) {
     let md5 = compute(&buffer);
     (md5, async move {
         let response = client
-            .post(format!("{SERVER}{md5:x?}.wav"))
+            .post(format!("{SERVER}{md5:x}.wav"))
             .header(
                 "cookie",
                 format!("scratchsessionsid=\"{scratch_sessions_id}\""),
@@ -73,15 +77,12 @@ where
     })
 }
 
-pub async fn upload<F>(
+pub async fn upload(
     client: Arc<Client>,
     file: &mut File,
     scratch_sessions_id: &str,
-    on_progress: F,
-) -> MyResult<String>
-where
-    F: Fn(usize, usize) + Clone + Send + Sync + 'static,
-{
+    on_progress: impl Fn(usize, usize) + Clone + Send + Sync + 'static,
+) -> MyResult<String> {
     let size = file.metadata().await?.size() as usize;
     on_progress(0, size);
     let uploaded = Arc::new(AtomicUsize::new(0));
@@ -102,7 +103,7 @@ where
             handle_progress.clone(),
         );
         future.await?;
-        return Ok(format!("{hash:x?}."));
+        return Ok(format!("{hash:x}."));
     }
 
     let (chunk_count, offset) = {
@@ -158,5 +159,94 @@ where
         future.await??;
     }
 
-    Ok(format!("i{hash:x?}"))
+    Ok(format!("i{hash:x}"))
+}
+
+pub async fn download_inode(
+    client: Arc<Client>,
+    hash: &str,
+    mut output: impl AsyncWrite + Unpin,
+    on_progress: impl Fn(usize, usize) + Send + Clone + 'static,
+) -> MyResult<()> {
+    let response = client
+        .get(format!("{SERVER}internalapi/asset/{hash}.wav/get/"))
+        .send()
+        .await?;
+    if !response.status().is_success() {
+        Err(format!(
+            "HTTP {} error for {}",
+            response.status(),
+            response.url()
+        ))?;
+    }
+    let mut stream = StreamReader::new(
+        response
+            .bytes_stream()
+            .map_err(|err| Error::new(ErrorKind::Other, err)),
+    );
+    let mut header = [0; INODE_HEADER_SIZE];
+    stream.read_exact(&mut header).await?;
+    let file_size: usize = u64::from_be_bytes({
+        let mut bytes = [0; 8];
+        (&mut bytes[2..]).copy_from_slice(&header[0..6]);
+        bytes
+    })
+    .try_into()?;
+    let hash_count = u32::from_be_bytes({
+        let mut bytes = [0; 4];
+        (&mut bytes[1..]).copy_from_slice(&header[6..9]);
+        bytes
+    }) as usize;
+    let downloaded = Arc::new(AtomicUsize::new(0));
+    on_progress(0, file_size);
+
+    let mut parts = Vec::new();
+    for _ in 0..hash_count {
+        let mut hash = [0; HASH_SIZE];
+        stream.read_exact(&mut hash).await?;
+        let client = client.clone();
+        let on_progress = on_progress.clone();
+        let downloaded = downloaded.clone();
+        parts.push(spawn(async move {
+            let response = client
+                .get(format!(
+                    "{SERVER}internalapi/asset/{:x}.wav/get/",
+                    Digest(hash)
+                ))
+                .send()
+                .await?;
+            if !response.status().is_success() {
+                Err(format!(
+                    "HTTP {} error for {}",
+                    response.status(),
+                    response.url()
+                ))?;
+            }
+            let mut stream = response.bytes_stream();
+            let mut buffer = Vec::new();
+            while let Some(item) = stream.next().await {
+                let item = item?;
+                on_progress(
+                    downloaded.fetch_add(item.len(), Ordering::Relaxed) + item.len(),
+                    file_size,
+                );
+                buffer.extend(item);
+            }
+            Ok::<Vec<u8>, BoxedError>(buffer)
+        }));
+    }
+    let mut stream = stream.into_inner();
+    while let Some(item) = stream.next().await {
+        let item = item?;
+        on_progress(
+            downloaded.fetch_add(item.len(), Ordering::Relaxed) + item.len(),
+            file_size,
+        );
+        output.write_all(&item).await?;
+    }
+    for part in parts {
+        output.write_all(&part.await??).await?;
+    }
+
+    Ok(())
 }
