@@ -1,4 +1,5 @@
 use std::{
+    convert::Infallible,
     os::unix::fs::MetadataExt,
     sync::{
         Arc,
@@ -6,8 +7,9 @@ use std::{
     },
 };
 
+use async_stream::stream;
 use md5::{Digest, compute};
-use reqwest::Client;
+use reqwest::{Body, Client};
 use tokio::{fs::File, io::AsyncReadExt, spawn};
 
 use crate::util::MyResult;
@@ -37,11 +39,15 @@ const LINKED_CHUNK_SIZE: usize = MAX_SIZE - LINKED_HEADER_SIZE;
 /// Scratch's asset server host.
 const SERVER: &str = "https://assets.scratch.mit.edu/";
 
-fn upload_file(
+fn upload_file<F>(
     client: Arc<Client>,
     buffer: Vec<u8>,
     scratch_sessions_id: String,
-) -> (Digest, impl Future<Output = MyResult<()>>) {
+    on_progress: F,
+) -> (Digest, impl Future<Output = MyResult<()>>)
+where
+    F: Fn(usize) + Send + 'static,
+{
     let md5 = compute(&buffer);
     (md5, async move {
         let response = client
@@ -50,7 +56,13 @@ fn upload_file(
                 "cookie",
                 format!("scratchsessionsid=\"{scratch_sessions_id}\""),
             )
-            .body(buffer)
+            .body(Body::wrap_stream(stream! {
+                // default ReaderStream capacity is 4096
+                for chunk in buffer.chunks(4096) {
+                    on_progress(chunk.len());
+                    yield Ok::<_, Infallible>(Vec::from(chunk));
+                }
+            }))
             .send()
             .await?;
         if !response.status().is_success() {
@@ -68,17 +80,28 @@ pub async fn upload<F>(
     on_progress: F,
 ) -> MyResult<String>
 where
-    F: Fn(usize, usize) + Clone + Send + 'static,
+    F: Fn(usize, usize) + Clone + Send + Sync + 'static,
 {
     let size = file.metadata().await?.size() as usize;
+    on_progress(0, size);
+    let uploaded = Arc::new(AtomicUsize::new(0));
+    let handle_progress = move |bytes_uploaded| {
+        on_progress(
+            uploaded.fetch_add(bytes_uploaded, Ordering::Relaxed) + bytes_uploaded,
+            size,
+        );
+    };
 
     if size <= MAX_SIZE {
-        on_progress(0, 1);
         let mut buffer = Vec::new();
         file.read_to_end(&mut buffer).await?;
-        let (hash, future) = upload_file(client, buffer, String::from(scratch_sessions_id));
+        let (hash, future) = upload_file(
+            client,
+            buffer,
+            String::from(scratch_sessions_id),
+            handle_progress.clone(),
+        );
         future.await?;
-        on_progress(1, 1);
         return Ok(format!("{hash:x?}."));
     }
 
@@ -95,30 +118,23 @@ where
             )
         }
     };
-    on_progress(0, chunk_count + 1);
 
     let mut first_buffer = vec![0; offset];
     file.read_exact(&mut first_buffer).await?;
 
-    let loaded = Arc::new(AtomicUsize::new(0));
     let mut parts = Vec::new();
     for i in 0..chunk_count {
         let start_index = offset + i * MAX_SIZE;
         let length = MAX_SIZE.min(size - start_index);
         let mut buffer = vec![0; length];
         file.read_exact(&mut buffer).await?;
-        let (hash, future) = upload_file(client.clone(), buffer, String::from(scratch_sessions_id));
-        let loaded = loaded.clone();
-        let on_progress = on_progress.clone();
-        parts.push((
-            hash,
-            spawn(async move {
-                let result = future.await;
-                let new_value = loaded.fetch_add(1, Ordering::Relaxed) + 1;
-                on_progress(new_value, chunk_count + 1);
-                result
-            }),
-        ));
+        let (hash, future) = upload_file(
+            client.clone(),
+            buffer,
+            String::from(scratch_sessions_id),
+            handle_progress.clone(),
+        );
+        parts.push((hash, spawn(future)));
     }
 
     let mut main_chunk = vec![0; INODE_HEADER_SIZE + chunk_count * HASH_SIZE + offset];
@@ -130,10 +146,13 @@ where
     }
     (&mut main_chunk[INODE_HEADER_SIZE + chunk_count * HASH_SIZE..]).copy_from_slice(&first_buffer);
 
-    let (hash, future) = upload_file(client, main_chunk, String::from(scratch_sessions_id));
+    let (hash, future) = upload_file(
+        client,
+        main_chunk,
+        String::from(scratch_sessions_id),
+        handle_progress,
+    );
     future.await?;
-    let new_value = loaded.fetch_add(1, Ordering::Relaxed) + 1;
-    on_progress(new_value, chunk_count + 1);
 
     for (_, future) in parts {
         future.await??;
