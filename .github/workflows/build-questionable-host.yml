@@ -85,7 +85,7 @@ jobs:
 
             it depends...
 
-            ### Android, Termux
+            ### Android (Termux)
 
             ```sh
             curl -L "https://github.com/SheepTester/hello-world/releases/download/questionable-host-${{ env.VERSION }}/questionable-host-aarch64-linux-android" > questionable-host

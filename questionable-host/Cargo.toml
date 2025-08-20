@@ -1,6 +1,6 @@
 [package]
 name = "questionable-host"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 
 [dependencies]
@@ -8,7 +8,6 @@ async-stream = "0.3.6"
 dialoguer = "0.11.0"
 futures-util = "0.3.31"
 indicatif = "0.18.0"
-keyring = { version = "3.6.3", features = ["windows-native", "linux-native"] }
 md5 = "0.8.0"
 openssl = { version = "0.10.73", features = ["vendored"] }
 reqwest = { version = "0.12.23", features = ["json", "stream"] }

@@ -1,10 +1,19 @@
-use std::{collections::HashMap, env::args, process::exit, sync::Arc};
+use std::{
+    collections::HashMap,
+    env::{args, var},
+    fs::read_to_string,
+    io::ErrorKind,
+    process::exit,
+    sync::Arc,
+};
 
 use dialoguer::{Input, Password, theme::ColorfulTheme};
 use indicatif::{ProgressBar, ProgressStyle};
-use keyring::Entry;
 use reqwest::{Client, Response};
-use tokio::{fs::File, io::stdout};
+use tokio::{
+    fs::{File, create_dir_all, write},
+    io::stdout,
+};
 
 use crate::{
     load::{download_concat, download_inode, download_linked_list, upload},
@@ -13,8 +22,6 @@ use crate::{
 
 mod load;
 mod util;
-
-const SERVICE_NAME: &str = "questionable-host";
 
 fn get_cookie(response: &Response, cookie_name: &str) -> Option<String> {
     for header_value in response.headers().get_all("set-cookie") {
@@ -35,16 +42,27 @@ fn get_cookie(response: &Response, cookie_name: &str) -> Option<String> {
     None
 }
 
-fn set_if_absent<F>(entry_name: &str, get_value: F) -> MyResult<String>
+const EMOJI_OFFSET: u32 = '🌀' as u32 - '\0' as u32;
+async fn set_if_absent<F>(entry_name: &str, get_value: F) -> MyResult<String>
 where
     F: FnOnce() -> MyResult<String>,
 {
-    let entry = Entry::new(SERVICE_NAME, entry_name)?;
-    match entry.get_password() {
-        Ok(value) => Ok(value),
-        Err(keyring::Error::NoEntry) => {
+    let path = format!("{}/.config/questionable-host/.{entry_name}", var("HOME")?);
+    match read_to_string(&path) {
+        Ok(value) => Ok(value
+            .chars()
+            .map(|c| char::from_u32(c as u32 - EMOJI_OFFSET).unwrap_or('\u{fffd}'))
+            .collect()),
+        Err(err) if err.kind() == ErrorKind::NotFound => {
             let value = get_value()?;
-            entry.set_password(&value)?;
+            write(
+                &path,
+                value
+                    .chars()
+                    .map(|c| char::from_u32(c as u32 + EMOJI_OFFSET).unwrap_or('\u{fffd}'))
+                    .collect::<String>(),
+            )
+            .await?;
             Ok(value)
         }
         Err(err) => Err(err)?,
@@ -52,10 +70,12 @@ where
 }
 
 async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
-    let entry = Entry::new(SERVICE_NAME, "scratchsessionsid")?;
-    let mut session_id = match entry.get_password() {
+    let home = var("HOME")?;
+    create_dir_all(format!("{home}/.config/questionable-host/")).await?;
+    let session_id_path = format!("{home}/.config/questionable-host/.scratchsessionsid");
+    let mut session_id = match read_to_string(&session_id_path) {
         Ok(password) => Some(password),
-        Err(keyring::Error::NoEntry) => None,
+        Err(err) if err.kind() == ErrorKind::NotFound => None,
         Err(err) => Err(err)?,
     };
     Ok(loop {
@@ -71,16 +91,18 @@ async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
                 exit(1);
             };
 
-            let username = set_if_absent("username", || {
+            let username = set_if_absent("name", || {
                 Ok(Input::with_theme(&ColorfulTheme::default())
                     .with_prompt("Username")
                     .interact_text()?)
-            })?;
-            let password = set_if_absent("password", || {
+            })
+            .await?;
+            let password = set_if_absent("display_name", || {
                 Ok(Password::with_theme(&ColorfulTheme::default())
                     .with_prompt("Password")
                     .interact()?)
-            })?;
+            })
+            .await?;
 
             let mut body = HashMap::new();
             body.insert("username", username);
@@ -132,7 +154,7 @@ async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
             }
         }
         if let Some(session_id) = session_id {
-            entry.set_password(&session_id)?;
+            write(&session_id_path, &session_id).await?;
             break session_id;
         }
     })
