@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>libr</title>
+    <meta name="description" content="pound? book? free?" />
+
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      iframe {
+        border: none;
+        transform-origin: top;
+        flex: none;
+      }
+      .pages {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        z-index: 1000;
+        color: white;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      }
+      .pages span,
+      .pages button {
+        padding: 10px;
+      }
+      button {
+        border: none;
+        background: none;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+      button:not(:disabled) {
+        cursor: pointer;
+      }
+      button:not(:disabled):hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      button:disabled {
+        color: rgba(255, 255, 255, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="pages">
+      <button id="prev">&lt;</button>
+      <button id="page">1</button>
+      <button id="next">&gt;</button>
+    </div>
+    <iframe src="./000.html"></iframe>
+    <script>
+      const totalPages = 123
+      let p = 1
+      function validateSetPage (userPage) {
+        if (userPage >= 1 && userPage <= totalPages && userPage % 1 === 0) {
+          setPage((p = userPage))
+        }
+        return p
+      }
+      const iframe = document.querySelector('iframe')
+      const prev = document.getElementById('prev')
+      const page = document.getElementById('page')
+      const next = document.getElementById('next')
+      window.addEventListener(
+        'message',
+        ({ data }) => {
+          iframe.width = data.width
+          iframe.height = data.height
+
+          function resize () {
+            iframe.style.transform = `scale(${Math.min(
+              window.innerWidth / data.width,
+              window.innerHeight / data.height
+            )})`
+          }
+          window.addEventListener('resize', resize)
+          resize()
+        },
+        { once: true }
+      )
+      window.addEventListener('message', ({ data }) => {
+        document.title = data.page
+      })
+      function setPage (p) {
+        prev.disabled = p <= 1
+        next.disabled = p >= totalPages
+        page.textContent = p
+        iframe.src = `./${p
+          .toString()
+          .padStart(`${totalPages}`.length, '0')}.html`
+        window.location.hash = p
+      }
+      prev.addEventListener('click', () => setPage(--p))
+      next.addEventListener('click', () => setPage(++p))
+      page.addEventListener('click', () => {
+        validateSetPage(+prompt(`Page number (1 to ${totalPages}):`, p))
+      })
+      validateSetPage(+window.location.hash.slice(1))
+    </script>
+  </body>
+</html>
