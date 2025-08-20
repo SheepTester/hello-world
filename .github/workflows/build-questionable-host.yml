@@ -65,9 +65,11 @@ jobs:
         uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
       - name: Get release version
-        run: echo "VERSION=$(cargo pkgid | cut -d "#" -f2 | cut -d "@" -f2)" >> $GITHUB_ENV
+        run: echo "VERSION=$(cargo pkgid -p questionable-host | cut -d "#" -f2 | cut -d "@" -f2)" >> $GITHUB_ENV
       - name: Bump version and push tag
         run: |
+          git config --global user.name 'bruh'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git tag -a "questionable-host-${{ env.VERSION }}" -m "questionable host ${{ env.VERSION }}" || true
           git push --tags || true
       - name: Produce output
