@@ -43,41 +43,41 @@ fn get_cookie(response: &Response, cookie_name: &str) -> Option<String> {
 }
 
 const EMOJI_OFFSET: u32 = '🌀' as u32 - '\0' as u32;
-async fn set_if_absent<F>(entry_name: &str, get_value: F) -> MyResult<String>
-where
-    F: FnOnce() -> MyResult<String>,
-{
+async fn read_cred(entry_name: &str, pretend_nonexistent: bool) -> MyResult<Option<String>> {
+    if pretend_nonexistent {
+        return Ok(None);
+    }
     let path = format!("{}/.config/questionable-host/.{entry_name}", var("HOME")?);
     match read_to_string(&path) {
-        Ok(value) => Ok(value
-            .chars()
-            .map(|c| char::from_u32(c as u32 - EMOJI_OFFSET).unwrap_or('\u{fffd}'))
-            .collect()),
-        Err(err) if err.kind() == ErrorKind::NotFound => {
-            let value = get_value()?;
-            write(
-                &path,
-                value
-                    .chars()
-                    .map(|c| char::from_u32(c as u32 + EMOJI_OFFSET).unwrap_or('\u{fffd}'))
-                    .collect::<String>(),
-            )
-            .await?;
-            Ok(value)
-        }
+        Ok(value) => Ok(Some(
+            value
+                .chars()
+                .map(|c| char::from_u32(c as u32 - EMOJI_OFFSET).unwrap_or('\u{fffd}'))
+                .collect(),
+        )),
+        Err(err) if err.kind() == ErrorKind::NotFound => Ok(None),
         Err(err) => Err(err)?,
     }
 }
+async fn write_cred(entry_name: &str, value: &str) -> MyResult<()> {
+    let path = format!("{}/.config/questionable-host/.{entry_name}", var("HOME")?);
+    write(
+        &path,
+        &value
+            .chars()
+            .map(|c| char::from_u32(c as u32 + EMOJI_OFFSET).unwrap_or('\u{fffd}'))
+            .collect::<String>(),
+    )
+    .await?;
+    Ok(())
+}
 
 async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
-    let home = var("HOME")?;
-    create_dir_all(format!("{home}/.config/questionable-host/")).await?;
-    let session_id_path = format!("{home}/.config/questionable-host/.scratchsessionsid");
-    let mut session_id = match read_to_string(&session_id_path) {
-        Ok(password) => Some(password),
-        Err(err) if err.kind() == ErrorKind::NotFound => None,
-        Err(err) => Err(err)?,
-    };
+    create_dir_all(format!("{}/.config/questionable-host/", var("HOME")?)).await?;
+    let mut session_id = read_cred("id", false).await?;
+    // Prevent potential infinite loop by ignoring saved login credentials after
+    // first attempt
+    let mut already_tried_login = false;
     Ok(loop {
         if session_id.is_none() {
             let Some(csrftoken) = get_cookie(
@@ -91,19 +91,20 @@ async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
                 exit(1);
             };
 
-            let username = set_if_absent("name", || {
-                Ok(Input::with_theme(&ColorfulTheme::default())
+            let username = match read_cred("name", already_tried_login).await? {
+                Some(cred) => cred,
+                None => Input::with_theme(&ColorfulTheme::default())
                     .with_prompt("Username")
-                    .interact_text()?)
-            })
-            .await?;
-            let password = set_if_absent("display_name", || {
-                Ok(Password::with_theme(&ColorfulTheme::default())
+                    .interact_text()?,
+            };
+            let password = match read_cred("display_name", already_tried_login).await? {
+                Some(cred) => cred,
+                None => Password::with_theme(&ColorfulTheme::default())
                     .with_prompt("Password")
-                    .interact()?)
-            })
-            .await?;
-
+                    .interact()?,
+            };
+            write_cred("name", &username).await?;
+            write_cred("display_name", &password).await?;
             let mut body = HashMap::new();
             body.insert("username", username);
             body.insert("password", password);
@@ -118,6 +119,7 @@ async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
                 .json(&body)
                 .send()
                 .await?;
+            already_tried_login = true;
             if !response.status().is_success() {
                 eprintln!(
                     "Failed to log in. HTTP {} error: {}",
@@ -134,7 +136,7 @@ async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
                 scratchsessionsid
                     .replace("scratchsessionsid=\"", "")
                     .replace("\"", ""),
-            )
+            );
         }
         if let Some(session_id_val) = &session_id {
             let response = client
@@ -154,7 +156,7 @@ async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
             }
         }
         if let Some(session_id) = session_id {
-            write(&session_id_path, &session_id).await?;
+            write_cred("id", &session_id).await?;
             break session_id;
         }
     })
