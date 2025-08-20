@@ -1,0 +1,21 @@
+name: apel
+on:
+  workflow_dispatch:
+    inputs:
+      thingy:
+        description: what do you need to do today
+        required: true
+        default: laundry
+        type: string
+jobs:
+  thing:
+    runs-on: ubuntu-latest
+    environment: SECWET
+    steps:
+      - name: echo thing(s)
+        run: |
+          echo "lol here is the thing you gave me $L"
+          echo "lol and they told me i can't accidentally log the secret so $SECRT"
+        env:
+          L: ${{ inputs.thingy }}
+          SECRT: ${{ secrets.OOH_A_SECRET }}

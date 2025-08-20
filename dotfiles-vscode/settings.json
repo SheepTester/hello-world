@@ -1,0 +1,235 @@
+{
+  "workbench.colorTheme": "Tomorrow Night",
+  "discord.removeTimestamp": true,
+  "terminal.integrated.defaultProfile.windows": "Ubuntu (WSL)",
+  "terminal.integrated.fontFamily": "'Cascadia Code PL', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "rust-client.revealOutputChannelOn": "info",
+  "rust-client.rustupPath": "~/.cargo/bin/rustup",
+  "git.confirmSync": false,
+  "editor.rulers": [80],
+  "editor.tabSize": 2,
+  "explorer.confirmDragAndDrop": false,
+  "window.dialogStyle": "custom",
+  "workbench.colorCustomizations": {
+    // https://stackoverflow.com/a/43446100
+    "statusBar.background": "#1A1A1A",
+    "statusBar.noFolderBackground": "#212121",
+    "statusBar.debuggingBackground": "#263238",
+    // Make the selection colour a translucent white rather than an opaque
+    // light grey so that it shows up better in the git commit message box
+    // >:(
+    "editor.selectionBackground": "#ffffff20"
+  },
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.cursorBlinking": true,
+  // "prettier.arrowParens": "avoid",
+  // "prettier.endOfLine": "auto",
+  // "prettier.semi": false,
+  // "prettier.singleQuote": true,
+  // "prettier.trailingComma": "none",
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[less]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[handlebars]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[graphql]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.tabSize": 4
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.associations": {
+    "*.svg": "html",
+    ".env": "shellscript",
+    "*.gs": "javascript"
+  },
+  "python.formatting.provider": "black",
+  "[python]": {
+    "editor.tabSize": 4,
+    // just trying this out, supposedly it autodedents else: after you type
+    // the colon or smth
+    "editor.formatOnType": true
+  },
+  // Disable annoying "File is a CommonJS module; it may be converted to an
+  // ES6 module." suggestion.
+  // https://github.com/microsoft/vscode/issues/47299
+  "javascript.suggestionActions.enabled": false,
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "editor.wordWrap": "on",
+  "editor.suggestSelection": "first",
+  "prettier.configPath": "/home/sheep/.prettierrc.yml",
+  "prettier.prettierPath": "/home/sheep/.nvm/versions/node/v18.4.0/lib/node_modules/prettierx/src",
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java"
+  },
+  "remote.SSH.remotePlatform": {
+    "ieng6.ucsd.edu": "linux",
+    "cse30": "linux",
+    "cse120": "linux",
+    "vscode-dsmlp": "linux",
+    "cse125": "linux"
+  },
+  "workbench.editorAssociations": {
+    "*.pdf": "latex-workshop-pdf-hook"
+  },
+  "[latex]": {
+    "editor.defaultFormatter": "James-Yu.latex-workshop"
+  },
+  "latex-workshop.view.pdf.viewer": "tab",
+  "css.lint.validProperties": [
+    "r",
+    "rx",
+    "cx",
+    "cy",
+    "alignment-baseline",
+    "dominant-baseline"
+  ],
+  "scss.lint.validProperties": ["vector-effect", "alignment-baseline"],
+  "[c]": {
+    "editor.defaultFormatter": "xaver.clang-format"
+  },
+  "editor.bracketPairColorization.enabled": false,
+  "terminal.integrated.commandsToSkipShell": ["language-julia.interrupt"],
+  "julia.symbolCacheDownload": true,
+  "julia.enableTelemetry": true,
+  "liveshare.presence": true,
+  "git.enableSmartCommit": true,
+  "emmet.showExpandedAbbreviation": "never",
+  // I guess I should use `cl` instead of `log` 😔
+  // "editor.snippetSuggestions": "top",
+  "html.autoCreateQuotes": false,
+  // https://deno.com/blog/v1.29
+  // "deno.inlayHints.parameterNames.enabled": "none",
+  // "deno.inlayHints.parameterTypes.enabled": false,
+  // "deno.inlayHints.variableTypes.enabled": false,
+  // "deno.inlayHints.propertyDeclarationTypes.enabled": false,
+  // "deno.inlayHints.functionLikeReturnTypes.enabled": false,
+  // "deno.inlayHints.enumMemberValues.enabled": false
+  "editor.inlayHints.enabled": "off",
+  "hediet.vscode-drawio.resizeImages": null,
+  "hediet.vscode-drawio.codeLinkActivated": false,
+  "wgsl-analyzer.server.path": "~/.cargo/bin/wgsl_analyzer",
+  "redhat.telemetry.enabled": false,
+  // For CSV rainbow
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "rainbow1",
+        "settings": { "foreground": "#c5c8c6" }
+      },
+      {
+        "scope": "keyword.rainbow2",
+        "settings": { "foreground": "#f0c674" }
+      },
+      {
+        "scope": "entity.name.function.rainbow3",
+        "settings": { "foreground": "#b5bd68" }
+      },
+      {
+        "scope": "comment.rainbow4",
+        "settings": { "foreground": "#8abeb7" }
+      },
+      {
+        "scope": "string.rainbow5",
+        "settings": { "foreground": "#de935f" }
+      },
+      {
+        "scope": "variable.parameter.rainbow6",
+        "settings": { "foreground": "#b294bb" }
+      },
+      {
+        "scope": "constant.numeric.rainbow7",
+        "settings": { "foreground": "#81a2be" }
+      },
+      {
+        "scope": "entity.name.type.rainbow8",
+        "settings": { "foreground": "#cc6666" }
+      },
+      {
+        "scope": "markup.bold.rainbow9",
+        "settings": { "foreground": "#969896" }
+      },
+      {
+        "scope": "invalid.rainbow10",
+        "settings": { "foreground": "#a3685a" }
+      }
+    ]
+  },
+  "workbench.activityBar.location": "top",
+  "[cpp]": {
+    // "editor.defaultFormatter": "xaver.clang-format"
+  },
+  "haskell.ghcupExecutablePath": "~/.ghcup/bin/ghcup",
+  "haskell.manageHLS": "GHCup",
+  "remote.autoForwardPortsSource": "hybrid",
+  "editor.accessibilitySupport": "off",
+  // https://stackoverflow.com/a/74625276 from https://piazza.com/class/lqzj6c925f74r0/post/32
+  // "terminal.integrated.profiles.linux": {
+  //   "bash": {
+  //     "path": "bash",
+  //     "icon": "terminal-bash",
+  //     "args": ["--login"]
+  //   }
+  // },
+  "remote.SSH.showLoginTerminal": true,
+  "remote.SSH.path": "C:\\WINDOWS\\System32\\OpenSSH\\ssh.exe",
+  "diffEditor.renderSideBySide": false,
+  // "remote.SSH.configFile": "\\\\wsl.localhost\\Ubuntu\\home\\sheep\\.ssh\\config"
+  // "remote.SSH.configFile": "\\\\wsl$\\Ubuntu\\home\\sheep\\.ssh\\config"
+  // "workbench.editor.showTabs": "single"
+
+  // https://github.com/hex-ci/vscode-stylelint-plus/issues/35
+  "stylelint.useLocal": true,
+  "[glsl]": {
+    "editor.defaultFormatter": "xaver.clang-format"
+  },
+  "diffEditor.hideUnchangedRegions.enabled": true,
+  "diffEditor.ignoreTrimWhitespace": false
+}

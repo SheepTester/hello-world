@@ -4,5 +4,17 @@
   "deno.unstable": false,
   "deno.suggest.imports.hosts": {
     "https://deno.land": true
-  }
+  },
+  "prettier.prettierPath": "./node_modules/prettierx",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "python.formatting.provider": "none",
+  "files.associations": {
+    "*.svg": "html",
+    ".env": "shellscript",
+    "*.gs": "javascript",
+    "cstdlib": "c"
+  },
+  "C_Cpp.default.compilerPath": "/usr/bin/g++"
 }

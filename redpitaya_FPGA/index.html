@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>among us</title>
+    <meta name="description" content="susys" />
+
+    <link rel="stylesheet" type="text/css" href="/sheep3.css" />
+    <script src="/sheep3.js" charset="utf-8"></script>
+
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        background-color: black;
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
+          'Segoe UI Emoji', 'Segoe UI Symbol';
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+      }
+      input {
+        -webkit-appearance: none;
+        border: none;
+        background: none;
+        font: inherit;
+        color: inherit;
+      }
+      input[type='submit']:not(:disabled) {
+        cursor: pointer;
+      }
+      #amongus {
+        flex: auto;
+        background-image: linear-gradient(180deg, transparent, #1e293b);
+        background-size: 100% 300px;
+        background-position: bottom;
+        background-repeat: no-repeat;
+        position: relative;
+      }
+      #root {
+        flex: none;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #1e293b;
+        gap: 40px;
+      }
+      form {
+        display: flex;
+        border-radius: 100px;
+        /* overflow: hidden; */
+        box-shadow: -5px -5px 20px rgba(255, 255, 255, 0.1),
+          5px 5px 20px rgba(0, 0, 0, 0.5);
+        align-items: center;
+      }
+      form :first-child {
+        border-top-left-radius: 100px;
+        border-bottom-left-radius: 100px;
+      }
+      form :last-child {
+        border-top-right-radius: 100px;
+        border-bottom-right-radius: 100px;
+      }
+      .number {
+        padding-right: 10px;
+      }
+      span {
+        padding-right: 20px;
+      }
+      input {
+        height: 50px;
+        padding: 0 20px;
+      }
+      input[type='submit'] {
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      input[type='submit']:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+      input:disabled {
+        opacity: 0.5;
+      }
+      ::placeholder {
+        color: rgba(255, 255, 255, 0.3);
+      }
+      .among {
+        z-index: -1;
+        position: absolute;
+
+        top: 150px;
+        right: 200px;
+      }
+      img {
+        transform: scaleX(-1) rotate(5deg);
+        width: 300px;
+      }
+      svg {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+      }
+      .number {
+        width: 60px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="amongus">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="white"></svg>
+      <div class="among"><img src="./amongus.webp" /></div>
+    </div>
+    <div id="root"></div>
+    <script>
+      const amongus = document.querySelector('.among')
+      const svg = document.querySelector('svg')
+
+      const circles = new Set()
+
+      function create (x = 0) {
+        const radius = Math.random() * 3 + 1
+        const element = document.createElementNS(
+          'http://www.w3.org/2000/svg',
+          'circle'
+        )
+        element.setAttributeNS(null, 'r', radius)
+        svg.append(element)
+        circles.add({ element, x, y: Math.random(), xv: radius / 5000 })
+      }
+      for (let i = 0; i < 200; i++) {
+        create(Math.random())
+      }
+
+      let sinceLast = Date.now()
+      function paint () {
+        const width = window.innerWidth
+        const height = window.innerHeight
+
+        amongus.style.transform = `translateY(${
+          Math.sin(Date.now() / 700) * 20
+        }px)`
+
+        svg.setAttributeNS(null, 'width', width)
+        svg.setAttributeNS(null, 'height', height)
+
+        if (Date.now() - sinceLast > 100) {
+          create()
+          sinceLast = Date.now()
+        }
+        const toDelete = []
+        for (const circle of circles) {
+          circle.x += circle.xv
+          circle.element.setAttributeNS(
+            null,
+            'cx',
+            circle.x * (width + 40) - 20
+          )
+          circle.element.setAttributeNS(
+            null,
+            'cy',
+            circle.y * (height + 40) - 20
+          )
+          if (circle.x > 1) {
+            toDelete.push(circle)
+            circle.element.remove()
+          }
+        }
+        for (const d of toDelete) {
+          circles.delete(d)
+        }
+
+        requestAnimationFrame(paint)
+      }
+      paint()
+    </script>
+    <script type="module">
+      import { h, render, Fragment } from 'https://esm.sh/preact@10.13.0'
+      import { useState } from 'https://esm.sh/preact@10.13.0/hooks'
+
+      function App () {
+        const [morse, setMorse] = useState('')
+        const [speed, setSpeed] = useState('10')
+        const [loading, setLoading] = useState(false)
+
+        return h(
+          Fragment,
+          null,
+          h(
+            'form',
+            {
+              onSubmit: e => {
+                // const formData = new FormData(e.currentTarget)
+                setLoading(true)
+                fetch('/set-morse', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ morse })
+                }).finally(() => {
+                  setLoading(false)
+                })
+                e.preventDefault()
+              }
+            },
+            h('input', {
+              type: 'text',
+              // name: 'morse',
+              placeholder: 'Message',
+              value: morse,
+              onInput: e => setMorse(e.currentTarget.value),
+              disabled: loading
+            }),
+            h('input', {
+              type: 'submit',
+              value: 'Set',
+              disabled: loading
+            })
+          ),
+          h(
+            'form',
+            {
+              onSubmit: e => {
+                // const formData = new FormData(e.currentTarget)
+                setLoading(true)
+                fetch('/set-speed', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ speed: +speed })
+                }).finally(() => {
+                  setLoading(false)
+                })
+                e.preventDefault()
+              }
+            },
+            h('input', {
+              type: 'text',
+              placeholder: 'Morse units per second',
+              class: 'number',
+              value: speed,
+              onInput: e => setSpeed(e.currentTarget.value),
+              disabled: loading
+            }),
+            h('span', null, 'Hz'),
+            h('input', {
+              type: 'submit',
+              value: 'Set',
+              disabled: loading
+            })
+          )
+        )
+      }
+
+      render(h(App), document.getElementById('root'))
+    </script>
+  </body>
+</html>

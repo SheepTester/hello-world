@@ -1,0 +1,25 @@
+/* ==UserStyle==
+@name           #politics clown mode
+@namespace      sheeptester.github.io
+@version        1.0.1
+@description    politics participants are clowns
+@author         SheepTester
+==/UserStyle== */
+
+@-moz-document domain("discord.com") {
+  .title-31SJ6t,
+  .container-2o3qEW,
+  .sidebar-1tnWFu,
+  .guilds-2JjMmN,
+  .form-3gdLxP > :first-child,
+  .isUnread-3Lojb-,
+  .newMessagesBar-1hF-9G {
+    display: none;
+  }
+  .chat-2ZfjoI {
+    background-image:
+      linear-gradient(#36393fdd, #36393fdd),
+      url('./clown.gif');
+/*     background-size: 100% 100%; */
+  }
+}

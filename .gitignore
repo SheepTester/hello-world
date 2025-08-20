@@ -8,3 +8,8 @@ ignored
 *.log
 *.synctex.gz
 *.synctex(busy)
+
+
+# Added by cargo
+
+/target

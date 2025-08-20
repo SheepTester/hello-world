@@ -65,6 +65,12 @@
       .actual-preview img {
         object-fit: contain;
       }
+      .actual-preview pre {
+        margin: 0;
+        padding: 20px;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
       .has-audio {
         justify-content: center;
         align-items: center;
@@ -146,14 +152,29 @@
         <a class="button" id="download-link">Download</a>
       </div>
       <div class="actual-preview" id="preview">
-        <p class="loading">Loading. <span id="percent">0.0</span>%</p>
+        <p class="loading">
+          Loading<span id="total-estimate"></span>... (<span id="percent"
+            >0.0</span
+          >%)
+        </p>
         <p class="no-preview-available">No preview available.</p>
         <p class="error">There was a problem loading the file. Sucks.</p>
       </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
+      integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script type="module">
-      import { download, downloadOld } from './upload-download.bundle.js'
+      import {
+        downloadLinkedList,
+        downloadConcat,
+        downloadInode,
+        MAX_SIZE
+      } from './upload-download.bundle.js'
 
       const mimeTypes = {
         iframe: {
@@ -179,7 +200,26 @@
           png: 'image/png',
           svg: 'image/svg+xml',
           webp: 'image/webp'
+        },
+        zip: {
+          zip: 'application/zip'
+        },
+        text: {
+          txt: 'text/plain',
+          json: 'application/json',
+          csv: 'text/csv'
         }
+      }
+
+      function getMime (fileName) {
+        for (const type of Object.values(mimeTypes)) {
+          for (const [extension, mime] of Object.entries(type)) {
+            if (fileName.endsWith('.' + extension)) {
+              return mime
+            }
+          }
+        }
+        return ''
       }
 
       document.body.classList.remove('section-loading')
@@ -197,6 +237,7 @@
         downloadLink: document.getElementById('download-link'),
         preview: document.getElementById('preview'),
         progress: document.getElementById('progress'),
+        totalEstimate: document.getElementById('total-estimate'),
         percent: document.getElementById('percent')
       }
       const hash = options.hash
@@ -210,15 +251,7 @@
         document.body.classList.add('section-preview')
         elems.preview.classList.add('show-loading')
 
-        let mimeType = ''
-        outer: for (const type of Object.values(mimeTypes)) {
-          for (const [extension, mime] of Object.entries(type)) {
-            if (fileName.endsWith('.' + extension)) {
-              mimeType = mime
-              break outer
-            }
-          }
-        }
+        const mimeType = getMime(fileName)
 
         const isType = Object.fromEntries(
           Object.entries(mimeTypes).map(([type, extensions]) => {
@@ -231,9 +264,33 @@
           })
         )
 
-        const handleProgress = progress => {
+        function displaySize (bytes) {
+          if (bytes <= 0) {
+            return '0 B'
+          }
+          const length = Math.floor(Math.log10(bytes))
+          if (length < 3) {
+            return `${bytes} B`
+          } else if (length < 6) {
+            return `${(bytes / 1e3).toFixed(Math.max(0, 5 - length))} kB`
+          } else if (length < 9) {
+            return `${(bytes / 1e6).toFixed(Math.max(0, 7 - length))} MB`
+          } else {
+            return `${(bytes / 1e9).toFixed(Math.max(0, 11 - length))} GB`
+          }
+        }
+
+        const handleProgress = (sizeType, progress, total) => {
           elems.progress.style.width = progress * 100 + '%'
           elems.percent.textContent = (progress * 100).toFixed(1)
+          if (sizeType === 'old') {
+            elems.totalEstimate.textContent = ` ~${displaySize(
+              total * MAX_SIZE
+            )}`
+          } else {
+            elems.totalEstimate.textContent =
+              total !== undefined ? ' ' + displaySize(total) : ''
+          }
         }
         const handleDone = async file => {
           if (options.compressed) {
@@ -265,6 +322,41 @@
             const image = document.createElement('img')
             image.src = url
             elems.preview.appendChild(image)
+          } else if (isType.zip) {
+            const zip = await JSZip.loadAsync(file)
+            const list = document.createElement('ul')
+            zip.forEach((relPath, entry) => {
+              const li = document.createElement('li')
+              if (entry.dir) {
+                li.append(entry.name)
+              } else {
+                const a = document.createElement('a')
+                a.className = 'link'
+                a.href = '#'
+                a.target = '_blank'
+                a.textContent = entry.name
+                a.addEventListener(
+                  'click',
+                  async e => {
+                    e.preventDefault()
+                    a.href = ''
+                    const blob = await entry.async('blob')
+                    a.href = URL.createObjectURL(
+                      new Blob([blob], { type: getMime(entry.name) })
+                    )
+                    a.click()
+                  },
+                  { once: true }
+                )
+                li.append(a)
+              }
+              list.append(li)
+            })
+            elems.preview.append(list)
+          } else if (isType.text) {
+            const pre = document.createElement('pre')
+            pre.textContent = await file.text()
+            elems.preview.appendChild(pre)
           } else {
             elems.preview.classList.add('show-no-preview-available')
           }
@@ -277,11 +369,23 @@
           elems.progress.classList.add('progress-error')
         }
         if (hash.includes('.')) {
-          downloadOld(hash.split('.').slice(0, -1), handleProgress, mimeType)
+          downloadConcat(
+            hash.split('.').slice(0, -1),
+            handleProgress.bind(null, 'old'),
+            mimeType
+          )
+            .then(handleDone)
+            .catch(handleError)
+        } else if (hash.startsWith('i')) {
+          downloadInode(
+            hash.slice(1),
+            handleProgress.bind(null, 'new'),
+            mimeType
+          )
             .then(handleDone)
             .catch(handleError)
         } else {
-          download(hash, handleProgress, mimeType)
+          downloadLinkedList(hash, handleProgress.bind(null, 'new'), mimeType)
             .then(handleDone)
             .catch(handleError)
         }

@@ -1,0 +1,27 @@
+<script async src="/pensive.js" onload="console.log('tag loaded')"></script>
+<script>
+  window.dataLayer = [['js', new Date()], ['config', 'G-9NWSPRKVS1']];
+  if (window.location.search === '?gtag') {
+    window.dataLayer = [];
+    function _gtag(){dataLayer.push(arguments);}
+    _gtag('js', new Date());
+    _gtag('config', 'G-9NWSPRKVS1');
+  } else {
+    for (const layer of window.dataLayer) {
+      layer.callee = true
+    }
+    const protect = [...window.dataLayer]
+    Object.prototype.toString.call = arg => {
+      if (protect.includes(arg)) return '[object Arguments]'
+      else return Function.prototype.call.call(Object.prototype.toString, arg)
+    }
+  }
+  
+  document.addEventListener('DOMContentLoaded', () => console.log('DOMContentLoaded'))
+</script>
+
+<a href="https://github.com/SheepTester/hello-world/">link</a>
+
+<div style="height: 200vh; width: 100px; background: #eee"></div>
+
+<form><input type="text" name="help"><button>lmao</button></form>

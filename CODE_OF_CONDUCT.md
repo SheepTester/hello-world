@@ -26,7 +26,7 @@ enforce me whereever `hello-world` materializes
 
 ## punishing
 
-email dont@email.us about bad things. we'll review it and respond fairly and secretly, with possibly more details
+email elon.musk@doge.eop.gov about bad behavior. bro'll review it and respond fairly and secretly, with possibly more details
 
 if you are bad you will be punished
 

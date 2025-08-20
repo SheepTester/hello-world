@@ -1,0 +1,86 @@
+@-moz-document domain("chatgpt.com") {
+[data-radix-popper-content-wrapper] {
+    transform: none !important;
+    
+    .overflow-y-auto {
+        overflow: visible;
+    }
+}
+[data-testid="delete-chat-menu-item"] {
+    position: fixed;
+    top: 210px;
+    left: 150px;
+    animation: delayed-appear .05s;
+}
+@keyframes delayed-appear {
+    from, to {
+        visibility: hidden;
+    }
+}
+[rel="noopener noreferrer"] {
+    pointer-events: none;
+    opacity: 0.5;
+}
+#history aside:first-child a:nth-child(2) [data-trailing-button],
+#history aside:first-child a:nth-child(3) [data-trailing-button] {
+    position: fixed;
+    top: 210px;
+    left: 150px;
+    outline: 1px solid red;
+    background: #f003;
+    width: 100px;
+    transition-delay: 10s;/* remain hidden for 10s (it will hopefully get deleted/promoted sooner than that) */
+    &:hover {
+        outline-width: 3px;
+        visibility: hidden;
+        transition-delay: 0.02s;/* hide after 0.5s */
+    }
+}
+#history aside:first-child a:nth-child(3) [data-trailing-button] {
+    outline-color: blue;
+    background: #00f3;
+    transition: none;
+}
+#history aside:first-child a:nth-child(2) [data-trailing-button] {
+    transition: visibility;
+    z-index: 5; /* first button gets priority (if it is clickable it probably means it was not recently deleted) */
+}
+[data-testid="modal-delete-conversation-confirmation"] > div > div {
+    display: block;
+    
+    & > [role="dialog"] {
+        translate: none;left: 0;
+    }
+}
+/* #history aside:first-child a:nth-child(2) [data-trailing-button]:hover {
+    visibility: hidden;
+    transition-delay: 0.02s;/* hide after 0.5s * /
+} */
+/* #history aside:first-child a:nth-child(3) [data-trailing-button] {
+    /* start off hidden, but once shown, remain shown for 2s (it will eventually get promoted to the first button anyways) * /
+    visibility: hidden; 
+     transition-delay: 2s; 
+}
+#history aside:first-child a:nth-child(2):has([data-trailing-button]:hover) + a [data-trailing-button] {
+    visibility: visible;
+    transition-delay: 0.6s; /* after first button is clicked, show after 0.6s * /
+} */
+:has(> [aria-label="Copy"]){
+    opacity: unset;
+    pointer-events: unset;
+}
+[aria-label="Copy"] {
+    padding: 10px;
+    outline: 1px solid red;
+}
+.__menu-item:not(:is([data-highlighted],:hover,:focus-visible,:has(:focus-visible),[data-state=open],:has([data-state=open])))[data-fill] .trailing.highlight {
+    clip: unset;
+    width: unset;
+    height: unset;
+    margin: unset;
+    overflow: unset;
+    position: unset;
+    opacity: unset;
+}
+
+}

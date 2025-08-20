@@ -6,6 +6,7 @@
       body {
         font-family: sans-serif;
         margin: 0;
+        background-color: var(--color);
       }
       textarea {
         margin: 0;
@@ -33,6 +34,7 @@
       setInterval(() => {
         document.body.classList.toggle('dark')
       }, +params.get('flash') || 500)
+      document. body. style. setProperty('--color', params. get('color') || 'white')
       if (window.location.hash.slice(1)) {
         annoy.value = decodeURIComponent(window.location.hash.slice(1))
       }

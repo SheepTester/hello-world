@@ -1,6 +1,6 @@
 // deno run ./bin.ts
 
-// @deno-types="https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/types/pako/index.d.ts"
+// @deno-types="https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/pako/index.d.ts"
 import {
   deflate,
   inflate
@@ -9,7 +9,11 @@ import { parse } from 'https://deno.land/std@0.101.0/flags/mod.ts'
 import { iter, writeAll } from 'https://deno.land/std@0.101.0/io/util.ts'
 import { basename } from 'https://deno.land/std@0.102.0/path/mod.ts'
 import { handleProgress } from './handle-progress.ts'
-import { upload, download, downloadOld } from './upload-download.ts'
+import {
+  upload,
+  downloadLinkedList,
+  downloadConcat
+} from './upload-download.ts'
 
 const [mode, ...args] = Deno.args
 
@@ -124,8 +128,8 @@ if (!mode || mode.startsWith('-')) {
     const scratchSessionsId: string | undefined = sessionId
       ? sessionId
       : sessionIdPath
-      ? (await Deno.readTextFile(sessionIdPath)).trim()
-      : Deno.env.get('SCRATCHSESSIONSID')
+        ? (await Deno.readTextFile(sessionIdPath)).trim()
+        : Deno.env.get('SCRATCHSESSIONSID')
     if (!scratchSessionsId) {
       throw new TypeError(
         [
@@ -152,11 +156,13 @@ if (!mode || mode.startsWith('-')) {
     const hash = await upload(blob, scratchSessionsId, handleProgress)
     if (outputDownloadUrl) {
       console.log(
-        `https://sheeptester.github.io/hello-world/questionable-host/?${new URLSearchParams({
-          hash,
-          name: filePath !== undefined ? basename(String(filePath)) : 'file',
-          compressed: compress
-        })}`
+        `https://sheeptester.github.io/hello-world/questionable-host/?${new URLSearchParams(
+          {
+            hash,
+            name: filePath !== undefined ? basename(String(filePath)) : 'file',
+            compressed: compress
+          }
+        )}`
       )
     } else {
       console.log(hash)
@@ -188,7 +194,7 @@ if (!mode || mode.startsWith('-')) {
         '',
         'Download a file and output it to stdout.',
         '',
-        '  deno run --allow-net ./bin.ts download  24310a98bae36609aa4b184e0cd20988 \\',
+        '  deno run --allow-net ./bin.ts download 24310a98bae36609aa4b184e0cd20988 \\',
         '    > ./path/to/file',
         '',
         'USAGE:',
@@ -219,9 +225,12 @@ if (!mode || mode.startsWith('-')) {
     const strHash = String(hash)
     let file
     if (strHash.includes('.') || strHash.includes('-')) {
-      file = await downloadOld(strHash.split(/[-.]/).slice(0, -1), onProgress)
+      file = await downloadConcat(
+        strHash.split(/[-.]/).slice(0, -1),
+        onProgress
+      )
     } else {
-      file = await download(strHash, onProgress)
+      file = await downloadLinkedList(strHash, onProgress)
     }
     let bytes = new Uint8Array(await file.arrayBuffer())
     if (compressed) {

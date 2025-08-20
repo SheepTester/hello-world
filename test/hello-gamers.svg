@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 250" fill="red">
+  <style xmlns="http://www.w3.org/2000/svg">
+  text {
+    font-family: Comic Sans MS;
+    font-size: 80px;
+    transform-origin: 50% 50%;
+  }
+    .a {
+    
+    animation: wow .5s linear infinite;
+    }
+  @keyframes wow {
+    from {
+      transform: perspective(500px) rotateY(0deg);
+    }
+    to {
+      transform: perspective(500px) rotateY(360deg);
+    }
+  }
+    .b {
+    fill: grey;
+    font-size: 14px;
+    }
+    .c {
+    fill: blue;
+    font-size: 30px;
+    animation: grow 0.423s ease-in-out infinite alternate;
+    }
+  @keyframes grow {
+    from {
+      transform: scale(0.8);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+    .left,.right {
+    animation: slide 0.657s ease-in-out infinite;
+    }
+  @keyframes slide {
+    from {
+      dx:-20px;
+    }
+    to {
+      dx:20px;
+    }
+  }
+</style><text class="a" xmlns="http://www.w3.org/2000/svg" x="0" y="100">hello gamers</text>
+  <text class="b" xmlns="http://www.w3.org/2000/svg" x="0" y="150">look at this cool email i found ⬇</text>
+  <text class="c" xmlns="http://www.w3.org/2000/svg" x="0" y="200">➡️👉erm71@who.eop.gov👈⬅️</text>
+</svg>

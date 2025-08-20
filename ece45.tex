@@ -1,0 +1,369 @@
+\documentclass[a5paper, fleqn]{article}
+\usepackage[margin=0.5cm]{geometry}
+\setlength{\footskip}{0.25cm}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath} % math
+\usepackage{amssymb} % mathbb
+\usepackage{xcolor} % hex colours
+\usepackage{hanging} % hanging indents
+\usepackage{hyperref}
+
+% Colours from https://tailwindcss.com/docs/customizing-colors
+\definecolor{background}{HTML}{ffffff}
+\definecolor{primary}{HTML}{0f172a}
+\definecolor{secondary}{HTML}{334155}
+\definecolor{blue}{HTML}{0ea5e9}
+\definecolor{red}{HTML}{ef4444}
+\definecolor{green}{HTML}{84cc16}
+
+\pagecolor{background}
+\color{secondary}
+% https://stackoverflow.com/a/877670
+\renewcommand{\familydefault}{\sfdefault}
+% https://tex.stackexchange.com/a/14376
+\setlength{\parindent}{0pt}
+% https://tex.stackexchange.com/a/62497
+\renewcommand\labelitemi{---}
+% https://www.overleaf.com/learn/latex/Hyperlinks#Styles_and_colours
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    pdftitle={owo when the zeger},
+    pdfpagemode=FullScreen,
+    }
+
+% vocab term
+\newcommand{\vocab}[1]{\textbf{\textcolor{blue}{#1}}}
+% in a formula, for the notation being defined
+\newcommand{\defined}[1]{\textcolor{blue}{#1}}
+% red heading
+\newcommand{\heading}[1]{\textbf{\textcolor{red}{#1}}}
+% red text for emphasis, or variable in math expression
+\newcommand{\emf}[1]{\textcolor{red}{#1}}
+% side note
+\newcommand{\note}[1]{\textcolor{green}{#1}}
+% equation or variable in text
+\newcommand{\eq}[1]{\textcolor{red}{$#1$}}
+% note below component of equation
+\newcommand{\under}[2]{\textcolor{green}{\underbrace{\textcolor{secondary}{#1}}_\text{#2}}}
+% for long lines' hanging indent
+\newcommand{\wrap}{\hangpara{0.5cm}{1}}
+
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\rect}{rect}
+\newcommand{\roc}{\text{ROC:}}
+\DeclareMathOperator{\re}{Re}
+
+\begin{document}
+
+good morning. this is an equation sheet for ece 45 based on past lectures and quizzes. as it turns out, it is not efficient to have notes and my quiz work in the same notebook, nor is it efficient to keep copying formulas onto every page
+
+also here's some dirac delta properties because I keep mixing them up:
+\begin{align*}
+  x(t) \delta(t - t_0)                          & = x(t_0) \delta(t) ~ \text{\note{(dirac delta w/ area $x(t_0)$)}} \\
+  \int_{-\infty}^\infty x(t) \delta(t - t_0) dt & = x(t_0)                                                          \\
+  x(t) * \delta(t - a)                          & = x(t - a)
+\end{align*}
+
+\section*{\textcolor{primary}{one}}
+
+zeger really finds these quite delicious. i will call these zeger fetishes
+\[2 \cos t = e^{jt} \emf{+} e^{-jt}\]
+\[2\emf{j} \sin t = e^{jt} \emf{-} e^{-jt}\]
+
+\section*{\textcolor{primary}{two}}
+
+\wrap to prove \vocab{linear}, is passing $Ax_1(t) + Bx_2(t)$ through the system the same as passing $x_1$ and $x_2$ individually and then doing $Ay_1(t) + By_2(t)$ on their outputs?
+
+\wrap to prove \vocab{time-invariant}, is passing $\hat{x}(t - t_0)$ the same as passing $\hat{x}$ and then
+
+\wrap \emf{tip} remove the extra coefficients first in case the magic happens far outside the Desmos view window
+
+\section*{\textcolor{primary}{three}}
+
+\vocab{fourier series}.
+\[f(t) = \sum_{n = -\infty}^{\infty} F_n e^{jn\omega_0 t}\]
+where $\omega_0 = \dfrac{2\pi}{T}$
+
+\vocab{fourier coefficients}. can be complex
+\[F_n = \frac{1}{T} \int_T f(t) e^{\emf{-}jk\omega_0 t} dt\]
+
+\wrap for sinusoids, you should use zeger fetishes to turn them into $e^{jt}$'s, which fit nicely with the $n\omega_0$'s in the fourier series thingy.
+
+\begin{align*}
+  \vocab{trig form} & ~ \frac{1}{2} - \frac{1}{\pi} \sum_{n = 1}^\infty \frac{\sin(2\pi nt)}{n}                                                                 \\
+  \vocab{expt form} & ~ \frac{1}{2} + \frac{j}{2\pi} \sum_{n = 1}^\infty \frac{e^{j2\pi nt}}{n} + \frac{j}{2\pi} \sum_{n = -1}^{-\infty} \frac{e^{j2\pi nt}}{n}
+\end{align*}
+
+\begin{align*}
+  \vocab{time-shift property}     &  & f(t - t_0)                     & \leftrightarrow F_n e^{jn\omega_0 t_0}                                                             \\
+  \vocab{derivative property}     &  & f^\prime(t)                    & \leftrightarrow (jn\omega_0)F_n                                                                    \\
+  \vocab{multiplication property} &  & f(t) g(t)                      & \leftrightarrow \sum_{k = -\infty}^\infty F_k G_{n - k} ~ \note{\text{(discrete convolution sum)}} \\
+  \vocab{parseval's theorem}      &  & \frac{1}{T} \int_T |f(t)|^2 dt & \leftrightarrow \sum_{n = -\infty}^\infty |F_n|^2                                                  \\
+  \to                             &  & f^*(t)                         & \leftrightarrow F^*_{-n}
+\end{align*}
+
+\[X_n \to \vocab{$\boxed{H(\omega)}$} \to X_n \emf{H(n\omega_0)}\]
+
+don't forget that for $\sin$/$\cos$, most of the coefficients are 0, so can just deal with them manually
+
+also if you're getting a zero where you shouldn't, you probably made a sign error. redo it
+
+\wrap and don't forget that to find the magnitude of a complex number, square the \emf{components}, not $j$. ie you shouldn't be doing $j^2$. fool
+
+\heading{example fourier series}
+
+here are some EXAMPLES because screw derivation, using resources $>>>$
+
+\begin{tabular}{l | l}
+  \vocab{$f(t)$} & \vocab{$F_n$}                                                                                                                                      \\
+  \hline
+  $\cos (kt)$    & $F_{\pm 1} = \frac{1}{2}$, others $0$                                                                                                              \\
+  $\sin (kt)$    & $F_{-1} = \frac{1}{2j}$, $F_1 = -\frac{1}{2j}$, others $0$                                                                                         \\
+  $|\sin t|$     & $\frac{2}{\pi} - \frac{4}{\pi} \sum_{n = 1}^\infty \frac{\cos(2nt)}{4n^2 - 1} = \frac{2}{\pi} \sum_{n = -\infty}^\infty \frac{e^{2jnt}}{1 - 4n^2}$ \\
+  triangle wave* & $F_0 = \frac{1}{2}$, others $\frac{j}{2\pi n}$
+\end{tabular}
+
+*triangle wave is $f(t) = t$ between 0 and 1, and it repeats
+
+\section*{\textcolor{primary}{four}}
+
+\vocab{fourier transform} of \eq{f(t)}
+\[F(\omega) = \int_{-\infty}^\infty f(t) e^{\emf{-}j\omega t} dt\]
+
+\vocab{inverse fourier transform} of \eq{F(\omega)}
+\[f(t) = \emf{\frac{1}{2\pi}} \int_{-\infty}^\infty F(\omega) e^{j\omega t} d\omega\]
+
+\[X(\omega) \to \vocab{$\boxed{H(\omega)}$} \to X(\omega) \emf{H(\omega)}\]
+
+\[\sinc t = \frac{\sin t}{t} ~ \note{\text{(and $\sinc 0 = 1$)}}\]
+
+$\rect$ is a unit square (so it's 1 between $-\frac{1}{2}$ and $\frac{1}{2}$)
+
+if
+\[\delta(t) \to \vocab{$\boxed{H(\omega)}$} \to h(t)\]
+then
+\[x(t) \to \vocab{$\boxed{H(\omega)}$} \to \int_{-\infty}^\infty h(\tau) x(t - \tau) d\tau ~ \note{\text{(convolution integrals)}}\]
+
+\[\int_{-\infty}^\infty x(t) \delta(t - t_0) dt = x(t_0)\]
+spencer covered this. $x(t) \delta(t - t_0)$ is a dirac delta with area $x(t_0)$
+
+zeger says $u(0)$ can be 0 or 1 but he initially defined it to be 0 (and then graphed it at 1??)
+
+\begin{align*}
+  \rect(\frac{t}{t_0})  & \leftrightarrow t_0 \sinc(\frac{\omega t_0}{2})                                         \\
+  \delta(t)             & \leftrightarrow 1                                                                       \\
+  1                     & \leftrightarrow 2 \pi \delta(t)                                                         \\
+  f(t - t_0)            & \leftrightarrow F(\omega) e^{-j\omega t_0} ~ \text{\note{(SHIFT TIME/FREQUENCY!!!!!!)}} \\
+  f(t) e^{j \omega_0 t} & \leftrightarrow F(\omega - \omega_0)
+\end{align*}
+
+camel recommends using a \href{https://ethz.ch/content/dam/ethz/special-interest/baug/ibk/structural-mechanics-dam/education/identmeth/fourier.pdf}{table (THIS IS A LINK)} for these
+
+\section*{\textcolor{primary}{five}}
+
+\vocab{duality/symmetry property}
+\[F(t) \leftrightarrow 2\pi f(-\omega)\]
+
+\vocab{time derivative}
+\begin{align*}
+  \frac{df(t)}{dt} & \leftrightarrow j\omega F(\omega)                  \\
+  -jt f(t)         & \leftrightarrow \frac{dF(\omega)}{d\omega}         \\
+  t f(t)           & \leftrightarrow j \cdot \frac{dF(\omega)}{d\omega}
+\end{align*}
+
+\vocab{convolution}
+\begin{align*}
+  x(t) * y(t)
+   & = \int_{-\infty}^\infty x(\tau) y(t - \tau) d\tau \\
+   & = \int_{-\infty}^\infty x(t - \tau) y(\tau) d\tau \\
+\end{align*}
+
+\begin{align*}
+  f(t) * \under{g(t)}{impulse response}   & \leftrightarrow F(\omega) G(\omega)                                                                                                            \\
+  f(t) g(t)                               & \leftrightarrow \frac{1}{2\pi} F(\omega) * G(\omega)                                                                                           \\
+  X^*(t)                                  & \leftrightarrow X^*(\emf{-}\omega) ~ \note{\text{signals don't have to be real}}                                                               \\
+  X(-\omega)                              & = X^*(\omega) ~ \text{ONLY if \eq{x(t)} real!!}                                                                                                \\
+  f(-t)                                   & \leftrightarrow F(-\omega) ~ \vocab{time reversal}                                                                                             \\
+  x(t)\text{ real, even}                  & \leftrightarrow X(\omega)\text{ real, even}                                                                                                    \\
+  x(t)\text{ real, odd}                   & \leftrightarrow X(\omega)\text{ purely imaginary (i.e. \eq{Re[X(\omega)] = 0}), odd}                                                           \\
+  \int_{-\infty}^\infty |\emf{f(t)}|^2 dt & = \frac{1}{2\pi} \int_{-\infty}^\infty |\emf{F(\omega)}|^2 d\omega ~ \vocab{parseval's theorem for fourier transforms}                         \\
+  f(\emf{a}t)                             & \leftrightarrow \frac{1}{|\emf{a}|} F(\frac{\omega}{\emf{a}}) ~ \text{\vocab{time scaling} \note{(squishing function $\to$ higher frequency)}}
+\end{align*}
+
+\vocab{parseval's theorem for fourier transforms}
+\[\int_{-\infty}^\infty |\emf{f(t)}|^2 dt = \frac{1}{2\pi} \int_{-\infty}^\infty |\emf{F(\omega)}|^2 d\omega\]
+
+some more examples:
+\begin{align*}
+  \cos(\omega_0 t)  & \leftrightarrow \pi \delta(\omega - \omega_0) + \pi \delta(\omega + \omega_0)                     \\
+  \sin(\omega_0 t)  & \leftrightarrow \frac{\pi}{j} \delta(\omega - \omega_0) - \frac{\pi}{j} \delta(\omega + \omega_0) \\
+  \sinc(\omega_0 t) & \leftrightarrow \frac{\pi}{\omega_0} \rect\left(\frac{\omega}{2\omega_0}\right)                   \\
+  e^{-at} u(t)      & \leftrightarrow \frac{1}{a + j\omega} ~ \note{\text{(for $a > 0$)}}                               \\
+  \frac{1}{a + jt}  & \leftrightarrow 2\pi e^{a\omega} u(-\omega)
+\end{align*}
+
+some things from god spencer:
+\begin{itemize}
+  \item if they pass \eq{\delta(t)} into system, they're giving you \eq{h(t)}! i.e. the entire system
+        \[\delta(t) \to \textcolor{blue}{\boxed{H(\omega)}} \to h(t)\]
+        so $h(t) \leftrightarrow H(\omega)$ and $y(t) = x(t) * h(t)$ (a convolution) $\leftrightarrow X(\omega)H(\omega)$
+  \item ``diagram'' refers to the $x(t) \to \boxed{H(\omega)} \to y(t)$ things
+  \item when multiplying rect funcs, take their intersection
+\end{itemize}
+\begin{align*}
+  \sin x \cos y              & = \frac{1}{2}(\sin(x + y) + \sin(x - y))                              \\
+  x(t) * \delta(t - \emf{a}) & = x(t - \emf{a})                                                      \\
+  (Ax(t) + By(t)) * z(t)     & = Ax(t) * z(t) + By(t) * z(t) ~ \note{\text{linearity of convlution}}
+\end{align*}
+
+\emf{tip} don't forget that cosine is even $\cos t = \cos(-t)$ and sine is odd $-\sin t = \sin(-t)$!!!
+
+\section*{\textcolor{primary}{six}}
+
+\[e^{j\omega t} \to \textcolor{blue}{\boxed{h(t)}} \to e^{j\omega t} \textcolor{blue}{H(\omega)}\]
+
+convolution is commutative, distributive, associative
+
+\vocab{shift} property---$f(t - t_1) * h(t - t_2) = y(t - t_1 - t_2)$
+
+\vocab{derivative} property---$y^\prime(t) = f^\prime(t) * h(t) = f(t) * h^\prime(t)$, so $y^{\prime\prime}(t) = f^\prime(t) * h^\prime(t)$
+
+because commutative, order doesn't matter: $Y(\omega) = X(\omega) G(\omega) H(\omega)$
+\[x(t) \to \textcolor{blue}{\boxed{g(t)}} \to \textcolor{blue}{\boxed{h(t)}} \to y(t) = x(t) * g(t) * h(t)\]
+
+\[x(t) * \delta(t - t_0) = x(t - t_0)\]
+$\delta(t)$ acts as ``identity'' element
+
+\[f(t) \cos(\omega_0 t) \leftrightarrow \frac{1}{2} F(\omega - \omega_0) + F(\omega + \omega_0)\]
+
+\heading{convolution examples}
+
+\wrap convolving two squares (side 1, lower left origin) $f(t) = h(t) = \rect\left(t - \frac{1}{2}\right)$ produces a triangle (base 2, height 1, lower left origin) \[\rect\left(t - \frac{1}{2}\right) * \rect\left(t - \frac{1}{2}\right) = \begin{cases}
+    t     & \text{if} ~ 0 < t < 1 \\
+    2 - t & \text{if} ~ 1 < t < 2 \\
+    0     & \text{else}
+  \end{cases}\]
+
+\wrap convolving $x(t) = e^{-\emf{a}t} u(t)$, $h(t) = e^{-\emf{b}t} u(t)$ (downwards exponentials only for positive $t$) where \eq{a}, \eq{b} $> 0$ makes
+\[y(t) = \begin{cases}
+    \frac{e^{-at} - e^{-bt}}{b - a} \cdot u(t) & \text{if}~ a \neq b \\
+    te^{-bt} u(t)                              & \text{if}~ a = b
+  \end{cases}\]
+
+\wrap convolving $f(t) = A \rect\left(\frac{t}{2t_0}\right)$ (rectangle of height $A$ centred around origin from $-t_0$ to $t_0$) with itself produces triangle $g(t)$ centered around origin from $-2t_0$ to $2t_0$ w/ height $2A^2t_0$
+\[g(t) \leftrightarrow G(\omega) = F^2(\omega) = 4A^2t_0^2 \sinc^2(\omega t_0)\]
+
+fourier transform of fourier series
+\[f(t) = \sum_{n = -\infty}^\infty F_n e^{jn\omega_0 t} \leftrightarrow F(\omega) = \sum_{n = -\infty}^\infty F_n \cdot \emf{2\pi \delta}(\omega - n\underbrace{\omega_0}_{\frac{2\pi}{T}})\]
+sum of deltas w/ coeffs $2\pi F_n$, ``discrete''
+
+\wrap fourier transform of impulse $s(t)$ (inf sum of equally spaced deltas w/ equal area, maybe starting at 0):
+\[s(t) = \sum_{n = -\infty}^\infty \delta(t - n\emf{T}) = S(\omega) = \emf{\omega_0} \sum_{n = -\infty}^\infty \delta(\omega - n\underbrace{\emf{\omega_0}}_{\frac{2\pi}{\emf{T}}})\]
+
+\wrap from god spencer: to convolve, take one func (the ``simpler'' one, eg with more constants), flip it, then slide it along other func. @ every pt where smth changes, multiply the functions
+
+\wrap convolving $h(t)$, a triangle that's $h(t) = t$ only for $0 < t < 1$ and 0 elsewhere, with $u(t)$ produces
+\[y(t) = \begin{cases}
+    0             & t < 0     \\
+    \frac{t^2}{2} & 0 < t < 1 \\
+    \frac{1}{2}   & t > 1
+  \end{cases}\]
+
+\wrap and if a different $h_2(t)$ can be expressed in terms of an $h(t)$ we know, then can use convolution properties (above) to avoid doing integral bleh again
+
+\wrap don't forget about $Y(\omega) = X(\omega) H(\omega)$, and if finding a specific $y(t_0)$ then can just do $y(t_0) = \int_{-\infty}^\infty x(t_0 - \tau) h(\tau) d\tau$ directly \note{(this is actually useful)}
+
+\section*{\textcolor{primary}{seven}}
+
+\[\textcolor{blue}{S(\omega)} = \emf{\omega_s} \sum_{n = -\infty}^\infty \delta(\omega - n\emf{\omega_s})\]
+where \eq{T_s} sampling period, $\emf{\omega_s} = \frac{2\pi}{T_s}$ sampling frequency
+
+if you sample \eq{x(t)} at integer multiples of period \eq{T_s} it produces \eq{y(t) = x(t) s(t)}, whose fourier transform is
+\[\textcolor{blue}{Y(\omega)} = \frac{1}{\emf{T_s}} \sum_{n = -\infty}^\infty X(\omega - n\emf{\omega_s}) ~ \note{\text{(FOURIER TRANSFORM OF $x(t) s(t)$)}}\]
+
+there are also block diagrams but i don't know how to draw that in latex
+\begin{align*}
+  \emf{x(t)} \to & \,\textcolor{blue}{\bigotimes} \to \textcolor{blue}{\boxed{h(t)}} \to \emf{z(t)} \\
+                 & \uparrow                                                                         \\
+                 & \emf{s(t)}
+\end{align*}
+
+\begin{tabular}{ l|l }
+  \vocab{omega} & \vocab{what it means}                    \\
+  \hline
+  \eq{\omega_s} & sampling frequency                       \\
+  \eq{\omega_c} & cutoff frequencies of low-pass filter    \\
+  \eq{\omega_m} & maximum frequency for bandlimited thingy
+\end{tabular}
+
+so the reconstruction filter \eq{H(\omega)} (an ideal LPF) would be a rect from \eq{-\omega_c} to \eq{\omega_c}
+
+\emf{tip} from discussion: if a func is periodic, use its fourier coefficients
+
+for fourier coefficients, \eq{Y_n = X_n H(2\pi n)} (plug into fourier series formula)
+
+ahhhh
+
+careful! \eq{y(t)}/\eq{Y(\omega)} sometimes means \eq{x(t) s(t)}, sometimes means output of the lti system
+
+\section*{\textcolor{primary}{eight}}
+
+really hope there's no am radio stuff on the quiz \dots
+
+when finding fourier transform of a func being multiplied by a cos/sin, that's okay. it turns into deltas which are nice
+
+\section*{\textcolor{primary}{nine}}
+
+la place transforms!
+
+conventional names: $z = \under{\sigma}{real} + j\under{\omega}{imag component} \in \mathbb{C}$
+
+for determining whether an exponential explodes or converges,
+\[\lim_{t \to \infty} e^{\emf{z}t} = \begin{cases}
+    0                & \text{if} ~ \emf{\sigma} < 0 \\
+    \infty           & \text{if} ~ \emf{\sigma} > 0 \\
+    \text{undefined} & \text{if} ~ \emf{\sigma} = 0 \\
+  \end{cases}\]
+\[X(s) = \int_{-\infty}^\infty x(t) e^{-st} dt\]
+\eq{X(j\omega)} is fourier transf \note{(imaginary axis of $s$-plane)}
+
+these are FOURIER transforms:
+\begin{align*}
+  e^{-t} u(t) & \leftrightarrow \frac{1}{1 + j\omega} \\
+  e^t u(t)    & \leftrightarrow \text{nothing}
+\end{align*}
+but these are the tasty LAPLACE transforms:
+\begin{align*}
+  e^{-\emf{a}t} u(t)   & \leftrightarrow \frac{1}{s + \emf{a}}             & \roc & \re(s) > \re(-\emf{a})                & \note{\emf{a} \in \mathbb{C}}                   \\
+  -e^{-\emf{a}t} u(-t) & \leftrightarrow \frac{1}{s + \emf{a}}             & \roc & \re(s) < \re(-\emf{a})                                                                  \\
+  u(t)                 & \leftrightarrow \frac{1}{s}                       & \roc & \re(s) > 0                                                                              \\
+  -u(-t)               & \leftrightarrow \frac{1}{s}                       & \roc & \re(s) < 0                                                                              \\
+  \sin(\emf{a} t) u(t) & \leftrightarrow \frac{\emf{a}}{s^2 + \emf{a}^2}   & \roc & \re(s) > 0                            & \note{\emf{a} \in \mathbb{R}}                   \\
+  \cos(\emf{a} t) u(t) & \leftrightarrow \frac{s}{s^2 + \emf{a}^2}         & \roc & \re(s) > 0                                                                              \\
+  \delta(t)            & \leftrightarrow 1                                 & \roc & \, \text{all of $\mathbb{C}$}                                                           \\
+  e^{-\emf{a}|t|}      & \leftrightarrow \frac{-2\emf{a}}{s^2 - \emf{a}^2} & \roc & -\re(\emf{a}) < \re(s) < \re(\emf{a}) & \note{\emf{a} \in \mathbb{C}, \re(\emf{a}) > 0} \\
+\end{align*}
+ROC only cares about real component (so it's composed of vertical lines), and it doesn't include poles
+
+if ROC goes to $-\infty$, anti-causal/left-sided; to $\infty$, causal/right-sided; otherwise, if bounded between poles, 2-sided
+
+\heading{properties}
+\begin{align*}
+  \vocab{linearity}          &  & \emf{a} x(t) + \emf{b} y(t) & \leftrightarrow \emf{a} X(s) + \emf{b} Y(s) ~ \note{\text{(coefficients complex)}} \\
+  \vocab{derivative}         &  & -tx(t)                      & \leftrightarrow \frac{dX(s)}{ds} ~ \note{\text{(same ROC)}}                        \\
+                             &  & t^{\emf{n}} x(t)            & \leftrightarrow (-1)^{\emf{n}} \under{X^{(\emf{n})}}{$n$th derivative} (s)         \\
+  \vocab{shift in frequency} &  & e^{\emf{a}t} x(t)           & \leftrightarrow X(s - \emf{a})                                                     \\
+  \vocab{shift in time}      &  & x(t - \emf{a})              & \leftrightarrow e^{-\emf{a}s} X(s)
+\end{align*}
+
+partial fractions (for inverse LTs): to find \eq{A}, multiply both sides by denominator, plug in \eq{s} to make others zero
+\note{\[\frac{1}{(s + 2)(s - 1)} = \frac{A}{s + 2} + \frac{B}{s - 1} \to \frac{s + 2}{(s + 2)(s - 1)} = \frac{A(s + 2)}{s + 2} + \frac{B(s + 2)}{s - 1}, s = -2\]}
+if factor is squared, differentiate then plug in \eq{s}
+
+\emf{tip}: use derivative property to turn squares back into fractions, which can use for inverse LTs
+\[\under{t e^{-\emf{a}}}{causal}, \under{-t e^{-\emf{a} t} u(-t)}{anticausal} \leftrightarrow \frac{1}{(s + \emf{a})^2}\]
+\emf{tip}: if know \eq{\sigma}, multiply func by $e^{-\emf{\sigma} t}$ and see if it blows up as $t \to -\infty$ or $\infty$ (if so, doesn't converge)
+
+\end{document}

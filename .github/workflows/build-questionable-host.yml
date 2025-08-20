@@ -1,0 +1,105 @@
+name: Build and release Questionable Host CLI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          cargo install --git https://github.com/cross-rs/cross.git cross --rev e281947ca900da425e4ecea7483cfde646c8a1ea
+          mkdir -p output
+
+          targets=(
+            "aarch64-linux-android"
+            "x86_64-unknown-linux-gnu"
+            "aarch64-unknown-linux-gnu"
+          )
+          for target in "${targets[@]}"; do
+            cross build -p questionable-host --release --target "$target"
+            mv "target/$target/release/questionable-host" "output/questionable-host-$target"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: output/*
+  prep-for-windows:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-prep
+          path: |
+            questionable-host/
+            src/
+            Cargo.lock
+            Cargo.toml
+  build-windows:
+    needs:
+      - prep-for-windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: windows-prep
+      - name: Build
+        run: cargo build -p questionable-host --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: target/release/questionable-host.exe
+  release:
+    needs:
+      - build-linux
+      - build-windows
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+      - name: Get release version
+        run: echo "VERSION=$(cargo pkgid | cut -d "#" -f2 | cut -d "@" -f2)" >> $GITHUB_ENV
+      - name: Bump version and push tag
+        run: |
+          git tag -a "questionable-host-${{ env.VERSION }}" -m "questionable host ${{ env.VERSION }}" || true
+          git push --tags || true
+      - name: Produce output
+        run: |
+          ls -R
+          mkdir output
+          mv windows/questionable-host.exe output/questionable-host-x86_64-pc-windows-msvc.exe
+          mv linux/* output/
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: questionable-host-${{ env.VERSION }}
+          body: |
+            ## Installation
+
+            it depends...
+
+            ### Android (Termux)
+
+            ```sh
+            curl -L "https://github.com/SheepTester/hello-world/releases/download/questionable-host-${{ env.VERSION }}/questionable-host-aarch64-linux-android" > questionable-host
+            chmod +x questionable-host
+            ```
+
+            ### Linux, x86
+
+            ```sh
+            curl -L "https://github.com/SheepTester/hello-world/releases/download/questionable-host-${{ env.VERSION }}/questionable-host-x86_64-unknown-linux-gnu" > questionable-host
+            chmod +x questionable-host
+            ```
+
+            ## What's changed?
+
+            no fucking clue
+          files: output/*

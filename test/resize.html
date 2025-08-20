@@ -1,0 +1,12 @@
+<title>does the browser call resize before printing?</title>
+<meta name=description content="sdfsdf">
+<p id=resize>window resize hasn't been called yet</p>
+<p id=ro>resizeobserver hasn't been called yet</p>
+<script>
+  window.onresize = () => resize.textContent = `width: ${window.innerWidth} ; height: ${window.innerHeight}`
+
+  new ResizeObserver(([{ contentBoxSize }]) => {
+    const [{ blockSize, inlineSize }] = contentBoxSize
+    ro.textContent = `width: ${inlineSize} ; height: ${blockSize}`
+  }).observe(document.body)
+</script>

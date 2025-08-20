@@ -1,4 +1,24 @@
 # hello-world
+
+![imao](./test/hello-gamers.svg)
+
+## RULES FOR CONTRIBUTING
+
+> [!TIP]
+> i really like  cake
+
+> [!NOTE]
+> there was a
+
+> [!IMPORTANT]
+> it was sunny today
+
+> [!CAUTION]
+> i suggest you try number 3. it is very sweet and not too spicy
+
+> [!WARNING]
+> you can push off reading the rest of this if you want
+
 Innocent first test.
 
 I have no idea why I exist or why I'm here.
@@ -9,20 +29,22 @@ TestEdit
 
 dummy edit
 
-yet anotre
+yet anotre `#badBAD`
+
+commit for camel @wandwan
 
 #### High school graduation year conversion table
 
 The grades listed here are for the 2020–2021 school year.
 
-Grade | Graduation year
------ | ---------------
- 7th  | 2026
- 8th  | 2025
- 9th  | 2024
-10th  | 2023
-11th  | 2022
-12th  | 2021
+| Grade | Graduation year |
+| ----- | --------------- |
+| 7th   | 2026            |
+| 8th   | 2025            |
+| 9th   | 2024            |
+| 10th  | 2023            |
+| 11th  | 2022            |
+| 12th  | 2021            |
 
 ### Scraping sections from IC
 
@@ -35,3 +57,158 @@ Grade | Graduation year
 5. Run it. `node sections-analysement.js`
 
 6. Run `node teacher-periods.js`.
+
+## [creating diagrams](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams)
+
+Here is a simple flow chart:
+
+$$
+\DeclareMathOperator{\half}{half}
+\DeclareMathOperator{\Div}{div}
+\DeclareMathOperator{\Mod}{mod}
+\DeclareMathOperator{\base}{base}
+\begin{align*}
+  \Div'          & : \mathbb{N} \times \mathbb{N} \times \mathbb{Z}^+ \to \mathbb{N}    \\
+  \Div'(q, n, d) & = \begin{cases}
+                       \Div'(q + 1, n - d, d) & \text{if } n \ge d \\
+                       q                      & \text{otherwise}
+                     \end{cases} \\
+  \\
+  \Div           & : \mathbb{N} \times \mathbb{Z}^+ \to
+  \mathbb{N}                                                           \\
+  \Div(n, d)     & = \Div'(0, n, d) \\
+  \\
+  \Mod       & : \mathbb{N} \times \mathbb{Z}^+ \to
+  \mathbb{N}                                   \\
+  \Mod(n, d) & = n - d \cdot \Div(n, d) \\
+  \\
+  \base'          & : E_b' \times \mathbb{N} \times B \to E_b           \\
+  \base'(a, q, b) & = \begin{cases}
+                        \base'(\Mod(q, b) \circ a, \Div(q, b), b) &
+                        \text{if } q \neq 0                         \\
+                        a                                         &
+                        \text{otherwise}
+                      \end{cases} \\
+  \\
+  \base           & : \mathbb{N} \times B \to E_b                       \\
+  \base(n, b)     & = \begin{cases}
+                        0                     & \text{if } n = 0 \\
+                        \base'(\lambda, n, b) & \text{otherwise}
+                      \end{cases}
+\end{align*}
+$$
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
+```geojson
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 1,
+      "properties": {
+        "ID": 0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-90, 35],
+            [-90, 30],
+            [-85, 30],
+            [-85, 35],
+            [-90, 35]
+          ]
+        ]
+      }
+    }
+  ]
+}
+```
+
+```topojson
+{
+  "type": "Topology",
+  "transform": {
+    "scale": [0.0005000500050005, 0.00010001000100010001],
+    "translate": [100, 0]
+  },
+  "objects": {
+    "example": {
+      "type": "GeometryCollection",
+      "geometries": [
+        {
+          "type": "Point",
+          "properties": { "prop0": "value0" },
+          "coordinates": [4000, 5000]
+        },
+        {
+          "type": "LineString",
+          "properties": { "prop0": "value0", "prop1": 0 },
+          "arcs": [0]
+        },
+        {
+          "type": "Polygon",
+          "properties": { "prop0": "value0", "prop1": { "this": "that" } },
+          "arcs": [[1]]
+        }
+      ]
+    }
+  },
+  "arcs": [
+    [
+      [4000, 0],
+      [1999, 9999],
+      [2000, -9999],
+      [2000, 9999]
+    ],
+    [
+      [0, 0],
+      [0, 9999],
+      [2000, 0],
+      [0, -9999],
+      [-2000, 0]
+    ]
+  ]
+}
+```
+
+```stl
+solid cube_corner
+  facet normal 0.0 -1.0 0.0
+    outer loop
+      vertex 0.0 0.0 0.0
+      vertex 1.0 0.0 0.0
+      vertex 0.0 0.0 1.0
+    endloop
+  endfacet
+  facet normal 0.0 0.0 -1.0
+    outer loop
+      vertex 0.0 0.0 0.0
+      vertex 0.0 1.0 0.0
+      vertex 1.0 0.0 0.0
+    endloop
+  endfacet
+  facet normal -1.0 0.0 0.0
+    outer loop
+      vertex 0.0 0.0 0.0
+      vertex 0.0 0.0 1.0
+      vertex 0.0 1.0 0.0
+    endloop
+  endfacet
+  facet normal 0.577 0.577 0.577
+    outer loop
+      vertex 1.0 0.0 0.0
+      vertex 0.0 1.0 0.0
+      vertex 0.0 0.0 1.0
+    endloop
+  endfacet
+endsolid
+```

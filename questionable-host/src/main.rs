@@ -1,0 +1,221 @@
+use std::{
+    collections::HashMap,
+    env::{args, var},
+    fs::read_to_string,
+    io::ErrorKind,
+    process::exit,
+    sync::Arc,
+};
+
+use dialoguer::{Input, Password, theme::ColorfulTheme};
+use indicatif::{ProgressBar, ProgressStyle};
+use reqwest::{Client, Response};
+use tokio::{
+    fs::{File, create_dir_all, write},
+    io::stdout,
+};
+
+use crate::{
+    load::{download_concat, download_inode, download_linked_list, upload},
+    util::MyResult,
+};
+
+mod load;
+mod util;
+
+fn get_cookie(response: &Response, cookie_name: &str) -> Option<String> {
+    for header_value in response.headers().get_all("set-cookie") {
+        if let Some((cookie, _)) = header_value
+            .to_str()
+            .ok()
+            .and_then(|set_cookie| set_cookie.split_once(';'))
+        {
+            if cookie.starts_with(cookie_name) {
+                return Some(
+                    cookie
+                        .replace(&format!("{cookie_name}="), "")
+                        .replace("\"", ""),
+                );
+            }
+        }
+    }
+    None
+}
+
+const EMOJI_OFFSET: u32 = '🌀' as u32 - '\0' as u32;
+async fn set_if_absent<F>(entry_name: &str, get_value: F) -> MyResult<String>
+where
+    F: FnOnce() -> MyResult<String>,
+{
+    let path = format!("{}/.config/questionable-host/.{entry_name}", var("HOME")?);
+    match read_to_string(&path) {
+        Ok(value) => Ok(value
+            .chars()
+            .map(|c| char::from_u32(c as u32 - EMOJI_OFFSET).unwrap_or('\u{fffd}'))
+            .collect()),
+        Err(err) if err.kind() == ErrorKind::NotFound => {
+            let value = get_value()?;
+            write(
+                &path,
+                value
+                    .chars()
+                    .map(|c| char::from_u32(c as u32 + EMOJI_OFFSET).unwrap_or('\u{fffd}'))
+                    .collect::<String>(),
+            )
+            .await?;
+            Ok(value)
+        }
+        Err(err) => Err(err)?,
+    }
+}
+
+async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
+    let home = var("HOME")?;
+    create_dir_all(format!("{home}/.config/questionable-host/")).await?;
+    let session_id_path = format!("{home}/.config/questionable-host/.scratchsessionsid");
+    let mut session_id = match read_to_string(&session_id_path) {
+        Ok(password) => Some(password),
+        Err(err) if err.kind() == ErrorKind::NotFound => None,
+        Err(err) => Err(err)?,
+    };
+    Ok(loop {
+        if session_id.is_none() {
+            let Some(csrftoken) = get_cookie(
+                &client
+                    .get("https://scratch.mit.edu/csrf_token/")
+                    .send()
+                    .await?,
+                "scratchcsrftoken",
+            ) else {
+                eprintln!("Failed to get CSRF token. This is bad.");
+                exit(1);
+            };
+
+            let username = set_if_absent("name", || {
+                Ok(Input::with_theme(&ColorfulTheme::default())
+                    .with_prompt("Username")
+                    .interact_text()?)
+            })
+            .await?;
+            let password = set_if_absent("display_name", || {
+                Ok(Password::with_theme(&ColorfulTheme::default())
+                    .with_prompt("Password")
+                    .interact()?)
+            })
+            .await?;
+
+            let mut body = HashMap::new();
+            body.insert("username", username);
+            body.insert("password", password);
+            let response = client
+                .post("https://scratch.mit.edu/accounts/login/")
+                .header("referer", "https://scratch.mit.edu/")
+                // you need both
+                .header("cookie", format!("scratchcsrftoken=\"{csrftoken}\""))
+                .header("x-csrftoken", csrftoken)
+                // apparently necessary
+                .header("x-requested-with", "XMLHttpRequest")
+                .json(&body)
+                .send()
+                .await?;
+            if !response.status().is_success() {
+                eprintln!(
+                    "Failed to log in. HTTP {} error: {}",
+                    response.status(),
+                    response.text().await?
+                );
+                continue;
+            }
+            let Some(scratchsessionsid) = get_cookie(&response, "scratchsessionsid") else {
+                eprintln!("Scratch didn't seem to send a session ID. Weird.");
+                continue;
+            };
+            session_id = Some(
+                scratchsessionsid
+                    .replace("scratchsessionsid=\"", "")
+                    .replace("\"", ""),
+            )
+        }
+        if let Some(session_id_val) = &session_id {
+            let response = client
+                .get("https://scratch.mit.edu/session/")
+                .header("referer", "https://scratch.mit.edu/")
+                .header("cookie", format!("scratchsessionsid=\"{session_id_val}\""))
+                .header("x-requested-with", "XMLHttpRequest")
+                .send()
+                .await?;
+            if !response.status().is_success() {
+                eprintln!(
+                    "Session ID seems to be invalid. HTTP {} error: {}",
+                    response.status(),
+                    response.text().await?
+                );
+                session_id = None;
+            }
+        }
+        if let Some(session_id) = session_id {
+            write(&session_id_path, &session_id).await?;
+            break session_id;
+        }
+    })
+}
+
+#[tokio::main]
+async fn main() -> MyResult<()> {
+    let client = Arc::new(Client::new());
+    let mut args = args();
+    let executable_name = args
+        .next()
+        .unwrap_or_else(|| String::from("questionable-host"));
+    let (Some(operation), Some(argument), None) = (args.next(), args.next(), args.next()) else {
+        eprintln!("Questionable Host CLI v{}", env!("CARGO_PKG_VERSION"));
+        eprintln!("$ {executable_name} upload <path>");
+        eprintln!("$ {executable_name} download <hash> > <path>");
+        exit(1);
+    };
+
+    let bar = ProgressBar::new(1).with_style(
+        ProgressStyle::default_bar()
+            .template("[{elapsed_precise}] {wide_bar:.cyan/blue} {decimal_bytes} / {decimal_total_bytes} ({decimal_bytes_per_sec}) ")?,
+    );
+    let handle_progress = {
+        let bar = bar.clone();
+        move |progress, total| {
+            bar.set_position(progress as u64);
+            bar.set_length(total as u64);
+        }
+    };
+    match operation.as_str() {
+        "upload" => {
+            let session_id = get_scratch_sessions_id(&client).await?;
+            let mut file = File::open(argument).await?;
+            let hash = upload(client, &mut file, &session_id, handle_progress).await?;
+            bar.finish();
+            println!("{hash}");
+        }
+        "download" => {
+            if argument.starts_with('i') {
+                download_inode(client, &argument[1..], stdout(), handle_progress).await?;
+            } else if argument.contains('.') {
+                let mut hashes = argument.split('.').collect::<Vec<_>>();
+                if let Some(ext) = hashes.pop() {
+                    if ext.len() > 10 {
+                        eprintln!(
+                            "Warning: '{ext}' is treated as a file extension and will be ignored."
+                        )
+                    }
+                }
+                download_concat(client, &hashes, stdout(), handle_progress).await?;
+            } else {
+                download_linked_list(&client, &argument, stdout(), handle_progress).await?;
+            }
+            bar.finish();
+        }
+        _ => {
+            eprintln!("Unsupported operation '{operation}'.");
+            exit(1)
+        }
+    }
+
+    Ok(())
+}

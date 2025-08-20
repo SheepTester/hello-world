@@ -1,0 +1,53 @@
+name: Build Jekyll site
+on:
+  push:
+    branches: master
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Delete files
+        run: |
+          mv LICENSE LICENSE.md
+
+          rm test/*.oof
+          node --experimental-strip-types .github/workflows/remove-files.mts DELETE
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Build
+        uses: actions/jekyll-build-pages@v1
+      - name: Create sitemap.txt
+        run: |
+          # Jekyll is apparently required to run as root, so _site ends up being owned by root and thus read-only
+          # https://github.com/actions/jekyll-build-pages/issues/18
+          cp -r _site _site2
+
+          find _site2/ -type f -print0 | \
+            while IFS= read -r -d '' file; do
+              url_path=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "${file#_site2/}")
+              echo "https://sheeptester.github.io/hello-world/$url_path"
+            done > _site2/sitemap.txt
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './_site2'
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}

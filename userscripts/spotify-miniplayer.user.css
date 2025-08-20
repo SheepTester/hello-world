@@ -1,0 +1,16 @@
+/* ==UserStyle==
+@name           spotify mini player
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    force the small pip mini player to show for non premium users
+@author         Me
+==/UserStyle== */
+
+@-moz-document regexp("about:blank") {
+    .U7qJ1UbUI0C76xXqYVQY {
+        display: none;
+    }
+    [data-testid="document-pip-hover-element"] {
+        opacity: 1;
+    }
+}
