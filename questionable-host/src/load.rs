@@ -80,17 +80,9 @@ pub async fn upload(
     client: Arc<Client>,
     file: &mut File,
     scratch_sessions_id: &str,
-    on_progress: impl Fn(usize, usize) + Clone + Send + Sync + 'static,
+    on_progress: impl Fn(usize) + Clone + Send + Sync + 'static,
 ) -> MyResult<String> {
     let size = file.metadata().await?.len() as usize;
-    on_progress(0, size);
-    let uploaded = Arc::new(AtomicUsize::new(0));
-    let handle_progress = move |bytes_uploaded| {
-        on_progress(
-            uploaded.fetch_add(bytes_uploaded, Ordering::Relaxed) + bytes_uploaded,
-            size,
-        );
-    };
 
     if size <= MAX_SIZE {
         let mut buffer = Vec::new();
@@ -99,7 +91,7 @@ pub async fn upload(
             client,
             buffer,
             String::from(scratch_sessions_id),
-            handle_progress.clone(),
+            on_progress.clone(),
         );
         future.await?;
         return Ok(format!("{hash:x}."));
@@ -132,7 +124,7 @@ pub async fn upload(
             client.clone(),
             buffer,
             String::from(scratch_sessions_id),
-            handle_progress.clone(),
+            on_progress.clone(),
         );
         parts.push((hash, spawn(future)));
     }
@@ -150,7 +142,7 @@ pub async fn upload(
         client,
         main_chunk,
         String::from(scratch_sessions_id),
-        handle_progress,
+        on_progress,
     );
     future.await?;
 
@@ -165,7 +157,8 @@ pub async fn download_inode(
     client: Arc<Client>,
     hash: &str,
     mut output: impl AsyncWrite + Unpin,
-    on_progress: impl Fn(usize, usize) + Send + Clone + 'static,
+    on_progress: impl Fn(usize) + Send + Clone + 'static,
+    on_total_size: impl Fn(usize),
 ) -> MyResult<()> {
     let response = client
         .get(format!("{SERVER}internalapi/asset/{hash}.wav/get/"))
@@ -196,8 +189,7 @@ pub async fn download_inode(
         (&mut bytes[1..]).copy_from_slice(&header[6..9]);
         bytes
     }) as usize;
-    let downloaded = Arc::new(AtomicUsize::new(0));
-    on_progress(0, file_size);
+    on_total_size(file_size);
 
     let mut handles = Vec::new();
     for _ in 0..hash_count {
@@ -205,7 +197,6 @@ pub async fn download_inode(
         stream.read_exact(&mut hash).await?;
         let client = client.clone();
         let on_progress = on_progress.clone();
-        let downloaded = downloaded.clone();
         handles.push(spawn(async move {
             let response = client
                 .get(format!(
@@ -224,10 +215,7 @@ pub async fn download_inode(
             let mut stream = response.bytes_stream();
             let mut buffer = Vec::new();
             while let Some(chunk) = stream.try_next().await? {
-                on_progress(
-                    downloaded.fetch_add(chunk.len(), Ordering::Relaxed) + chunk.len(),
-                    file_size,
-                );
+                on_progress(chunk.len());
                 buffer.extend(chunk);
             }
             Ok::<Vec<u8>, BoxedError>(buffer)
@@ -238,10 +226,7 @@ pub async fn download_inode(
         (stream, None) => stream.boxed(),
     };
     while let Some(chunk) = stream.try_next().await? {
-        on_progress(
-            downloaded.fetch_add(chunk.len(), Ordering::Relaxed) + chunk.len(),
-            file_size,
-        );
+        on_progress(chunk.len());
         output.write_all(&chunk).await?;
     }
     for handle in handles {
@@ -255,11 +240,11 @@ pub async fn download_linked_list(
     client: &Client,
     hash: &str,
     mut output: impl AsyncWrite + Unpin,
-    on_progress: impl Fn(usize, usize),
+    on_progress: impl Fn(usize),
+    on_total_size: impl Fn(usize),
 ) -> MyResult<()> {
     let mut next_hash = Some(String::from(hash));
     let mut total_size = 0;
-    let mut downloaded = 0;
 
     while let Some(hash) = next_hash {
         let response = client
@@ -286,14 +271,16 @@ pub async fn download_linked_list(
         } else {
             None
         };
-        total_size = total_size.max(bytes_left);
+        if bytes_left < total_size {
+            on_total_size(total_size);
+            total_size = bytes_left;
+        }
         let mut stream = match stream.into_inner_with_chunk() {
             (stream, Some(chunk)) => once(async { Ok(chunk) }).chain(stream).boxed(),
             (stream, None) => stream.boxed(),
         };
         while let Some(chunk) = stream.try_next().await? {
-            downloaded += chunk.len();
-            on_progress(downloaded, total_size);
+            on_progress(chunk.len());
             output.write_all(&chunk).await?;
         }
     }
@@ -305,15 +292,17 @@ pub async fn download_concat(
     client: Arc<Client>,
     hashes: &[&str],
     mut output: impl AsyncWrite + Unpin,
-    on_progress: impl Fn(usize, usize) + Send + Clone + 'static,
+    on_progress: impl Fn(usize) + Send + Clone + 'static,
+    on_total_size_estimate: impl Fn(usize) + Send + Clone + 'static,
 ) -> MyResult<()> {
-    let downloaded = Arc::new(AtomicUsize::new(0));
-    let assumed_size = hashes.len() * MAX_SIZE;
+    let assumed_size = Arc::new(AtomicUsize::new(hashes.len() * MAX_SIZE));
+    on_total_size_estimate(assumed_size.load(Ordering::Relaxed));
     let mut handles = Vec::new();
     for hash in hashes {
         let client = client.clone();
         let on_progress = on_progress.clone();
-        let downloaded = downloaded.clone();
+        let on_total_size_estimate = on_total_size_estimate.clone();
+        let assumed_size = assumed_size.clone();
         let url = format!("{SERVER}internalapi/asset/{hash}.wav/get/");
         handles.push(spawn(async move {
             let response = client.get(url).send().await?;
@@ -328,17 +317,13 @@ pub async fn download_concat(
             let mut buffer = Vec::new();
             let mut total = 0;
             while let Some(chunk) = stream.try_next().await? {
-                on_progress(
-                    downloaded.fetch_add(chunk.len(), Ordering::Relaxed) + chunk.len(),
-                    assumed_size,
-                );
+                on_progress(chunk.len());
                 total += chunk.len();
                 buffer.extend(chunk);
             }
             let remaining = MAX_SIZE - total;
-            on_progress(
-                downloaded.fetch_add(remaining, Ordering::Relaxed) + remaining,
-                assumed_size,
+            on_total_size_estimate(
+                assumed_size.fetch_sub(remaining, Ordering::Relaxed) - remaining,
             );
             Ok::<Vec<u8>, BoxedError>(buffer)
         }));

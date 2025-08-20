@@ -162,6 +162,8 @@ async fn get_scratch_sessions_id(client: &Client) -> MyResult<String> {
     })
 }
 
+const BAR_TEMPLATE: &str = "[{elapsed_precise}] {wide_bar:.cyan/blue} {decimal_bytes} / {decimal_total_bytes} ({decimal_bytes_per_sec}) ";
+
 #[tokio::main]
 async fn main() -> MyResult<()> {
     let client = Arc::new(Client::new());
@@ -176,28 +178,34 @@ async fn main() -> MyResult<()> {
         exit(1);
     };
 
-    let bar = ProgressBar::new(1).with_style(
-        ProgressStyle::default_bar()
-            .template("[{elapsed_precise}] {wide_bar:.cyan/blue} {decimal_bytes} / {decimal_total_bytes} ({decimal_bytes_per_sec}) ")?,
-    );
+    let bar = ProgressBar::new(1).with_style(ProgressStyle::default_bar().template(BAR_TEMPLATE)?);
     let handle_progress = {
         let bar = bar.clone();
-        move |progress, total| {
-            bar.set_position(progress as u64);
-            bar.set_length(total as u64);
-        }
+        move |bytes| bar.inc(bytes as u64)
     };
     match operation.as_str() {
         "upload" => {
             let session_id = get_scratch_sessions_id(&client).await?;
             let mut file = File::open(argument).await?;
+            bar.set_length(file.metadata().await?.len());
             let hash = upload(client, &mut file, &session_id, handle_progress).await?;
             bar.finish();
             println!("{hash}");
         }
         "download" => {
+            let handle_total_size = {
+                let bar = bar.clone();
+                move |size| bar.set_length(size as u64)
+            };
             if argument.starts_with('i') {
-                download_inode(client, &argument[1..], stdout(), handle_progress).await?;
+                download_inode(
+                    client,
+                    &argument[1..],
+                    stdout(),
+                    handle_progress,
+                    handle_total_size,
+                )
+                .await?;
             } else if argument.contains('.') {
                 let mut hashes = argument.split('.').collect::<Vec<_>>();
                 if let Some(ext) = hashes.pop() {
@@ -207,9 +215,23 @@ async fn main() -> MyResult<()> {
                         )
                     }
                 }
-                download_concat(client, &hashes, stdout(), handle_progress).await?;
+                download_concat(
+                    client,
+                    &hashes,
+                    stdout(),
+                    handle_progress,
+                    handle_total_size,
+                )
+                .await?;
             } else {
-                download_linked_list(&client, &argument, stdout(), handle_progress).await?;
+                download_linked_list(
+                    &client,
+                    &argument,
+                    stdout(),
+                    handle_progress,
+                    handle_total_size,
+                )
+                .await?;
             }
             bar.finish();
         }
