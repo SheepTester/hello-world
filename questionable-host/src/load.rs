@@ -54,6 +54,15 @@ fn upload_file(
     let md5 = compute(&buffer);
     (md5, async move {
         let response = client
+            .head(format!("{SERVER}internalapi/asset/{md5:x}.wav/get/"))
+            .send()
+            .await?;
+        if response.status().is_success() {
+            on_progress(buffer.len());
+            // Chunk was already uploaded
+            return Ok(());
+        }
+        let response = client
             .post(format!("{SERVER}{md5:x}.wav"))
             .header(
                 "cookie",
