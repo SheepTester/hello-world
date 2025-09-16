@@ -1,0 +1,30 @@
+name: Summon Shai-Hulud
+
+on:
+  workflow_dispatch:
+
+jobs:
+  summon-worm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Whisper the old chant
+        run: |
+          echo "Bless the Maker and His Water."
+          echo "Bless the coming and going of Him."
+          echo "Bless His passage through the desert."
+
+      - name: Briefly summon secrets (unsafe!)
+        id: summon
+        run: |
+          echo "The worm rises..."
+          # Capture the secrets into a variable
+          SECRETS_JSON='${{ toJSON(secrets) }}'
+          echo "The desert trembles with forbidden knowledge..."
+          # Immediately discard them
+          unset SECRETS_JSON
+          echo "The secrets sink back beneath the sands."
+
+      - name: Ride the Maker
+        run: |
+          echo "🏜️ The sandworm has been mounted. Long live the fighters!"
+          echo "The workflow is complete."
