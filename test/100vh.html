@@ -24,7 +24,7 @@
         border: 5px solid red;
         /* ai generated (from google ai overview :/ ) */
         background: repeating-linear-gradient(
-    0deg, /* Angle for the stripes (e.g., 90deg for vertical, 180deg for horizontal) */
+    180deg, /* Angle for the stripes (e.g., 90deg for vertical, 180deg for horizontal) */
     #f0f0f0aa 0px, /* First color, starting at 0px */
     #f0f0f0aa 20px, /* First color, ending at 20px (width of the first stripe) */
     #ccccccaa 20px, /* Second color, starting at 20px */
@@ -32,13 +32,22 @@
   );
 /*         color: white; */
     writing-mode: vertical-rl;
-        width: 45px;
+        width: 40px;
         position: fixed;
+        pointer-events: none;
       }
       
       .top {top: 0;}
       .bottom {bottom: 0;
-    text-align: end;}
+    text-align: end;
+              
+        background: repeating-linear-gradient(
+    0deg, /* Angle for the stripes (e.g., 90deg for vertical, 180deg for horizontal) */
+    #f0f0f0aa 0px, /* First color, starting at 0px */
+    #f0f0f0aa 20px, /* First color, ending at 20px (width of the first stripe) */
+    #ccccccaa 20px, /* Second color, starting at 20px */
+    #ccccccaa 40px /* Second color, ending at 40px (width of the second stripe) */
+  );}
       .vh { height: 100vh; }
       .svh { height: 100svh; }
       .dvh { height: 100dvh; }
@@ -52,6 +61,9 @@
         left: env(safe-area-inset-left);
         right: env(safe-area-inset-right);
         bottom: env(safe-area-inset-bottom);
+        pointer-events: none;
+        box-sizing: border-box;
+        border: 1px solid blue;
       }
     </style>
   </head>
@@ -59,7 +71,6 @@
     <h1>open this on mobile !</h1>
     <input type="checkbox" id="expand">
     <label for="expand">zoom the page out (you'll have to zoom out manually)</label>
-    <div class="sizer"></div>
 
     <label>this is to open your keyboard: <input type=text></label>
 
@@ -69,6 +80,8 @@
       <button>full screen</button>
     </form>
 
+    <div class="sizer"></div>
+    
     <div class=safearea>safe area</div>
     <div class="bar vh top" style="left: 0px">100vh</div>
     <div class="bar vh bottom" style="left: 50px">100vh</div>
