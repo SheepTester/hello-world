@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <title>100vh vs 100svh vs 100lvh vs 100dvh</title>
+    <meta name=description content="open this on mobile">
+
+    <style>
+      .sizer {
+        width: 10px;
+        height: 10000px;
+      }
+      #expand:checked ~ .sizer {
+        width: 2000px;
+      }
+
+      .bar {
+        box-sizing: border-box;
+        border: 5px solid red;
+        background: blue;
+        color: white;
+        font-family: monospace;
+        width: 45px;
+        position: fixed;
+      }
+      
+      .top {top: 0;}
+      .bottom {bottom: 0;}
+      .vh { height: 100vh; }
+      .svh { height: 100svh; }
+      .dvh { height: 100dvh; }
+      .lvh { height: 100lvh; }
+    </style>
+  </head>
+  <body>
+    <input type="checkbox" id="expand">
+    <label for="expand">zoom the page out (you'll have to zoom out manually)</label>
+    <div class="sizer"></div>
+
+    <div class="vh top" style="left: 0px">100vh</div>
+    <div class="vh bottom" style="left: 50px">100vh</div>
+    <div class="svh top" style="left: 100px">100svh</div>
+    <div class="svh bottom" style="left: 150px">100svh</div>
+    <div class="lvh top" style="left: 200px">100lvh</div>
+    <div class="lvh bottom" style="left: 250px">100lvh</div>
+    <div class="dvh top" style="left: 300px">100dvh</div>
+    <div class="dvh bottom" style="left: 350px">100dvh</div>
+  </body>
+</html>
