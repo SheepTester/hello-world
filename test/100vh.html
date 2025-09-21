@@ -10,7 +10,7 @@
       body {
 
         font-family: monospace;
-        
+
       }
       .sizer {
         width: 10px;
@@ -38,11 +38,11 @@
         position: fixed;
         pointer-events: none;
       }
-      
+
       .top {top: 0;}
       .bottom {bottom: 0;
     text-align: end;
-              
+
         background: repeating-linear-gradient(
     0deg, /* Angle for the stripes (e.g., 90deg for vertical, 180deg for horizontal) */
     #f0f0f0aa 0px, /* First color, starting at 0px */
@@ -71,6 +71,7 @@
   </head>
   <body>
     <h1>open this on mobile !</h1>
+    <p><a href="./100vh-cover.html">viewport-fit=cover</a></p>
     <input type="checkbox" id="expand">
     <label for="expand">zoom the page out (you'll have to zoom out manually)</label>
 
@@ -86,7 +87,7 @@
     </form>
 
     <div class="sizer"></div>
-    
+
     <div class=safearea>safe area</div>
     <div class="bar vh top" style="left: 0px">100vh</div>
     <div class="bar vh bottom" style="left: 50px">100vh</div>
@@ -101,7 +102,7 @@
       async function fullscreen(event) {
         event.preventDefault()
         const data = new FormData(event.currentTarget)
-        await document.body.requestFullscreen({
+        await document.documentElement.requestFullscreen({
           navigationUI: data.get('showui') ? 'show' : undefined
         })
         if (data.get('landscape')) {
