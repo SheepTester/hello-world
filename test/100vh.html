@@ -3,8 +3,14 @@
   <head>
     <title>100vh vs 100svh vs 100lvh vs 100dvh</title>
     <meta name=description content="open this on mobile">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
+      body {
+
+        font-family: monospace;
+        
+      }
       .sizer {
         width: 10px;
         height: 10000px;
@@ -16,33 +22,73 @@
       .bar {
         box-sizing: border-box;
         border: 5px solid red;
-        background: blue;
-        color: white;
-        font-family: monospace;
+        /* ai generated (from google ai overview :/ ) */
+        background: repeating-linear-gradient(
+    0deg, /* Angle for the stripes (e.g., 90deg for vertical, 180deg for horizontal) */
+    #f0f0f0aa 0px, /* First color, starting at 0px */
+    #f0f0f0aa 20px, /* First color, ending at 20px (width of the first stripe) */
+    #ccccccaa 20px, /* Second color, starting at 20px */
+    #ccccccaa 40px /* Second color, ending at 40px (width of the second stripe) */
+  );
+/*         color: white; */
+    writing-mode: vertical-rl;
         width: 45px;
         position: fixed;
       }
       
       .top {top: 0;}
-      .bottom {bottom: 0;}
+      .bottom {bottom: 0;
+    text-align: end;}
       .vh { height: 100vh; }
       .svh { height: 100svh; }
       .dvh { height: 100dvh; }
       .lvh { height: 100lvh; }
+
+      .safearea {
+        background: color-mix(in srgb, cyan 20%, transparent);
+        position: fixed;
+        color: blue;
+        top: env(safe-area-inset-top);
+        left: env(safe-area-inset-left);
+        right: env(safe-area-inset-right);
+        bottom: env(safe-area-inset-bottom);
+      }
     </style>
   </head>
   <body>
+    <h1>open this on mobile !</h1>
     <input type="checkbox" id="expand">
     <label for="expand">zoom the page out (you'll have to zoom out manually)</label>
     <div class="sizer"></div>
 
-    <div class="vh top" style="left: 0px">100vh</div>
-    <div class="vh bottom" style="left: 50px">100vh</div>
-    <div class="svh top" style="left: 100px">100svh</div>
-    <div class="svh bottom" style="left: 150px">100svh</div>
-    <div class="lvh top" style="left: 200px">100lvh</div>
-    <div class="lvh bottom" style="left: 250px">100lvh</div>
-    <div class="dvh top" style="left: 300px">100dvh</div>
-    <div class="dvh bottom" style="left: 350px">100dvh</div>
+    <label>this is to open your keyboard: <input type=text></label>
+
+    <form onsubmit="fullscreen(event)">
+      <label><input type=checkbox name="showui"> show navigation controls?</label>
+      <label><input type=checkbox name="landscape"> lock landscape?</label>
+      <button>full screen</button>
+    </form>
+
+    <div class=safearea>safe area</div>
+    <div class="bar vh top" style="left: 0px">100vh</div>
+    <div class="bar vh bottom" style="left: 50px">100vh</div>
+    <div class="bar svh top" style="left: 100px">100svh</div>
+    <div class="bar svh bottom" style="left: 150px">100svh</div>
+    <div class="bar lvh top" style="left: 200px">100lvh</div>
+    <div class="bar lvh bottom" style="left: 250px">100lvh</div>
+    <div class="bar dvh top" style="left: 300px">100dvh</div>
+    <div class="bar dvh bottom" style="left: 350px">100dvh</div>
+
+    <script>
+      async function fullscreen(event) {
+        const data = new FormData(event.currentTarget)
+        await document.body.requestFullscreen({
+          navigationUI: data.get('showui') ? 'show' : undefined
+        })
+        if (data.get('landscape')) {
+          await screen.orientation.lock('landscape')
+        }
+      }
+    </script>
   </body>
 </html>
