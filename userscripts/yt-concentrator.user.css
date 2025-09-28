@@ -1,16 +1,23 @@
 /* ==UserStyle==
-@name        YouTube suggestions hider
+@name        YouTube recommendations hider
 @namespace   sheeptester.github.io
-@version     1.0.0
-@license     unlicense
+@version     1.1.0
+@license     MIT
 ==/UserStyle== */
 
 @-moz-document url-prefix("https://www.youtube.com/") {
-#related, .ytp-player-content, [page-subtype="home"], .ytp-pause-overlay, #google_companion_ad_div, .adDisplay, .wide-overlay-ad {
-  visibility: hidden !important;
-}
-paper-dialog {
-  display: none;
-}
-
+    /* Maybe want to add back: #related, .ytp-player-content, .ytp-pause-overlay */
+    
+    /* home page */
+    [page-subtype="home"] #contents.ytd-rich-grid-renderer,
+    /* shorts on home page, for some reason */
+    [page-subtype="home"] #contents.ytd-rich-shelf-renderer,
+    /* end of video recs */
+    .ytp-endscreen-content,
+    /* recommendations sidebar */
+    #secondary,
+    /* ads (no longer needed since i have adblock, but whatever) */
+    #google_companion_ad_div, .adDisplay, .wide-overlay-ad {
+        visibility: hidden !important;
+    }
 }
