@@ -13,3 +13,5 @@ ignored
 # Added by cargo
 
 /target
+
+test/yipyip.json

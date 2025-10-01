@@ -1,25 +1,23 @@
+# python3 yipyip.py
+
 import json
 import zipfile
 import datetime
 import os
-import sys
 
-# Try to import zlib to check for its availability
-try:
-    import zlib
-    ZLIB_AVAILABLE = True
-except ImportError:
-    ZLIB_AVAILABLE = False
-    print("Warning: The 'zlib' module is not available. Files will be stored without compression (ZIP_STORED).")
-    print("To enable compression, please ensure 'zlib' is properly installed/linked with your Python environment.")
+prefix = "/mnt/c/Users/seyen/Downloads/sora4/"
+
+# it splits into 3 zip files because my phone at that point was so low on
+# storage it could barely hold a third of the zip
+
 
 def create_split_timed_zip_archives():
     """
-    Reads file information from 'theythems.json', calculates specific
+    Reads file information from 'yipyip.json', calculates specific
     modification times for each file, and creates three 'billyX.zip' archives
     with these files and their assigned timestamps, split into thirds.
 
-    The 'theythems.json' file is expected to be a JSON array of objects,
+    The 'yipyip.json' file is expected to be a JSON array of objects,
     where each object has a 'fileName' property. The order of files
     in the JSON dictates the reverse order of their modification times
     in the ZIP archive (first JSON entry gets the latest time, etc.).
@@ -31,8 +29,8 @@ def create_split_timed_zip_archives():
     - billy2.zip: Contains the middle third of files from JSON.
     - billy1.zip: Contains the last third of files from JSON (oldest mtimes).
     """
-    json_file_name = "theythems.json"
-    base_zip_name = "billy"
+    json_file_name = "yipyip.json"
+    base_zip_name = prefix + "billy"
     # The minimum time interval between consecutive files in seconds
     time_interval_seconds = 2
 
@@ -41,12 +39,12 @@ def create_split_timed_zip_archives():
 
     # --- 1. Read the JSON file containing file names and URLs ---
     try:
-        with open(json_file_name, 'r', encoding='utf-8') as f:
+        with open(json_file_name, "r", encoding="utf-8") as f:
             json_data = json.load(f)
         print(f"Successfully loaded data from '{json_file_name}'.")
     except FileNotFoundError:
         print(f"Error: The file '{json_file_name}' was not found.")
-        print("Please ensure 'theythems.json' is in the same directory as this script.")
+        print("Please ensure 'yipyip.json' is in the same directory as this script.")
         return
     except json.JSONDecodeError:
         print(f"Error: Could not decode JSON from '{json_file_name}'.")
@@ -62,7 +60,9 @@ def create_split_timed_zip_archives():
         return
 
     if not json_data:
-        print(f"Warning: '{json_file_name}' is empty. No files will be added to any zip archive.")
+        print(
+            f"Warning: '{json_file_name}' is empty. No files will be added to any zip archive."
+        )
         return
 
     # --- 2. Calculate the target modification times for each file ---
@@ -73,7 +73,9 @@ def create_split_timed_zip_archives():
     for i, item in enumerate(json_data):
         # Ensure each item in the JSON array is a dictionary and has a 'fileName' key
         if not isinstance(item, dict) or "fileName" not in item:
-            print(f"Warning: Item at index {i} in '{json_file_name}' is invalid (missing 'fileName' or not an object). Skipping.")
+            print(
+                f"Warning: Item at index {i} in '{json_file_name}' is invalid (missing 'fileName' or not an object). Skipping."
+            )
             continue
 
         file_name = item["fileName"]
@@ -81,7 +83,13 @@ def create_split_timed_zip_archives():
         # Calculate the target timestamp for this file.
         # The first file in the JSON (index 0) gets the current_time.
         # Subsequent files get progressively older timestamps.
-        target_time = current_time - datetime.timedelta(seconds=i * time_interval_seconds)
+        target_time = (
+            current_time
+            - datetime.timedelta(
+                minutes=10
+            )  # because i took a photo less than 10 min ago
+            - datetime.timedelta(seconds=i * time_interval_seconds)
+        )
 
         files_to_process.append({"fileName": file_name, "target_time": target_time})
 
@@ -93,8 +101,8 @@ def create_split_timed_zip_archives():
     print(f"Total files to process: {num_files}")
 
     # Determine compression type based on zlib availability
-    compression_type = zipfile.ZIP_DEFLATED if ZLIB_AVAILABLE else zipfile.ZIP_STORED
-    compression_method_name = "DEFLATED (compressed)" if ZLIB_AVAILABLE else "STORED (no compression)"
+    compression_type = zipfile.ZIP_DEFLATED
+    compression_method_name = "DEFLATED (compressed)"
     print(f"Using compression method: {compression_method_name}")
 
     # --- 3. Split files and create multiple ZIP archives ---
@@ -120,7 +128,7 @@ def create_split_timed_zip_archives():
     zip_chunks = [
         (f"{base_zip_name}3.zip", files_to_process[0:end_idx_3]),
         (f"{base_zip_name}2.zip", files_to_process[start_idx_2:end_idx_2]),
-        (f"{base_zip_name}1.zip", files_to_process[start_idx_1:end_idx_1])
+        (f"{base_zip_name}1.zip", files_to_process[start_idx_1:end_idx_1]),
     ]
 
     for zip_output_name, chunk_files in zip_chunks:
@@ -130,13 +138,17 @@ def create_split_timed_zip_archives():
 
         print(f"\nPreparing to add {len(chunk_files)} files to '{zip_output_name}'.")
         try:
-            with zipfile.ZipFile(zip_output_name, 'w', compression=compression_type) as zf:
+            with zipfile.ZipFile(
+                zip_output_name, "w", compression=compression_type
+            ) as zf:
                 for file_info in chunk_files:
                     file_name = file_info["fileName"]
                     target_time = file_info["target_time"]
 
-                    if not os.path.exists(file_name):
-                        print(f"Warning: Source file '{file_name}' not found for '{zip_output_name}'. Skipping this file.")
+                    if not os.path.exists(prefix + file_name):
+                        print(
+                            f"Warning: Source file '{file_name}' not found for '{zip_output_name}'. Skipping this file."
+                        )
                         continue
 
                     try:
@@ -144,19 +156,26 @@ def create_split_timed_zip_archives():
                         zip_info.date_time = target_time.timetuple()[:6]
                         zip_info.compress_type = compression_type
 
-                        with open(file_name, 'rb') as source_file_content:
+                        with open(prefix + file_name, "rb") as source_file_content:
                             zf.writestr(zip_info, source_file_content.read())
 
-                        print(f"  Added '{file_name}' with mtime: {target_time.strftime('%Y-%m-%d %H:%M:%S')}")
+                        print(
+                            f"  Added '{file_name}' with mtime: {target_time.strftime('%Y-%m-%d %H:%M:%S')}"
+                        )
 
                     except Exception as e:
-                        print(f"  Error adding file '{file_name}' to '{zip_output_name}': {e}")
+                        print(
+                            f"  Error adding file '{file_name}' to '{zip_output_name}': {e}"
+                        )
                         continue
 
             print(f"Successfully created '{zip_output_name}'.")
 
         except Exception as e:
-            print(f"An unrecoverable error occurred during creation of '{zip_output_name}': {e}")
+            print(
+                f"An unrecoverable error occurred during creation of '{zip_output_name}': {e}"
+            )
+
 
 # Run the function to execute the script
 if __name__ == "__main__":
