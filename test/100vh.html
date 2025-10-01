@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+  <head>
+    <title>100vh vs 100svh vs 100lvh vs 100dvh</title>
+    <meta name=description content="open this on mobile">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+      :root {color-scheme: dark}
+      body {
+
+        font-family: monospace;
+
+      }
+      .sizer {
+        width: 10px;
+        height: 10000px;
+      }
+      #expand:checked ~ .sizer {
+        width: 2000px;
+      }
+
+      .bar {
+        box-sizing: border-box;
+        --border-color: red;
+        border: 5px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+        /* ai generated (from google ai overview :/ ) */
+        background: repeating-linear-gradient(
+    180deg, /* Angle for the stripes (e.g., 90deg for vertical, 180deg for horizontal) */
+    #f0f0f0aa 0px, /* First color, starting at 0px */
+    #f0f0f0aa 20px, /* First color, ending at 20px (width of the first stripe) */
+    #ccccccaa 20px, /* Second color, starting at 20px */
+    #ccccccaa 40px /* Second color, ending at 40px (width of the second stripe) */
+  );
+/*         color: white; */
+    writing-mode: vertical-rl;
+        width: 40px;
+        position: fixed;
+        pointer-events: none;
+      }
+
+      .top {top: 0;}
+      .bottom {bottom: 0;
+    text-align: end;
+
+        background: repeating-linear-gradient(
+    0deg, /* Angle for the stripes (e.g., 90deg for vertical, 180deg for horizontal) */
+    #f0f0f0aa 0px, /* First color, starting at 0px */
+    #f0f0f0aa 20px, /* First color, ending at 20px (width of the first stripe) */
+    #ccccccaa 20px, /* Second color, starting at 20px */
+    #ccccccaa 40px /* Second color, ending at 40px (width of the second stripe) */
+  );}
+      .vh { height: 100vh; }
+      .svh { height: 100svh; --border-color: yellow; }
+      .dvh { height: 100dvh; --border-color: lime; }
+      .lvh { height: 100lvh; --border-color: magenta; }
+
+      .safearea {
+        background: color-mix(in srgb, blue 20%, transparent);
+        position: fixed;
+        color: cyan;
+        top: env(safe-area-inset-top);
+        left: env(safe-area-inset-left);
+        right: env(safe-area-inset-right);
+        bottom: env(safe-area-inset-bottom);
+        pointer-events: none;
+        box-sizing: border-box;
+        border: 1px solid cyan;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>open this on mobile !</h1>
+    <p><a href="./100vh-cover.html">viewport-fit=cover</a></p>
+    <input type="checkbox" id="expand">
+    <label for="expand">zoom the page out (you'll have to zoom out manually)</label>
+
+  <p>  <label>this is to open your keyboard: <input type=text></label></p>
+
+    <form onsubmit="fullscreen(event)" >
+      <fieldset>
+  <legend>fullscreen options</legend>
+        <p><label><input type=checkbox name="showui"> show navigation controls?</label></p>
+     <p> <label><input type=checkbox name="landscape"> lock landscape?</label></p>
+     <p> <button>full screen</button></p>
+      </fieldset>
+    </form>
+
+    <div class="sizer"></div>
+
+    <div class=safearea>safe area</div>
+    <div class="bar vh top" style="left: 0px">100vh</div>
+    <div class="bar vh bottom" style="left: 50px">100vh</div>
+    <div class="bar svh top" style="left: 100px">100svh</div>
+    <div class="bar svh bottom" style="left: 150px">100svh</div>
+    <div class="bar lvh top" style="left: 200px">100lvh</div>
+    <div class="bar lvh bottom" style="left: 250px">100lvh</div>
+    <div class="bar dvh top" style="left: 300px">100dvh</div>
+    <div class="bar dvh bottom" style="left: 350px">100dvh</div>
+
+    <script>
+      async function fullscreen(event) {
+        event.preventDefault()
+        const data = new FormData(event.currentTarget)
+        await document.documentElement.requestFullscreen({
+          navigationUI: data.get('showui') ? 'show' : undefined
+        })
+        if (data.get('landscape')) {
+          await screen.orientation.lock('landscape')
+        }
+      }
+    </script>
+  </body>
+</html>
