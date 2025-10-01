@@ -1,4 +1,5 @@
 # python3 yipyip.py
+# known issue: colons in file name will not survive android import
 
 import json
 import zipfile
