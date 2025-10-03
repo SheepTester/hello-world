@@ -75,7 +75,7 @@ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/${file
 
       on('main', async (_, { file }) => {
         const db = new SQL.Database(new Uint8Array(await file.arrayBuffer()));
-        const {values} = db.exec("SELECT key, value FROM ItemTable");
+        const [{values}] = db.exec("SELECT key, value FROM ItemTable");
 const obj = {}
         for (const [key, value] of values) {
 try {
