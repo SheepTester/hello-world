@@ -25,7 +25,7 @@
       </p>
     <p>For this tool, find any .vscdb file (as linked above) and upload it here. 
 
-      <div class="two-col-io reform:io no-contents" id="main" data-deps="file">
+      <div class="two-col-io reform:io no-contents">
         <label class="input-controls file">
           <input
             type="file"
@@ -37,6 +37,12 @@ accept=".vscdb"
           <span class="file-label">Choose or drop a .vscdb file</span>
           <span class="file-name">No file selected</span>
         </label>
+       <textarea
+          class="output-content"
+           id="main" data-deps="file"
+          aria-label="JSON"
+          readonly
+        ></textarea>
         <div class="output-controls">
           <a class="file download">
             <span class="icon icon-download"></span>
@@ -73,7 +79,7 @@ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/${file
 
       const decoder = new TextDecoder()
 
-      on('main', async (_, { file }) => {
+      on('main', async (e, { file }) => {
         const db = new SQL.Database(new Uint8Array(await file.arrayBuffer()));
         const [{values}] = db.exec("SELECT key, value FROM ItemTable");
 const obj = {}
@@ -84,12 +90,15 @@ try {
 obj[key]=value
 }
         }
-        return new File(
-          [await format(JSON.stringify(obj), {
+        const json=await format(JSON.stringify(obj), {
       parser: "json",plugins:[prettierjson,prettierjson2  ]
-    })],
+    })
+        e.value=json
+        return new File(
+          [json],
           file.name.replace('.vscdb', '') + '.json',
-          { type: 'application/json' }
+          // for copying/sharing
+          { type: 'text/plain' }
         )
       })
     </script>
