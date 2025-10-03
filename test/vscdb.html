@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>export vscode state as json</title>
+    <meta
+      name="description"
+      content="vscode stores its state in sqlite database but it's jsut a keyvalue store"
+    />
+    <meta name="theme-color" content="#4fa1a7" />
+
+    <link rel="stylesheet" type="text/css" href="/sheep3.css" />
+    <link rel="stylesheet" type="text/css" href="/reform/v1/index.css" />
+    <script src="/sheep3.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <form class="main" role="main" action="javascript:">
+      <h1>export state.vscdb as json</h1>
+      <p>
+        VS Code stores its state in sqlite3 databases, which you can find <a href="https://stackoverflow.com/a/67827303" class=link>using this stackoverflow post</a>.
+        I looked at the database and it's just a key-value table, where the values are sometimes JSON values and sometimes unquoted strings, but never JSON strings.
+        So I can translate them into human-readable JSON fairly easily.
+      </p>
+    <p>For this tool, find any .vscdb file (as linked above) and upload it here. 
+
+      <div class="two-col-io reform:io no-contents" id="main" data-deps="file">
+        <label class="input-controls file">
+          <input
+            type="file"
+            name="file"
+            class="hidden-accessible reform:file-input"
+accept=".vscdb"
+          />
+          <span class="icon icon-upload"></span>
+          <span class="file-label">Choose or drop a .vscdb file</span>
+          <span class="file-name">No file selected</span>
+        </label>
+        <div class="output-controls">
+          <a class="file download">
+            <span class="icon icon-download"></span>
+            <span class="file-label">Download</span>
+            <span class="file-name">No file available</span>
+          </a>
+          <button
+            type="button"
+            class="icon icon-copy"
+            data-output="output"
+            aria-label="Copy"
+          ></button>
+          <button
+            type="button"
+            class="icon icon-share"
+            data-output="output"
+            aria-label="Share"
+          ></button>
+        </div>
+      </div>
+    </form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+    <script type="module">
+import {format} from 'https://unpkg.com/prettier@3.6.2/standalone.mjs'
+import prettierjson from 'https://unpkg.com/prettier@3.6.2/plugins/estree.mjs'
+import prettierjson2 from 'https://unpkg.com/prettier@3.6.2/plugins/babel.mjs'
+      import { on } from '/reform/v1/index.js'
+
+await initSqlJs ({
+locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/${file}`
+
+})
+
+      const decoder = new TextDecoder()
+
+      on('main', async (_, { file }) => {
+        const db = new SQL.Database(new Uint8Array(await file.arrayBuffer()));
+        const {values} = db.exec("SELECT key, value FROM ItemTable");
+const obj = {}
+        for (const [key, value] of values) {
+try {
+  obj[key] = JSON.parse(value)
+} catch {
+obj[key]=value
+}
+        }
+        return new File(
+          [await format(JSON.stringify(obj), {
+      parser: "json",plugins:[prettierjson,prettierjson2  ]
+    })],
+          file.name.replace('.vscdb', '') + '.json',
+          { type: 'application/json' }
+        )
+      })
+    </script>
+  </body>
+</html>
