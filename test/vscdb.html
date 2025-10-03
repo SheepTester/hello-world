@@ -66,7 +66,7 @@ import prettierjson from 'https://unpkg.com/prettier@3.6.2/plugins/estree.mjs'
 import prettierjson2 from 'https://unpkg.com/prettier@3.6.2/plugins/babel.mjs'
       import { on } from '/reform/v1/index.js'
 
-await initSqlJs ({
+const SQL=await initSqlJs ({
 locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/${file}`
 
 })
