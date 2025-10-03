@@ -25,7 +25,7 @@
       </p>
     <p>For this tool, find any .vscdb file (as linked above) and upload it here. 
 
-      <div class="two-col-io reform:io no-contents">
+      <div class="col-io reform:io no-contents">
         <label class="input-controls file">
           <input
             type="file"
@@ -37,12 +37,8 @@ accept=".vscdb"
           <span class="file-label">Choose or drop a .vscdb file</span>
           <span class="file-name">No file selected</span>
         </label>
-       <textarea
-          class="output-content"
-           id="main" data-deps="file"
-          aria-label="JSON"
-          readonly
-        ></textarea>
+      </div>
+      <div class="col-io reform:io">
         <div class="output-controls">
           <a class="file download">
             <span class="icon icon-download"></span>
@@ -62,6 +58,12 @@ accept=".vscdb"
             aria-label="Share"
           ></button>
         </div>
+       <textarea
+          class="output-content code"
+           id="main" data-deps="file"
+          aria-label="JSON"
+          readonly
+        ></textarea>
       </div>
     </form>
 
