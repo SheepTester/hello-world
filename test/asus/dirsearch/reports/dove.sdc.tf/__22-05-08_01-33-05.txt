@@ -1,0 +1,23 @@
+# Dirsearch started Sun May  8 01:34:47 2022 as: dirsearch.py -u https://dove.sdc.tf/
+
+301   171B   https://dove.sdc.tf:443/js    -> REDIRECTS TO: /js/
+403     4KB  https://dove.sdc.tf:443/.wp-config.php.swp
+200   598B   https://dove.sdc.tf:443/About
+200   598B   https://dove.sdc.tf:443/about
+301   173B   https://dove.sdc.tf:443/css    -> REDIRECTS TO: /css/
+301   177B   https://dove.sdc.tf:443/fonts    -> REDIRECTS TO: /fonts/
+301   173B   https://dove.sdc.tf:443/img    -> REDIRECTS TO: /img/
+200    25B   https://dove.sdc.tf:443/robots.txt
+200   567B   https://dove.sdc.tf:443/Upload
+200   567B   https://dove.sdc.tf:443/upload
+200   567B   https://dove.sdc.tf:443/upload/
+403     4KB  https://dove.sdc.tf:443/wp-config.php
+403     4KB  https://dove.sdc.tf:443/wp-config.php.zip
+403     4KB  https://dove.sdc.tf:443/wp-config.php.bak
+403     4KB  https://dove.sdc.tf:443/wp-config.php.inc
+403     4KB  https://dove.sdc.tf:443/wp-config.php.txt
+403     4KB  https://dove.sdc.tf:443/wp-config.php.swp
+403     4KB  https://dove.sdc.tf:443/wp-config.php.save
+403     4KB  https://dove.sdc.tf:443/wp-config.php.old
+403     4KB  https://dove.sdc.tf:443/wp-config.php~
+403     4KB  https://dove.sdc.tf:443/wp-config.php.dist

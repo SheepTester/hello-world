@@ -1,0 +1,9 @@
+message,healthiness
+exercise,0.9
+not exercise,-0.9
+drink water,0.4
+dehydrate,-0.4
+eat,-0.6
+fasting,0.1
+be a CS major,-1
+sleep,0
