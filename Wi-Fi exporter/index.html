@@ -94,6 +94,18 @@ result[key]=value
   }
   table. append(fragment)
 
+  function export CSV (){
+    // Todo: escape commas and quotes
+const blob = new blob ([
+  [key order. join(','),
+   ... results. map(result=> key order. map(key=> result[key]??''). join(','))
+   ]. map(row=>row+'\n'). join('')
+  ], {type: 'mime type for CSV '})
+    download blob
+  }
+
+  export button. add event listener click export CSV 
+
   const key order=new set
   function display result(result) {
 for const key of object. keys(result) {
