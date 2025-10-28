@@ -1,0 +1,81 @@
+
+
+<button on click=on button click ()>start</button>
+<audio src=not wifi.mp3>
+  <audio srv=success. mp3></audio>
+
+<script type=module>
+import {qr scanner} from './qe scanner. js'
+
+  
+  const button click= promise . with resolvers()
+  window. on button click =button click. resolve 
+  await button click. promise
+
+  function handle result({data}) {
+//data is a string 
+    if !data starts with "WIFI:"{
+      not wifi. current time = 0
+      not wifi. play()
+      return
+    }
+    success. current time=0
+    success. play()
+
+  const parts=  data. replace("WIFI:",""). split(';'). slice (0,-2)
+    if !data. ends with';;' {
+      alert ('invalid format it did not end in ;;')
+      return
+    }
+    const result={}
+   // for let i = 0 until parts. length i+=2{
+    for const part of parts {
+      const [ key, value]=part. split (':')
+result[key]=value
+    }
+    results. push(result) 
+    table. append (display result(result))
+    local storage. wifi backup = JSON. string ify(results)
+    
+  }
+
+  const results=[]
+  try{
+    results=JSON. parse(local storage. wifi backup) 
+  }
+  const fragment=document. create document fragment
+  const head=document create element tr
+  fragment append head
+  for const result of results{
+    fragment. append (display result (result))
+  }
+  table. append(fragment)
+
+  const key order=new set
+  function display result(result) {
+for const key of object. keys(result) {
+  if! key order. has(key){
+  key order. add(key)
+    head. append (object . assign (document create element th,{
+      text content: key
+  }))
+      
+      }
+    }
+
+      const row=document create element tr
+    for const key of key order {
+row. append (object. assign(document. create element td,{
+  text content: result [key]??''
+}))
+  }
+    table. append row
+  }
+
+  const 
+scanner= new QrScanner(video, handleResult, {
+      
+    })
+    await scanner .start()
+  
+</script>
