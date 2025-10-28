@@ -1,166 +1,175 @@
 <!DOCTYPE html>
-<meta charset="utf-8" />
-<style>
-  :root {
-    color-scheme: dark;
-  }
-
-  body {
-    font-family: system-ui;
-  }
-
-  .description {
-    max-width: 800px;
-    margin: auto;
-  }
-
-  tr:nth-child(odd) {
-    background-color: color-mix(in srgb, currentcolor 5%, transparent);
-  }
-</style>
-
-<title>Wi-Fi Exporter</title>
-<meta name="description" content="Export your Wi-Fi passwords as CSV" />
-
-<div class="description">
-  <h1>Wi-Fi Password Exporter</h1>
-
-  <p>
-    On Android at least, you can go to
-    <strong>Settings > Network and Internet > Internet > Saved networks</strong> to
-    see a list of all Wi-Fi networks you've connected to. I don't know if Wi-Fi
-    passwords get backed up anywhere, so just in case, this allows you to
-    somewhat easily (though still painstakingly) export each Wi-Fi network's
-    password.
-  </p>
-
-  <ol>
-    <li>Click "Start scanning."</li>
-    <li>
-      Go to
-      <strong>Settings > Network and Internet > Internet > Saved networks</strong>.
-    </li>
-    <li>Tap each network.</li>
-    <li>Click on the "Share" button.</li>
-    <li>Scan your fingerprint.</li>
-    <li>Show the QR code to the webcam until you hear a ding.</li>
-    <li>Repeat with all the networks.</li>
-  </ol>
-
-  <p>
-    The networks are saved locally, so you won't lose them if you accidentally
-    close the browser. Once you're done, click the "Download as CSV" button and
-    be happy.
-  </p>
-
-  <button id="start">Start scanning</button>
-  <button id="export">Download as CSV</button>
-</div>
-
-<video></video>
-<audio id="not-wifi" src="Not Wi-Fi.mp3"></audio>
-<audio id="success" src="Success.mp3"></audio>
-
-<table></table>
-
-<script type="module">
-  import QrScanner from './QR scanner.js'
-
-  const startBtn = document.getElementById('start')
-  const exportBtn = document.getElementById('export')
-  const video = document.querySelector('video')
-  const notWifiSound = document.getElementById('not-wifi')
-  const successSound = document.getElementById('success')
-  const table = document.querySelector('table')
-
-  const buttonClick = Promise.withResolvers()
-  startBtn.addEventListener('click', () => buttonClick.resolve(), { once: true })
-
-  function handleResult({ data }) {
-    if (!data.startsWith('WIFI:')) {
-      notWifiSound.currentTime = 0
-      notWifiSound.play()
-      return
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wi-Fi Exporter</title>
+  <meta name="description" content="Export your Wi-Fi passwords as CSV" />
+  <style>
+    :root {
+      color-scheme: dark;
     }
-    successSound.currentTime = 0
-    successSound.play()
 
-    const parts = data.replace('WIFI:', '').split(';').slice(0, -2)
-    if (!data.endsWith(';;')) {
-      alert('Invalid format: it did not end in ;;')
-      return
+    body {
+      font-family: system-ui;
     }
-    const result = {}
-    for (const part of parts) {
-      const [key, value] = part.split(':')
-      result[key] = value
+
+    .description {
+      max-width: 800px;
+      margin: auto;
     }
-    results.push(result)
-    table.append(displayResult(result))
-    localStorage.setItem('wifi-backup', JSON.stringify(results))
-  }
 
-  let results = []
-  try {
-    results = JSON.parse(localStorage.getItem('wifi-backup') || '[]')
-  } catch {}
+    tr:nth-child(odd) {
+      background-color: color-mix(in srgb, currentcolor 5%, transparent);
+    }
 
-  const fragment = document.createDocumentFragment()
-  const head = document.createElement('tr')
-  fragment.append(head)
-  for (const result of results) {
-    fragment.append(displayResult(result))
-  }
-  table.append(fragment)
+    table {
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="description">
+    <h1>Wi-Fi Password Exporter</h1>
 
-  function exportCSV() {
-    const blob = new Blob(
-      [
+    <p>
+      On Android at least, you can go to
+      <strong>Settings > Network and Internet > Internet > Saved networks</strong> to
+      see a list of all Wi-Fi networks you've connected to. I don't know if Wi-Fi
+      passwords get backed up anywhere, so just in case, this allows you to
+      somewhat easily (though still painstakingly) export each Wi-Fi network's
+      password.
+    </p>
+
+    <ol>
+      <li>Click "Start scanning."</li>
+      <li>
+        Go to
+        <strong>Settings > Network and Internet > Internet > Saved networks</strong>.
+      </li>
+      <li>Tap each network.</li>
+      <li>Click on the "Share" button.</li>
+      <li>Scan your fingerprint.</li>
+      <li>Show the QR code to the webcam until you hear a ding.</li>
+      <li>Repeat with all the networks.</li>
+    </ol>
+
+    <p>
+      The networks are saved locally, so you won't lose them if you accidentally
+      close the browser. Once you're done, click the "Download as CSV" button and
+      be happy.
+    </p>
+
+    <button id="start">Start scanning</button>
+    <button id="export">Download as CSV</button>
+  </div>
+
+  <video></video>
+  <audio id="not-wifi" src="Not Wi-Fi.mp3"></audio>
+  <audio id="success" src="Success.mp3"></audio>
+
+  <table></table>
+
+  <script type="module">
+    import QrScanner from './QR scanner.js'
+
+    const startBtn = document.getElementById('start')
+    const exportBtn = document.getElementById('export')
+    const video = document.querySelector('video')
+    const notWifiSound = document.getElementById('not-wifi')
+    const successSound = document.getElementById('success')
+    const table = document.querySelector('table')
+
+    const buttonClick = Promise.withResolvers()
+    startBtn.addEventListener('click', () => buttonClick.resolve(), { once: true })
+
+    function handleResult({ data }) {
+      if (!data.startsWith('WIFI:')) {
+        notWifiSound.currentTime = 0
+        notWifiSound.play()
+        return
+      }
+      successSound.currentTime = 0
+      successSound.play()
+
+      const parts = data.replace('WIFI:', '').split(';').slice(0, -2)
+      if (!data.endsWith(';;')) {
+        alert('Invalid format: it did not end in ;;')
+        return
+      }
+      const result = {}
+      for (const part of parts) {
+        const [key, value] = part.split(':')
+        result[key] = value
+      }
+      results.push(result)
+      table.append(displayResult(result))
+      localStorage.setItem('wifi-backup', JSON.stringify(results))
+    }
+
+    let results = []
+    try {
+      results = JSON.parse(localStorage.getItem('wifi-backup') || '[]')
+    } catch {}
+
+    const fragment = document.createDocumentFragment()
+    const head = document.createElement('tr')
+    fragment.append(head)
+    for (const result of results) {
+      fragment.append(displayResult(result))
+    }
+    table.append(fragment)
+
+    function exportCSV() {
+      const blob = new Blob(
         [
-          [...keyOrder].join(','),
-          ...results.map(result =>
-            [...keyOrder].map(key => result[key] ?? '').join(',')
-          ),
-        ]
-          .map(row => row + '\n')
-          .join(''),
-      ],
-      { type: 'text/csv' }
-    )
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'wifi-passwords.csv'
-    a.click()
-  }
+          [
+            [...keyOrder].join(','),
+            ...results.map(result =>
+              [...keyOrder].map(key => result[key] ?? '').join(',')
+            ),
+          ]
+            .map(row => row + '\n')
+            .join(''),
+        ],
+        { type: 'text/csv' }
+      )
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'wifi-passwords.csv'
+      a.click()
+    }
 
-  exportBtn.addEventListener('click', exportCSV)
+    exportBtn.addEventListener('click', exportCSV)
 
-  const keyOrder = new Set()
-  function displayResult(result) {
-    for (const key of Object.keys(result)) {
-      if (!keyOrder.has(key)) {
-        keyOrder.add(key)
-        head.append(
-          Object.assign(document.createElement('th'), {
-            textContent: key,
+    const keyOrder = new Set()
+    function displayResult(result) {
+      for (const key of Object.keys(result)) {
+        if (!keyOrder.has(key)) {
+          keyOrder.add(key)
+          head.append(
+            Object.assign(document.createElement('th'), {
+              textContent: key,
+            })
+          )
+        }
+      }
+
+      const row = document.createElement('tr')
+      for (const key of keyOrder) {
+        row.append(
+          Object.assign(document.createElement('td'), {
+            textContent: result[key] ?? '',
           })
         )
       }
+      return row
     }
 
-    const row = document.createElement('tr')
-    for (const key of keyOrder) {
-      row.append(
-        Object.assign(document.createElement('td'), {
-          textContent: result[key] ?? '',
-        })
-      )
-    }
-    return row
-  }
-
-  await buttonClick.promise
-  const scanner = new QrScanner(video, handleResult, {})
-  await scanner.start()
-</script>
+    await buttonClick.promise
+    const scanner = new QrScanner(video, handleResult, {})
+    await scanner.start()
+  </script>
+</body>
+</html>
