@@ -1,9 +1,40 @@
+,<style>
+  root
+  color scheme dark 
 
+  body
+  font family system ui
+
+  tr:odd
+  background color color mix current color 5%, transparent
+
+  
+</style>
+
+
+title: wifi exporter
+meta description: export your wifi passwords as CSV 
+
+# Wi-Fi password exporter
+
+On android at least you can go to settings > network and Internet . internet .  saved networks to see a list of all wifi networks you've connected to. i dont know if wifi passwords get backed up anywhere so just in case, this allows you to somewhat easily (though still painstakingly) export each wifi network s password. 
+
+1. click "start"
+1.settings > network and Internet . internet .   go to saved networks
+2. tap each network, 
+3. click on the share button
+4. scan fingerprint
+5. Show QR code to the webcam until you hear a ding 
+6. repeat with all the networks
+
+the network's are saved locally so you won't lose them if you accidentally close the browser. once you're done, click the download as CSV button and be happy
 
 <button on click=on button click ()>start</button>
 <audio src=not wifi.mp3>
   <audio srv=success. mp3></audio>
 
+<table></table>
+  
 <script type=module>
 import {qr scanner} from './qe scanner. js'
 
