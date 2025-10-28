@@ -5,6 +5,10 @@
   body
   font family system ui
 
+  . description
+  Max width 800 pixels
+  margin auto 
+
   tr:odd
   background color color mix current color 5%, transparent
 
@@ -15,6 +19,7 @@
 title: wifi exporter
 meta description: export your wifi passwords as CSV 
 
+<div class description>
 # Wi-Fi password exporter
 
 On android at least you can go to settings > network and Internet . internet .  saved networks to see a list of all wifi networks you've connected to. i dont know if wifi passwords get backed up anywhere so just in case, this allows you to somewhat easily (though still painstakingly) export each wifi network s password. 
@@ -29,7 +34,11 @@ On android at least you can go to settings > network and Internet . internet .  
 
 the network's are saved locally so you won't lose them if you accidentally close the browser. once you're done, click the download as CSV button and be happy
 
-<button on click=on button click ()>start</button>
+<button >start scanning</button>
+  <button>download as CSV</button>
+
+</div>
+  
 <audio src=not wifi.mp3>
   <audio srv=success. mp3></audio>
 
@@ -40,8 +49,11 @@ import {qr scanner} from './qe scanner. js'
 
   
   const button click= promise . with resolvers()
-  window. on button click =button click. resolve 
-  await button click. promise
+  start. add event listen click{
+button click. resolve()
+  }
+  
+  
 
   function handle result({data}) {
 //data is a string 
@@ -103,6 +115,7 @@ row. append (object. assign(document. create element td,{
     table. append row
   }
 
+  await button click. promise
   const 
 scanner= new QrScanner(video, handleResult, {
       
