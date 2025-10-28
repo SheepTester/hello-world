@@ -478,7 +478,7 @@ class QrScanner {
     static async createQrEngine() {
         const createWorker = () => import(
         // @ts-ignore no types defined for import
-        '../../node_modules/qr-scanner/qr-scanner-worker.min.js').then(module => module.createWorker());
+        'https://unpkg.com/qr-scanner@1.4.2/qr-scanner-worker.min.js').then(module => module.createWorker());
         const useBarcodeDetector = !QrScanner._disableBarcodeDetector &&
             'BarcodeDetector' in window &&
             BarcodeDetector.getSupportedFormats &&
