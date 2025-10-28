@@ -1,137 +1,170 @@
-,<style>
-  root
-  color scheme dark 
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<style>
+  :root {
+    color-scheme: dark;
+  }
 
-  body
-  font family system ui
+  body {
+    font-family: system-ui;
+  }
 
-  . description
-  Max width 800 pixels
-  margin auto 
+  .description {
+    max-width: 800px;
+    margin: auto;
+  }
 
-  tr:odd
-  background color color mix current color 5%, transparent
-
-  
+  tr:nth-child(odd) {
+    background-color: color-mix(in srgb, currentcolor 5%, transparent);
+  }
 </style>
 
+<title>Wi-Fi Exporter</title>
+<meta name="description" content="Export your Wi-Fi passwords as CSV" />
 
-title: wifi exporter
-meta description: export your wifi passwords as CSV 
+<div class="description">
+  <h1>Wi-Fi Password Exporter</h1>
 
-<div class description>
-# Wi-Fi password exporter
+  <p>
+    On Android at least, you can go to
+    <strong>Settings > Network and Internet > Internet > Saved networks</strong> to
+    see a list of all Wi-Fi networks you've connected to. I don't know if Wi-Fi
+    passwords get backed up anywhere, so just in case, this allows you to
+    somewhat easily (though still painstakingly) export each Wi-Fi network's
+    password.
+  </p>
 
-On android at least you can go to settings > network and Internet . internet .  saved networks to see a list of all wifi networks you've connected to. i dont know if wifi passwords get backed up anywhere so just in case, this allows you to somewhat easily (though still painstakingly) export each wifi network s password. 
+  <ol>
+    <li>Click "Start scanning."</li>
+    <li>
+      Go to
+      <strong>Settings > Network and Internet > Internet > Saved networks</strong>.
+    </li>
+    <li>Tap each network.</li>
+    <li>Click on the "Share" button.</li>
+    <li>Scan your fingerprint.</li>
+    <li>Show the QR code to the webcam until you hear a ding.</li>
+    <li>Repeat with all the networks.</li>
+  </ol>
 
-1. click "start"
-1.settings > network and Internet . internet .   go to saved networks
-2. tap each network, 
-3. click on the share button
-4. scan fingerprint
-5. Show QR code to the webcam until you hear a ding 
-6. repeat with all the networks
+  <p>
+    The networks are saved locally, so you won't lose them if you accidentally
+    close the browser. Once you're done, click the "Download as CSV" button and
+    be happy.
+  </p>
 
-the network's are saved locally so you won't lose them if you accidentally close the browser. once you're done, click the download as CSV button and be happy
-
-<button >start scanning</button>
-  <button>download as CSV</button>
-
+  <button id="start">Start scanning</button>
+  <button id="export">Download as CSV</button>
 </div>
-  
-<audio src=not wifi.mp3>
-  <audio srv=success. mp3></audio>
+
+<video></video>
+<audio id="not-wifi" src="Not Wi-Fi.mp3"></audio>
+<audio id="success" src="Success.mp3"></audio>
 
 <table></table>
-  
-<script type=module>
-import {qr scanner} from './qe scanner. js'
 
-  
-  const button click= promise . with resolvers()
-  start. add event listen click{
-button click. resolve()
-  }
-  
-  
+<script type="module">
+  import QrScanner from './QR scanner.js'
 
-  function handle result({data}) {
-//data is a string 
-    if !data starts with "WIFI:"{
-      not wifi. current time = 0
-      not wifi. play()
+  const startBtn = document.getElementById('start')
+  const exportBtn = document.getElementById('export')
+  const video = document.querySelector('video')
+  const notWifiSound = document.getElementById('not-wifi')
+  const successSound = document.getElementById('success')
+  const table = document.querySelector('table')
+
+  const buttonClick = new Promise(resolve => {
+    startBtn.addEventListener('click', () => resolve(), { once: true })
+  })
+
+  function handleResult({ data }) {
+    if (!data.startsWith('WIFI:')) {
+      notWifiSound.currentTime = 0
+      notWifiSound.play()
       return
     }
-    success. current time=0
-    success. play()
+    successSound.currentTime = 0
+    successSound.play()
 
-  const parts=  data. replace("WIFI:",""). split(';'). slice (0,-2)
-    if !data. ends with';;' {
-      alert ('invalid format it did not end in ;;')
+    const parts = data.replace('WIFI:', '').split(';').slice(0, -2)
+    if (!data.endsWith(';;')) {
+      alert('Invalid format: it did not end in ;;')
       return
     }
-    const result={}
-   // for let i = 0 until parts. length i+=2{
-    for const part of parts {
-      const [ key, value]=part. split (':')
-result[key]=value
+    const result = {}
+    for (const part of parts) {
+      const [key, value] = part.split(':')
+      result[key] = value
     }
-    results. push(result) 
-    table. append (display result(result))
-    local storage. wifi backup = JSON. string ify(results)
-    
+    results.push(result)
+    const row = displayResult(result)
+    table.append(row)
+    localStorage.setItem('wifi-backup', JSON.stringify(results))
   }
 
-  const results=[]
-  try{
-    results=JSON. parse(local storage. wifi backup) 
-  }
-  const fragment=document. create document fragment
-  const head=document create element tr
-  fragment append head
-  for const result of results{
-    fragment. append (display result (result))
-  }
-  table. append(fragment)
+  let results = []
+  try {
+    results = JSON.parse(localStorage.getItem('wifi-backup') || '[]')
+  } catch {}
 
-  function export CSV (){
+  const fragment = document.createDocumentFragment()
+  const head = document.createElement('tr')
+  fragment.append(head)
+  for (const result of results) {
+    const row = displayResult(result)
+    fragment.append(row)
+  }
+  table.append(fragment)
+
+  function exportCSV() {
     // Todo: escape commas and quotes
-const blob = new blob ([
-  [key order. join(','),
-   ... results. map(result=> key order. map(key=> result[key]??''). join(','))
-   ]. map(row=>row+'\n'). join('')
-  ], {type: 'mime type for CSV '})
-    download blob
+    const blob = new Blob(
+      [
+        [
+          [...keyOrder].join(','),
+          ...results.map(result =>
+            [...keyOrder].map(key => result[key] ?? '').join(',')
+          ),
+        ]
+          .map(row => row + '\n')
+          .join(''),
+      ],
+      { type: 'text/csv' }
+    )
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'wifi-passwords.csv'
+    a.click()
   }
 
-  export button. add event listener click export CSV 
+  exportBtn.addEventListener('click', exportCSV)
 
-  const key order=new set
-  function display result(result) {
-for const key of object. keys(result) {
-  if! key order. has(key){
-  key order. add(key)
-    head. append (object . assign (document create element th,{
-      text content: key
-  }))
-      
+  const keyOrder = new Set()
+  function displayResult(result) {
+    for (const key of Object.keys(result)) {
+      if (!keyOrder.has(key)) {
+        keyOrder.add(key)
+        head.append(
+          Object.assign(document.createElement('th'), {
+            textContent: key,
+          })
+        )
       }
     }
 
-      const row=document create element tr
-    for const key of key order {
-row. append (object. assign(document. create element td,{
-  text content: result [key]??''
-}))
-  }
-    table. append row
+    const row = document.createElement('tr')
+    for (const key of keyOrder) {
+      row.append(
+        Object.assign(document.createElement('td'), {
+          textContent: result[key] ?? '',
+        })
+      )
+    }
+    return row
   }
 
-  await button click. promise
-  const 
-scanner= new QrScanner(video, handleResult, {
-      
-    })
-    await scanner .start()
-  
+  await buttonClick
+  const scanner = new QrScanner(video, handleResult, {})
+  await scanner.start()
 </script>
