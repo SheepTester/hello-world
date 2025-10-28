@@ -73,9 +73,8 @@
   const successSound = document.getElementById('success')
   const table = document.querySelector('table')
 
-  const buttonClick = new Promise(resolve => {
-    startBtn.addEventListener('click', () => resolve(), { once: true })
-  })
+  const buttonClick = Promise.withResolvers()
+  startBtn.addEventListener('click', () => buttonClick.resolve(), { once: true })
 
   function handleResult({ data }) {
     if (!data.startsWith('WIFI:')) {
@@ -97,8 +96,7 @@
       result[key] = value
     }
     results.push(result)
-    const row = displayResult(result)
-    table.append(row)
+    table.append(displayResult(result))
     localStorage.setItem('wifi-backup', JSON.stringify(results))
   }
 
@@ -111,13 +109,11 @@
   const head = document.createElement('tr')
   fragment.append(head)
   for (const result of results) {
-    const row = displayResult(result)
-    fragment.append(row)
+    fragment.append(displayResult(result))
   }
   table.append(fragment)
 
   function exportCSV() {
-    // Todo: escape commas and quotes
     const blob = new Blob(
       [
         [
@@ -164,7 +160,7 @@
     return row
   }
 
-  await buttonClick
+  await buttonClick.promise
   const scanner = new QrScanner(video, handleResult, {})
   await scanner.start()
 </script>
