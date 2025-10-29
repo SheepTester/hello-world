@@ -83,17 +83,26 @@
     const buttonClick = Promise.withResolvers()
     startBtn.addEventListener('click', () => buttonClick.resolve(), { once: true })
 
+    function equal(a,b){
+   //   return [...keyOrder]
+      const ak=Object. keys(a)
+      const bk= Object keys(b)
+      return ak. length===bk. length&&ak. every(key=>a[key]===b[key])
+      
+    }
+
     function handleResult({ data }) {
       if (!data.startsWith('WIFI:')) {
         notWifiSound.currentTime = 0
         notWifiSound.play()
         return
       }
-      successSound.currentTime = 0
-      successSound.play()
+      
 
       const parts = data.replace('WIFI:', '').split(';').slice(0, -2)
       if (!data.endsWith(';;')) {
+        notWifiSound.currentTime = 0
+        notWifiSound.play()
         alert('Invalid format: it did not end in ;;')
         return
       }
@@ -102,6 +111,12 @@
         const [key, value] = part.split(':')
         result[key] = value
       }
+      if (results. length>0 && equal(results. at(-1), result))
+        return
+      successSound.currentTime = 0
+      successSound.play()
+      if (results. some(reslt=>equal(result,reslt)))
+        return
       results.push(result)
       table.append(displayResult(result))
       localStorage.setItem('wifi-backup', JSON.stringify(results))
