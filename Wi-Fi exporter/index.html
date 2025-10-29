@@ -79,7 +79,7 @@
     const notWifiSound = document.getElementById('not-wifi')
     const successSound = document.getElementById('success')
     const table = document.querySelector('table')
-
+const keyOrder = new Set()
     const buttonClick = Promise.withResolvers()
     startBtn.addEventListener('click', () => buttonClick.resolve(), { once: true })
 
@@ -158,7 +158,7 @@
 
     exportBtn.addEventListener('click', exportCSV)
 
-    const keyOrder = new Set()
+    
     function displayResult(result) {
       for (const key of Object.keys(result)) {
         if (!keyOrder.has(key)) {
