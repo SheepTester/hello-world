@@ -32,7 +32,7 @@
         </label>
         <div class="image-content input-content"><canvas></canvas></div>
         <div class="image-content output-content">
-          <canvas id="output" data-deps="file rawRows showLines"></canvas>
+          <canvas id="output" data-deps="file"></canvas>
         </div>
         <div class="output-controls">
           <a class="file download">
@@ -58,10 +58,18 @@
     <script type="module">
       import { on } from '/reform/v1/index.js'
 
-      on('output', async (c, { file, rawRows, showLines }) => {
+      on('output', async (c, { file,  }) => {
         const image = file.canvas
         c.canvas.width = image.width
         c.canvas.height = image.height
+
+        c. fillStyle='black'
+        c. fillRect (0,0,c.canvas.width,c.canvas. height)
+        c. drawImage(image, 
+                      0
+                      ,
+                      0
+                      )
 
         const blob = await new Promise(resolve => c.canvas.toBlob(resolve))
         return new File([blob], 'out.png', blob)
