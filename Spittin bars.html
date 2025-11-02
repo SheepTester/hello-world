@@ -60,15 +60,17 @@
 
       on('output', async (c, { file,  }) => {
         const image = file.canvas
-        c.canvas.width = image.width
-        c.canvas.height = image.height
+        //set ideal aspect ratio based on portrait or landscape mode
+        const aspect=image. width>image. height? 16/9:9/16
+        c.canvas.width =Math. max( image.width ,image. height*aspect)
+        c.canvas.height =Math. max (image.height, image. width/aspect)
 
         c. fillStyle='black'
         c. fillRect (0,0,c.canvas.width,c.canvas. height)
         c. drawImage(image, 
-                      0
+                    (  c. canvas. width-image. width)/2
                       ,
-                      0
+                      (c. canvas. height-image. height)/2
                       )
 
         const blob = await new Promise(resolve => c.canvas.toBlob(resolve))
