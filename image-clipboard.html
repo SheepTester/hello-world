@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Image Clipboard Manager</title>
+    <script src="https://cdn.jsdelivr.net/npm/idb-keyval@6/dist/umd.js"></script>
+    <style>
+      /* Adapted from https://sheeptester.github.io/javascripts/charcopy.html */
+      /* https://colorhunt.co/palette/1a1a2e16213e0f3460e94560 */
+      body {
+        background-color: #1a1a2e;
+        color: #e94560;
+        margin: 10px;
+        font-size: 0;
+        font-family: 'Roboto', sans-serif;
+        min-height: 100vh;
+      }
+      .card {
+        -webkit-appearance: none;
+        border: none;
+        background: none;
+        font: inherit;
+        color: inherit;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #16213e;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        display: inline-flex;
+        margin: 10px;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+        box-sizing: border-box;
+        flex: none;
+        vertical-align: top;
+        cursor: pointer;
+        transition: box-shadow .2s;
+        position: relative;
+        touch-action: none;
+        overflow: hidden;
+      }
+      .card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      }
+      .card:active {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+      .card img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+      }
+      .add-btn {
+        /* Material add icon or similar */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 0 24 24' width='24px' fill='%23e94560'%3E%3Cpath d='M0 0h24v24H0V0z' fill='none'/%3E%3Cpath d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 60px;
+        background-color: transparent;
+        border: 3px solid #16213e;
+        box-shadow: none;
+        transition: background-color .2s, box-shadow .2s;
+      }
+      .add-btn:active {
+        border: 3px solid #16213e;
+        background-color: rgba(22, 33, 62, 0.5);
+      }
+      .corner-btn {
+        width: 36px;
+        height: 36px;
+        -webkit-appearance: none;
+        border: none;
+        background: none;
+        margin: 5px;
+        position: absolute;
+        pointer-events: none;
+        opacity: 0;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 24px;
+        transition: opacity .2s;
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: rgba(0,0,0,0.5);
+        fill: #e94560;
+      }
+      .card:hover .corner-btn,
+      .card:focus-visible .corner-btn {
+        pointer-events: all;
+        opacity: 0.8;
+      }
+      .card:hover .corner-btn:hover,
+      .corner-btn:focus-visible {
+        opacity: 1;
+      }
+      .remove-btn {
+        /* Material remove icon */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 0 24 24' width='24px' fill='%23e94560'%3E%3Cpath d='M0 0h24v24H0V0z' fill='none'/%3E%3Cpath d='M19 13H5v-2h14v2z'/%3E%3C/svg%3E");
+        top: 0;
+        right: 0;
+      }
+      .placeholder {
+        box-shadow: none;
+        pointer-events: none;
+        background: none;
+        border: 3px solid #0f3460;
+      }
+      .dragging {
+        cursor: grabbing;
+        user-select: none;
+        touch-action: none;
+      }
+      .card.dragged {
+        position: fixed;
+        cursor: unset;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+        z-index: 100;
+      }
+      .card.dragged .corner-btn {
+        opacity: 0;
+      }
+      :focus {
+        outline: none;
+      }
+      :focus-visible {
+        box-shadow: 0 0 0 3px #e94560;
+      }
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #16213e;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 16px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+        z-index: 1000;
+      }
+      .toast.show {
+        opacity: 1;
+      }
+      .instructions {
+        font-size: 16px;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #e94560;
+      }
+      .hidden-input {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: -1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hidden input to allow pasting on mobile when tapping outside -->
+    <input type="text" class="hidden-input" id="paste-input">
+
+    <div class="instructions">
+      Paste images (Ctrl+V), drop image files, or click + to paste from clipboard.
+    </div>
+    <div id="toast" class="toast">Image copied to clipboard!</div>
+
+    <script>
+      // State
+      let imageIds = [];
+      const ORDER_KEY = 'image-order';
+      const IDB_STORE = idbKeyval; // from CDN
+
+      const MARGIN = 10;
+      const WIDTH = 200 + MARGIN * 2;
+      const HEIGHT = 200 + MARGIN * 2;
+      const MIN_DRAG_RADIUS = 10;
+      let dragging = false;
+      let copyTimeout;
+
+      // Utils
+      function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        if (copyTimeout) clearTimeout(copyTimeout);
+        copyTimeout = setTimeout(() => toast.classList.remove('show'), 2000);
+      }
+
+      async function saveImage(blob) {
+        const id = crypto.randomUUID();
+        await IDB_STORE.set(`img-${id}`, blob);
+        imageIds.push(id);
+        await IDB_STORE.set(ORDER_KEY, imageIds);
+
+        // Add card to UI
+        const card = createCard(id, blob);
+        // Insert before the add button (last element)
+        const addBtn = document.querySelector('.add-btn');
+        addBtn.before(card);
+      }
+
+      async function removeImage(id, cardElement) {
+         if (!confirm('Are you sure you want to remove this image?')) return;
+
+         document.body.removeChild(cardElement);
+         imageIds = imageIds.filter(i => i !== id);
+         await IDB_STORE.set(ORDER_KEY, imageIds);
+         await IDB_STORE.del(`img-${id}`);
+      }
+
+      async function copyImage(blob) {
+         try {
+             // For clipboard API we need specific mime types
+             const item = new ClipboardItem({ [blob.type]: blob });
+             await navigator.clipboard.write([item]);
+             showToast('Image copied to clipboard!');
+         } catch (err) {
+             console.error(err);
+             if (err.name === 'NotAllowedError') {
+                 showToast('Permission denied to write to clipboard.');
+             } else {
+                 showToast('Failed to copy: ' + err.message);
+             }
+         }
+      }
+
+      function createCard(id, blob) {
+        const url = URL.createObjectURL(blob);
+        const card = document.createElement('button');
+        card.ariaLabel = 'Click to copy image';
+        card.classList.add('card');
+
+        const img = document.createElement('img');
+        img.src = url;
+        card.appendChild(img);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.classList.add('corner-btn');
+        removeBtn.classList.add('remove-btn');
+        removeBtn.ariaLabel = 'Remove';
+
+        // Prevent clicking the card when clicking remove
+        removeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            removeImage(id, card);
+        });
+        card.appendChild(removeBtn);
+
+        // Copy on click
+        card.addEventListener('click', () => {
+             copyImage(blob);
+        });
+
+        // Drag and Drop Logic (adapted from charcopy)
+        let pointer;
+        card.addEventListener('pointerdown', e => {
+            if (e.target === removeBtn) return;
+
+            if (!pointer) {
+            const rect = card.getBoundingClientRect();
+            pointer = {
+                x: e.clientX,
+                y: e.clientY,
+                offset: {x: e.clientX - rect.left, y: e.clientY - rect.top},
+                id: e.pointerId
+            };
+            }
+        });
+
+        card.addEventListener('pointermove', e => {
+            if (pointer && pointer.id === e.pointerId) {
+            if (!dragging && Math.hypot(e.clientX - pointer.x, e.clientY - pointer.y) > MIN_DRAG_RADIUS) {
+                dragging = true;
+                card.setPointerCapture(e.pointerId);
+
+                // Get number of columns
+                pointer.cards = [...document.querySelectorAll('.card')];
+                // We need to exclude the add button from "cards" if it acts as a slot,
+                // but usually we want to be able to drag around it.
+                // However, let's keep it simple: find position in imageIds.
+
+                // Calculate columns based on layout
+                // We can just query the layout
+                const allCards = [...document.querySelectorAll('.card')];
+                const cardIndex = allCards.indexOf(card);
+
+                // To support reordering logic fully, we need to know grid dimensions.
+                // Or we can just use the DOM order swapping logic from reference.
+
+                pointer.placeholder = document.createElement('div');
+                pointer.placeholder.classList.add('card');
+                pointer.placeholder.classList.add('placeholder');
+                document.body.insertBefore(pointer.placeholder, card);
+
+                document.body.classList.add('dragging');
+                card.classList.add('dragged');
+            }
+            if (dragging) {
+                const {offset} = pointer;
+
+                const x = e.clientX - offset.x;
+                const y = e.clientY - offset.y;
+
+                card.style.left = x + 'px';
+                card.style.top = y + 'px';
+
+                // Find which card we are over
+                // This part is a bit tricky to reimplement exactly without "strings" array logic matching DOM
+                // But we can just find the nearest card in the DOM and swap.
+
+                const elements = document.elementsFromPoint(e.clientX, e.clientY);
+                const targetCard = elements.find(el => el.classList.contains('card') && el !== card && el !== pointer.placeholder && !el.classList.contains('dragged'));
+
+                if (targetCard) {
+                    const parent = targetCard.parentNode;
+                    const children = [...parent.children];
+                    const targetIndex = children.indexOf(targetCard);
+                    const placeholderIndex = children.indexOf(pointer.placeholder);
+
+                    if (targetIndex > placeholderIndex) {
+                        parent.insertBefore(pointer.placeholder, targetCard.nextSibling);
+                    } else {
+                        parent.insertBefore(pointer.placeholder, targetCard);
+                    }
+                }
+            }
+            }
+        });
+
+        const handlePointerEnd = async (e) => {
+            if (pointer && pointer.id === e.pointerId) {
+            if (dragging) {
+                document.body.classList.remove('dragging');
+                card.classList.remove('dragged');
+                document.body.replaceChild(card, pointer.placeholder);
+                card.style.left = null;
+                card.style.top = null;
+                dragging = false;
+
+                // Update order in storage
+                // We reconstruct imageIds from the DOM order of cards (excluding add-btn)
+                const newOrder = [];
+                const cards = document.querySelectorAll('.card:not(.add-btn)');
+                // We need to map DOM elements back to IDs.
+                // Let's store ID on the element
+                cards.forEach(c => {
+                    if (c.dataset.id) newOrder.push(c.dataset.id);
+                });
+                imageIds = newOrder;
+                await IDB_STORE.set(ORDER_KEY, imageIds);
+            }
+            pointer = null;
+            }
+        };
+        card.addEventListener('pointerup', handlePointerEnd);
+        card.addEventListener('pointercancel', handlePointerEnd);
+
+        card.dataset.id = id;
+
+        return card;
+      }
+
+      // Input Handlers
+
+      // 1. Paste Event
+      document.addEventListener('paste', async (e) => {
+          const items = e.clipboardData.items;
+          for (const item of items) {
+              if (item.type.startsWith('image/')) {
+                  e.preventDefault();
+                  const blob = item.getAsFile();
+                  await saveImage(blob);
+              }
+          }
+      });
+
+      // 2. Drag and Drop
+      document.addEventListener('dragover', (e) => {
+          e.preventDefault(); // Necessary to allow dropping
+      });
+
+      document.addEventListener('drop', async (e) => {
+          e.preventDefault();
+          if (e.dataTransfer.items) {
+              for (const item of e.dataTransfer.items) {
+                  if (item.kind === 'file' && item.type.startsWith('image/')) {
+                      const file = item.getAsFile();
+                      await saveImage(file);
+                  }
+              }
+          }
+      });
+
+      // 3. Async Clipboard API (via Add Button)
+      async function pasteFromClipboard() {
+          try {
+              const items = await navigator.clipboard.read();
+              for (const item of items) {
+                  // item is ClipboardItem
+                  // Check available types
+                  const imageType = item.types.find(t => t.startsWith('image/'));
+                  if (imageType) {
+                      const blob = await item.getType(imageType);
+                      await saveImage(blob);
+                  }
+              }
+          } catch (err) {
+              console.error(err);
+              // It might fail if permission denied or no image
+              if (err.name === 'NotAllowedError') {
+                  alert('Please allow clipboard access to paste images.');
+              } else {
+                  alert('Failed to paste from clipboard: ' + err.message);
+              }
+          }
+      }
+
+      // Initialization
+      async function init() {
+          // Mobile paste support: focus hidden input on body click
+          document.body.addEventListener('click', (e) => {
+              // Don't focus if we clicked on a card or button
+              if (!e.target.closest('button')) {
+                  document.getElementById('paste-input').focus();
+              }
+          });
+
+          // Add 'Add' button
+          const addBtn = document.createElement('button');
+          addBtn.ariaLabel = 'Add image from clipboard';
+          addBtn.classList.add('card', 'add-btn');
+          addBtn.addEventListener('click', pasteFromClipboard);
+          document.body.appendChild(addBtn);
+
+          // Load images
+          try {
+              const storedIds = await IDB_STORE.get(ORDER_KEY);
+              if (Array.isArray(storedIds)) {
+                  imageIds = storedIds;
+                  for (const id of imageIds) {
+                      const blob = await IDB_STORE.get(`img-${id}`);
+                      if (blob) {
+                          const card = createCard(id, blob);
+                          addBtn.before(card);
+                      }
+                  }
+              }
+          } catch (err) {
+              console.error('Failed to load images', err);
+          }
+      }
+
+      init();
+
+    </script>
+  </body>
+</html>
