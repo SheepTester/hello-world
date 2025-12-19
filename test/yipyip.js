@@ -1,7 +1,10 @@
 // `localStorage.Authorization_fuck2` contains value of auth header `Bearer ...`
 // set `stop` to true if you want to stop
 
+console.log('run `stop = true` to stop')
 ;({ Authorization_fuck2: Authorization } = localStorage)
+if (!Authorization) throw 'bro didnt set `localStorage.Authorization_fuck2`'
+if (!Authorization.startsWith('Bearer ')) throw '`localStorage.Authorization_fuck2` should start with `Bearer`, read the instructions bro'
 const responses = []
 let has_more = true,
   last_id,
@@ -25,11 +28,11 @@ responses
 
 bleh = responses
   .flatMap(a => a.generations)
-  .filter(g => new Date(g.created_at) >= new Date(2025, 7 - 1, 9))
+  .filter(g => new Date(g.created_at) >= new Date(2025, 9 - 1, 31))
 //.filter(g => g.url.includes('.mp4'))
 //.map(g => g.id)
 
-// for yipyip.json
+// for yipyip/yipyip.json
 console.log(
   bleh.map(({ url, id, created_at, title }) => ({
     url,
@@ -45,7 +48,7 @@ console.log(
   }))
 )
 
-// dl.sh (do not put it in this repo)
+// yipyip/dl.sh (run inside yipyip/)
 ;`#!/bin/bash
 
 set -e
