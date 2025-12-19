@@ -2,6 +2,9 @@
 # run inside test/
 # known issue: colons in file name will not survive android import
 
+# it will delete yipyip/billyX.zip if they already exist and start anew, no need
+# to clean yourself
+
 import json
 import zipfile
 import datetime
@@ -11,6 +14,11 @@ prefix = "yipyip/"
 
 # it splits into 3 zip files because my phone at that point was so low on
 # storage it could barely hold a third of the zip
+
+# number of minutes to shift photo times back by. ideally it shouldn't conflict
+# with any actual photos. NOTE: the current time - TIME_OFFSET_MINS is the LAST
+# time
+TIME_OFFSET_MINS = 0
 
 
 def create_split_timed_zip_archives():
@@ -85,7 +93,16 @@ def create_split_timed_zip_archives():
 
     # --- 2. Calculate the target modification times for each file ---
     # Get the current local time. zipfile.ZipInfo expects local time.
-    current_time = datetime.datetime.now()
+    current_time = datetime.datetime.now() - datetime.timedelta(
+        minutes=TIME_OFFSET_MINS
+    )  # because i took a photo less than 10 min ago
+
+    print("the LAST photo will be at", current_time)
+    print(
+        "the FIRST photo will be at",
+        current_time
+        - datetime.timedelta(seconds=(len(json_data) - 1) * time_interval_seconds),
+    )
 
     files_to_process = []
     for i, item in enumerate(json_data):
@@ -107,12 +124,8 @@ def create_split_timed_zip_archives():
         # Calculate the target timestamp for this file.
         # The first file in the JSON (index 0) gets the current_time.
         # Subsequent files get progressively older timestamps.
-        target_time = (
-            current_time
-            - datetime.timedelta(
-                minutes=10
-            )  # because i took a photo less than 10 min ago
-            - datetime.timedelta(seconds=i * time_interval_seconds)
+        target_time = current_time - datetime.timedelta(
+            seconds=i * time_interval_seconds
         )
 
         files_to_process.append({"fileName": file_name, "target_time": target_time})
@@ -162,6 +175,10 @@ def create_split_timed_zip_archives():
 
         print(f"\nPreparing to add {len(chunk_files)} files to '{zip_output_name}'.")
         try:
+            try:
+                os.remove(zip_output_name)
+            except OSError:
+                pass
             with zipfile.ZipFile(
                 zip_output_name, "w", compression=compression_type
             ) as zf:
