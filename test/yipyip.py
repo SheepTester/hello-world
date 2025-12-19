@@ -1,4 +1,5 @@
-# python3 yipyip.py
+# uv run yipyip.py
+# run inside test/
 # known issue: colons in file name will not survive android import
 
 import json
@@ -6,7 +7,7 @@ import zipfile
 import datetime
 import os
 
-prefix = "/mnt/c/Users/seyen/Downloads/sora4/"
+prefix = "yipyip/"
 
 # it splits into 3 zip files because my phone at that point was so low on
 # storage it could barely hold a third of the zip
@@ -30,7 +31,7 @@ def create_split_timed_zip_archives():
     - billy2.zip: Contains the middle third of files from JSON.
     - billy1.zip: Contains the last third of files from JSON (oldest mtimes).
     """
-    json_file_name = "yipyip.json"
+    json_file_name = prefix + "yipyip.json"
     base_zip_name = prefix + "billy"
     # The minimum time interval between consecutive files in seconds
     time_interval_seconds = 2
@@ -66,6 +67,22 @@ def create_split_timed_zip_archives():
         )
         return
 
+    allowed_chars = "abcdefghijklmnopqrstuvwxyz"
+    assert len(frozenset(allowed_chars)) == 26
+    allowed_chars += allowed_chars.upper()
+    allowed_chars += "0123456789_ ',"
+    all_chars = "".join(
+        sorted(
+            frozenset(
+                c
+                for item in json_data
+                for c in item["fileName"][:-4]
+                if c not in allowed_chars
+            )
+        )
+    )
+    print("disallowed chars:", all_chars)
+
     # --- 2. Calculate the target modification times for each file ---
     # Get the current local time. zipfile.ZipInfo expects local time.
     current_time = datetime.datetime.now()
@@ -80,6 +97,12 @@ def create_split_timed_zip_archives():
             continue
 
         file_name = item["fileName"]
+        if not file_name.endswith(".png"):
+            print(f"warn: '{file_name}' doesnt end in .png")
+        if any(c not in allowed_chars for c in file_name[:-4]):
+            print(
+                f"warn: '{file_name}' has invalid characters (colons are especially bad)"
+            )
 
         # Calculate the target timestamp for this file.
         # The first file in the JSON (index 0) gets the current_time.

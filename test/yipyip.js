@@ -4,7 +4,8 @@
 console.log('run `stop = true` to stop')
 ;({ Authorization_fuck2: Authorization } = localStorage)
 if (!Authorization) throw 'bro didnt set `localStorage.Authorization_fuck2`'
-if (!Authorization.startsWith('Bearer ')) throw '`localStorage.Authorization_fuck2` should start with `Bearer`, read the instructions bro'
+if (!Authorization.startsWith('Bearer '))
+  throw '`localStorage.Authorization_fuck2` should start with `Bearer`, read the instructions bro'
 const responses = []
 let has_more = true,
   last_id,
