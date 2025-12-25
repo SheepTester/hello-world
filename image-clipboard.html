@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1" />
-    
+
+<meta name="description" content="like charcopy but for images"/>
     <title>Image Clipboard Manager</title>
     <script src="https://cdn.jsdelivr.net/npm/idb-keyval@6/dist/umd.js"></script>
     <style>
@@ -142,6 +143,10 @@
         transition: opacity 0.3s;
         pointer-events: none;
         z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 10px;
       }
       .toast.show {
         opacity: 1;
@@ -161,6 +166,11 @@
         width: 100%;
         z-index: -1;
       }
+      #preview {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+      }
     </style>
   </head>
   <body>
@@ -170,10 +180,13 @@
     <div class="instructions">
       Paste images (Ctrl+V), drop image files, or click + to paste from clipboard.
     </div>
-    <div id="toast" class="toast">Image copied to clipboard!</div>
+    <div id="toast" class="toast">
+      <img id="preview" />
+     <span id="toast-content"> Image copied to clipboard!</span></div>
 
     <script>
       // State
+      const preview= document.getElementById('preview')
       let imageIds = [];
       const ORDER_KEY = 'image-order';
       const IDB_STORE = idbKeyval; // from CDN
@@ -186,9 +199,13 @@
       let copyTimeout;
 
       // Utils
-      function showToast(msg) {
+      function showToast(msg,url) {
         const toast = document.getElementById('toast');
-        toast.textContent = msg;
+        document.getElementById('toast-content').textContent = msg;
+        if (url){preview.style.display = ''
+        preview.src=url} else {
+          preview.style.display = 'none'
+        }
         toast.classList.add('show');
         if (copyTimeout) clearTimeout(copyTimeout);
         copyTimeout = setTimeout(() => toast.classList.remove('show'), 2000);
@@ -221,7 +238,7 @@
              // For clipboard API we need specific mime types
              const item = new ClipboardItem({ [blob.type]: blob });
              await navigator.clipboard.write([item]);
-             showToast('Image copied to clipboard!');
+             showToast('Image copied to clipboard!',urlCache.get(blob));
          } catch (err) {
              console.error(err);
              if (err.name === 'NotAllowedError') {
@@ -232,8 +249,11 @@
          }
       }
 
+      const urlCache = new WeakMap()
+
       function createCard(id, blob) {
         const url = URL.createObjectURL(blob);
+        urlCache.set(blob,url)
         const card = document.createElement('button');
         card.ariaLabel = 'Click to copy image';
         card.classList.add('card');
