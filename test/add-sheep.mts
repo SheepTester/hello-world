@@ -4,6 +4,7 @@ import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
 const RED = '\x1b[31m'
+const YELLOW = '\x1b[33m'
 const GREY = '\x1b[90m'
 const RESET = '\x1b[m'
 
@@ -21,6 +22,28 @@ async function * walkDir (dir: string): AsyncGenerator<string> {
     }
   }
 }
+
+// May require manual intervention:
+// - commented out
+//   - open-graph-testing
+// - script/link inside <title>
+//   - dumb
+//   - dumb2
+// - not actually an html file
+//   - fake
+// - unclosed <style> tag
+//   - heyy
+// - inside <noscript>
+//   - polyfill
+
+const IGNORE_LIST = [
+  'open-graph-testing.html',
+  'test/dumb.html',
+  'test/dumb2.html',
+  'test/fake.html',
+  'test/heyy.html',
+  'test/polyfill.html'
+]
 
 const ALLOWED_ATTRS = ['src', 'type', 'rel', 'href', 'charset']
 
@@ -45,6 +68,10 @@ for await (const path of walkDir('.')) {
   if (existingSheep) {
     console.error(`${GREY}${path} has ${existingSheep[1]}${RESET}`)
     continue
+  }
+
+  if (IGNORE_LIST.includes(path)) {
+    console.error(`${GREY}${path}: ignored${RESET}`)
   }
 
   function checkTag (html: string): string {
@@ -158,16 +185,23 @@ for await (const path of walkDir('.')) {
     if (closeHeadMatch) {
       fallbackIndex = closeHeadMatch.index ?? 0
       fallbackIndent = closeHeadMatch[1].repeat(2)
-      console.log(`${path}: resorting to </head>`)
+      console.error(`${path}: resorting to </head>`)
     } else {
       const closeBodyMatch = html.match(/([ \t]*)<\/body>/)
       if (closeBodyMatch) {
         fallbackIndex = closeBodyMatch.index ?? 0
         fallbackIndent = closeBodyMatch[1].repeat(2)
-        console.log(`${path}: resorting to </body>`)
+        console.error(`${path}: resorting to </body>`)
       } else {
-        fallbackIndex = html.length
-        console.log(`${path}: resorting to EOF`)
+        const closeHtmlMatch = html.match(/([ \t]*)<\/html>/)
+        if (closeHtmlMatch) {
+          fallbackIndex = closeHtmlMatch.index ?? 0
+          fallbackIndent = closeHtmlMatch[1].repeat(2)
+          console.error(`${path}: resorting to ${YELLOW}</html>${RESET}`)
+        } else {
+          fallbackIndex = html.length
+          console.error(`${path}: resorting to EOF`)
+        }
       }
     }
     if (!cssAdded) {
@@ -192,20 +226,5 @@ for await (const path of walkDir('.')) {
 }
 
 for (const [path, html] of Object.entries(plan)) {
-  // await writeFile(path, html)
+  await writeFile(path, html)
 }
-
-// May require manual intervention:
-// - open-graph-testing
-// - tenmillionpages
-// - dumb
-// - dumb2
-// - fake
-// - ga-test
-// - heyy
-// - malicious (in general check if it's being added after </body> and </html>)
-//   - testthing
-// - pensive-test
-// - polyfill
-// - react-exec-order
-// - dash
