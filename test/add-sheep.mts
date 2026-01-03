@@ -72,6 +72,7 @@ for await (const path of walkDir('.')) {
 
   if (IGNORE_LIST.includes(path)) {
     console.error(`${GREY}${path}: ignored${RESET}`)
+    continue
   }
 
   function checkTag (html: string): string {
