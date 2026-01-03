@@ -24,6 +24,12 @@ async function * walkDir (dir: string): AsyncGenerator<string> {
 
 const plan: Record<string, string> = {}
 
+const removeCrossOriginIntegrity = (str: string) =>
+  str
+    .replace(/\s*integrity="[^"]+"/, '')
+    .replace(/\s*crossorigin="[^"]+"/, '')
+    .replace(/(\brel=["']?)[a-z-]+(["']?)/, '$1stylesheet$2')
+
 for await (const path of walkDir('.')) {
   if (!/\.html?$/.test(path)) {
     continue
@@ -40,15 +46,15 @@ for await (const path of walkDir('.')) {
   let jsAdded = false
 
   const linkMatch = html.match(
-    /([ \t]*<link\s[^>]*href=["'])[^"']+(["'][^>]*\/?>[ \t]*\r?\n?)/
+    /([ \t]*<link\s[^>]*href=["'])[^"']*(["'][^>]*\/?>[ \t]*\r?\n?)/
   )
   if (linkMatch) {
     const index = linkMatch.index ?? 0
     html =
       html.slice(0, index) +
-      linkMatch[1] +
+      removeCrossOriginIntegrity(linkMatch[1]) +
       '/sheep3.css' +
-      linkMatch[2] +
+      removeCrossOriginIntegrity(linkMatch[2]) +
       html.slice(index)
     cssAdded = true
   }
@@ -60,16 +66,16 @@ for await (const path of walkDir('.')) {
     const index = scriptMatch.index ?? 0
     html =
       html.slice(0, index) +
-      scriptMatch[1] +
+      removeCrossOriginIntegrity(scriptMatch[1]) +
       '/sheep3.js' +
-      scriptMatch[2] +
+      removeCrossOriginIntegrity(scriptMatch[2]) +
       html.slice(index)
     jsAdded = true
   }
 
   const metaMatch = [
     ...html.matchAll(
-      /([ \t]*)<meta[^>]*content=(["'])[^"']*["'][^>]+(\/?>)([ \t]*\r?\n?)/g
+      /([ \t]*)<meta[^>]*content=(["'])[^"']*["'][^>]*?(\s*\/?>)([ \t]*\r?\n?)/g
     )
   ].at(-1)
   if (metaMatch) {
@@ -118,3 +124,18 @@ for await (const path of walkDir('.')) {
 for (const [path, html] of Object.entries(plan)) {
   await writeFile(path, html)
 }
+
+// May require manual intervention:
+// - open-graph-testing
+// - tenmillionpages
+// - dumb
+// - dumb2
+// - fake
+// - ga-test
+// - heyy
+// - malicious (in general check if it's being added after </body> and </html>)
+//   - testthing
+// - pensive-test
+// - polyfill
+// - react-exec-order
+// - dash
