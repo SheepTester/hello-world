@@ -22,12 +22,17 @@ async function * walkDir (dir: string): AsyncGenerator<string> {
   }
 }
 
+const ALLOWED_ATTRS = ['src', 'type', 'rel', 'href', 'charset']
+
 const plan: Record<string, string> = {}
 
 const removeCrossOriginIntegrity = (str: string) =>
   str
     .replace(/\s*integrity="[^"]+"/, '')
-    .replace(/\s*crossorigin="[^"]+"/, '')
+    .replace(/\s*crossorigin(="anonymous")?/, '')
+    .replace(/\s*async(="")?/, '')
+    .replace(/\s*onload="[^"]+"/, '')
+    .replace(/\s*media="screen"/, '')
     .replace(/(\brel=["']?)[a-z-]+(["']?)/, '$1stylesheet$2')
 
 for await (const path of walkDir('.')) {
@@ -38,8 +43,31 @@ for await (const path of walkDir('.')) {
   let html = await readFile(path, 'utf-8')
   const existingSheep = html.match(/\/(sheep[23]?\.js)"/)
   if (existingSheep) {
-    console.log(`${GREY}${path} has ${existingSheep[1]}${RESET}`)
+    console.error(`${GREY}${path} has ${existingSheep[1]}${RESET}`)
     continue
+  }
+
+  function checkTag (html: string): string {
+    const attrs = html
+      .trim()
+      .replace(/^<script|^<link/, '')
+      .replace(/\/?>(\s*<\/script>)?$/, '')
+      .trim()
+      .split(/\s+/)
+    for (const attr of attrs) {
+      const index = attr.indexOf('=')
+      if (index === -1) {
+        console.error(
+          `${path}: ${RED}unknown valueless attribute '${attr}'${RESET}`
+        )
+      } else {
+        const key = attr.slice(0, index)
+        if (!ALLOWED_ATTRS.includes(key)) {
+          console.error(`${path}: ${RED}unknown attribute ${attr}${RESET}`)
+        }
+      }
+    }
+    return html
   }
 
   let cssAdded = false
@@ -52,9 +80,11 @@ for await (const path of walkDir('.')) {
     const index = linkMatch.index ?? 0
     html =
       html.slice(0, index) +
-      removeCrossOriginIntegrity(linkMatch[1]) +
-      '/sheep3.css' +
-      removeCrossOriginIntegrity(linkMatch[2]) +
+      checkTag(
+        removeCrossOriginIntegrity(linkMatch[1]) +
+          '/sheep3.css' +
+          removeCrossOriginIntegrity(linkMatch[2])
+      ) +
       html.slice(index)
     cssAdded = true
   }
@@ -66,9 +96,11 @@ for await (const path of walkDir('.')) {
     const index = scriptMatch.index ?? 0
     html =
       html.slice(0, index) +
-      removeCrossOriginIntegrity(scriptMatch[1]) +
-      '/sheep3.js' +
-      removeCrossOriginIntegrity(scriptMatch[2]) +
+      checkTag(
+        removeCrossOriginIntegrity(scriptMatch[1]) +
+          '/sheep3.js' +
+          removeCrossOriginIntegrity(scriptMatch[2])
+      ) +
       html.slice(index)
     jsAdded = true
   }
@@ -84,10 +116,14 @@ for await (const path of walkDir('.')) {
       html.slice(0, index) +
       (cssAdded
         ? ''
-        : `${metaMatch[1]}<link rel=${metaMatch[2]}stylesheet${metaMatch[2]} type=${metaMatch[2]}text/css${metaMatch[2]} href=${metaMatch[2]}/sheep3.css${metaMatch[2]}${metaMatch[3]}${metaMatch[4]}`) +
+        : checkTag(
+          `${metaMatch[1]}<link rel=${metaMatch[2]}stylesheet${metaMatch[2]} type=${metaMatch[2]}text/css${metaMatch[2]} href=${metaMatch[2]}/sheep3.css${metaMatch[2]}${metaMatch[3]}${metaMatch[4]}`
+        )) +
       (jsAdded
         ? ''
-        : `${metaMatch[1]}<script src=${metaMatch[2]}/sheep3.js${metaMatch[2]} charset=${metaMatch[2]}utf-8${metaMatch[2]}></script>${metaMatch[4]}`) +
+        : checkTag(
+          `${metaMatch[1]}<script src=${metaMatch[2]}/sheep3.js${metaMatch[2]} charset=${metaMatch[2]}utf-8${metaMatch[2]}></script>${metaMatch[4]}`
+        )) +
       html.slice(index)
     cssAdded = true
     jsAdded = true
@@ -102,27 +138,61 @@ for await (const path of walkDir('.')) {
       html.slice(0, index) +
       (cssAdded
         ? ''
-        : `${titleMatch[1]}<link rel="stylesheet" type="text/css" href="/sheep3.css" />${titleMatch[2]}`) +
+        : checkTag(
+          `${titleMatch[1]}<link rel="stylesheet" type="text/css" href="/sheep3.css" />${titleMatch[2]}`
+        )) +
       (jsAdded
         ? ''
-        : `${titleMatch[1]}<script src="/sheep3.js" charset="utf-8"></script>${titleMatch[2]}`) +
+        : checkTag(
+          `${titleMatch[1]}<script src="/sheep3.js" charset="utf-8"></script>${titleMatch[2]}`
+        )) +
       html.slice(index)
     cssAdded = true
     jsAdded = true
   }
 
-  if (!cssAdded) {
-    html += '<link rel="stylesheet" type="text/css" href="/sheep3.css" />\n'
-  }
-  if (!jsAdded) {
-    html += '<script src="/sheep3.js" charset="utf-8"></script>\n'
+  if (!cssAdded || !jsAdded) {
+    const closeHeadMatch = html.match(/([ \t]*)<\/head>/)
+    let fallbackIndex
+    let fallbackIndent = ''
+    if (closeHeadMatch) {
+      fallbackIndex = closeHeadMatch.index ?? 0
+      fallbackIndent = closeHeadMatch[1].repeat(2)
+      console.log(`${path}: resorting to </head>`)
+    } else {
+      const closeBodyMatch = html.match(/([ \t]*)<\/body>/)
+      if (closeBodyMatch) {
+        fallbackIndex = closeBodyMatch.index ?? 0
+        fallbackIndent = closeBodyMatch[1].repeat(2)
+        console.log(`${path}: resorting to </body>`)
+      } else {
+        fallbackIndex = html.length
+        console.log(`${path}: resorting to EOF`)
+      }
+    }
+    if (!cssAdded) {
+      html =
+        html.slice(0, fallbackIndex) +
+        fallbackIndent +
+        checkTag(
+          '<link rel="stylesheet" type="text/css" href="/sheep3.css" />\n'
+        ) +
+        html.slice(fallbackIndex)
+    }
+    if (!jsAdded) {
+      html =
+        html.slice(0, fallbackIndex) +
+        fallbackIndent +
+        checkTag('<script src="/sheep3.js" charset="utf-8"></script>\n') +
+        html.slice(fallbackIndex)
+    }
   }
 
   plan[path] = html
 }
 
 for (const [path, html] of Object.entries(plan)) {
-  await writeFile(path, html)
+  // await writeFile(path, html)
 }
 
 // May require manual intervention:
