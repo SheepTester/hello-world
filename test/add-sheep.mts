@@ -37,12 +37,12 @@ async function * walkDir (dir: string): AsyncGenerator<string> {
 //   - polyfill
 
 const IGNORE_LIST = [
-  'open-graph-testing.html',
-  'test/dumb.html',
-  'test/dumb2.html',
-  'test/fake.html',
-  'test/heyy.html',
-  'test/polyfill.html'
+  // Used as data file for express server
+  'detect-inspect-element/node/index.html',
+  // Avoid double-registering Google Analytics (TEMP until I get rid of Google
+  // Analytics)
+  'test/ga-test.html',
+  'test/pensive-test.html'
 ]
 
 const ALLOWED_ATTRS = ['src', 'type', 'rel', 'href', 'charset']
@@ -72,6 +72,7 @@ for await (const path of walkDir('.')) {
 
   if (IGNORE_LIST.includes(path)) {
     console.error(`${GREY}${path}: ignored${RESET}`)
+    continue
   }
 
   function checkTag (html: string): string {
@@ -204,22 +205,19 @@ for await (const path of walkDir('.')) {
         }
       }
     }
-    if (!cssAdded) {
-      html =
-        html.slice(0, fallbackIndex) +
-        fallbackIndent +
+    html =
+      html.slice(0, fallbackIndex) +
+      (cssAdded
+        ? ''
+        : fallbackIndent +
         checkTag(
           '<link rel="stylesheet" type="text/css" href="/sheep3.css" />\n'
-        ) +
-        html.slice(fallbackIndex)
-    }
-    if (!jsAdded) {
-      html =
-        html.slice(0, fallbackIndex) +
-        fallbackIndent +
-        checkTag('<script src="/sheep3.js" charset="utf-8"></script>\n') +
-        html.slice(fallbackIndex)
-    }
+        )) +
+      (jsAdded
+        ? ''
+        : fallbackIndent +
+        checkTag('<script src="/sheep3.js" charset="utf-8"></script>\n')) +
+      html.slice(fallbackIndex)
   }
 
   plan[path] = html
