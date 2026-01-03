@@ -36,14 +36,7 @@ async function * walkDir (dir: string): AsyncGenerator<string> {
 // - inside <noscript>
 //   - polyfill
 
-const IGNORE_LIST = [
-  'open-graph-testing.html',
-  'test/dumb.html',
-  'test/dumb2.html',
-  'test/fake.html',
-  'test/heyy.html',
-  'test/polyfill.html'
-]
+const IGNORE_LIST = ['test/fake.html', 'test/heyy.html']
 
 const ALLOWED_ATTRS = ['src', 'type', 'rel', 'href', 'charset']
 
