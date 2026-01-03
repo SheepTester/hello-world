@@ -198,22 +198,19 @@ for await (const path of walkDir('.')) {
         }
       }
     }
-    if (!cssAdded) {
-      html =
-        html.slice(0, fallbackIndex) +
-        fallbackIndent +
+    html =
+      html.slice(0, fallbackIndex) +
+      (cssAdded
+        ? ''
+        : fallbackIndent +
         checkTag(
           '<link rel="stylesheet" type="text/css" href="/sheep3.css" />\n'
-        ) +
-        html.slice(fallbackIndex)
-    }
-    if (!jsAdded) {
-      html =
-        html.slice(0, fallbackIndex) +
-        fallbackIndent +
-        checkTag('<script src="/sheep3.js" charset="utf-8"></script>\n') +
-        html.slice(fallbackIndex)
-    }
+        )) +
+      (jsAdded
+        ? ''
+        : fallbackIndent +
+        checkTag('<script src="/sheep3.js" charset="utf-8"></script>\n')) +
+      html.slice(fallbackIndex)
   }
 
   plan[path] = html
