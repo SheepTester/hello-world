@@ -37,11 +37,6 @@ async function * walkDir (dir: string): AsyncGenerator<string> {
 //   - polyfill
 
 const IGNORE_LIST = [
-  // Actually a PNG image and I think it should stay that way. TODO: or is it
-  // still valid as a PNG with sheep3.js?
-  'test/fake.html',
-  // TODO
-  'test/heyy.html',
   // Used as data file for express server
   'detect-inspect-element/node/index.html',
   // Avoid double-registering Google Analytics (TEMP until I get rid of Google
