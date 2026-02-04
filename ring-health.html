@@ -55,86 +55,96 @@
           })
         )
         document.body.append(header)
-        const html = await fetch(ring.url)
+        fetch(ring.url)
           .then(r => r.text())
           .catch(() => null)
-        if (!html) {
-          document.body.append(
-            Object.assign(document.createElement('p'), {
-              textContent: (await fetch(ring.url, { mode: 'no-cors' }).catch(
-                () => false
-              ))
-                ? 'cockblocked by cors'
-                : 'i am not ok'
-            })
-          )
-          continue
-        }
-        const doc = parser.parseFromString(html, 'text/html')
-        const participants = [...doc.querySelectorAll('a[href]')].filter(
-          a => !a.closest('.sidebar, .faded') && !a.href.endsWith('.xml')
-        )
-        const table = document.createElement('table')
-        table.insertAdjacentHTML(
-          'afterbegin',
-          `
-            <thead>
-              <tr>
-                <th>site</th>
-                <th>status</th>
-              </tr>
-            </thead>
-          `
-        )
-        const tbody = document.createElement('tbody')
-        table.append(tbody)
-        document.body.append(table)
-        for (const participant of participants) {
-          const tr = document.createElement('tr')
-          const tdsite = document.createElement('td')
-          tdsite.append(participant)
-          tr.append(tdsite)
-          tbody.append(tr)
-
-          const html = await fetch(participant.href)
-            .then(r => r.text())
-            .catch(() => null)
-          if (!html) {
-            tr.append(
-              Object.assign(document.createElement('td'), {
-                textContent: (await fetch(participant.href, {
-                  mode: 'no-cors'
-                }).catch(() => false))
-                  ? 'cors not enabled'
-                  : 'dead'
-              })
+          .then(async html => {
+            if (!html) {
+              header.after(
+                Object.assign(document.createElement('p'), {
+                  textContent: (await fetch(ring.url, {
+                    mode: 'no-cors'
+                  }).catch(() => false))
+                    ? 'cockblocked by cors'
+                    : 'i am not ok'
+                })
+              )
+              return
+            }
+            const doc = parser.parseFromString(html, 'text/html')
+            const participants = [...doc.querySelectorAll('a[href]')].filter(
+              a => !a.closest('.sidebar, .faded') && !a.href.endsWith('.xml')
             )
-            continue
-          }
-          const doc = parser.parseFromString(html, 'text/html')
-          const urls = [...doc.querySelectorAll('a[href]')].map(a => a.href)
-          const missing = []
-          const ringRegex = new RegExp(`/${ring.urlPattern}/?$`)
-          if (urls.every(url => !ringRegex.test(url))) {
-            missing.push('list')
-          }
-          const prevRegex = new RegExp(`/${ring.urlPattern}/[^/]+/previous/?$`)
-          if (urls.every(url => !prevRegex.test(url))) {
-            missing.push('prev')
-          }
-          const nextRegex = new RegExp(`/${ring.urlPattern}/[^/]+/next/?$`)
-          if (urls.every(url => !nextRegex.test(url))) {
-            missing.push('next')
-          }
-          tr.append(
-            Object.assign(document.createElement('td'), {
-              textContent:
-                missing.length > 0
-                  ? `missing link to ${missing.join(', ')}`
-                  : 'ok'
-            })
-          )
-        }
+            const table = document.createElement('table')
+            table.insertAdjacentHTML(
+              'afterbegin',
+              `
+                  <thead>
+                    <tr>
+                      <th>site</th>
+                      <th>status</th>
+                    </tr>
+                  </thead>
+                `
+            )
+            const tbody = document.createElement('tbody')
+            table.append(tbody)
+            header.after(table)
+            for (const participant of participants) {
+              const tr = document.createElement('tr')
+              const tdsite = document.createElement('td')
+              tdsite.append(participant)
+              tr.append(tdsite)
+              tbody.append(tr)
+
+              fetch(participant.href)
+                .then(r => r.text())
+                .catch(() => null)
+                .then(async html => {
+                  if (!html) {
+                    tr.append(
+                      Object.assign(document.createElement('td'), {
+                        textContent: (await fetch(participant.href, {
+                          mode: 'no-cors'
+                        }).catch(() => false))
+                          ? 'cors not enabled'
+                          : 'dead'
+                      })
+                    )
+                    return
+                  }
+                  const doc = parser.parseFromString(html, 'text/html')
+                  const urls = [...doc.querySelectorAll('a[href]')].map(
+                    a => a.href
+                  )
+                  const missing = []
+                  const ringRegex = new RegExp(`/${ring.urlPattern}/?$`)
+                  if (urls.every(url => !ringRegex.test(url))) {
+                    missing.push('list')
+                  }
+                  const prevRegex = new RegExp(
+                    `/${ring.urlPattern}/[^/]+/previous/?$`
+                  )
+                  if (urls.every(url => !prevRegex.test(url))) {
+                    missing.push('prev')
+                  }
+                  const nextRegex = new RegExp(
+                    `/${ring.urlPattern}/[^/]+/next/?$`
+                  )
+                  if (urls.every(url => !nextRegex.test(url))) {
+                    missing.push('next')
+                  }
+                  tr.append(
+                    Object.assign(document.createElement('td'), {
+                      textContent:
+                        missing.length > 0
+                          ? `missing link to ${missing.join(', ')}`
+                          : 'ok'
+                    })
+                  )
+                })
+            }
+          })
       }
     </script>
   </body>
