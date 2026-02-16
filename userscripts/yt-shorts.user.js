@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YT shorts -> watch, old Reddit, desktop Wikipedia
 // @namespace    https://sheeptester.github.io/
-// @version      1.10
+// @version      1.11
 // @description  Redirect YouTube shorts pages to normal video watch pages. Also redirects to old Reddit unless URL ends in ?force-new.
 // @author       SheepTester
 // @match        https://www.youtube.com/*
@@ -44,25 +44,40 @@
     }
 
     check(window.location, redirect => window.location.redirect(redirect))
-    navigation.addEventListener('navigate', e => {
-      check(e.destination.url, redirect => {
-        event.intercept({
-          handler () {
-            navigation.navigate(redirect, { history: 'replace' })
+
+    window.CustomEvent = class extends CustomEvent {
+      constructor (...args) {
+        if (args[0] === 'yt-navigate') {
+          const { url, webPageType, rootVe } = args[1].detail.endpoint.commandMetadata.webCommandMetadata
+          if (webPageType === 'WEB_PAGE_TYPE_SHORTS') {
+            super(args[0], {
+              ...args[1],
+              detail: {
+                endpoint: {
+                  commandMetadata: {
+                    webCommandMetadata:{
+                      url: `/watch?v=${url.replace('/shorts/', '')}`,
+                      webPageType: "WEB_PAGE_TYPE_WATCH",
+                      rootVe
+                    }
+                  }
+                }
+              }
+            })
+            return
           }
-        })
-      })
-    })
+        }
+        super(...args)
+      }
+    }
 
     const updateLinks = () => {
       for (const link of document.getElementsByTagName('a')) {
         check(link.href, url => {
           link.href = url
-          // link.target = '_blank'
         })
       }
     }
-    // window.addEventListener('pointerdown', updateLinks)
     window.addEventListener('pointermove', updateLinks)
   }
 })()
