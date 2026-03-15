@@ -1,0 +1,13 @@
+/* ==UserStyle==
+@name           hide youtube play/pause indicator
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    hide play/pause indicator that covers middle of video
+@author         sheeptester
+==/UserStyle== */
+
+@-moz-document url-prefix("https://www.youtube.com/watch") {
+    .ytp-bezel-text-hide {
+        display: none !important;
+    }
+}
