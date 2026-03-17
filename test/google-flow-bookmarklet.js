@@ -11,7 +11,7 @@ if (data.has(link)) continue;
 e.preventDefault();
             const blob = await fetch(url).then(r => r.blob()) 
                          ;       link.href=URL.createObjectURL(blob)
-                const h = ()=>(link.style.filter=`hue-rotate(${Math.random()*300+30}deg)`);h();
+         ;;       const h = ()=>(link.style.filter=`hue-rotate(${Math.random()*300+30}deg)`);h();
                             ;    link.click()
                               ;  link.onclick=e=>(e.stopPropagation(),h());
                           }
