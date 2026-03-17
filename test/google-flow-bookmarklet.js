@@ -37,5 +37,6 @@ const confirmDel=document.querySelector('[role="dialog"] :last-child > [data-typ
 if (confirmDel.textContent!=='Delete')return alert(confirmDel.textContent);
 confirmDel.click()
 })
-}}
+}};
+[...document.styleSheets].at(-1).insertRule('[style="overflow-anchor: none;"] > [style*="translate3d"] { transform: none !important; }');
 }
