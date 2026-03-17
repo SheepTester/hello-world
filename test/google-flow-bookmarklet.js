@@ -27,5 +27,15 @@ navigator.clipboard.writeText(btn.textContent)
                            }
        ;   data.add(link)
       }
-}
+};
+document.onclick=e=>{
+if (!e.shiftKey)return;
+const btn = e.target.closest('button');
+if (btn?.textContent==='deleteDelete'&&e.shiftKey){
+requestAnimationFrame(() => {
+const confirmDel=document.querySelector('[role="dialog"] :last-child > [data-type="button-overlay"]').parentNode;
+if (confirmDel.textContent!=='Delete')return alert(confirmDel.textContent);
+confirmDel.click()
+})
+}}
 }
