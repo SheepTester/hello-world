@@ -1,0 +1,15 @@
+/* ==UserStyle==
+@name           make the shareholder vote buttons bigger
+@namespace      sheeptester.github.io
+@version        1.0.0
+@description    make the proxyvote.com radio buttons easier to click on
+@author         Me
+==/UserStyle== */
+
+@-moz-document domain("proxyvote.com") {
+    .custom-control-label {
+        padding: 10px 0;
+        outline: 3px solid #f003;
+        cursor: pointer;
+    }
+}
