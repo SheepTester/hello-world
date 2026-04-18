@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as fsp from 'fs/promises';
 import * as path from 'path';
 import * as crypto from 'crypto';
 import yauzl from 'yauzl';
@@ -7,7 +8,7 @@ import os from 'os';
 // CLI Arguments
 const args = process.argv.slice(2);
 if (args.length !== 2) {
-    console.error('Usage: npx tsx index.ts <path_to_zip_1> <path_to_zip_2>');
+    console.error('Usage: node index.ts <path_to_zip_1> <path_to_zip_2>');
     process.exit(1);
 }
 
@@ -52,26 +53,27 @@ function getZipEntries(zipFilePath: string): Promise<{ entries: Entry[], zipfile
     });
 }
 
+const remainingFilesPath = path.join(process.cwd(), 'remaining-files.txt');
+const outDir = path.join(os.homedir(), 'storage', 'downloads', 'identical');
+await fsp.mkdir(outDir, { recursive: true });
+
+// Handle pre-existing remaining-files.txt
 try {
-        const remainingFilesPath = path.join(process.cwd(), 'remaining-files.txt');
-        const outDir = path.join(os.homedir(), 'storage', 'downloads', 'identical');
-        fs.mkdirSync(outDir, { recursive: true });
+    const remainingFilesContent = await fsp.readFile(remainingFilesPath, 'utf8');
+    console.log(`Found existing ${remainingFilesPath}. Processing manual actions...`);
+    const lines = remainingFilesContent.split('\n').map(l => l.trim()).filter(l => l.length > 0);
 
-        // Handle pre-existing remaining-files.txt
-        if (fs.existsSync(remainingFilesPath)) {
-            console.log(`Found existing ${remainingFilesPath}. Processing manual actions...`);
-            const lines = fs.readFileSync(remainingFilesPath, 'utf8').split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const actions = lines.map(line => {
+        if (line.startsWith('#')) return null; // skip comments
+        const action = line[0];
+        const match = line.match(/^.\s+(.+?)\s+\(/);
+        if (!match) return null;
+        return { action, fileName: match[1] };
+    }).filter(Boolean);
 
-            const actions = lines.map(line => {
-                const action = line.charAt(0);
-                const match = line.match(/^.\s+(.+?)\s+\(from\s+(.+)\)$/);
-                if (!match) return null;
-                return { action, fileName: match[1], sourceZip: match[2] };
-            }).filter(Boolean);
+    const actionable = actions.filter(a => a?.action === 'l' || a?.action === 's' || a?.action === 'b');
 
-            const actionable = actions.filter(a => a?.action === 'u' || a?.action === 'f' || a?.action === 'c');
-
-            if (actionable.length > 0) {
+    if (actionable.length > 0) {
                 console.log(`Found ${actionable.length} files to process.`);
                 const { entries: entries1, zipfile: zipfile1 } = await getZipEntries(zipPath1);
                 const { entries: entries2, zipfile: zipfile2 } = await getZipEntries(zipPath2);
@@ -103,23 +105,25 @@ try {
                         continue;
                     }
 
-                    if (item.action === 'u') {
+                    if (item.action === 'l') {
                         const outPath = getUniquePath(outDir, `${baseName}${ext}`);
                         await extractFile(larger.zipfile, larger.entry, outPath);
-                        console.log(`Extracted unmodified (larger) file: ${outPath}`);
-                    } else if (item.action === 'f') {
-                        const outPath = getUniquePath(outDir, `${baseName}${ext}`);
-                        await extractFile(smaller!.zipfile, smaller!.entry, outPath);
-                        console.log(`Extracted save-to-files (smaller) file: ${outPath}`);
-                    } else if (item.action === 'c') {
-                        if (e1 && e2) {
-                            const unmodOut = getUniquePath(outDir, `${baseName}_unmodified${ext}`);
+                        console.log(`Extracted larger file: ${outPath}`);
+                    } else if (item.action === 's') {
+                        if (smaller) {
+                            const outPath = getUniquePath(outDir, `${baseName}${ext}`);
+                            await extractFile(smaller.zipfile, smaller.entry, outPath);
+                            console.log(`Extracted smaller file: ${outPath}`);
+                        }
+                    } else if (item.action === 'b') {
+                        if (e1 && e2 && smaller) {
+                            const unmodOut = getUniquePath(outDir, `${baseName}_larger${ext}`);
                             await extractFile(larger.zipfile, larger.entry, unmodOut);
-                            console.log(`Extracted unmodified: ${unmodOut}`);
+                            console.log(`Extracted larger: ${unmodOut}`);
 
-                            const savedOut = getUniquePath(outDir, `${baseName}_saved_to_files${ext}`);
-                            await extractFile(smaller!.zipfile, smaller!.entry, savedOut);
-                            console.log(`Extracted save-to-files: ${savedOut}`);
+                            const savedOut = getUniquePath(outDir, `${baseName}_smaller${ext}`);
+                            await extractFile(smaller.zipfile, smaller.entry, savedOut);
+                            console.log(`Extracted smaller: ${savedOut}`);
                         } else {
                             const outPath = getUniquePath(outDir, `${baseName}${ext}`);
                             await extractFile(larger.zipfile, larger.entry, outPath);
@@ -131,21 +135,26 @@ try {
                 zipfile1.close();
                 zipfile2.close();
 
-                // Rewrite file removing processed items, keeping skips
-                const newLines = lines.filter(line => line.startsWith('s '));
-                if (newLines.length > 0) {
-                    fs.writeFileSync(remainingFilesPath, newLines.join('\n') + '\n');
-                    console.log(`Updated ${remainingFilesPath} with skipped files.`);
-                } else {
-                    fs.unlinkSync(remainingFilesPath);
-                    console.log(`Removed empty ${remainingFilesPath}.`);
-                }
+        // Rewrite file removing processed items, keeping skips (n) and comments
+        const newLines = lines.filter(line => line.startsWith('n ') || line.startsWith('#'));
+        // If there are only comments left, just remove the file
+        const onlyComments = newLines.every(line => line.startsWith('#'));
 
-                process.exit(0);
-            }
+        if (!onlyComments) {
+            await fsp.writeFile(remainingFilesPath, newLines.join('\n') + '\n');
+            console.log(`Updated ${remainingFilesPath} with skipped files.`);
+        } else {
+            await fsp.unlink(remainingFilesPath);
+            console.log(`Removed empty ${remainingFilesPath}.`);
         }
 
-        console.log(`Parsing ${zipPath1}...`);
+        process.exit(0);
+    }
+} catch (e) {
+    // File probably doesn't exist, ignore and continue to full scan
+}
+
+console.log(`Parsing ${zipPath1}...`);
         const { entries: entries1, zipfile: zipfile1 } = await getZipEntries(zipPath1);
         console.log(`Parsed ${entries1.length} files from ${zipPath1}.`);
 
@@ -257,22 +266,50 @@ try {
 
         const remainingLines: string[] = [];
 
-        console.log(`Files unique to ${zipPath1} (or modified):`);
-        if (remaining1.length === 0) console.log('  (None)');
+        const header = [
+            '# Categorize non-identical files using the following prefixes:',
+            '# - n: no action (skip) - leave in this diff status file',
+            '# - l: extract larger file',
+            '# - s: extract smaller file',
+            '# - b: extract both (suffixed by _larger and _smaller)',
+            '#',
+            '# After editing and saving, run the script again with the same arguments.',
+            ''
+        ];
+
+        const remainingMap = new Map<string, { size1?: number, size2?: number }>();
+
         remaining1.forEach(e => {
-            console.log(`  ${e.entry.fileName}`);
-            remainingLines.push(`s ${e.entry.fileName} (from ${zipPath1})`);
+            remainingMap.set(e.entry.fileName, { size1: e.uncompressedSize });
         });
 
-        console.log(`\nFiles unique to ${zipPath2} (or modified):`);
-        if (remaining2.length === 0) console.log('  (None)');
         remaining2.forEach(e => {
-            console.log(`  ${e.entry.fileName}`);
-            remainingLines.push(`s ${e.entry.fileName} (from ${zipPath2})`);
+            if (remainingMap.has(e.entry.fileName)) {
+                remainingMap.get(e.entry.fileName)!.size2 = e.uncompressedSize;
+            } else {
+                remainingMap.set(e.entry.fileName, { size2: e.uncompressedSize });
+            }
         });
+
+        console.log(`Files remaining for manual review:`);
+        if (remainingMap.size === 0) console.log('  (None)');
+
+        for (const [fileName, sizes] of remainingMap.entries()) {
+            let info = '';
+            if (sizes.size1 !== undefined && sizes.size2 !== undefined) {
+                info = `(modified: size1=${sizes.size1}, size2=${sizes.size2})`;
+            } else if (sizes.size1 !== undefined) {
+                info = `(only in ${zipPath1}: size=${sizes.size1})`;
+            } else if (sizes.size2 !== undefined) {
+                info = `(only in ${zipPath2}: size=${sizes.size2})`;
+            }
+            console.log(`  ${fileName} ${info}`);
+            remainingLines.push(`n ${fileName} ${info}`);
+        }
 
         if (remainingLines.length > 0) {
-            fs.writeFileSync(remainingFilesPath, remainingLines.join('\n') + '\n');
+            const finalLines = header.concat(remainingLines);
+            await fsp.writeFile(remainingFilesPath, finalLines.join('\n') + '\n');
             console.log(`\nWrote remaining diff to ${remainingFilesPath} for manual review.`);
         }
 
@@ -281,9 +318,6 @@ try {
         // Close zips
         zipfile1.close();
         zipfile2.close();
-} catch (err) {
-    console.error('Error:', err);
-}
 
 function getUniquePath(dir: string, fileName: string): string {
     let outPath = path.join(dir, fileName);
