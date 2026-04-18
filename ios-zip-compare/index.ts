@@ -1,4 +1,5 @@
 import * as fs from 'fs/promises'
+import { createReadStream } from 'fs'
 import * as path from 'path'
 import * as crypto from 'crypto'
 
@@ -389,14 +390,10 @@ async function safeMove(srcPath: string, destPath: string): Promise<void> {
 
 function computeHash(fullPath: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    import('fs')
-      .then(({ createReadStream }) => {
-        const readStream = createReadStream(fullPath)
-        const hash = crypto.createHash('sha256')
-        readStream.on('data', chunk => hash.update(chunk))
-        readStream.on('end', () => resolve(hash.digest('hex')))
-        readStream.on('error', reject)
-      })
-      .catch(reject)
+    const readStream = createReadStream(fullPath)
+    const hash = crypto.createHash('sha256')
+    readStream.on('data', chunk => hash.update(chunk))
+    readStream.on('end', () => resolve(hash.digest('hex')))
+    readStream.on('error', reject)
   })
 }
