@@ -175,13 +175,27 @@ try {
         const remaining1 = entries1.filter(e => !extractedNames1.has(e.entry.fileName) && !ignoredFiles.has(e.entry.fileName));
         const remaining2 = entries2.filter(e => !extractedNames2.has(e.entry.fileName) && !ignoredFiles.has(e.entry.fileName));
 
+        const remainingFilesPath = path.join(process.cwd(), 'remaining-files.txt');
+        const remainingLines: string[] = [];
+
         console.log(`Files unique to ${zipPath1} (or modified):`);
         if (remaining1.length === 0) console.log('  (None)');
-        remaining1.forEach(e => console.log(`  ${e.entry.fileName}`));
+        remaining1.forEach(e => {
+            console.log(`  ${e.entry.fileName}`);
+            remainingLines.push(`s ${e.entry.fileName} (from ${zipPath1})`);
+        });
 
         console.log(`\nFiles unique to ${zipPath2} (or modified):`);
         if (remaining2.length === 0) console.log('  (None)');
-        remaining2.forEach(e => console.log(`  ${e.entry.fileName}`));
+        remaining2.forEach(e => {
+            console.log(`  ${e.entry.fileName}`);
+            remainingLines.push(`s ${e.entry.fileName} (from ${zipPath2})`);
+        });
+
+        if (remainingLines.length > 0) {
+            fs.writeFileSync(remainingFilesPath, remainingLines.join('\n') + '\n');
+            console.log(`\nWrote remaining diff to ${remainingFilesPath} for manual review.`);
+        }
 
         console.log('\nNote: .aae files are Apple sidecar files for non-destructive edits. If they are in the remaining diff, edits may not have been exported or applied differently.');
 
