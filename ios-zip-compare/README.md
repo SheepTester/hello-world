@@ -6,24 +6,22 @@ A tool to compare two large iOS export zip files and extract the byte-for-byte i
 
 To use this script without cloning the entire repository or its commit history:
 
-1. Download only this folder using `svn`:
+1. Clone only the required directory using git sparse-checkout:
    ```bash
-   svn export https://github.com/USERNAME/REPO_NAME/trunk/ios-zip-compare
+   git clone --depth 1 --filter=blob:none --sparse https://github.com/USERNAME/REPO_NAME.git
+   cd REPO_NAME
+   git sparse-checkout set ios-zip-compare
+   cd ios-zip-compare
    ```
    *(Replace `USERNAME/REPO_NAME` with the actual GitHub repository path)*
 
-2. Navigate into the downloaded folder:
-   ```bash
-   cd ios-zip-compare
-   ```
-
-3. Install dependencies:
+2. Install dependencies:
    ```bash
    npm install
    ```
-   *(Note: You may want to install type definitions globally for development: `npm install -g @types/node @types/yauzl`)*
+   *(Note: You may want to install TypeScript and type definitions globally for development: `npm install -g typescript @types/node @types/yauzl`)*
 
-4. Run the script:
+3. Run the script:
    ```bash
    npx tsx index.ts <path_to_zip_1> <path_to_zip_2>
    ```
@@ -36,4 +34,6 @@ You can edit this file to categorize them using the following first-letter prefi
 - `s`: skip (default) - leave in this diff status file
 - `u`: use unmodified file(s) (the larger one)
 - `f`: use "save to files" file(s) (the smaller one)
-- `c`: copy both to the identical folder, suffixed by assumed type (unmodified or saved to files)
+- `c`: copy both to the identical folder, suffixed by assumed type (`_unmodified` or `_saved_to_files`)
+
+After editing the prefixes, simply run the script again with the same arguments. It will detect the `remaining-files.txt` file and perform the requested extractions before exiting.

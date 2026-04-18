@@ -12,8 +12,5 @@
   "type": "module",
   "dependencies": {
     "yauzl": "^3.3.0"
-  },
-  "devDependencies": {
-    "typescript": "^6.0.3"
   }
 }
