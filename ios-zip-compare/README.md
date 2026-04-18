@@ -1,6 +1,6 @@
-# iOS Zip Compare
+# iOS Directory Compare
 
-A tool to compare two large iOS export zip files and extract the byte-for-byte identical files without loading the entire zips into memory.
+A tool to compare two large iOS export directories and move the byte-for-byte identical files into an `identical` folder, while deleting the duplicates to save storage space.
 
 ## Usage
 
@@ -19,11 +19,11 @@ To use this script without cloning the entire repository or its commit history:
    ```bash
    npm install
    ```
-   *(Note: You may want to install TypeScript and type definitions globally for development: `npm install -g typescript @types/node @types/yauzl`)*
+   *(Note: You may want to install TypeScript and type definitions globally for development: `npm install -g typescript @types/node`)*
 
 3. Run the script:
    ```bash
-   node index.ts <path_to_zip_1> <path_to_zip_2>
+   node index.ts <path_to_dir_1> <path_to_dir_2>
    ```
 
 ## Remaining Files Review
@@ -32,8 +32,8 @@ If there are any non-identical files remaining, a `remaining-files.txt` will be 
 
 You can edit this file to categorize them using the following first-letter prefixes:
 - `n`: no action (skip) - leave in this diff status file
-- `l`: extract larger file
-- `s`: extract smaller file
-- `b`: extract both (suffixed by `_larger` and `_smaller`)
+- `l`: move larger file (and delete the smaller)
+- `s`: move smaller file (and delete the larger)
+- `b`: move both (suffixed by `_larger` and `_smaller`)
 
-After editing the prefixes, simply run the script again with the same arguments. It will detect the `remaining-files.txt` file and perform the requested extractions before exiting.
+After editing the prefixes, simply run the script again with the same arguments. It will detect the `remaining-files.txt` file and perform the requested operations before exiting.
