@@ -1,7 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
-const yauzl = require('yauzl');
+import * as fs from 'fs';
+import * as path from 'path';
+import * as crypto from 'crypto';
+import yauzl from 'yauzl';
+import os from 'os';
 
 // CLI Arguments
 const args = process.argv.slice(2);
@@ -13,14 +14,21 @@ if (args.length !== 2) {
 const zipPath1 = args[0];
 const zipPath2 = args[1];
 
+interface Entry {
+    fileName: string;
+    uncompressedSize: number;
+    zipfile: yauzl.ZipFile;
+    entry: yauzl.Entry;
+}
+
 // Helpers
-function getZipEntries(zipFilePath) {
+function getZipEntries(zipFilePath: string): Promise<{ entries: Entry[], zipfile: yauzl.ZipFile }> {
     return new Promise((resolve, reject) => {
-        const entries = [];
+        const entries: Entry[] = [];
         yauzl.open(zipFilePath, { lazyEntries: true, autoClose: false }, (err, zipfile) => {
             if (err) return reject(err);
 
-            zipfile.on('entry', (entry) => {
+            zipfile.on('entry', (entry: yauzl.Entry) => {
                 if (/\/$/.test(entry.fileName)) {
                     // directory
                     zipfile.readEntry();
@@ -44,8 +52,7 @@ function getZipEntries(zipFilePath) {
     });
 }
 
-async function main() {
-    try {
+try {
         console.log(`Parsing ${zipPath1}...`);
         const { entries: entries1, zipfile: zipfile1 } = await getZipEntries(zipPath1);
         console.log(`Parsed ${entries1.length} files from ${zipPath1}.`);
@@ -75,7 +82,7 @@ async function main() {
         console.log(`Found ${candidateSizes.size} unique file sizes present in both zips.`);
         console.log('Computing hashes for candidate files...');
 
-        const identicalFiles = []; // Array of { entry1, entry2 }
+        const identicalFiles: { entry1: Entry, entry2: Entry, hash: string }[] = []; // Array of { entry1, entry2 }
 
         for (const size of candidateSizes) {
             const group1 = sizeMap1.get(size);
@@ -104,7 +111,7 @@ async function main() {
         console.log(`Found ${identicalFiles.length} identical files.`);
 
         console.log('Processing identical files and handling Live Photo edge cases...');
-        const outDir = path.join(require('os').homedir(), 'storage', 'downloads', 'identical');
+        const outDir = path.join(os.homedir(), 'storage', 'downloads', 'identical');
         fs.mkdirSync(outDir, { recursive: true });
 
         const ignoredFiles = new Set();
@@ -121,7 +128,7 @@ async function main() {
         }
 
         // Helper to check if a file is a sister .mov
-        function isSisterMov(entry) {
+        function isSisterMov(entry: yauzl.Entry) {
             const ext = path.extname(entry.fileName).toLowerCase();
             if (ext === '.mov') {
                 const base = path.basename(entry.fileName, path.extname(entry.fileName)).toLowerCase();
@@ -181,12 +188,11 @@ async function main() {
         // Close zips
         zipfile1.close();
         zipfile2.close();
-    } catch (err) {
-        console.error('Error:', err);
-    }
+} catch (err) {
+    console.error('Error:', err);
 }
 
-function extractFile(zipfile, entry, outPath) {
+function extractFile(zipfile: yauzl.ZipFile, entry: yauzl.Entry, outPath: string): Promise<void> {
     return new Promise((resolve, reject) => {
         zipfile.openReadStream(entry, (err, readStream) => {
             if (err) return reject(err);
@@ -199,7 +205,7 @@ function extractFile(zipfile, entry, outPath) {
     });
 }
 
-function computeHash(zipfile, entry) {
+function computeHash(zipfile: yauzl.ZipFile, entry: yauzl.Entry): Promise<string> {
     return new Promise((resolve, reject) => {
         zipfile.openReadStream(entry, (err, readStream) => {
             if (err) return reject(err);
@@ -210,5 +216,3 @@ function computeHash(zipfile, entry) {
         });
     });
 }
-
-main();

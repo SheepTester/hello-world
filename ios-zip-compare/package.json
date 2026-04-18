@@ -2,15 +2,20 @@
   "name": "ios-zip-compare",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "yauzl": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "@types/yauzl": "^2.10.3",
+    "typescript": "^6.0.3"
   }
 }
