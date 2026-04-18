@@ -1,61 +1,52 @@
 import * as fs from 'fs/promises'
+import { createReadStream } from 'fs'
 import * as path from 'path'
 import * as crypto from 'crypto'
-import yauzl from 'yauzl'
-import os from 'os'
+import * as os from 'os'
 
 // CLI Arguments
 const args = process.argv.slice(2)
 if (args.length !== 2) {
-  console.error('Usage: node index.ts <path_to_zip_1> <path_to_zip_2>')
+  console.error('Usage: node index.ts <path_to_dir_1> <path_to_dir_2>')
   process.exit(1)
 }
 
-const zipPath1 = args[0]
-const zipPath2 = args[1]
+const dirPath1 = args[0]
+const dirPath2 = args[1]
 
 interface Entry {
   fileName: string
-  uncompressedSize: number
-  zipfile: yauzl.ZipFile
-  entry: yauzl.Entry
+  fullPath: string
+  size: number
 }
 
 // Helpers
-function getZipEntries(
-  zipFilePath: string
-): Promise<{ entries: Entry[]; zipfile: yauzl.ZipFile }> {
-  return new Promise((resolve, reject) => {
-    const entries: Entry[] = []
-    yauzl.open(
-      zipFilePath,
-      { lazyEntries: true, autoClose: false },
-      (err, zipfile) => {
-        if (err) return reject(err)
+async function getDirEntries(
+  dirPath: string,
+  basePath: string = dirPath
+): Promise<{ entries: Entry[] }> {
+  const entries: Entry[] = []
 
-        zipfile.on('entry', (entry: yauzl.Entry) => {
-          if (/\/$/.test(entry.fileName)) {
-            // directory
-            zipfile.readEntry()
-          } else {
-            entries.push({
-              fileName: entry.fileName,
-              uncompressedSize: entry.uncompressedSize,
-              zipfile,
-              entry
-            })
-            zipfile.readEntry()
-          }
+  async function walk(currentPath: string) {
+    const files = await fs.readdir(currentPath, { withFileTypes: true })
+    for (const file of files) {
+      const fullPath = path.join(currentPath, file.name)
+      if (file.isDirectory()) {
+        await walk(fullPath)
+      } else if (file.isFile()) {
+        const stats = await fs.stat(fullPath)
+        const fileName = path.relative(basePath, fullPath).replace(/\\/g, '/')
+        entries.push({
+          fileName,
+          fullPath,
+          size: stats.size
         })
-
-        zipfile.on('end', () => {
-          resolve({ entries, zipfile })
-        })
-
-        zipfile.readEntry()
       }
-    )
-  })
+    }
+  }
+
+  await walk(dirPath)
+  return { entries }
 }
 
 const remainingFilesPath = path.join(process.cwd(), 'remaining-files.txt')
@@ -96,10 +87,8 @@ if (remainingFilesContent) {
 
   if (actionable.length > 0) {
     console.log(`Found ${actionable.length} files to process.`)
-    const { entries: entries1, zipfile: zipfile1 } =
-      await getZipEntries(zipPath1)
-    const { entries: entries2, zipfile: zipfile2 } =
-      await getZipEntries(zipPath2)
+    const { entries: entries1 } = await getDirEntries(dirPath1)
+    const { entries: entries2 } = await getDirEntries(dirPath2)
 
     for (const item of actionable) {
       if (!item) continue
@@ -113,30 +102,38 @@ if (remainingFilesContent) {
       let smaller = e2
 
       if (e1 && e2) {
-        if (e2.uncompressedSize > e1.uncompressedSize) {
+        if (e2.size > e1.size) {
           larger = e2
           smaller = e1
         }
       } else {
-        // If it only exists in one zip, we just use that one regardless of 'u' or 'f'
+        // If it only exists in one dir, we just use that one regardless of 'u' or 'f'
         larger = e1 || e2
         smaller = e1 || e2
       }
 
       if (!larger) {
-        console.log(`Warning: File ${item.fileName} not found in either zip.`)
+        console.log(
+          `Warning: File ${item.fileName} not found in either directory.`
+        )
         continue
       }
 
       if (item.action === 'l') {
         const outPath = await getUniquePath(outDir, `${baseName}${ext}`)
-        await extractFile(larger.zipfile, larger.entry, outPath)
-        console.log(`Extracted larger file: ${outPath}`)
+        await safeMove(larger.fullPath, outPath)
+        console.log(`Moved larger file: ${outPath}`)
+        if (e1 && e2 && smaller) {
+          await fs.unlink(smaller.fullPath).catch(() => {})
+        }
       } else if (item.action === 's') {
         if (smaller) {
           const outPath = await getUniquePath(outDir, `${baseName}${ext}`)
-          await extractFile(smaller.zipfile, smaller.entry, outPath)
-          console.log(`Extracted smaller file: ${outPath}`)
+          await safeMove(smaller.fullPath, outPath)
+          console.log(`Moved smaller file: ${outPath}`)
+          if (e1 && e2 && larger) {
+            await fs.unlink(larger.fullPath).catch(() => {})
+          }
         }
       } else if (item.action === 'b') {
         if (e1 && e2 && smaller) {
@@ -144,27 +141,24 @@ if (remainingFilesContent) {
             outDir,
             `${baseName}_larger${ext}`
           )
-          await extractFile(larger.zipfile, larger.entry, unmodOut)
-          console.log(`Extracted larger: ${unmodOut}`)
+          await safeMove(larger.fullPath, unmodOut)
+          console.log(`Moved larger: ${unmodOut}`)
 
           const savedOut = await getUniquePath(
             outDir,
             `${baseName}_smaller${ext}`
           )
-          await extractFile(smaller.zipfile, smaller.entry, savedOut)
-          console.log(`Extracted smaller: ${savedOut}`)
+          await safeMove(smaller.fullPath, savedOut)
+          console.log(`Moved smaller: ${savedOut}`)
         } else {
           const outPath = await getUniquePath(outDir, `${baseName}${ext}`)
-          await extractFile(larger.zipfile, larger.entry, outPath)
+          await safeMove(larger.fullPath, outPath)
           console.log(
-            `Extracted single file (only exists in one zip): ${outPath}`
+            `Moved single file (only exists in one directory): ${outPath}`
           )
         }
       }
     }
-
-    zipfile1.close()
-    zipfile2.close()
 
     // Rewrite file removing processed items, keeping skips (n) and comments
     const newLines = lines.filter(
@@ -185,25 +179,25 @@ if (remainingFilesContent) {
   }
 }
 
-console.log(`Parsing ${zipPath1}...`)
-const { entries: entries1, zipfile: zipfile1 } = await getZipEntries(zipPath1)
-console.log(`Parsed ${entries1.length} files from ${zipPath1}.`)
+console.log(`Parsing ${dirPath1}...`)
+const { entries: entries1 } = await getDirEntries(dirPath1)
+console.log(`Parsed ${entries1.length} files from ${dirPath1}.`)
 
-console.log(`Parsing ${zipPath2}...`)
-const { entries: entries2, zipfile: zipfile2 } = await getZipEntries(zipPath2)
-console.log(`Parsed ${entries2.length} files from ${zipPath2}.`)
+console.log(`Parsing ${dirPath2}...`)
+const { entries: entries2 } = await getDirEntries(dirPath2)
+console.log(`Parsed ${entries2.length} files from ${dirPath2}.`)
 
 console.log('Building size maps...')
 const sizeMap1 = new Map()
 for (const e of entries1) {
-  if (!sizeMap1.has(e.uncompressedSize)) sizeMap1.set(e.uncompressedSize, [])
-  sizeMap1.get(e.uncompressedSize).push(e)
+  if (!sizeMap1.has(e.size)) sizeMap1.set(e.size, [])
+  sizeMap1.get(e.size).push(e)
 }
 
 const sizeMap2 = new Map()
 for (const e of entries2) {
-  if (!sizeMap2.has(e.uncompressedSize)) sizeMap2.set(e.uncompressedSize, [])
-  sizeMap2.get(e.uncompressedSize).push(e)
+  if (!sizeMap2.has(e.size)) sizeMap2.set(e.size, [])
+  sizeMap2.get(e.size).push(e)
 }
 
 const candidateSizes = new Set()
@@ -212,7 +206,7 @@ for (const size of sizeMap1.keys()) {
 }
 
 console.log(
-  `Found ${candidateSizes.size} unique file sizes present in both zips.`
+  `Found ${candidateSizes.size} unique file sizes present in both directories.`
 )
 console.log('Computing hashes for candidate files...')
 
@@ -224,13 +218,13 @@ for (const size of candidateSizes) {
 
   const hashes1 = new Map()
   for (const e of group1) {
-    const h = await computeHash(e.zipfile, e.entry)
+    const h = await computeHash(e.fullPath)
     if (!hashes1.has(h)) hashes1.set(h, [])
     hashes1.get(h).push(e)
   }
 
   for (const e of group2) {
-    const h = await computeHash(e.zipfile, e.entry)
+    const h = await computeHash(e.fullPath)
     if (hashes1.has(h)) {
       // Match found
       identicalFiles.push({
@@ -262,12 +256,10 @@ for (const pair of identicalFiles) {
 }
 
 // Helper to check if a file is a sister .mov
-function isSisterMov(entry: yauzl.Entry) {
-  const ext = path.extname(entry.fileName).toLowerCase()
+function isSisterMov(fileName: string) {
+  const ext = path.extname(fileName).toLowerCase()
   if (ext === '.mov') {
-    const base = path
-      .basename(entry.fileName, path.extname(entry.fileName))
-      .toLowerCase()
+    const base = path.basename(fileName, path.extname(fileName)).toLowerCase()
     if (identicalBaseNames.has(base)) {
       return true
     }
@@ -277,21 +269,22 @@ function isSisterMov(entry: yauzl.Entry) {
 
 // Mark sister .mov files as ignored
 for (const e of entries1) {
-  if (isSisterMov(e.entry)) ignoredFiles.add(e.entry.fileName)
+  if (isSisterMov(e.fileName)) ignoredFiles.add(e.fileName)
 }
 for (const e of entries2) {
-  if (isSisterMov(e.entry)) ignoredFiles.add(e.entry.fileName)
+  if (isSisterMov(e.fileName)) ignoredFiles.add(e.fileName)
 }
 
 let extractCount = 0
 for (const pair of identicalFiles) {
   const fileName = path.basename(pair.entry1.fileName)
   const outPath = await getUniquePath(outDir, fileName)
-  await extractFile(pair.entry1.zipfile, pair.entry1.entry, outPath)
+  await safeMove(pair.entry1.fullPath, outPath)
+  await fs.unlink(pair.entry2.fullPath).catch(() => {})
   extractCount++
 }
 
-console.log(`Extracted ${extractCount} identical files to ${outDir}`)
+console.log(`Moved ${extractCount} identical files to ${outDir}`)
 console.log(`Ignored ${ignoredFiles.size} Live Photo sister .mov files.`)
 
 console.log('\n--- Remaining Diff ---')
@@ -299,14 +292,10 @@ const extractedNames1 = new Set(identicalFiles.map(p => p.entry1.fileName))
 const extractedNames2 = new Set(identicalFiles.map(p => p.entry2.fileName))
 
 const remaining1 = entries1.filter(
-  e =>
-    !extractedNames1.has(e.entry.fileName) &&
-    !ignoredFiles.has(e.entry.fileName)
+  e => !extractedNames1.has(e.fileName) && !ignoredFiles.has(e.fileName)
 )
 const remaining2 = entries2.filter(
-  e =>
-    !extractedNames2.has(e.entry.fileName) &&
-    !ignoredFiles.has(e.entry.fileName)
+  e => !extractedNames2.has(e.fileName) && !ignoredFiles.has(e.fileName)
 )
 
 const remainingLines: string[] = []
@@ -314,9 +303,9 @@ const remainingLines: string[] = []
 const header = [
   '# Categorize non-identical files using the following prefixes:',
   '# - n: no action (skip) - leave in this diff status file',
-  '# - l: extract larger file',
-  '# - s: extract smaller file',
-  '# - b: extract both (suffixed by _larger and _smaller)',
+  '# - l: move larger file (and delete the smaller)',
+  '# - s: move smaller file (and delete the larger)',
+  '# - b: move both (suffixed by _larger and _smaller)',
   '#',
   '# After editing and saving, run the script again with the same arguments.',
   ''
@@ -325,14 +314,14 @@ const header = [
 const remainingMap = new Map<string, { size1?: number; size2?: number }>()
 
 remaining1.forEach(e => {
-  remainingMap.set(e.entry.fileName, { size1: e.uncompressedSize })
+  remainingMap.set(e.fileName, { size1: e.size })
 })
 
 remaining2.forEach(e => {
-  if (remainingMap.has(e.entry.fileName)) {
-    remainingMap.get(e.entry.fileName)!.size2 = e.uncompressedSize
+  if (remainingMap.has(e.fileName)) {
+    remainingMap.get(e.fileName)!.size2 = e.size
   } else {
-    remainingMap.set(e.entry.fileName, { size2: e.uncompressedSize })
+    remainingMap.set(e.fileName, { size2: e.size })
   }
 })
 
@@ -344,9 +333,9 @@ for (const [fileName, sizes] of remainingMap.entries()) {
   if (sizes.size1 !== undefined && sizes.size2 !== undefined) {
     info = `(modified: size1=${sizes.size1}, size2=${sizes.size2})`
   } else if (sizes.size1 !== undefined) {
-    info = `(only in ${zipPath1}: size=${sizes.size1})`
+    info = `(only in ${dirPath1}: size=${sizes.size1})`
   } else if (sizes.size2 !== undefined) {
-    info = `(only in ${zipPath2}: size=${sizes.size2})`
+    info = `(only in ${dirPath2}: size=${sizes.size2})`
   }
   console.log(`  ${fileName} ${info}`)
   remainingLines.push(`n ${fileName} ${info}`)
@@ -363,10 +352,6 @@ if (remainingLines.length > 0) {
 console.log(
   '\nNote: .aae files are Apple sidecar files for non-destructive edits. If they are in the remaining diff, edits may not have been exported or applied differently.'
 )
-
-// Close zips
-zipfile1.close()
-zipfile2.close()
 
 // Helper to check file existence synchronously is not in fs/promises.
 // We can use a simple async check here.
@@ -391,38 +376,25 @@ async function getUniquePath(dir: string, fileName: string): Promise<string> {
   return outPath
 }
 
-function extractFile(
-  zipfile: yauzl.ZipFile,
-  entry: yauzl.Entry,
-  outPath: string
-): Promise<void> {
-  return new Promise((resolve, reject) => {
-    zipfile.openReadStream(entry, (err, readStream) => {
-      if (err) return reject(err)
-      import('fs')
-        .then(fs => {
-          const writeStream = fs.createWriteStream(outPath)
-          readStream.pipe(writeStream)
-          writeStream.on('finish', resolve)
-          writeStream.on('error', reject)
-          readStream.on('error', reject)
-        })
-        .catch(reject)
-    })
-  })
+async function safeMove(srcPath: string, destPath: string): Promise<void> {
+  try {
+    await fs.rename(srcPath, destPath)
+  } catch (err: any) {
+    if (err.code === 'EXDEV') {
+      await fs.copyFile(srcPath, destPath)
+      await fs.unlink(srcPath)
+    } else {
+      throw err
+    }
+  }
 }
 
-function computeHash(
-  zipfile: yauzl.ZipFile,
-  entry: yauzl.Entry
-): Promise<string> {
+function computeHash(fullPath: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    zipfile.openReadStream(entry, (err, readStream) => {
-      if (err) return reject(err)
-      const hash = crypto.createHash('sha256')
-      readStream.on('data', chunk => hash.update(chunk))
-      readStream.on('end', () => resolve(hash.digest('hex')))
-      readStream.on('error', reject)
-    })
+    const readStream = createReadStream(fullPath)
+    const hash = crypto.createHash('sha256')
+    readStream.on('data', chunk => hash.update(chunk))
+    readStream.on('end', () => resolve(hash.digest('hex')))
+    readStream.on('error', reject)
   })
 }
