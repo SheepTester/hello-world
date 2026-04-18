@@ -2,6 +2,7 @@ import * as fs from 'fs/promises'
 import { createReadStream } from 'fs'
 import * as path from 'path'
 import * as crypto from 'crypto'
+import * as os from 'os'
 
 // CLI Arguments
 const args = process.argv.slice(2)
@@ -49,7 +50,7 @@ async function getDirEntries(
 }
 
 const remainingFilesPath = path.join(process.cwd(), 'remaining-files.txt')
-const outDir = path.join(process.cwd(), 'identical')
+const outDir = path.join(os.homedir(), 'storage', 'downloads', 'identical')
 await fs.mkdir(outDir, { recursive: true })
 
 // Handle pre-existing remaining-files.txt
