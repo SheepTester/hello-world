@@ -1,4 +1,4 @@
-import * as fsp from 'fs/promises'
+import * as fs from 'fs/promises'
 import * as path from 'path'
 import * as crypto from 'crypto'
 import yauzl from 'yauzl'
@@ -60,10 +60,10 @@ function getZipEntries(
 
 const remainingFilesPath = path.join(process.cwd(), 'remaining-files.txt')
 const outDir = path.join(os.homedir(), 'storage', 'downloads', 'identical')
-await fsp.mkdir(outDir, { recursive: true })
+await fs.mkdir(outDir, { recursive: true })
 
 // Handle pre-existing remaining-files.txt
-const remainingFilesContent = await fsp
+const remainingFilesContent = await fs
   .readFile(remainingFilesPath, 'utf8')
   .catch((err: any) => {
     if (err.code === 'ENOENT') return null
@@ -174,10 +174,10 @@ if (remainingFilesContent) {
     const onlyComments = newLines.every(line => line.startsWith('#'))
 
     if (!onlyComments) {
-      await fsp.writeFile(remainingFilesPath, newLines.join('\n') + '\n')
+      await fs.writeFile(remainingFilesPath, newLines.join('\n') + '\n')
       console.log(`Updated ${remainingFilesPath} with skipped files.`)
     } else {
-      await fsp.unlink(remainingFilesPath)
+      await fs.unlink(remainingFilesPath)
       console.log(`Removed empty ${remainingFilesPath}.`)
     }
 
@@ -354,7 +354,7 @@ for (const [fileName, sizes] of remainingMap.entries()) {
 
 if (remainingLines.length > 0) {
   const finalLines = header.concat(remainingLines)
-  await fsp.writeFile(remainingFilesPath, finalLines.join('\n') + '\n')
+  await fs.writeFile(remainingFilesPath, finalLines.join('\n') + '\n')
   console.log(
     `\nWrote remaining diff to ${remainingFilesPath} for manual review.`
   )
@@ -372,7 +372,7 @@ zipfile2.close()
 // We can use a simple async check here.
 async function exists(filePath: string): Promise<boolean> {
   try {
-    await fsp.access(filePath)
+    await fs.access(filePath)
     return true
   } catch {
     return false
