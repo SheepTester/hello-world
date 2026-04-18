@@ -53,6 +53,9 @@ const remainingFilesPath = path.join(process.cwd(), 'remaining-files.txt')
 const outDir = path.join(os.homedir(), 'storage', 'downloads', 'identical')
 await fs.mkdir(outDir, { recursive: true })
 
+const livePhotoVideosDir = path.join(process.cwd(), 'live-photo-videos')
+await fs.mkdir(livePhotoVideosDir, { recursive: true })
+
 // Handle pre-existing remaining-files.txt
 const remainingFilesContent = await fs
   .readFile(remainingFilesPath, 'utf8')
@@ -276,20 +279,53 @@ for (const e of entries2) {
 }
 
 let extractCount = 0
+let sisterMovCount = 0
 for (const pair of identicalFiles) {
   const fileName = path.basename(pair.entry1.fileName)
-  const outPath = await getUniquePath(outDir, fileName)
-  await safeMove(pair.entry1.fullPath, outPath)
-  await fs.unlink(pair.entry2.fullPath).catch(() => {})
-  extractCount++
+  if (isSisterMov(pair.entry1.fileName)) {
+    const outPath = await getUniquePath(livePhotoVideosDir, fileName)
+    await safeMove(pair.entry1.fullPath, outPath)
+    await fs.unlink(pair.entry2.fullPath).catch(() => {})
+    sisterMovCount++
+  } else {
+    const outPath = await getUniquePath(outDir, fileName)
+    await safeMove(pair.entry1.fullPath, outPath)
+    await fs.unlink(pair.entry2.fullPath).catch(() => {})
+    extractCount++
+  }
 }
 
 console.log(`Moved ${extractCount} identical files to ${outDir}`)
-console.log(`Ignored ${ignoredFiles.size} Live Photo sister .mov files.`)
 
-console.log('\n--- Remaining Diff ---')
 const extractedNames1 = new Set(identicalFiles.map(p => p.entry1.fileName))
 const extractedNames2 = new Set(identicalFiles.map(p => p.entry2.fileName))
+
+// Process non-identical files to move sister .mov files
+for (const e of entries1) {
+  if (!extractedNames1.has(e.fileName) && ignoredFiles.has(e.fileName)) {
+    const fileName = path.basename(e.fileName)
+    const outPath = await getUniquePath(livePhotoVideosDir, fileName)
+    await safeMove(e.fullPath, outPath)
+    sisterMovCount++
+    extractedNames1.add(e.fileName) // Mark as processed
+  }
+}
+
+for (const e of entries2) {
+  if (!extractedNames2.has(e.fileName) && ignoredFiles.has(e.fileName)) {
+    const fileName = path.basename(e.fileName)
+    const outPath = await getUniquePath(livePhotoVideosDir, fileName)
+    await safeMove(e.fullPath, outPath)
+    sisterMovCount++
+    extractedNames2.add(e.fileName) // Mark as processed
+  }
+}
+
+console.log(
+  `Moved ${sisterMovCount} Live Photo sister .mov files to ${livePhotoVideosDir}`
+)
+
+console.log('\n--- Remaining Diff ---')
 
 const remaining1 = entries1.filter(
   e => !extractedNames1.has(e.fileName) && !ignoredFiles.has(e.fileName)
