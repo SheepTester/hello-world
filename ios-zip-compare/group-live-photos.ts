@@ -55,12 +55,14 @@ async function getMediaProperties(filePath: string): Promise<string> {
 
 async function main() {
   const args = process.argv.slice(2)
-  if (args.length !== 1) {
-    console.error('Usage: npx tsx group-live-photos.ts <path_to_videos_dir>')
+  const dirPath =
+    args.length === 1 ? args[0] : path.join(process.cwd(), 'live-photo-videos')
+
+  if (args.length > 1) {
+    console.error('Usage: npx tsx group-live-photos.ts [path_to_videos_dir]')
     process.exit(1)
   }
 
-  const dirPath = args[0]
   let files: string[]
 
   try {
