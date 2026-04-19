@@ -42,3 +42,20 @@ You can edit this file to categorize them using the following first-letter prefi
 - `b`: move both (suffixed by `_larger` and `_smaller`)
 
 After editing the prefixes, simply run the script again with the same arguments. It will detect the `remaining-files.txt` file and perform the requested operations before exiting.
+
+## Concatenating Live Photo Videos
+
+If you want to quickly concatenate the extracted Live Photo videos, you can use the included `group-live-photos.ts` script.
+
+This script scans a directory for `.mov` and `.mp4` files, groups them based on compatible `ffprobe` properties (codec, dimensions, framerate, etc.) for quick ffmpeg concatenation, and generates `concat.txt` lists in a `concat_groups` subdirectory. The video files are left in place.
+
+```bash
+npx tsx group-live-photos.ts <path_to_live_photo_videos_dir>
+```
+
+You can then run `ffmpeg` with the concat demuxer using any of the generated text files. For example:
+
+```bash
+cd <path_to_live_photo_videos_dir>
+ffmpeg -f concat -safe 0 -i concat_groups/group_1.txt -c copy output_group_1.mov
+```

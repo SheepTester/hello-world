@@ -99,45 +99,37 @@ async function main() {
 
   console.log(`Found ${fileGroups.size} distinct property groups.`)
 
+  const concatGroupsDir = path.join(dirPath, 'concat_groups')
+  try {
+    await fs.mkdir(concatGroupsDir, { recursive: true })
+  } catch (err) {
+    console.error(`Error creating directory ${concatGroupsDir}:`, err)
+    process.exit(1)
+  }
+
   let groupIndex = 1
   for (const [propsId, groupFiles] of fileGroups.entries()) {
-    const groupDirName = `group_${groupIndex}`
-    const groupDirPath = path.join(dirPath, groupDirName)
-
-    try {
-      await fs.mkdir(groupDirPath, { recursive: true })
-    } catch (err) {
-      console.error(`Error creating directory ${groupDirPath}:`, err)
-      continue
-    }
-
     let concatContent = ''
 
     for (const file of groupFiles) {
-      const srcPath = path.join(dirPath, file)
-      const destPath = path.join(groupDirPath, file)
+      // Escape single quotes in filenames for ffmpeg concat demuxer
+      // The correct syntax for escaping a single quote in a single-quoted string in ffmpeg is:
+      // replace ' with '\''
+      const escapedFileName = file.replace(/'/g, "'\\''")
 
-      try {
-        await fs.rename(srcPath, destPath)
-
-        // Escape single quotes in filenames for ffmpeg concat demuxer
-        // The correct syntax for escaping a single quote in a single-quoted string in ffmpeg is:
-        // replace ' with '\''
-        const escapedFileName = file.replace(/'/g, "'\\''")
-        concatContent += `file '${escapedFileName}'\n`
-      } catch (err) {
-        console.error(`Error moving file ${file} to ${groupDirPath}:`, err)
-      }
+      // Since the concat file is in a subdirectory (concat_groups),
+      // we need to step back one directory to reference the video files
+      concatContent += `file '../${escapedFileName}'\n`
     }
 
-    const concatFilePath = path.join(groupDirPath, 'concat.txt')
+    const concatFilePath = path.join(concatGroupsDir, `group_${groupIndex}.txt`)
     try {
       await fs.writeFile(concatFilePath, concatContent, 'utf8')
       console.log(
-        `Created group ${groupIndex} with ${groupFiles.length} files. (ID: ${propsId})`
+        `Created group ${groupIndex} concat file with ${groupFiles.length} files. (ID: ${propsId})`
       )
     } catch (err) {
-      console.error(`Error writing concat.txt in ${groupDirPath}:`, err)
+      console.error(`Error writing ${concatFilePath}:`, err)
     }
 
     groupIndex++
