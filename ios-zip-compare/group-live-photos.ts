@@ -5,13 +5,18 @@ import { promisify } from 'util'
 
 const execFileAsync = promisify(execFile)
 
-async function getMediaProperties(filePath: string): Promise<string> {
+interface MediaProperties {
+  propsId: string
+  creationTime: Date | null
+}
+
+async function getMediaProperties(filePath: string): Promise<MediaProperties> {
   try {
     const { stdout } = await execFileAsync('ffprobe', [
       '-v',
       'error',
       '-show_entries',
-      'stream=codec_type,codec_name,profile,width,height,pix_fmt,color_space,color_transfer,color_primaries,sample_rate,channels',
+      'stream=codec_type,codec_name,profile,width,height,pix_fmt,color_space,color_transfer,color_primaries,sample_rate,channels:format_tags=creation_time,com.apple.quicktime.creationdate',
       '-of',
       'json',
       filePath
@@ -45,11 +50,32 @@ async function getMediaProperties(filePath: string): Promise<string> {
       }
     }
 
-    return `${videoProps}::${audioProps}`
+    let creationTime: Date | null = null
+    const tags = data.format?.tags
+    if (tags) {
+      const timeStr =
+        tags['com.apple.quicktime.creationdate'] || tags.creation_time
+      if (timeStr) {
+        creationTime = new Date(timeStr)
+        if (isNaN(creationTime.getTime())) {
+          creationTime = null
+        }
+      }
+    }
+
+    return {
+      propsId: `${videoProps}::${audioProps}`,
+      creationTime
+    }
   } catch (err) {
-    console.error(`Error probing file ${filePath}:`, err)
-    return 'error'
+    console.error(`\nError probing file ${filePath}:`, err)
+    return { propsId: 'error', creationTime: null }
   }
+}
+
+interface FileWithMetadata {
+  file: string
+  creationTime: Date | null
 }
 
 async function main() {
@@ -81,22 +107,25 @@ async function main() {
 
   console.log(`Found ${files.length} video files. Extracting properties...`)
 
-  const fileGroups = new Map<string, string[]>()
+  const fileGroups = new Map<string, FileWithMetadata[]>()
 
-  for (const file of files) {
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+    process.stdout.write(`\rProcessing file ${i + 1}/${files.length}...`)
     const fullPath = path.join(dirPath, file)
-    const propsId = await getMediaProperties(fullPath)
+    const { propsId, creationTime } = await getMediaProperties(fullPath)
 
     if (propsId === 'error') {
-      console.log(`Skipping file ${file} due to probe error.`)
+      console.log(`\nSkipping file ${file} due to probe error.`)
       continue
     }
 
     if (!fileGroups.has(propsId)) {
       fileGroups.set(propsId, [])
     }
-    fileGroups.get(propsId)!.push(file)
+    fileGroups.get(propsId)!.push({ file, creationTime })
   }
+  console.log() // Print a new line after progress indicator finishes
 
   console.log(`Found ${fileGroups.size} distinct property groups.`)
 
@@ -112,7 +141,20 @@ async function main() {
   for (const [propsId, groupFiles] of fileGroups.entries()) {
     let concatContent = ''
 
-    for (const file of groupFiles) {
+    // Sort files by creationTime
+    groupFiles.sort((a, b) => {
+      if (a.creationTime && b.creationTime) {
+        return a.creationTime.getTime() - b.creationTime.getTime()
+      } else if (a.creationTime) {
+        return -1 // Put files with date first
+      } else if (b.creationTime) {
+        return 1
+      }
+      // If both are null, sort alphabetically by filename as fallback
+      return a.file.localeCompare(b.file)
+    })
+
+    for (const { file } of groupFiles) {
       // Escape single quotes in filenames for ffmpeg concat demuxer
       // The correct syntax for escaping a single quote in a single-quoted string in ffmpeg is:
       // replace ' with '\''
