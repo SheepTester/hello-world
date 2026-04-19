@@ -1,8 +1,30 @@
-# iOS Directory Compare
+# iPhone photo backup
+
+I'm traveling across Europe right now, and I'm trying out my new iPhone because my elegantly named Google Pixel 4a 5g's battery cannot last a few hours of heavy camera usage.
+
+However, only my Pixel has unlimited Google Photos storage, so I want to get my photos from my iPhone backed up (with unnoticeable lossy compression) by my Pixel.
+
+Here are the steps I've devised. On the Pixel, you will need this folder of the repo, Termux, hotspot-drop, and ffmpeg.
+
+1. Create a chunk of media by enabling select mode in the Photos app, swiping right and holding to select a range of photos, then using another finger to scroll. Add the selected photos to an album, so the remaining photos can be filtered by "Not in an album."
+2. Go to the album and select > select all.
+3. Share > Export unmodified originals. Put the photos in a new folder. This might take a bit.
+4. Share > Save to files. This should be a lot faster because most of the work was done by the iPhone in the previous step. This worries me a bit because it implies "Export unmodified originals" is cached in the background, so it takes up storage somewhere that can't be managed.
+5. On the Pixel, create two directories for each folder in Termux.
+6. Launch hotspot-drop and connect the iPhone to thr Pixel's hotspot.
+7. In each directory, select all the files in the corresponding folder, then upload. At up to 10 MB/s, it can take about a minute for 200 photos.
+8. The iPhone is done; the two folders can be deleted.
+9. Use the index.ts script and pass the two directory paths. In most cases, the photos are actually bytewise identical and will automatically be put in a folder named "identical."
+10. Go to the Files app and rename "identical," which changes the Linux user ownership and allows Google Photos to recognize it. Enable backup on the folder. This begins backup of the actual videos and photos.
+11. I also want to back up the live photo videos. Use group-live-photos.ts to create a concat.txt file to concatenate the videos into one.
+12. Use the commands below to concatenate the videos. The end result will have all videos in portrait mode; landscape photos are rotated.
+13. I then move the video into the downloads folder so I can upload it to YouTube.
+
+## iOS Directory Compare
 
 A tool to compare two large iOS export directories and move the byte-for-byte identical files into an `identical` folder, while deleting the duplicates to save storage space.
 
-## Usage
+### Usage
 
 To use this script without cloning the entire repository or its commit history:
 
@@ -30,7 +52,7 @@ To use this script without cloning the entire repository or its commit history:
    node index.ts <path_to_dir_1> <path_to_dir_2>
    ```
 
-## Remaining Files Review
+### Remaining Files Review
 
 If there are any non-identical files remaining, a `remaining-files.txt` will be generated in your current working directory.
 
