@@ -11,7 +11,7 @@ async function getMediaProperties(filePath: string): Promise<string> {
       '-v',
       'error',
       '-show_entries',
-      'stream=codec_type,codec_name,profile,width,height,pix_fmt,color_space,color_transfer,color_primaries,sample_rate,channels,r_frame_rate',
+      'stream=codec_type,codec_name,profile,width,height,pix_fmt,color_space,color_transfer,color_primaries,sample_rate,channels',
       '-of',
       'json',
       filePath
@@ -32,8 +32,7 @@ async function getMediaProperties(filePath: string): Promise<string> {
             stream.pix_fmt || '',
             stream.color_space || '',
             stream.color_transfer || '',
-            stream.color_primaries || '',
-            stream.r_frame_rate || ''
+            stream.color_primaries || ''
           ].join('|')
         } else if (stream.codec_type === 'audio') {
           audioProps = [
