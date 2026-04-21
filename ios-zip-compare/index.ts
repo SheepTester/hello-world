@@ -3,6 +3,7 @@ import { createReadStream } from 'fs'
 import * as path from 'path'
 import * as crypto from 'crypto'
 import * as os from 'os'
+import { exists, getUniquePath, safeMove } from './utils.ts'
 
 // CLI Arguments
 const args = process.argv.slice(2)
@@ -121,10 +122,7 @@ if (remainingFilesContent) {
       const e2 = entries2.find(e => normalizeFileName(e.fileName) === itemNorm)
 
       const actualName = e1?.fileName || e2?.fileName || item.fileName
-      const baseName = path.basename(
-        actualName,
-        path.extname(actualName)
-      )
+      const baseName = path.basename(actualName, path.extname(actualName))
       const ext = path.extname(item.fileName)
 
       let larger = e1
@@ -431,42 +429,6 @@ if (remainingLines.length > 0) {
 console.log(
   '\nNote: .aae files are Apple sidecar files for non-destructive edits. If they are in the remaining diff, edits may not have been exported or applied differently.'
 )
-
-// Helper to check file existence synchronously is not in fs/promises.
-// We can use a simple async check here.
-async function exists(filePath: string): Promise<boolean> {
-  try {
-    await fs.access(filePath)
-    return true
-  } catch {
-    return false
-  }
-}
-
-async function getUniquePath(dir: string, fileName: string): Promise<string> {
-  let outPath = path.join(dir, fileName)
-  let counter = 1
-  while (await exists(outPath)) {
-    const ext = path.extname(fileName)
-    const base = path.basename(fileName, ext)
-    outPath = path.join(dir, `${base}_${counter}${ext}`)
-    counter++
-  }
-  return outPath
-}
-
-async function safeMove(srcPath: string, destPath: string): Promise<void> {
-  try {
-    await fs.rename(srcPath, destPath)
-  } catch (err: any) {
-    if (err.code === 'EXDEV') {
-      await fs.copyFile(srcPath, destPath)
-      await fs.unlink(srcPath)
-    } else {
-      throw err
-    }
-  }
-}
 
 function computeHash(fullPath: string): Promise<string> {
   return new Promise((resolve, reject) => {
