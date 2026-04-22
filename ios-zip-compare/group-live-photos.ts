@@ -104,6 +104,7 @@ async function main() {
 
   if (files.length === 0) {
     console.log('No video files found in the specified directory.')
+    await fs.rmdir(dirPath).catch(() => {})
     process.exit(0)
   }
 
@@ -219,6 +220,9 @@ async function main() {
       await fs.rmdir(concatGroupsDir)
     }
   } catch {}
+
+  // Cleanup main dir if empty
+  await fs.rmdir(dirPath).catch(() => {})
 }
 
 main().catch(console.error)
