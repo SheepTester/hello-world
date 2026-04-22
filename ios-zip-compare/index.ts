@@ -3,6 +3,7 @@ import { createReadStream } from 'fs'
 import * as path from 'path'
 import * as crypto from 'crypto'
 import * as os from 'os'
+import { exists, getUniquePath, safeMove } from './utils.ts'
 
 // CLI Arguments
 const args = process.argv.slice(2)
@@ -21,6 +22,16 @@ interface Entry {
 }
 
 // Helpers
+function normalizeFileName(fileName: string): string {
+  const ext = path.extname(fileName).toLowerCase()
+  const base = fileName.slice(0, fileName.length - ext.length).toLowerCase()
+  const imageExtensions = ['.heic', '.jpg', '.jpeg', '.png']
+  if (imageExtensions.includes(ext)) {
+    return base + '.__image__'
+  }
+  return base + ext
+}
+
 async function getDirEntries(
   dirPath: string,
   basePath: string = dirPath
@@ -51,9 +62,20 @@ async function getDirEntries(
 
 const remainingFilesPath = path.join(process.cwd(), 'remaining-files.txt')
 const outDir = path.join(os.homedir(), 'storage', 'downloads', 'identical')
-await fs.mkdir(outDir, { recursive: true })
-
 const livePhotoVideosDir = path.join(process.cwd(), 'live-photo-videos')
+
+if (await exists(outDir)) {
+  console.error(`Error: Output directory already exists: ${outDir}`)
+  process.exit(1)
+}
+if (await exists(livePhotoVideosDir)) {
+  console.error(
+    `Error: Live Photo videos directory already exists: ${livePhotoVideosDir}`
+  )
+  process.exit(1)
+}
+
+await fs.mkdir(outDir, { recursive: true })
 await fs.mkdir(livePhotoVideosDir, { recursive: true })
 
 // Handle pre-existing remaining-files.txt
@@ -95,10 +117,12 @@ if (remainingFilesContent) {
 
     for (const item of actionable) {
       if (!item) continue
-      const e1 = entries1.find(e => e.fileName === item.fileName)
-      const e2 = entries2.find(e => e.fileName === item.fileName)
+      const itemNorm = normalizeFileName(item.fileName)
+      const e1 = entries1.find(e => normalizeFileName(e.fileName) === itemNorm)
+      const e2 = entries2.find(e => normalizeFileName(e.fileName) === itemNorm)
 
-      const baseName = path.basename(item.fileName, path.extname(item.fileName))
+      const actualName = e1?.fileName || e2?.fileName || item.fileName
+      const baseName = path.basename(actualName, path.extname(actualName))
       const ext = path.extname(item.fileName)
 
       let larger = e1
@@ -247,14 +271,13 @@ const ignoredFiles = new Set()
 const extractedCount = 0
 
 // Process identical files to find Live Photo .mov files to ignore
-const identicalBaseNames = new Set()
+const identicalNormalizedImageNames = new Set()
 for (const pair of identicalFiles) {
   const ext = path.extname(pair.entry1.fileName).toLowerCase()
-  if (ext === '.heic' || ext === '.jpg') {
-    const base = path
-      .basename(pair.entry1.fileName, path.extname(pair.entry1.fileName))
-      .toLowerCase()
-    identicalBaseNames.add(base)
+  const imageExtensions = ['.heic', '.jpg', '.jpeg', '.png']
+  if (imageExtensions.includes(ext)) {
+    const normalized = normalizeFileName(pair.entry1.fileName)
+    identicalNormalizedImageNames.add(normalized)
   }
 }
 
@@ -262,8 +285,11 @@ for (const pair of identicalFiles) {
 function isSisterMov(fileName: string) {
   const ext = path.extname(fileName).toLowerCase()
   if (ext === '.mov') {
-    const base = path.basename(fileName, path.extname(fileName)).toLowerCase()
-    if (identicalBaseNames.has(base)) {
+    const normalizedImage = normalizeFileName(fileName).replace(
+      /\.mov$/i,
+      '.__image__'
+    )
+    if (identicalNormalizedImageNames.has(normalizedImage)) {
       return true
     }
   }
@@ -347,31 +373,46 @@ const header = [
   ''
 ]
 
-const remainingMap = new Map<string, { size1?: number; size2?: number }>()
+const remainingMap = new Map<
+  string,
+  { name1?: string; size1?: number; name2?: string; size2?: number }
+>()
 
 remaining1.forEach(e => {
-  remainingMap.set(e.fileName, { size1: e.size })
+  const norm = normalizeFileName(e.fileName)
+  remainingMap.set(norm, { name1: e.fileName, size1: e.size })
 })
 
 remaining2.forEach(e => {
-  if (remainingMap.has(e.fileName)) {
-    remainingMap.get(e.fileName)!.size2 = e.size
+  const norm = normalizeFileName(e.fileName)
+  if (remainingMap.has(norm)) {
+    const entry = remainingMap.get(norm)!
+    entry.name2 = e.fileName
+    entry.size2 = e.size
   } else {
-    remainingMap.set(e.fileName, { size2: e.size })
+    remainingMap.set(norm, { name2: e.fileName, size2: e.size })
   }
 })
 
 console.log(`Files remaining for manual review:`)
 if (remainingMap.size === 0) console.log('  (None)')
 
-for (const [fileName, sizes] of remainingMap.entries()) {
+const dirName1 = path.basename(dirPath1)
+const dirName2 = path.basename(dirPath2)
+
+for (const [norm, data] of remainingMap.entries()) {
   let info = ''
-  if (sizes.size1 !== undefined && sizes.size2 !== undefined) {
-    info = `(modified: size1=${sizes.size1}, size2=${sizes.size2})`
-  } else if (sizes.size1 !== undefined) {
-    info = `(only in ${dirPath1}: size=${sizes.size1})`
-  } else if (sizes.size2 !== undefined) {
-    info = `(only in ${dirPath2}: size=${sizes.size2})`
+  const fileName = data.name1 || data.name2!
+  if (data.size1 !== undefined && data.size2 !== undefined) {
+    const diff = Math.abs(data.size1 - data.size2)
+    info = `(modified: ${dirName1}=${data.size1}, ${dirName2}=${data.size2}, diff=${diff})`
+    if (data.name1 !== data.name2) {
+      info += ` [names: ${data.name1} vs ${data.name2}]`
+    }
+  } else if (data.size1 !== undefined) {
+    info = `(only in ${dirPath1}: size=${data.size1})`
+  } else if (data.size2 !== undefined) {
+    info = `(only in ${dirPath2}: size=${data.size2})`
   }
   console.log(`  ${fileName} ${info}`)
   remainingLines.push(`n ${fileName} ${info}`)
@@ -388,42 +429,6 @@ if (remainingLines.length > 0) {
 console.log(
   '\nNote: .aae files are Apple sidecar files for non-destructive edits. If they are in the remaining diff, edits may not have been exported or applied differently.'
 )
-
-// Helper to check file existence synchronously is not in fs/promises.
-// We can use a simple async check here.
-async function exists(filePath: string): Promise<boolean> {
-  try {
-    await fs.access(filePath)
-    return true
-  } catch {
-    return false
-  }
-}
-
-async function getUniquePath(dir: string, fileName: string): Promise<string> {
-  let outPath = path.join(dir, fileName)
-  let counter = 1
-  while (await exists(outPath)) {
-    const ext = path.extname(fileName)
-    const base = path.basename(fileName, ext)
-    outPath = path.join(dir, `${base}_${counter}${ext}`)
-    counter++
-  }
-  return outPath
-}
-
-async function safeMove(srcPath: string, destPath: string): Promise<void> {
-  try {
-    await fs.rename(srcPath, destPath)
-  } catch (err: any) {
-    if (err.code === 'EXDEV') {
-      await fs.copyFile(srcPath, destPath)
-      await fs.unlink(srcPath)
-    } else {
-      throw err
-    }
-  }
-}
 
 function computeHash(fullPath: string): Promise<string> {
   return new Promise((resolve, reject) => {

@@ -1,7 +1,9 @@
 import * as fs from 'fs/promises'
 import * as path from 'path'
+import * as os from 'os'
 import { execFile } from 'child_process'
 import { promisify } from 'util'
+import { exists, getUniquePath, safeMove } from './utils.ts'
 
 const execFileAsync = promisify(execFile)
 
@@ -166,17 +168,57 @@ async function main() {
     }
 
     const concatFilePath = path.join(concatGroupsDir, `group_${groupIndex}.txt`)
+    const outputFileName = `group_${groupIndex}.mov`
+    const localOutputPath = path.join(concatGroupsDir, outputFileName)
+    const finalOutputDir = path.join(os.homedir(), 'storage', 'downloads')
+
     try {
+      await fs.mkdir(finalOutputDir, { recursive: true })
       await fs.writeFile(concatFilePath, concatContent, 'utf8')
       console.log(
         `Created group ${groupIndex} concat file with ${groupFiles.length} files. (ID: ${propsId})`
       )
+
+      console.log(`Concatenating group ${groupIndex}...`)
+      await execFileAsync('ffmpeg', [
+        '-f',
+        'concat',
+        '-safe',
+        '0',
+        '-i',
+        concatFilePath,
+        '-c',
+        'copy',
+        '-y',
+        localOutputPath
+      ])
+
+      const finalPath = await getUniquePath(finalOutputDir, outputFileName)
+      await safeMove(localOutputPath, finalPath)
+      console.log(`Moved concatenated video to ${finalPath}`)
+
+      // Cleanup
+      console.log(`Cleaning up group ${groupIndex} source files...`)
+      for (const { file } of groupFiles) {
+        await fs.unlink(path.join(dirPath, file)).catch(err => {
+          console.error(`Error deleting ${file}:`, err)
+        })
+      }
+      await fs.unlink(concatFilePath).catch(() => {})
     } catch (err) {
-      console.error(`Error writing ${concatFilePath}:`, err)
+      console.error(`Error processing group ${groupIndex}:`, err)
     }
 
     groupIndex++
   }
+
+  // Cleanup concat_groups dir if empty
+  try {
+    const remaining = await fs.readdir(concatGroupsDir)
+    if (remaining.length === 0) {
+      await fs.rmdir(concatGroupsDir)
+    }
+  } catch {}
 }
 
 main().catch(console.error)
