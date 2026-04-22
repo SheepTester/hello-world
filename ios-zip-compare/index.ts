@@ -7,8 +7,8 @@ import { exists, getUniquePath, safeMove } from './utils.ts'
 
 // CLI Arguments
 const args = process.argv.slice(2)
-if (args.length !== 2) {
-  console.error('Usage: node index.ts <path_to_dir_1> <path_to_dir_2>')
+if (args.length < 1 || args.length > 2) {
+  console.error('Usage: node index.ts <path_to_dir_1> [path_to_dir_2]')
   process.exit(1)
 }
 
@@ -77,6 +77,56 @@ if (await exists(livePhotoVideosDir)) {
 
 await fs.mkdir(outDir, { recursive: true })
 await fs.mkdir(livePhotoVideosDir, { recursive: true })
+
+if (!dirPath2) {
+  // Single directory mode: assume everything is unmodified originals
+  console.log(`Single directory mode: Processing ${dirPath1}...`)
+  const { entries } = await getDirEntries(dirPath1)
+  console.log(`Parsed ${entries.length} files.`)
+
+  const normalizedImageNames = new Set<string>()
+  const imageExtensions = ['.heic', '.jpg', '.jpeg', '.png']
+  for (const e of entries) {
+    const ext = path.extname(e.fileName).toLowerCase()
+    if (imageExtensions.includes(ext)) {
+      normalizedImageNames.add(normalizeFileName(e.fileName))
+    }
+  }
+
+  function isSisterMovSingle(fileName: string) {
+    const ext = path.extname(fileName).toLowerCase()
+    if (ext === '.mov') {
+      const normalizedImage = normalizeFileName(fileName).replace(
+        /\.mov$/i,
+        '.__image__'
+      )
+      return normalizedImageNames.has(normalizedImage)
+    }
+    return false
+  }
+
+  let extractCount = 0
+  let sisterMovCount = 0
+
+  for (const e of entries) {
+    const fileName = path.basename(e.fileName)
+    if (isSisterMovSingle(e.fileName)) {
+      const outPath = await getUniquePath(livePhotoVideosDir, fileName)
+      await safeMove(e.fullPath, outPath)
+      sisterMovCount++
+    } else {
+      const outPath = await getUniquePath(outDir, fileName)
+      await safeMove(e.fullPath, outPath)
+      extractCount++
+    }
+  }
+
+  console.log(`Moved ${extractCount} files to ${outDir}`)
+  console.log(
+    `Moved ${sisterMovCount} Live Photo sister .mov files to ${livePhotoVideosDir}`
+  )
+  process.exit(0)
+}
 
 // Handle pre-existing remaining-files.txt
 const remainingFilesContent = await fs

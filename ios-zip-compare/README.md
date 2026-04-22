@@ -49,8 +49,22 @@ To use this script without cloning the entire repository or its commit history:
 
 3. Run the script:
    ```bash
-   node index.ts <path_to_dir_1> <path_to_dir_2>
+   node index.ts <path_to_dir_1> [path_to_dir_2]
    ```
+
+### Unmodified Originals Only
+
+If you are confident that all files in a directory are "unmodified originals" (e.g., from a "Export unmodified originals" action) and would match a second export, you can specify only one directory.
+
+```bash
+node index.ts <path_to_dir>
+```
+
+In this mode, the script:
+
+- Assumes all contents are identical to their counterparts.
+- Extracts Live Photo sister `.mov` files to the `live-photo-videos` directory.
+- Moves the remaining media to the `identical` folder.
 
 ### Remaining Files Review
 
