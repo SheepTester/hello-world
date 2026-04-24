@@ -1,11 +1,46 @@
 import * as fs from 'fs/promises'
 import * as path from 'path'
 import * as os from 'os'
-import { execFile } from 'child_process'
+import { execFile, spawn } from 'child_process'
 import { promisify } from 'util'
 import { exists, getUniquePath, safeMove } from './utils.ts'
 
 const execFileAsync = promisify(execFile)
+
+async function runCommand(command: string, args: string[]): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args)
+    const stderrLines: string[] = []
+
+    child.stderr.on('data', data => {
+      const lines = data.toString().split('\n')
+      for (const line of lines) {
+        if (line.trim()) {
+          stderrLines.push(line)
+          if (stderrLines.length > 20) {
+            stderrLines.shift()
+          }
+        }
+      }
+    })
+
+    child.on('close', code => {
+      if (code === 0) {
+        resolve()
+      } else {
+        const errorMsg =
+          stderrLines.length > 0
+            ? `\nLast few lines of error output:\n${stderrLines.join('\n')}`
+            : ''
+        reject(new Error(`Command failed with code ${code}${errorMsg}`))
+      }
+    })
+
+    child.on('error', err => {
+      reject(err)
+    })
+  })
+}
 
 interface MediaProperties {
   propsId: string
@@ -14,15 +49,19 @@ interface MediaProperties {
 
 async function getMediaProperties(filePath: string): Promise<MediaProperties> {
   try {
-    const { stdout } = await execFileAsync('ffprobe', [
-      '-v',
-      'error',
-      '-show_entries',
-      'stream=codec_type,codec_name,profile,width,height,pix_fmt,color_space,color_transfer,color_primaries,sample_rate,channels:format_tags=creation_time,com.apple.quicktime.creationdate',
-      '-of',
-      'json',
-      filePath
-    ])
+    const { stdout } = await execFileAsync(
+      'ffprobe',
+      [
+        '-v',
+        'error',
+        '-show_entries',
+        'stream=codec_type,codec_name,profile,width,height,pix_fmt,color_space,color_transfer,color_primaries,sample_rate,channels:format_tags=creation_time,com.apple.quicktime.creationdate',
+        '-of',
+        'json',
+        filePath
+      ],
+      { maxBuffer: 10 * 1024 * 1024 }
+    )
     const data = JSON.parse(stdout)
 
     let videoProps = ''
@@ -181,7 +220,7 @@ async function main() {
       )
 
       console.log(`Concatenating group ${groupIndex}...`)
-      await execFileAsync('ffmpeg', [
+      await runCommand('ffmpeg', [
         '-f',
         'concat',
         '-safe',
