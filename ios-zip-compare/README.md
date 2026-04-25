@@ -8,17 +8,32 @@ Here are the steps I've devised. On the Pixel, you will need this folder of the 
 
 1. Create a chunk of media by enabling select mode in the Photos app, swiping right and holding to select a range of photos, then using another finger to scroll. Add the selected photos to an album, so the remaining photos can be filtered by "Not in an album."
 1. Go to the album and select > select all.
-1. Share > Export unmodified originals. Put the photos in a new folder. This might take a bit.
+1. Share > Export unmodified originals. Put the photos in a new folder.
+
+   - For albums, this should only take a few seconds.
+   - For some reason, outside of albums (like in the hidden folder), it can sometimes get stuck. To fix this, add the photos to an album, repeat the selection and un-hide them. Export
 1. Share > Save to files. This should be a lot faster because most of the work was done by the iPhone in the previous step. This worries me a bit because it implies "Export unmodified originals" is cached in the background, so it takes up storage somewhere that can't be managed.
+
+   - In my experience, "save to files" is byte-wise identical to "export unmodified originals" (see below for exceptions). You can skip this step and only pass unmodified/ to index.ts.
 1. On the Pixel, create two directories for each folder in Termux.
 1. Launch hotspot-drop and connect the iPhone to thr Pixel's hotspot.
 1. In each directory, select all the files in the corresponding folder, then upload. At up to 10 MB/s, it can take about a minute for 200 photos.
+
+   - Important: Trying to select all files at once will make Safari hang then crash after several minutes. To avoid this, select one file from the folder first, then reload the page. For some reason, this warms Safari up for the full folder.
 1. The iPhone is done; the two folders can be deleted.
-1. Use the index.ts script and pass the two directory paths. In most cases, the photos are actually bytewise identical and will automatically be put in a folder named "identical."
+1. Use the index.ts script and pass the two directory paths (or just one if you believe "save to files" has no difference). In most cases, the photos are actually bytewise identical and will automatically be put in a folder named "identical."
 1. Go to the Files app and rename "identical," which changes the Linux user ownership and allows Google Photos to recognize it. Enable backup on the folder. This begins backup of the actual videos and photos.
 1. I also want to back up the live photo videos. Use group-live-photos.ts to create a concat.txt file to concatenate the videos into one.
-1. Use the commands below to concatenate the videos. The end result will have all videos in portrait mode; landscape photos are rotated.
-1. I then move the video into the downloads folder so I can upload it to YouTube.
+1. Use the commands below to concatenate the videos. The end result will have all videos in the same orientation; photos of the other orientation are rotated.
+1. It then moves the video into the downloads folder so I can upload it to YouTube.
+
+## When "Save to files" differs from "Export unmodified originals"
+
+This is a non exhaustive list of cases I've found of
+
+1. Cropped screenshots
+1. Photos taken on an international flight may have their time zones retroactively adjusted, but this is not reflected in "export unmodified originals"
+1. Photos directly taken in iMessage seem to be reenckdrf
 
 ## iOS Directory Compare
 
