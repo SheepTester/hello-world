@@ -33,7 +33,8 @@ This is a non exhaustive list of cases I've found of
 
 1. Cropped screenshots
 1. Photos taken on an international flight may have their time zones retroactively adjusted, but this is not reflected in "export unmodified originals"
-1. Photos directly taken in iMessage seem to be reenckdrf
+1. Photos directly taken in iMessage seem to apply image rotations (rather than just setting an orientation flag), which re-encodes the image
+1. Sometimes the thumbnail in the photo metadata is also stripped
 
 ## iOS Directory Compare
 
