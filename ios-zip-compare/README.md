@@ -11,7 +11,7 @@ Here are the steps I've devised. On the Pixel, you will need this folder of the 
 1. Share > Export unmodified originals. Put the photos in a new folder.
 
    - For albums, this should only take a few seconds.
-   - For some reason, outside of albums (like in the hidden folder), it can sometimes get stuck. To fix this, add the photos to an album, repeat the selection and un-hide them. Export
+   - For some reason, outside of albums (like in the hidden folder), it can sometimes get stuck. To fix this, add the photos to an album, repeat the selection and un-hide them. Export the photos, select all in the album, then hide them.
 1. Share > Save to files. This should be a lot faster because most of the work was done by the iPhone in the previous step. This worries me a bit because it implies "Export unmodified originals" is cached in the background, so it takes up storage somewhere that can't be managed.
 
    - In my experience, "save to files" is byte-wise identical to "export unmodified originals" (see below for exceptions). You can skip this step and only pass unmodified/ to index.ts.
