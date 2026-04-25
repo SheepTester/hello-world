@@ -24,8 +24,9 @@ Here are the steps I've devised. On the Pixel, you will need this folder of the 
 1. Use the index.ts script and pass the two directory paths (or just one if you believe "save to files" has no difference). In most cases, the photos are actually bytewise identical and will automatically be put in a folder named "identical."
 1. Go to the Files app and rename "identical," which changes the Linux user ownership and allows Google Photos to recognize it. Enable backup on the folder. This begins backup of the actual videos and photos.
 1. I also want to back up the live photo videos. Use group-live-photos.ts to create a concat.txt file to concatenate the videos into one.
-1. Use the commands below to concatenate the videos. The end result will have all videos in the same orientation; photos of the other orientation are rotated.
-1. It then moves the video into the downloads folder so I can upload it to YouTube.
+   
+   - It uses the commands below to concatenate the videos. The end result will have all videos in the same orientation; photos of the other orientation are rotated.
+   - It then moves the video into the downloads folder so I can upload it to YouTube.
 
 ## When "Save to files" differs from "Export unmodified originals"
 
