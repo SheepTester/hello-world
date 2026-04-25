@@ -27,6 +27,7 @@ Here are the steps I've devised. On the Pixel, you will need this folder of the 
    
    - It uses the commands below to concatenate the videos. The end result will have all videos in the same orientation; photos of the other orientation are rotated.
    - It then moves the video into the downloads folder so I can upload it to YouTube.
+1. Rename the concatenated .mov in Files to give file ownership back to Android so it can be backed up to Google Photos.
 
 ## When "Save to files" differs from "Export unmodified originals"
 
