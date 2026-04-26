@@ -181,8 +181,6 @@ async function main() {
 
   let groupIndex = 1
   for (const [propsId, groupFiles] of fileGroups.entries()) {
-    let concatContent = ''
-
     // Sort files by creationTime
     groupFiles.sort((a, b) => {
       if (a.creationTime && b.creationTime) {
@@ -196,55 +194,73 @@ async function main() {
       return a.file.localeCompare(b.file)
     })
 
-    for (const { file } of groupFiles) {
-      // Escape single quotes in filenames for ffmpeg concat demuxer
-      // The correct syntax for escaping a single quote in a single-quoted string in ffmpeg is:
-      // replace ' with '\''
-      const escapedFileName = file.replace(/'/g, "'\\''")
-
-      // Since the concat file is in a subdirectory (concat_groups),
-      // we need to step back one directory to reference the video files
-      concatContent += `file '../${escapedFileName}'\n`
-    }
-
-    const concatFilePath = path.join(concatGroupsDir, `group_${groupIndex}.txt`)
     const outputFileName = `group_${groupIndex}.mov`
-    const localOutputPath = path.join(concatGroupsDir, outputFileName)
     const finalOutputDir = path.join(os.homedir(), 'storage', 'downloads')
 
     try {
       await fs.mkdir(finalOutputDir, { recursive: true })
-      await fs.writeFile(concatFilePath, concatContent, 'utf8')
-      console.log(
-        `Created group ${groupIndex} concat file with ${groupFiles.length} files. (ID: ${propsId})`
-      )
 
-      console.log(`Concatenating group ${groupIndex}...`)
-      await runCommand('ffmpeg', [
-        '-f',
-        'concat',
-        '-safe',
-        '0',
-        '-i',
-        concatFilePath,
-        '-c',
-        'copy',
-        '-y',
-        localOutputPath
-      ])
+      if (groupFiles.length === 1) {
+        const { file } = groupFiles[0]
+        const sourcePath = path.join(dirPath, file)
+        const finalPath = await getUniquePath(finalOutputDir, outputFileName)
 
-      const finalPath = await getUniquePath(finalOutputDir, outputFileName)
-      await safeMove(localOutputPath, finalPath)
-      console.log(`Moved concatenated video to ${finalPath}`)
+        console.log(
+          `Group ${groupIndex} has only one video. Moving directly...`
+        )
+        await safeMove(sourcePath, finalPath)
+        console.log(`Moved single video to ${finalPath}`)
+      } else {
+        let concatContent = ''
+        for (const { file } of groupFiles) {
+          // Escape single quotes in filenames for ffmpeg concat demuxer
+          // The correct syntax for escaping a single quote in a single-quoted string in ffmpeg is:
+          // replace ' with '\''
+          const escapedFileName = file.replace(/'/g, "'\\''")
 
-      // Cleanup
-      console.log(`Cleaning up group ${groupIndex} source files...`)
-      for (const { file } of groupFiles) {
-        await fs.unlink(path.join(dirPath, file)).catch(err => {
-          console.error(`Error deleting ${file}:`, err)
-        })
+          // Since the concat file is in a subdirectory (concat_groups),
+          // we need to step back one directory to reference the video files
+          concatContent += `file '../${escapedFileName}'\n`
+        }
+
+        const concatFilePath = path.join(
+          concatGroupsDir,
+          `group_${groupIndex}.txt`
+        )
+        const localOutputPath = path.join(concatGroupsDir, outputFileName)
+
+        await fs.writeFile(concatFilePath, concatContent, 'utf8')
+        console.log(
+          `Created group ${groupIndex} concat file with ${groupFiles.length} files. (ID: ${propsId})`
+        )
+
+        console.log(`Concatenating group ${groupIndex}...`)
+        await runCommand('ffmpeg', [
+          '-f',
+          'concat',
+          '-safe',
+          '0',
+          '-i',
+          concatFilePath,
+          '-c',
+          'copy',
+          '-y',
+          localOutputPath
+        ])
+
+        const finalPath = await getUniquePath(finalOutputDir, outputFileName)
+        await safeMove(localOutputPath, finalPath)
+        console.log(`Moved concatenated video to ${finalPath}`)
+
+        // Cleanup
+        console.log(`Cleaning up group ${groupIndex} source files...`)
+        for (const { file } of groupFiles) {
+          await fs.unlink(path.join(dirPath, file)).catch(err => {
+            console.error(`Error deleting ${file}:`, err)
+          })
+        }
+        await fs.unlink(concatFilePath).catch(() => {})
       }
-      await fs.unlink(concatFilePath).catch(() => {})
     } catch (err) {
       console.error(`Error processing group ${groupIndex}:`, err)
     }
