@@ -198,7 +198,11 @@ async function main() {
     const finalOutputDir = path.join(os.homedir(), 'storage', 'downloads')
 
     try {
-      await fs.mkdir(finalOutputDir, { recursive: true })
+      if (!(await exists(finalOutputDir))) {
+        throw new Error(
+          `Output directory does not exist: ${finalOutputDir}. Please create it first.`
+        )
+      }
 
       if (groupFiles.length === 1) {
         const { file } = groupFiles[0]
