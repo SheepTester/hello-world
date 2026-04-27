@@ -1,9 +1,8 @@
 import * as fs from 'fs/promises'
-import { createReadStream } from 'fs'
 import * as path from 'path'
 import * as crypto from 'crypto'
 import * as os from 'os'
-import { exists, getUniquePath, safeMove } from './utils.ts'
+import { computeHash, exists, getUniquePath, safeMove } from './utils.ts'
 
 // CLI Arguments
 const args = process.argv.slice(2)
@@ -480,12 +479,3 @@ console.log(
   '\nNote: .aae files are Apple sidecar files for non-destructive edits. If they are in the remaining diff, edits may not have been exported or applied differently.'
 )
 
-function computeHash(fullPath: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const readStream = createReadStream(fullPath)
-    const hash = crypto.createHash('sha256')
-    readStream.on('data', chunk => hash.update(chunk))
-    readStream.on('end', () => resolve(hash.digest('hex')))
-    readStream.on('error', reject)
-  })
-}
