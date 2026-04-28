@@ -3,7 +3,7 @@ import * as path from 'path'
 import * as os from 'os'
 import { execFile, spawn } from 'child_process'
 import { promisify } from 'util'
-import { exists, getUniquePath, safeMove } from './utils.ts'
+import { computeHash, exists, getUniquePath, safeMove } from './utils.ts'
 
 const execFileAsync = promisify(execFile)
 
@@ -150,11 +150,22 @@ async function main() {
   console.log(`Found ${files.length} video files. Extracting properties...`)
 
   const fileGroups = new Map<string, FileWithMetadata[]>()
+  const seenHashes = new Set<string>()
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
     process.stdout.write(`\rProcessing file ${i + 1}/${files.length}...`)
     const fullPath = path.join(dirPath, file)
+
+    // De-duplication: iPhone may export the same video for multiple successive Live Photos.
+    const hash = await computeHash(fullPath)
+    if (seenHashes.has(hash)) {
+      console.log(`\nDeleting duplicate video: ${file}`)
+      await fs.unlink(fullPath)
+      continue
+    }
+    seenHashes.add(hash)
+
     const { propsId, creationTime } = await getMediaProperties(fullPath)
 
     if (propsId === 'error') {

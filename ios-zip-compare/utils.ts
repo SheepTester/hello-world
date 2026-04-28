@@ -1,5 +1,17 @@
 import * as fs from 'fs/promises'
+import { createReadStream } from 'fs'
 import * as path from 'path'
+import * as crypto from 'crypto'
+
+export async function computeHash(fullPath: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const readStream = createReadStream(fullPath)
+    const hash = crypto.createHash('sha256')
+    readStream.on('data', chunk => hash.update(chunk))
+    readStream.on('end', () => resolve(hash.digest('hex')))
+    readStream.on('error', reject)
+  })
+}
 
 export async function exists(filePath: string): Promise<boolean> {
   try {
