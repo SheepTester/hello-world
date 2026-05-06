@@ -37,6 +37,9 @@
 /*         color: white; */
     writing-mode: vertical-rl;
         width: 40px;
+        max-width: 9vw;
+        left: calc(var(--index) * 50px);
+        left: calc(var(--index) * min(50px, 10vw));
         position: fixed;
         pointer-events: none;
       }
@@ -56,6 +59,7 @@
       .svh { height: 100svh; --border-color: yellow; }
       .dvh { height: 100dvh; --border-color: lime; }
       .lvh { height: 100lvh; --border-color: magenta; }
+      .percent { height: 100%; --border-color: cyan }
 
       .safearea {
         background: color-mix(in srgb, blue 20%, transparent);
@@ -91,14 +95,16 @@
     <div class="sizer"></div>
 
     <div class=safearea>safe area</div>
-    <div class="bar vh top" style="left: 0px">100vh</div>
-    <div class="bar vh bottom" style="left: 50px">100vh</div>
-    <div class="bar svh top" style="left: 100px">100svh</div>
-    <div class="bar svh bottom" style="left: 150px">100svh</div>
-    <div class="bar lvh top" style="left: 200px">100lvh</div>
-    <div class="bar lvh bottom" style="left: 250px">100lvh</div>
-    <div class="bar dvh top" style="left: 300px">100dvh</div>
-    <div class="bar dvh bottom" style="left: 350px">100dvh</div>
+    <div class="bar vh top" style="--index: 0">100vh</div>
+    <div class="bar vh bottom" style="--index: 1">100vh</div>
+    <div class="bar svh top" style="--index: 2">100svh</div>
+    <div class="bar svh bottom" style="--index: 3">100svh</div>
+    <div class="bar lvh top" style="--index: 4">100lvh</div>
+    <div class="bar lvh bottom" style="--index: 5">100lvh</div>
+    <div class="bar dvh top" style="--index: 6">100dvh</div>
+    <div class="bar dvh bottom" style="--index: 7">100dvh</div>
+    <div class="bar percent top" style="--index: 8">100%</div>
+    <div class="bar percent bottom" style="--index: 9">100%</div>
 
     <script>
       async function fullscreen(event) {
