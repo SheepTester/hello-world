@@ -63,37 +63,33 @@ The grades listed here are for the 2020–2021 school year.
 Here is a simple flow chart:
 
 $$
-\DeclareMathOperator{\half}{half}
-\DeclareMathOperator{\Div}{div}
-\DeclareMathOperator{\Mod}{mod}
-\DeclareMathOperator{\base}{base}
 \begin{align*}
-  \Div'          & : \mathbb{N} \times \mathbb{N} \times \mathbb{Z}^+ \to \mathbb{N}    \\
-  \Div'(q, n, d) & = \begin{cases}
-                       \Div'(q + 1, n - d, d) & \text{if } n \ge d \\
+  \mathrm{div}'          & : \mathbb{N} \times \mathbb{N} \times \mathbb{Z}^+ \to \mathbb{N}    \\
+  \mathrm{div}'(q, n, d) & = \begin{cases}
+                       \mathrm{div}'(q + 1, n - d, d) & \text{if } n \ge d \\
                        q                      & \text{otherwise}
                      \end{cases} \\
   \\
-  \Div           & : \mathbb{N} \times \mathbb{Z}^+ \to
+  \mathrm{div}           & : \mathbb{N} \times \mathbb{Z}^+ \to
   \mathbb{N}                                                           \\
-  \Div(n, d)     & = \Div'(0, n, d) \\
+  \mathrm{div}(n, d)     & = \mathrm{div}'(0, n, d) \\
   \\
-  \Mod       & : \mathbb{N} \times \mathbb{Z}^+ \to
+  \mathrm{mod}       & : \mathbb{N} \times \mathbb{Z}^+ \to
   \mathbb{N}                                   \\
-  \Mod(n, d) & = n - d \cdot \Div(n, d) \\
+  \mathrm{mod}(n, d) & = n - d \cdot \mathrm{div}(n, d) \\
   \\
-  \base'          & : E_b' \times \mathbb{N} \times B \to E_b           \\
-  \base'(a, q, b) & = \begin{cases}
-                        \base'(\Mod(q, b) \circ a, \Div(q, b), b) &
+  \mathrm{base}'          & : E_b' \times \mathbb{N} \times B \to E_b           \\
+  \mathrm{base}'(a, q, b) & = \begin{cases}
+                        \mathrm{base}'(\mathrm{mod}(q, b) \circ a, \mathrm{div}(q, b), b) &
                         \text{if } q \neq 0                         \\
                         a                                         &
                         \text{otherwise}
                       \end{cases} \\
   \\
-  \base           & : \mathbb{N} \times B \to E_b                       \\
-  \base(n, b)     & = \begin{cases}
+  \mathrm{base}           & : \mathbb{N} \times B \to E_b                       \\
+  \mathrm{base}(n, b)     & = \begin{cases}
                         0                     & \text{if } n = 0 \\
-                        \base'(\lambda, n, b) & \text{otherwise}
+                        \mathrm{base}'(\lambda, n, b) & \text{otherwise}
                       \end{cases}
 \end{align*}
 $$
