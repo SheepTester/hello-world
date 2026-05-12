@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         File uploader
 // @namespace    https://sheeptester.github.io/
-// @version      1.1.0
-// @description  Go to https://scratch.mit.edu/questionable-host to upload a file.
+// @version      1.2.0
+// @description  Go to https://scratch.mit.edu/parents/?questionable-host to upload a file.
 // @author       SheepTester
+// @match        https://scratch.mit.edu/parents/?questionable-host
 // @match        https://scratch.mit.edu/about/?questionable-host
 // @icon         https://www.google.com/s2/favicons?domain=scratch.mit.edu
 // @grant        none
