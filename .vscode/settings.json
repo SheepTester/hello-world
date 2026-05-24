@@ -5,7 +5,7 @@
   "deno.suggest.imports.hosts": {
     "https://deno.land": true
   },
-  "prettier.prettierPath": "./node_modules/prettierx",
+  "prettier.prettierPath": "./node_modules/@sheeptester/prettier/index.mjs",
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter"
   },
