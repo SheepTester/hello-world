@@ -37,9 +37,9 @@
 /*         color: white; */
     writing-mode: vertical-rl;
         width: 40px;
-        max-width: 9vw;
+        max-width: calc(calc(100vw / 11) - 5px);
         left: calc(var(--index) * 50px);
-        left: calc(var(--index) * min(50px, 10vw));
+        left: calc(var(--index) * min(50px, calc(100vw / 11)));
         position: fixed;
         pointer-events: none;
       }
@@ -59,7 +59,9 @@
       .svh { height: 100svh; --border-color: yellow; }
       .dvh { height: 100dvh; --border-color: lime; }
       .lvh { height: 100lvh; --border-color: magenta; }
-      .percent { height: 100%; --border-color: cyan }
+      .percent { height: 100%; --border-color: cyan; }
+      
+      .topbottom { top: 0; bottom: 0; --border-color: white; }
 
       .safearea {
         background: color-mix(in srgb, blue 20%, transparent);
@@ -105,6 +107,7 @@
     <div class="bar dvh bottom" style="--index: 7">100dvh</div>
     <div class="bar percent top" style="--index: 8">100%</div>
     <div class="bar percent bottom" style="--index: 9">100%</div>
+    <div class="bar topbottom" style="--index: 10">top: 0; bottom: 0</div>
 
     <script>
       async function fullscreen(event) {
