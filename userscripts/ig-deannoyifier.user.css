@@ -1,43 +1,47 @@
 /* ==UserStyle==
 @name        Less annoying Instagram web experience
-@description Hides app download dialog and allows right clicking to save images and vidoes on posts
+@description Allows right clicking to save images and pause videos on posts
 @namespace   sheeptester.github.io
-@version     1.0.8
-@license     unlicense
+@version     2.0.0
+@license     mit
 ==/UserStyle== */
 @-moz-document domain("instagram.com") {
-    /* Hides app download dialog */
-    .pLTDo {
-        display: none;
+    /* make reels pausable */
+    [aria-label="Video player"][role="group"][data-visualcompletion="ignore"] {
+        height: 50%;
+        top: auto;
+        /* raise reel description up for video controls */
+        bottom: 50px;
+        
+        /* remove gradient (though this makes the description less legible) */
+        [role="button"] {
+            background: none;
+        }
+        
+        &:hover {
+            /* shows where the blocking div is */
+            background: rgba(255, 0, 0, 0.1);
+        }
     }
-
-    /* Allows posts to be right clicked > open image in new tab */
-    ._9AhH0,
-    ._aagw {
-        display: none !important;
+    
+    /* make images in feed right clickable */
+    ._aagv + div {
+        height: 50%;
+        top: auto;
+        
+        &:hover {
+            /* shows where the blocking div is */
+            background: rgba(255, 0, 0, 0.1);
+        }
     }
-
-    /* Lower video play button so video behind can be accessed */
-    .QvAa1,
-    .oujXn,
-    .PyenC,
-    .fXIG0,
-    ._aakl,
-    ._aakh {
-        bottom: 50%;
+    
+    /* seems to be the hit area for story tags */
+    [data-interactable="|click|"]
+    [data-interactable="|click|"]
+    [aria-haspopup="dialog"][style="height: 50%; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(0rad); width: 50%;"] {
+        &:hover {
+            /* shows where the blocking div is */
+            background: rgba(255, 0, 0, 0.1);
+        }
     }
-  
-  video ~ div {
-    pointer-events: none;
-    opacity: 0.5;
-  }
-  
-  time[datetime]:hover::after {
-    content: attr(datetime);
-    position: absolute;
-    left: 0;
-    top: 100%;
-    font-size: 0.8em;
-    white-space: nowrap;
-  }
 }
