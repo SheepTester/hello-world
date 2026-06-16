@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Schoology liker and disliker
+// @name         Schoology liker and disliker (deprecated, no longer works)
 // @namespace    https://sheeptester.github.io/
-// @version      1.2
+// @version      2.0
 // @description  Press ALT/OPTION + D to activate: like and dislike updates and comments on Schoology.
 // @author       SheepTester
 // @match        *://*.schoology.com/*
@@ -425,6 +425,8 @@
 
   // Wait until alt + D has been pressed
   await started
+
+  alert('Schoology dislikes is no longer available. Please uninstall the userscript. Dislike data may be published in the near future.')
 
   const { User, ItemType, responseOk } = await import('https://sheeptester.github.io/javascripts/sgy-portfolios.js')
 
