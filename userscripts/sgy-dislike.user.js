@@ -426,7 +426,10 @@
   // Wait until alt + D has been pressed
   await started
 
-  alert('Schoology dislikes is no longer available. Please uninstall the userscript. Dislike data may be published in the near future.')
+  prompt(
+    'Schoology dislikes is no longer available. Please uninstall the userscript. Dislike data may be published in the near future.\n\nMore info: https://sheeptester.github.io/longer-tweets/web-server/',
+    'https://sheeptester.github.io/longer-tweets/web-server/'
+  )
 
   const { User, ItemType, responseOk } = await import('https://sheeptester.github.io/javascripts/sgy-portfolios.js')
 
