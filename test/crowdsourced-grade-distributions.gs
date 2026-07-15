@@ -1,4 +1,4 @@
-// Based on https://github.com/SheepTester/hello-world/blob/master/discord-anonymous-submission.gs
+// Based on https://github.com/SheepTester/hello-world/blob/🤠/discord-anonymous-submission.gs
 
 const form = FormApp.getActiveForm()
 const message = form.getItems()[0]

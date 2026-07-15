@@ -13,5 +13,5 @@ where `[delay]` is the time between each item in ticks (1 second = 20 ticks). By
 
 I recommend playing on a void world with an oak tree on a dirt block at (0, 64, 0).
 
-Github: https://github.com/SheepTester/hello-world/tree/master/random-item-skyblock
+Github: https://github.com/SheepTester/hello-world/tree/🤠/random-item-skyblock
 

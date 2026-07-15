@@ -105,7 +105,7 @@ if (import.meta.main) {
   })
   if (help || !yamlPath || !pathToDatapackFolder) {
     console.log(
-      'deno run --allow-read --allow-write https://raw.githubusercontent.com/SheepTester/hello-world/master/minecraft-npc/init.ts [path to yml file] [path to datapack folder] -n [namespace name] -d [description]'
+      'deno run --allow-read --allow-write https://raw.githubusercontent.com/SheepTester/hello-world/🤠/minecraft-npc/init.ts [path to yml file] [path to datapack folder] -n [namespace name] -d [description]'
     )
   } else {
     await init(String(yamlPath), String(pathToDatapackFolder), {

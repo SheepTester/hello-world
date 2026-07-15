@@ -403,7 +403,7 @@ export async function downloadLinkedList (
 
 /**
  * Download a file uploaded using the old userscript,
- * https://github.com/SheepTester/hello-world/blob/master/userscripts/skracxteamgxenanto.user.js
+ * https://github.com/SheepTester/hello-world/blob/🤠/userscripts/skracxteamgxenanto.user.js
  *
  * @param onProgress is given a value between 0 and 1.
  */
