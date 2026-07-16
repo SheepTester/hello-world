@@ -33,6 +33,10 @@ yet anotre `#badBAD`
 
 commit for camel @wandwan
 
+```bash
+GIT_AUTHOR_NAME=$'\x80' GIT_AUTHOR_EMAIL="" GIT_AUTHOR_DATE="4102444799 +2359" GIT_COMMITTER_NAME=$'\x81' GIT_COMMITTER_EMAIL="" GIT_COMMITTER_DATE="4102444799 -2359" git commit --allow-empty --allow-empty-message
+```
+
 #### High school graduation year conversion table
 
 The grades listed here are for the 2020–2021 school year.
