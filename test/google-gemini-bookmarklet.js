@@ -2,7 +2,7 @@
 (function x(getsrc){
     if (getsrc){
 //running in console, return code
-        return `javascript:${encodeURIComponent(`(${x})()`)}`
+        return `javascript:${encodeURI(`(${x})()`)}`
         }
     const shet = new CSSStyleSheet()
  console.time('shet')
@@ -34,9 +34,10 @@ document.addEventListener('click', async e => {
     a.download =download //JSON.parse( response.headers.get('content-disposition')?.split('=')[1] ?? '""')
     // console.log(...response.headers.entries())
     document.body.append(a)
-    thing.style.filter=`hue-rotate(${Math.random()*300+30}deg)`
+  //  thing.style.filter=`hue-rotate(${Math.random()*300+30}deg)`
     a.click()
+    thing.style.opacity = 0.5
     a.remove()
     URL.revokeObjectURL(url)
 })
-})(false)
+})(true)
