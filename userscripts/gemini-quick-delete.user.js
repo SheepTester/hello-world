@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         gemini delete chat
 // @namespace    https://sheeptester.github.io/
-// @version      0.3.0
+// @version      0.3.1
 // @description  press alt+click on a chat to quick delete it
 // @author       You
 // @match        https://gemini.google.com/*
@@ -39,7 +39,7 @@
             if (!e.altKey || !quickDeleteEnabled) {
                 return
             }
-            const convo = e.target.closest('.conversation-items-container')
+            const convo = e.target.closest('gem-nav-list-item')
             convo.style.outline = '1px solid red'
             convo.style.pointerEvents = 'none'
             convo.style.position = 'fixed'
@@ -49,7 +49,10 @@
             convo.querySelector('[data-test-id="actions-menu-button"]').click()
             document.querySelector('[data-test-id="delete-button"]').click()
             await new Promise(resolve => window.requestAnimationFrame(resolve))
-            document.querySelector('[data-test-id="confirm-button"]').click()
+            const button = document.querySelector('gem-button[cdkfocusinitial]')
+            if (button.textContent.trim() === 'Delete') {
+              button.click()
+            }
         }, { passive: false })
 
         window.addEventListener('keydown', e => {
