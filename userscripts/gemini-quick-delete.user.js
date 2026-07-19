@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         gemini delete chat
 // @namespace    https://sheeptester.github.io/
-// @version      0.2.0
+// @version      0.3.0
 // @description  press alt+click on a chat to quick delete it
 // @author       You
 // @match        https://gemini.google.com/*
@@ -64,13 +64,13 @@
                     break
                 }
                 case 'ArrowRight': {
-                    const nextConvo = document.querySelector('.conversation.selected')?.parentElement.nextElementSibling?.firstElementChild
+                    const nextConvo = document.querySelector('[data-test-id="conversation"] > a.mdc-list-item--activated')?.parentElement.nextElementSibling?.nextElementSibling?.firstElementChild
                     nextConvo?.click()
                     nextConvo?.scrollIntoView({ block: 'nearest' })
                     break
                 }
                 case 'ArrowLeft': {
-                    const prevConvo = document.querySelector('.conversation.selected')?.parentElement.previousElementSibling?.firstElementChild
+                    const prevConvo = document.querySelector('[data-test-id="conversation"] > a.mdc-list-item--activated')?.parentElement.previousElementSibling?.previousElementSibling?.firstElementChild
                     prevConvo?.click()
                     prevConvo?.scrollIntoView({ block: 'nearest' })
                     break
