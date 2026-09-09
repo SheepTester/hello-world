@@ -21,7 +21,7 @@ interface Entry {
 }
 
 // Helpers
-function normalizeFileName(fileName: string): string {
+function normalizeFileName (fileName: string): string {
   const ext = path.extname(fileName).toLowerCase()
   const base = fileName.slice(0, fileName.length - ext.length).toLowerCase()
   const imageExtensions = ['.heic', '.jpg', '.jpeg', '.png']
@@ -31,13 +31,13 @@ function normalizeFileName(fileName: string): string {
   return base + ext
 }
 
-async function getDirEntries(
+async function getDirEntries (
   dirPath: string,
   basePath: string = dirPath
 ): Promise<{ entries: Entry[] }> {
   const entries: Entry[] = []
 
-  async function walk(currentPath: string) {
+  async function walk (currentPath: string) {
     const files = await fs.readdir(currentPath, { withFileTypes: true })
     for (const file of files) {
       const fullPath = path.join(currentPath, file.name)
@@ -60,16 +60,36 @@ async function getDirEntries(
 }
 
 const remainingFilesPath = path.join(process.cwd(), 'remaining-files.txt')
+// Handle pre-existing remaining-files.txt
+const remainingFilesContent = await fs
+  .readFile(remainingFilesPath, 'utf8')
+  .catch((err: any) => {
+    if (err.code === 'ENOENT') return null
+    throw err
+  })
+
 const outDir = path.join(os.homedir(), 'storage', 'downloads', 'identical')
 const livePhotoVideosDir = path.join(process.cwd(), 'live-photo-videos')
 
 if (await exists(outDir)) {
-  console.error(`Error: Output directory already exists: ${outDir}`)
+  if (!remainingFilesContent) {
+    console.error(`Error: Output directory already exists: ${outDir}`)
+    process.exit(1)
+  }
+} else if (remainingFilesContent) {
+  console.error(`Error: uhhh what happened to the output directory? ${outDir}`)
   process.exit(1)
 }
 if (await exists(livePhotoVideosDir)) {
+  if (!remainingFilesContent) {
+    console.error(
+      `Error: Live Photo videos directory already exists: ${livePhotoVideosDir}`
+    )
+    process.exit(1)
+  }
+} else if (remainingFilesContent) {
   console.error(
-    `Error: Live Photo videos directory already exists: ${livePhotoVideosDir}`
+    `Error: uhh what happened to the live photo videos directory: ${livePhotoVideosDir}`
   )
   process.exit(1)
 }
@@ -92,7 +112,7 @@ if (!dirPath2) {
     }
   }
 
-  function isSisterMovSingle(fileName: string) {
+  function isSisterMovSingle (fileName: string) {
     const ext = path.extname(fileName).toLowerCase()
     if (ext === '.mov') {
       const normalizedImage = normalizeFileName(fileName).replace(
@@ -126,14 +146,6 @@ if (!dirPath2) {
   )
   process.exit(0)
 }
-
-// Handle pre-existing remaining-files.txt
-const remainingFilesContent = await fs
-  .readFile(remainingFilesPath, 'utf8')
-  .catch((err: any) => {
-    if (err.code === 'ENOENT') return null
-    throw err
-  })
 
 if (remainingFilesContent) {
   console.log(
@@ -366,7 +378,7 @@ for (const [normName, entry2] of images2Map.entries()) {
 }
 
 // Helper to check if a file is a sister .mov
-function isSisterMov(fileName: string) {
+function isSisterMov (fileName: string) {
   const ext = path.extname(fileName).toLowerCase()
   if (ext === '.mov') {
     const normalizedImage = normalizeFileName(fileName).replace(
