@@ -319,14 +319,49 @@ console.log('Processing identical files and handling Live Photo edge cases...')
 const ignoredFiles = new Set()
 const extractedCount = 0
 
-// Process identical files to find Live Photo .mov files to ignore
-const identicalNormalizedImageNames = new Set()
+// Process files to find Live Photo .mov files to move to live-photo-videos
+const sisterImageNames = new Set<string>()
+const imageExtensions = ['.heic', '.jpg', '.jpeg', '.png']
+
 for (const pair of identicalFiles) {
   const ext = path.extname(pair.entry1.fileName).toLowerCase()
-  const imageExtensions = ['.heic', '.jpg', '.jpeg', '.png']
   if (imageExtensions.includes(ext)) {
-    const normalized = normalizeFileName(pair.entry1.fileName)
-    identicalNormalizedImageNames.add(normalized)
+    sisterImageNames.add(normalizeFileName(pair.entry1.fileName))
+  }
+}
+
+const images1Map = new Map<string, Entry>()
+for (const e of entries1) {
+  const ext = path.extname(e.fileName).toLowerCase()
+  if (imageExtensions.includes(ext)) {
+    images1Map.set(normalizeFileName(e.fileName), e)
+  }
+}
+
+const images2Map = new Map<string, Entry>()
+for (const e of entries2) {
+  const ext = path.extname(e.fileName).toLowerCase()
+  if (imageExtensions.includes(ext)) {
+    images2Map.set(normalizeFileName(e.fileName), e)
+  }
+}
+
+for (const [normName, entry1] of images1Map.entries()) {
+  const entry2 = images2Map.get(normName)
+  if (entry2) {
+    const diff = Math.abs(entry1.size - entry2.size)
+    const maxSize = Math.max(entry1.size, entry2.size)
+    if (maxSize === 0 || diff / maxSize <= 0.2) {
+      sisterImageNames.add(normName)
+    }
+  } else {
+    sisterImageNames.add(normName)
+  }
+}
+
+for (const [normName, entry2] of images2Map.entries()) {
+  if (!images1Map.has(normName)) {
+    sisterImageNames.add(normName)
   }
 }
 
@@ -338,7 +373,7 @@ function isSisterMov(fileName: string) {
       /\.mov$/i,
       '.__image__'
     )
-    if (identicalNormalizedImageNames.has(normalizedImage)) {
+    if (sisterImageNames.has(normalizedImage)) {
       return true
     }
   }
@@ -454,7 +489,16 @@ for (const [norm, data] of remainingMap.entries()) {
   const fileName = data.name1 || data.name2!
   if (data.size1 !== undefined && data.size2 !== undefined) {
     const diff = Math.abs(data.size1 - data.size2)
-    info = `(modified: ${dirName1}=${data.size1}, ${dirName2}=${data.size2}, diff=${diff})`
+    let size1Str = `${data.size1}`
+    let size2Str = `${data.size2}`
+    if (data.size1 > data.size2) {
+      size1Str += ' (L)'
+      size2Str += ' (s)'
+    } else if (data.size2 > data.size1) {
+      size1Str += ' (s)'
+      size2Str += ' (L)'
+    }
+    info = `(modified: ${dirName1}=${size1Str}, ${dirName2}=${size2Str}, diff=${diff})`
     if (data.name1 !== data.name2) {
       info += ` [names: ${data.name1} vs ${data.name2}]`
     }
@@ -478,4 +522,3 @@ if (remainingLines.length > 0) {
 console.log(
   '\nNote: .aae files are Apple sidecar files for non-destructive edits. If they are in the remaining diff, edits may not have been exported or applied differently.'
 )
-
