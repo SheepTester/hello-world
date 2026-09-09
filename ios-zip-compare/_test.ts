@@ -6,7 +6,7 @@ import { promisify } from 'util'
 
 const execFileAsync = promisify(execFile)
 
-async function runTest() {
+async function runTest () {
   const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ios-test-'))
   const dir1 = path.join(tmpDir, 'dir1')
   const dir2 = path.join(tmpDir, 'dir2')
@@ -37,8 +37,8 @@ async function runTest() {
     const mov1 = Buffer.alloc(500, 'm')
     await fs.writeFile(path.join(dir1, 'photo1.mov'), mov1)
 
-    // Run index.ts using npx tsx
-    await execFileAsync('npx', ['tsx', 'index.ts', dir1, dir2])
+    // Run index.ts
+    await execFileAsync('node', ['index.ts', dir1, dir2])
 
     // Verify sister MOV was moved to live-photo-videos/
     const liveFiles = await fs.readdir(livePhotoVideosDir)

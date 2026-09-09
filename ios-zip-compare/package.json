@@ -4,10 +4,13 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "npx tsx test.ts"
+    "test": "node _test.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^26.5.0"
+  }
 }
