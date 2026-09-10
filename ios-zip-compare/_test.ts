@@ -61,6 +61,62 @@ async function runTest () {
       throw new Error('Expected (s) and (L) indicators in remaining-files.txt')
     }
 
+    // Clean outputs for sub-tests
+    await fs.rm(outDir, { recursive: true, force: true })
+    await fs.rm(livePhotoVideosDir, { recursive: true, force: true })
+
+    // Test request one: error if given directory is empty when remaining-files.txt is absent
+    const emptyDir = path.join(tmpDir, 'emptyDir')
+    await fs.mkdir(emptyDir, { recursive: true })
+
+    await fs.rm(remainingFilesPath, { force: true })
+    let emptyDirErrorThrown = false
+    try {
+      await execFileAsync('node', ['index.ts', emptyDir, dir2])
+    } catch (err: any) {
+      emptyDirErrorThrown = true
+      if (!err.stderr?.includes('Directory is empty')) {
+        throw new Error(`Expected 'Directory is empty' error, got: ${err.stderr}`)
+      }
+    }
+    if (!emptyDirErrorThrown) {
+      throw new Error('Expected error when passing an empty directory with no remaining-files.txt')
+    }
+
+    // Test request two: no live-photo-videos directory created if no videos are put in it
+    const photoOnly1 = path.join(tmpDir, 'photoOnly1')
+    const photoOnly2 = path.join(tmpDir, 'photoOnly2')
+    await fs.mkdir(photoOnly1, { recursive: true })
+    await fs.mkdir(photoOnly2, { recursive: true })
+    const imgData = Buffer.alloc(100, 'i')
+    await fs.writeFile(path.join(photoOnly1, 'pic.jpg'), imgData)
+    await fs.writeFile(path.join(photoOnly2, 'pic.jpg'), imgData)
+
+    await execFileAsync('node', ['index.ts', photoOnly1, photoOnly2])
+    const liveDirExists = await fs.access(livePhotoVideosDir).then(() => true).catch(() => false)
+    if (liveDirExists) {
+      throw new Error('live-photo-videos directory should not exist when no videos are processed')
+    }
+
+    // Test relaxed requirement: remaining-files.txt exists and live-photo-videos directory does NOT exist
+    await fs.rm(outDir, { recursive: true, force: true })
+    await fs.rm(livePhotoVideosDir, { recursive: true, force: true })
+    const remDir1 = path.join(tmpDir, 'remDir1')
+    const remDir2 = path.join(tmpDir, 'remDir2')
+    await fs.mkdir(remDir1, { recursive: true })
+    await fs.mkdir(remDir2, { recursive: true })
+    await fs.writeFile(path.join(remDir1, 'test.jpg'), Buffer.alloc(100, 'x'))
+    await fs.writeFile(path.join(remDir2, 'test.jpg'), Buffer.alloc(200, 'y'))
+
+    // Create remaining-files.txt with manual action 'l'
+    await fs.writeFile(outDir, '') // dummy touch outDir first via mkdir
+    await fs.rm(outDir, { force: true })
+    await fs.mkdir(outDir, { recursive: true })
+    await fs.writeFile(remainingFilesPath, 'l test.jpg (modified: remDir1=100 (s), remDir2=200 (L), diff=100)\n')
+
+    // Running index.ts should succeed without requiring live-photo-videos directory to exist
+    await execFileAsync('node', ['index.ts', remDir1, remDir2])
+
     console.log('All automated tests passed successfully!')
   } finally {
     await fs.rm(tmpDir, { recursive: true, force: true })
