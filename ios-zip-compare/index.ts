@@ -80,22 +80,37 @@ if (await exists(outDir)) {
   console.error(`Error: uhhh what happened to the output directory? ${outDir}`)
   process.exit(1)
 }
-if (await exists(livePhotoVideosDir)) {
-  if (!remainingFilesContent) {
-    console.error(
-      `Error: Live Photo videos directory already exists: ${livePhotoVideosDir}`
-    )
-    process.exit(1)
-  }
-} else if (remainingFilesContent) {
+if (await exists(livePhotoVideosDir) && !remainingFilesContent) {
   console.error(
-    `Error: uhh what happened to the live photo videos directory: ${livePhotoVideosDir}`
+    `Error: Live Photo videos directory already exists: ${livePhotoVideosDir}`
   )
   process.exit(1)
 }
 
+if (!remainingFilesContent) {
+  const { entries: check1 } = await getDirEntries(dirPath1)
+  if (check1.length === 0) {
+    console.error(`Error: Directory is empty: ${dirPath1}`)
+    process.exit(1)
+  }
+  if (dirPath2) {
+    const { entries: check2 } = await getDirEntries(dirPath2)
+    if (check2.length === 0) {
+      console.error(`Error: Directory is empty: ${dirPath2}`)
+      process.exit(1)
+    }
+  }
+}
+
 await fs.mkdir(outDir, { recursive: true })
-await fs.mkdir(livePhotoVideosDir, { recursive: true })
+
+let livePhotoVideosDirCreated = false
+async function ensureLivePhotoVideosDir () {
+  if (!livePhotoVideosDirCreated) {
+    await fs.mkdir(livePhotoVideosDir, { recursive: true })
+    livePhotoVideosDirCreated = true
+  }
+}
 
 if (!dirPath2) {
   // Single directory mode: assume everything is unmodified originals
@@ -130,6 +145,7 @@ if (!dirPath2) {
   for (const e of entries) {
     const fileName = path.basename(e.fileName)
     if (isSisterMovSingle(e.fileName)) {
+      await ensureLivePhotoVideosDir()
       const outPath = await getUniquePath(livePhotoVideosDir, fileName)
       await safeMove(e.fullPath, outPath)
       sisterMovCount++
@@ -405,6 +421,7 @@ let sisterMovCount = 0
 for (const pair of identicalFiles) {
   const fileName = path.basename(pair.entry1.fileName)
   if (isSisterMov(pair.entry1.fileName)) {
+    await ensureLivePhotoVideosDir()
     const outPath = await getUniquePath(livePhotoVideosDir, fileName)
     await safeMove(pair.entry1.fullPath, outPath)
     await fs.unlink(pair.entry2.fullPath).catch(() => {})
@@ -426,6 +443,7 @@ const extractedNames2 = new Set(identicalFiles.map(p => p.entry2.fileName))
 for (const e of entries1) {
   if (!extractedNames1.has(e.fileName) && ignoredFiles.has(e.fileName)) {
     const fileName = path.basename(e.fileName)
+    await ensureLivePhotoVideosDir()
     const outPath = await getUniquePath(livePhotoVideosDir, fileName)
     await safeMove(e.fullPath, outPath)
     sisterMovCount++
@@ -436,6 +454,7 @@ for (const e of entries1) {
 for (const e of entries2) {
   if (!extractedNames2.has(e.fileName) && ignoredFiles.has(e.fileName)) {
     const fileName = path.basename(e.fileName)
+    await ensureLivePhotoVideosDir()
     const outPath = await getUniquePath(livePhotoVideosDir, fileName)
     await safeMove(e.fullPath, outPath)
     sisterMovCount++
