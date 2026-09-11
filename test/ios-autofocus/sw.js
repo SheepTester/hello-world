@@ -1,0 +1,27 @@
+const prefixPromise = fetch('prefix.json').then(r => r.json())
+const dataPromise = fetch('data.json').then(r => r.json())
+
+self.addEventListener('fetch', e => {
+  const k = new URL(e.request.url).searchParams.get('k')
+  if (k) {
+    e.respondWith(
+      Promise.all([dataPromise, prefixPromise]).then(async ([data, prefix]) => {
+        if (data[k]) {
+          return new Response(data[k].replace('{PREFIX}', prefix), {
+            headers: { 'content-type': 'text/html' }
+          })
+        } else {
+          return new Response(
+            prefix + `<p><code>${k}</code> not found. <a href='?'>back</a></p>`,
+            {
+              headers: { 'content-type': 'text/html' },
+              status: 404
+            }
+          )
+        }
+      })
+    )
+  }
+})
+
+self.addEventListener('install', () => self.skipWaiting())
