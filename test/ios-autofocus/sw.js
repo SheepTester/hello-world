@@ -1,4 +1,6 @@
-const prefixPromise = fetch('prefix.json').then(r => r.json())
+// v1
+
+const prefixPromise = fetch('prefix.txt').then(r => r.text())
 const dataPromise = fetch('data.json').then(r => r.json())
 
 self.addEventListener('fetch', e => {
@@ -25,3 +27,4 @@ self.addEventListener('fetch', e => {
 })
 
 self.addEventListener('install', () => self.skipWaiting())
+self.addEventListener('activate', e => e.waitUntil(clients.claim()))
