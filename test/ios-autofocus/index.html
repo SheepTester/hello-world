@@ -117,11 +117,15 @@
       </label>
     </form>
     <script>
-      navigator.serviceWorker.register('sw.js')
+      const promise = navigator.serviceWorker.register('sw.js')
       if (new URL(window.location.href).searchParams.get('k')) {
-        alert(
-          'looks like service worker did not register. try reloading the page'
-        )
+        promise
+          .then(() => window.location.reload())
+          .catch(() =>
+            alert(
+              'looks like service worker did not register so this page wont work'
+            )
+          )
       }
     </script>
   </body>
