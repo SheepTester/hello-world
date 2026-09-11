@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>iOS autofocus test</title>
+    <meta name="description" content="why is safari autofocus" />
+
+    <link rel="stylesheet" type="text/css" href="/sheep3.css" />
+    <script src="/sheep3.js" charset="utf-8"></script>
+
+    <style>
+      /* TEMP */
+    </style>
+  </head>
+  <body>
+    <a href="data:text/html,<h3>any</h3><input placeholder=totp />">one</a>
+    <a
+      href="data:text/html,<h3>any</h3><input placeholder=totp />"
+      target="_blank"
+      >two</a
+    >
+    <button
+      onclick="
+        x = window.open(
+          'data:text/html,<h3>any</h3><input placeholder=totp />',
+          '_blank'
+        )
+        console.log(x)
+        x.focus()
+      "
+    >
+      three
+    </button>
+    <button
+      onclick="
+        // console.log(window.URL)
+        x = window.open(
+          window.URL.createObjectURL(
+            new Blob(['<h3>any</h3><input placeholder=totp />'], {
+              type: 'text/html'
+            })
+          ),
+          '_blank'
+        )
+        console.log(x)
+        x.focus()
+      "
+    >
+      four
+    </button>
+    <a
+      href="#"
+      onclick="
+        this.href = window.URL.createObjectURL(
+          new Blob(['<h3>any</h3><input placeholder=totp />'], {
+            type: 'text/html'
+          })
+        )
+      "
+      target="_blank"
+      >five</a
+    >
+  </body>
+</html>
