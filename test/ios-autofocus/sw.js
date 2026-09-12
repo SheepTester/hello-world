@@ -29,9 +29,20 @@ self.addEventListener('fetch', e => {
   if (wuck) {
     return e.respondWith(
       prefixPromise.then(prefix => {
-        return new Response(prefix + wuck + '</body></html>', {
-          headers: { 'content-type': 'text/html' }
-        })
+        return new Response(
+          prefix +
+            '<script>alert("uh oh why is js running"); window.stop()</script>' +
+            wuck +
+            '</body></html>',
+          {
+            headers: {
+              'content-type': 'text/html',
+              'Content-Security-Policy':
+                // block inline JS, only allow CSS/images from this domain
+                "default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' /sheep3.js; img-src 'self'"
+            }
+          }
+        )
       })
     )
   }
