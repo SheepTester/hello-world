@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YT shorts -> watch, old Reddit, desktop Wikipedia
 // @namespace    https://sheeptester.github.io/
-// @version      1.11
+// @version      1.12
 // @description  Redirect YouTube shorts pages to normal video watch pages. Also redirects to old Reddit unless URL ends in ?force-new.
 // @author       SheepTester
 // @match        https://www.youtube.com/*
@@ -28,7 +28,7 @@
       /^\/([ru]|user)\//.test(window.location.pathname) &&
       !document.documentElement.hasAttribute('xml:lang')
     ) {
-      window.location.replace(window.location.href.replace('www', 'old'))
+      // window.location.replace(window.location.href.replace('www', 'old'))
     }
   } else if (window.location.hostname === 'old.reddit.com') {
     // Set default time for controversial and top to all time when signed out
