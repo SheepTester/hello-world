@@ -146,6 +146,33 @@
         />
       </label>
     </form>
+    <form>
+      <p>hmm i am not sure if my findings are enough</p>
+      <label>
+        inser HTML to try.<br />
+        <textarea name="wuck" rows="19" cols="80">
+&lt;form style="view-transition-name: add-form">
+  &lt;h2>Add an account&lt;/h2>
+  &lt;p>
+    Copy the URL encoded in the QR code (tip: use my
+    &lt;a href="/qr/" target="_blank">QR code scanner&lt;/a>) and paste it
+    below.
+  &lt;/p>
+  &lt;label>
+    &lt;span>URL in QR code&lt;/span>
+    &lt;input
+      name="url"
+      type="url"
+      placeholder="o&#x200B;t&#x200B;p&#x200B;auth://t&#x200B;o&#x200B;t&#x200B;p/"
+      pattern="otpauth://totp/.+"
+      required=""
+    />
+  &lt;/label>
+  &lt;button>Add&lt;/button>
+&lt;/form></textarea>
+      </label>
+      <p><button>ok</button></p>
+    </form>
     <script>
       const promise = navigator.serviceWorker.register('sw.js')
       if (new URL(window.location.href).searchParams.get('k')) {
