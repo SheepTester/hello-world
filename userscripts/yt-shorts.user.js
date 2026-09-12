@@ -24,7 +24,10 @@
       return
     }
     // Redirect new Reddit to old Reddit, but only on subreddit pages (not on pages like /poll/)
-    if (/^\/([ru]|user)\//.test(window.location.pathname) && !document.documentElement.hasAttribute('xml:lang')) {
+    if (
+      /^\/([ru]|user)\//.test(window.location.pathname) &&
+      !document.documentElement.hasAttribute('xml:lang')
+    ) {
       window.location.replace(window.location.href.replace('www', 'old'))
     }
   } else if (window.location.hostname === 'old.reddit.com') {
@@ -33,13 +36,17 @@
     if (page) {
       window.location.replace(`?sort=${page[1]}&t=all`)
     }
-  } else if (window.location.hostname.endsWith('.wikipedia.org') && window.innerWidth > 600) {
+  } else if (
+    window.location.hostname.endsWith('.wikipedia.org') &&
+    window.innerWidth > 600
+  ) {
     // Redirect to desktop Wikipedia
     window.location.replace(window.location.href.replace('.m.', '.'))
   } else {
     // Redirect YouTube shorts to normal video page
     const check = (url, callback) => {
-      const videoId = new URLPattern({ pathname: '/shorts/:video' }).exec(url)?.pathname.groups.video
+      const videoId = new URLPattern({ pathname: '/shorts/:video' }).exec(url)
+        ?.pathname.groups.video
       if (videoId) callback(new URL(`/watch?v=${videoId}`, url))
     }
 
@@ -48,16 +55,17 @@
     window.CustomEvent = class extends CustomEvent {
       constructor (...args) {
         if (args[0] === 'yt-navigate') {
-          const { url, webPageType, rootVe } = args[1].detail.endpoint.commandMetadata.webCommandMetadata
+          const { url, webPageType, rootVe } =
+            args[1].detail.endpoint.commandMetadata.webCommandMetadata
           if (webPageType === 'WEB_PAGE_TYPE_SHORTS') {
             super(args[0], {
               ...args[1],
               detail: {
                 endpoint: {
                   commandMetadata: {
-                    webCommandMetadata:{
+                    webCommandMetadata: {
                       url: `/watch?v=${url.replace('/shorts/', '')}`,
-                      webPageType: "WEB_PAGE_TYPE_WATCH",
+                      webPageType: 'WEB_PAGE_TYPE_WATCH',
                       rootVe
                     }
                   }

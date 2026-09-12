@@ -38,7 +38,8 @@ self.addEventListener('fetch', e => {
             headers: {
               'content-type': 'text/html',
               'Content-Security-Policy':
-                // block inline JS, only allow CSS/images from this domain
+                // block inline JS, only allow CSS and images (favicon.ico) from
+                // this domain
                 "default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' /sheep3.js; img-src 'self'"
             }
           }
