@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         chatgpt nav
 // @namespace    https://sheeptester.github.io/
-// @version      0.1.0
+// @version      0.2.1
 // @description  DESCRIPTION
 // @author       sheeptester
 // @match        https://chatgpt.com/*
@@ -12,7 +12,7 @@
 (() => {
   'use strict'
 
-  window.addEventListener('keydown', e => {
+  window.addEventListener('keydown', async e => {
     const desc = [
       e.ctrlKey || e.metaKey ? 'ctrl' : '',
       e.shiftKey ? 'shift' : '',
@@ -32,10 +32,18 @@
         e.preventDefault()
       }
       if (e.key === 'c') {
-        const copyBtn = document.querySelector('[data-testid="conversation-turn-1"] [data-testid="copy-turn-action-button"]')
+        const copyBtn = [...document.querySelectorAll('[data-turn="user"] [data-testid="copy-turn-action-button"]')].at(-1)
         copyBtn.click()
         copyBtn.parentElement.style.opacity = 1
         e.preventDefault()
+      }
+      if (e.key === 'd') {
+        e.preventDefault()
+        document.querySelector('[data-testid="history-item-0-options"]').click()
+        await new Promise(window.requestAnimationFrame)
+        document.querySelector('[data-testid="delete-chat-menu-item"]').click()
+        await new Promise(window.requestAnimationFrame)
+        document.querySelector('[data-testid="delete-conversation-confirm-button"]').click()
       }
     }
   })

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         gemini delete chat
 // @namespace    https://sheeptester.github.io/
-// @version      0.3.1
+// @version      0.3.2
 // @description  press alt+click on a chat to quick delete it
 // @author       You
 // @match        https://gemini.google.com/*
@@ -87,7 +87,9 @@
                 }
             }
             e.preventDefault()
-        })
+            e.stopPropagation()
+          // set capture to get priority over some keydown handler in the prompt input that is stopping propagation
+        }, { capture: true })
 
         document.styleSheets[0].insertRule(`
         .conversation-container:last-child:not(:first-child)::before {
