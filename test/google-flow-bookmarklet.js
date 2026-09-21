@@ -9,21 +9,35 @@
   document.removeEventListener('pointerdown', window.__lasthandler, {
     capture: true
   })
+  console.log('fdgdfg', console.error)
+  console.error('hello??')
   window.__lasthandler = () => {
     const images = [...document.querySelectorAll('flow-grid-tile-container')]
     const reuseBtns = [...document.querySelectorAll('.reuse-prompt-button')]
     console.log('setting up.', images.length, reuseBtns.length)
     for (const link of images) {
-      console.log('??')
+      console.log('??', link, images)
       if (data.has(link)) continue
+      console.log('hello')
       const url = new URL(link.querySelector('img,video').src)
       link.href = url
-      const wow = [...link.nextElementSibling.querySelectorAll('i + div')].at(
-        -1
-      ).textContent
+      console.log('hi1')
+      let wow
+      try {
+        wow = [...link.nextElementSibling.querySelectorAll('i + div')].at(
+          -1
+        ).textContent
+      } catch (error) {
+        console.log('wtf', error)
+        console.error('?a??')
+        console.warn('???b')
+        throw error
+      }
+      console.log('hi2')
       if (!wow) {
         console.warn(link)
       }
+      console.log('hi3')
       link.addEventListener(
         'click',
         async e => {
@@ -39,8 +53,11 @@
         },
         { capture: true }
       )
+      console.log('hi4')
       link.download = `${wow} ${url.searchParams.get('name')}`
+      console.log('hi5')
       data.add(link)
+      console.log('hi')
     }
     for (const link of reuseBtns) {
       let btn = link.parentNode.previousElementSibling
