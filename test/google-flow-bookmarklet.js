@@ -17,33 +17,47 @@
         if (data.has(link)) continue
         const url = new URL(link.querySelector('img,video').src)
         link.href = url
-        let wow = (wow = [
-          ...link.nextElementSibling.querySelectorAll('i + div')
-        ].at(-1).textContent)
+        let wow = link.querySelector('.footer-title').textContent
         if (!wow) {
           console.warn(link)
         }
+        const realLink = document.createElement('a')
         link.addEventListener(
           'click',
           async e => {
+            if (e.target !== e.currentTarget) return
             e.stopPropagation()
             e.preventDefault()
-            const blob = await fetch(url).then(r => r.blob())
-            link.href = URL.createObjectURL(blob)
-            const h = () =>
-              (link.style.filter = `hue-rotate(${Math.random() * 300 + 30}deg)`)
-            h()
-            link.click()
-            link.onclick = e => (e.stopPropagation(), h())
+            link.querySelector('[aria-label="More options"]').click()
+            Iterator.from(document.querySelectorAll('flow-menu-item button'))
+              .find(
+                btn => btn.querySelector('.label')?.textContent === 'Download'
+              )
+              .click()
+            Iterator.from(document.querySelectorAll('flow-menu-item button'))
+              .find(
+                btn =>
+                  btn.querySelector('.caption')?.textContent.trim() ===
+                  'Original size'
+              )
+              .click()
+            // const blob = await fetch(url).then(r => r.blob())
+            // realLink.href = URL.createObjectURL(blob)
+            // const h = () =>
+            link.style.filter = `hue-rotate(${Math.random() * 300 + 30}deg)`
+            // h()
+            // document.body.append(realLink)
+            // realLink.click()
+            // realLink.remove()
+            // link.onclick = e => (e.stopPropagation(), h())
           },
           { capture: true }
         )
-        link.download = `${wow} ${url.searchParams.get('name')}`
+        realLink.download = `${wow} ${url.searchParams.get('name')}`
         data.add(link)
       }
       for (const link of reuseBtns) {
         let btn = link.parentNode.previousElementSibling
-        console.log('wow', btn)
         if (!btn) {
           console.error('expected to find prompt next to button', link)
           continue
@@ -79,9 +93,14 @@
       })
     }
   }
-  ;[...document.styleSheets]
-    .at(-1)
-    .insertRule(
-      '[style="overflow-anchor: none;"] > [style*="translate3d"] { transform: none !important; }'
-    )
+  const sheet = [...document.styleSheets].at(-1)
+  sheet.insertRule(
+    '[style="overflow-anchor: none;"] > [style*="translate3d"] { transform: none !important; }'
+  )
+  sheet.insertRule(
+    'flow-grid-tile-container { pointer-events: auto !important }'
+  )
+  sheet.insertRule(
+    'flow-grid-tile-container * { pointer-events: none !important }'
+  )
 })(false)
