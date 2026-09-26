@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YT shorts -> watch, old Reddit, desktop Wikipedia
 // @namespace    https://sheeptester.github.io/
-// @version      1.12
+// @version      1.12.1
 // @description  Redirect YouTube shorts pages to normal video watch pages. Also redirects to old Reddit unless URL ends in ?force-new.
 // @author       SheepTester
 // @match        https://www.youtube.com/*
@@ -50,7 +50,7 @@
       if (videoId) callback(new URL(`/watch?v=${videoId}`, url))
     }
 
-    check(window.location, redirect => window.location.redirect(redirect))
+    check(window.location, redirect => window.location.replace(redirect))
 
     window.CustomEvent = class extends CustomEvent {
       constructor (...args) {
