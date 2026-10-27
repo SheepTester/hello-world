@@ -47,6 +47,9 @@ export async function safeMove (
   sourcePath: string,
   destPath: string
 ): Promise<void> {
+  if (!(await exists(sourcePath))) {
+    return
+  }
   await fs.rename(sourcePath, destPath).catch(async err => {
     if (err.code === 'EXDEV') {
       await fs.copyFile(sourcePath, destPath)
