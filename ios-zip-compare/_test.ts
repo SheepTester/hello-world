@@ -117,6 +117,29 @@ async function runTest () {
     // Running index.ts should succeed without requiring live-photo-videos directory to exist
     await execFileAsync('node', ['index.ts', remDir1, remDir2])
 
+    // Test duplicate identical files (e.g., multiple identical files in dir2 matching one file in dir1)
+    await fs.rm(outDir, { recursive: true, force: true })
+    await fs.rm(livePhotoVideosDir, { recursive: true, force: true })
+    await fs.rm(remainingFilesPath, { force: true })
+
+    const dupDir1 = path.join(tmpDir, 'dupDir1')
+    const dupDir2 = path.join(tmpDir, 'dupDir2')
+    await fs.mkdir(dupDir1, { recursive: true })
+    await fs.mkdir(dupDir2, { recursive: true })
+
+    const dupContent = Buffer.alloc(200, 'z')
+    await fs.writeFile(path.join(dupDir1, 'IMG_4631.MOV'), dupContent)
+    await fs.writeFile(path.join(dupDir2, 'IMG_4631.MOV'), dupContent)
+    await fs.writeFile(path.join(dupDir2, 'IMG_4631 2.MOV'), dupContent)
+
+    // Should process without ENOENT error
+    await execFileAsync('node', ['index.ts', dupDir1, dupDir2])
+
+    const outFiles = await fs.readdir(outDir)
+    if (!outFiles.includes('IMG_4631.MOV')) {
+      throw new Error('Expected IMG_4631.MOV in identical folder')
+    }
+
     console.log('All automated tests passed successfully!')
   } finally {
     await fs.rm(tmpDir, { recursive: true, force: true })

@@ -330,12 +330,15 @@ for (const size of candidateSizes) {
   for (const e of group2) {
     const h = await computeHash(e.fullPath)
     if (hashes1.has(h)) {
-      // Match found
-      identicalFiles.push({
-        entry1: hashes1.get(h)[0],
-        entry2: e,
-        hash: h
-      })
+      // Match found - match with all entries in group1 that have this hash
+      const matchingEntries1 = hashes1.get(h)
+      for (const entry1 of matchingEntries1) {
+        identicalFiles.push({
+          entry1,
+          entry2: e,
+          hash: h
+        })
+      }
     }
   }
 }
@@ -419,18 +422,33 @@ for (const e of entries2) {
 let extractCount = 0
 let sisterMovCount = 0
 for (const pair of identicalFiles) {
+  const e1Exists = await exists(pair.entry1.fullPath)
+  const e2Exists = await exists(pair.entry2.fullPath)
+
+  if (!e1Exists && !e2Exists) {
+    continue
+  }
+
   const fileName = path.basename(pair.entry1.fileName)
   if (isSisterMov(pair.entry1.fileName)) {
     await ensureLivePhotoVideosDir()
-    const outPath = await getUniquePath(livePhotoVideosDir, fileName)
-    await safeMove(pair.entry1.fullPath, outPath)
-    await fs.unlink(pair.entry2.fullPath).catch(() => {})
-    sisterMovCount++
+    if (e1Exists) {
+      const outPath = await getUniquePath(livePhotoVideosDir, fileName)
+      await safeMove(pair.entry1.fullPath, outPath)
+      sisterMovCount++
+    }
+    if (e2Exists) {
+      await fs.unlink(pair.entry2.fullPath).catch(() => {})
+    }
   } else {
-    const outPath = await getUniquePath(outDir, fileName)
-    await safeMove(pair.entry1.fullPath, outPath)
-    await fs.unlink(pair.entry2.fullPath).catch(() => {})
-    extractCount++
+    if (e1Exists) {
+      const outPath = await getUniquePath(outDir, fileName)
+      await safeMove(pair.entry1.fullPath, outPath)
+      extractCount++
+    }
+    if (e2Exists) {
+      await fs.unlink(pair.entry2.fullPath).catch(() => {})
+    }
   }
 }
 
