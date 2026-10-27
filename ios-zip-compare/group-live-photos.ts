@@ -13,7 +13,7 @@ import {
 
 const execFileAsync = promisify(execFile)
 
-async function runCommand (command: string, args: string[]): Promise<void> {
+async function runCommand(command: string, args: string[]): Promise<void> {
   return new Promise((resolve, reject) => {
     const child = spawn(command, args)
     const stderrLines: string[] = []
@@ -54,7 +54,7 @@ interface MediaProperties {
   videoDuration: number | null
 }
 
-async function getMediaProperties (filePath: string): Promise<MediaProperties> {
+async function getMediaProperties(filePath: string): Promise<MediaProperties> {
   try {
     const { stdout } = await execFileAsync(
       'ffprobe',
@@ -139,7 +139,7 @@ interface FileWithMetadata {
   videoDuration: number | null
 }
 
-async function main () {
+async function main() {
   const args = process.argv.slice(2)
   const dirPath =
     args.length === 1 ? args[0] : path.join(process.cwd(), 'live-photo-videos')
@@ -254,7 +254,11 @@ async function main () {
         await fs.mkdir(trimmedDir, { recursive: true })
 
         const trimmedFiles: string[] = []
+        console.log(`Generating trimmed videos for group ${groupIndex}...`)
         for (let i = 0; i < groupFiles.length; i++) {
+          process.stdout.write(
+            `\rTrimming video ${i + 1}/${groupFiles.length} for group ${groupIndex}...`
+          )
           const { file, videoDuration } = groupFiles[i]
           const sourcePath = path.join(dirPath, file)
           const trimmedPath = path.join(trimmedDir, `trimmed_${i}.mov`)
@@ -288,9 +292,9 @@ async function main () {
             '-i',
             sourcePath,
             '-map',
-            '0:v:0',
+            '0:v:0?',
             '-map',
-            '0:a:0'
+            '0:a:0?'
           ]
           if (videoDuration !== null) {
             ffmpegArgs.push('-t', videoDuration.toString())
@@ -300,6 +304,7 @@ async function main () {
           await runCommand('ffmpeg', ffmpegArgs)
           trimmedFiles.push(trimmedPath)
         }
+        console.log() // Print new line after trimming progress completes
 
         let concatContent = ''
         for (const trimmedPath of trimmedFiles) {
