@@ -1,5 +1,6 @@
 import { mkdir, open, rm, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
+import { zstdDecompress } from 'node:zlib'
 
 const decoder = new TextDecoder()
 
@@ -218,6 +219,7 @@ await rm(OUT_DIR, { recursive: true, force: true })
 await mkdir(OUT_DIR)
 
 const moduleCount = modulesPtrSize / COMPILED_MODULE_GRAPH_FILE_SIZE
+const fileNames = new Set<string>()
 for (let i = 0; i < moduleCount; i++) {
   const module = await read(
     bunOffset + modulesPtrOffset + i * COMPILED_MODULE_GRAPH_FILE_SIZE,
@@ -242,8 +244,23 @@ for (let i = 0; i < moduleCount; i++) {
     const dir = dirname(fileName)
     await mkdir(join(OUT_DIR, dir), { recursive: true })
   }
-  await writeFile(join(OUT_DIR, fileName), contents)
+  if (fileName.endsWith('.zst')) {
+    const decompressed = await new Promise<Buffer>((resolve, reject) =>
+      zstdDecompress(contents, (err, result) =>
+        err ? reject(err) : resolve(result)
+      )
+    )
+    await writeFile(join(OUT_DIR, fileName.replace('.zst', '')), decompressed)
+  } else {
+    await writeFile(join(OUT_DIR, fileName), contents)
+  }
+  fileNames.add(fileName)
   // console.log({ loader, name })
 }
+for (const fileName of fileNames) {
+  if (fileNames.has(`${fileName}.zst`)) {
+    console.error('zst exists', fileName)
+  }
+}
 
-console.log(`see ${OUT_DIR}/`)
+console.log(`done. see ${OUT_DIR}/`)
