@@ -1,0 +1,16 @@
+claude-code-darwin-arm64
+347406976
+claude-code-darwin-x64
+362162560
+claude-code-linux-x64
+365842960
+claude-code-linux-arm64
+364701112
+claude-code-linux-x64-musl
+352201992
+claude-code-linux-arm64-musl
+349795272
+claude-code-win32-x64
+372461728
+claude-code-win32-arm64
+354470048

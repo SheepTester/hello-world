@@ -7,13 +7,13 @@ claude-code-darwin-x64
 362162560 claude-code-darwin-x64
 
 claude-code-linux-arm64
-25509905 claude-code-linux-arm64
+ 25509905 claude-code-linux-arm64
 
 claude-code-linux-arm64-musl
 349795272 claude-code-linux-arm64-musl
 
 claude-code-linux-x64
-15024121 claude-code-linux-x64
+ 15024121 claude-code-linux-x64
 
 claude-code-linux-x64-musl
 352201992 claude-code-linux-x64-musl
@@ -22,4 +22,4 @@ claude-code-win32-arm64
 354470048 claude-code-win32-arm64
 
 claude-code-win32-x64
-90473024 claude-code-win32-x64
+ 90473024 claude-code-win32-x64
