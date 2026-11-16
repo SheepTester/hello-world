@@ -1,25 +1,25 @@
-for f in claude-code-*; do echo >> sizes.txt; echo "$f" >> sizes.txt; wc -c $f >> sizes.txt ; done
+for f in node_modules/@anthropic-ai/claude-code-*/claude*; do echo >> sizes.txt; echo "$f" >> sizes.txt; wc -c $f >> sizes.txt ; done
 
-claude-code-darwin-arm64
-347406976 claude-code-darwin-arm64
+node_modules/@anthropic-ai/claude-code-darwin-arm64/claude
+347406976 node_modules/@anthropic-ai/claude-code-darwin-arm64/claude
 
-claude-code-darwin-x64
-362162560 claude-code-darwin-x64
+node_modules/@anthropic-ai/claude-code-darwin-x64/claude
+362162560 node_modules/@anthropic-ai/claude-code-darwin-x64/claude
 
-claude-code-linux-arm64
- 25509905 claude-code-linux-arm64
+node_modules/@anthropic-ai/claude-code-linux-arm64-musl/claude
+349795272 node_modules/@anthropic-ai/claude-code-linux-arm64-musl/claude
 
-claude-code-linux-arm64-musl
-349795272 claude-code-linux-arm64-musl
+node_modules/@anthropic-ai/claude-code-linux-arm64/claude
+364701112 node_modules/@anthropic-ai/claude-code-linux-arm64/claude
 
-claude-code-linux-x64
- 15024121 claude-code-linux-x64
+node_modules/@anthropic-ai/claude-code-linux-x64-musl/claude
+352201992 node_modules/@anthropic-ai/claude-code-linux-x64-musl/claude
 
-claude-code-linux-x64-musl
-352201992 claude-code-linux-x64-musl
+node_modules/@anthropic-ai/claude-code-linux-x64/claude
+365842960 node_modules/@anthropic-ai/claude-code-linux-x64/claude
 
-claude-code-win32-arm64
-354470048 claude-code-win32-arm64
+node_modules/@anthropic-ai/claude-code-win32-arm64/claude.exe
+354470048 node_modules/@anthropic-ai/claude-code-win32-arm64/claude.exe
 
-claude-code-win32-x64
- 90473024 claude-code-win32-x64
+node_modules/@anthropic-ai/claude-code-win32-x64/claude.exe
+372461728 node_modules/@anthropic-ai/claude-code-win32-x64/claude.exe
