@@ -30,23 +30,29 @@ if (toBytes(header).slice(0, 4).toHex() !== '7f454c46') {
 if (header.getUint8(4) !== 2) {
   throw new Error('not 64-bit')
 }
-const elfBigEndian = header.getUint8(4) === 2
-if (header.getUint16(0x3a, elfBigEndian) !== 0x40) {
+const elfLittleEndian = header.getUint8(5) === 1
+if (header.getUint16(0x3a, elfLittleEndian) !== 0x40) {
   throw new Error('section header size is not 0x40')
 }
-const sectionHeaderOffset = Number(header.getBigUint64(0x28, elfBigEndian))
-const sectionEntryCount = header.getUint16(0x3c, elfBigEndian)
-const sectionNameEntryIndex = header.getUint16(0x3e, elfBigEndian)
+const sectionHeaderOffset = Number(header.getBigUint64(0x28, elfLittleEndian))
+const sectionEntryCount = header.getUint16(0x3c, elfLittleEndian)
+const sectionNameEntryIndex = header.getUint16(0x3e, elfLittleEndian)
 
 const sectionHeader = await read(
   sectionHeaderOffset,
   sectionHeaderOffset + sectionEntryCount * 0x40
 )
 const sectionNameSectionOffset = Number(
-  sectionHeader.getBigUint64(sectionNameEntryIndex * 0x40 + 0x18, elfBigEndian)
+  sectionHeader.getBigUint64(
+    sectionNameEntryIndex * 0x40 + 0x18,
+    elfLittleEndian
+  )
 )
 const sectionNameSectionSize = Number(
-  sectionHeader.getBigUint64(sectionNameEntryIndex * 0x40 + 0x20, elfBigEndian)
+  sectionHeader.getBigUint64(
+    sectionNameEntryIndex * 0x40 + 0x20,
+    elfLittleEndian
+  )
 )
 const sectionNames = toBytes(
   await read(
@@ -57,7 +63,7 @@ const sectionNames = toBytes(
 
 let bunIndex: number | undefined
 for (let i = 0; i < sectionEntryCount; i++) {
-  const nameOffset = sectionHeader.getUint32(i * 0x40, elfBigEndian)
+  const nameOffset = sectionHeader.getUint32(i * 0x40, elfLittleEndian)
   let end = nameOffset
   while (sectionNames[end]) {
     end++
@@ -71,12 +77,15 @@ if (bunIndex === undefined) {
   throw new Error("Couldn't find section .bun")
 }
 
-const bunOffset = Number(
-  sectionHeader.getBigUint64(bunIndex * 0x40 + 0x18, elfBigEndian)
-)
-const bunSize = Number(
-  sectionHeader.getBigUint64(bunIndex * 0x40 + 0x20, elfBigEndian)
-)
+// bun seems to ignore the first 8 bytes
+// https://github.com/oven-sh/bun/blob/bd9ec3891323d23ef6696301a8bf8ded0c4ddcc0/src/standalone_graph/StandaloneModuleGraph.rs#L657
+const BUN_OFFSET = 8
+const bunOffset =
+  Number(sectionHeader.getBigUint64(bunIndex * 0x40 + 0x18, elfLittleEndian)) +
+  BUN_OFFSET
+const bunSize =
+  Number(sectionHeader.getBigUint64(bunIndex * 0x40 + 0x20, elfLittleEndian)) -
+  BUN_OFFSET
 const TRAILER = '\n---- Bun! ----\n'
 const bunTrailer = decoder.decode(
   toBytes(await read(bunOffset + bunSize - TRAILER.length, bunOffset + bunSize))
@@ -101,7 +110,7 @@ const offsets = await read(
   bunOffset + bunSize - TRAILER.length - OFFSETS_SIZE,
   bunOffset + bunSize - TRAILER.length
 )
-// Apparently everything is still big endian ?
+// I assume everything is little endian here
 const modulesPtrOffset = offsets.getUint32(8, true)
 const modulesPtrSize = offsets.getUint32(8 + 4, true)
 const flags = offsets.getUint32(OFFSETS_SIZE - 4, true)
@@ -159,18 +168,48 @@ console.log(
 // - side: u8 (1 byte) - server (default) / client
 const COMPILED_MODULE_GRAPH_FILE_SIZE = 8 * 6 + 4
 
+// https://github.com/oven-sh/bun/blob/main/src/ast/loader.rs
+const LOADER = {
+  Jsx: 0,
+  Js: 1,
+  Ts: 2,
+  Tsx: 3,
+  Css: 4,
+  File: 5,
+  Json: 6,
+  Jsonc: 7,
+  Toml: 8,
+  Wasm: 9,
+  Napi: 10,
+  Base64: 11,
+  Dataurl: 12,
+  Text: 13,
+  Bunsh: 14,
+  Sqlite: 15,
+  SqliteEmbedded: 16,
+  Html: 17,
+  Yaml: 18,
+  Json5: 19,
+  Md: 20,
+  Xml: 21
+}
+const loaderReverse = new Map(
+  Object.entries(LOADER)
+    .values()
+    .map(([name, byte]) => [byte, name])
+)
+
+const EMPTY = new Uint8Array()
 async function readString (
   view: DataView,
   structOffset: number
-): Promise<string> {
+): Promise<Uint8Array> {
   const length = view.getUint32(structOffset + 4, true)
   if (length === 0) {
-    return ''
+    return EMPTY
   }
   const offset = view.getUint32(structOffset, true)
-  return decoder.decode(
-    toBytes(await read(bunOffset + offset, bunOffset + offset + length))
-  )
+  return toBytes(await read(bunOffset + offset, bunOffset + offset + length))
 }
 
 const moduleCount = modulesPtrSize / COMPILED_MODULE_GRAPH_FILE_SIZE
@@ -179,16 +218,18 @@ for (let i = 0; i < moduleCount; i++) {
     bunOffset + modulesPtrOffset + i * COMPILED_MODULE_GRAPH_FILE_SIZE,
     bunOffset + modulesPtrOffset + (i + 1) * COMPILED_MODULE_GRAPH_FILE_SIZE
   )
-  console.log({
-    name: await readString(module, 0),
-    contents: await readString(module, 8),
-    bytecode_origin_path: await readString(module, 8 * 5)
-  })
-  break
+  const name = decoder.decode(await readString(module, 0))
+  const contents = await readString(module, 8)
+  const bytecode_origin_path = decoder.decode(await readString(module, 8 * 5))
+  const loader = loaderReverse.get(module.getUint8(8 * 6 + 1))
+  if (bytecode_origin_path && bytecode_origin_path !== name) {
+    console.error('why different?', { name, bytecode_origin_path })
+  }
+  if (!name.startsWith('/$bunfs/root/')) {
+    console.error('weird name', name)
+  }
+  if (name.replace('/$bunfs/root/', '').includes('/')) {
+    console.error('subdir', name)
+  }
+  // console.log({ loader, name })
 }
-
-console.log({
-  modulesPtrOffset,
-  modulesPtrSize,
-  moduleCount
-})
