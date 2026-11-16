@@ -1,16 +1,25 @@
+for f in claude-code-*; do echo >> sizes.txt; echo "$f" >> sizes.txt; wc -c $f >> sizes.txt ; done
+
 claude-code-darwin-arm64
 347406976 claude-code-darwin-arm64
+
 claude-code-darwin-x64
 362162560 claude-code-darwin-x64
+
 claude-code-linux-arm64
 25509905 claude-code-linux-arm64
+
 claude-code-linux-arm64-musl
 349795272 claude-code-linux-arm64-musl
+
 claude-code-linux-x64
 15024121 claude-code-linux-x64
+
 claude-code-linux-x64-musl
 352201992 claude-code-linux-x64-musl
+
 claude-code-win32-arm64
-64 claude-code-win32-arm64
+354470048 claude-code-win32-arm64
+
 claude-code-win32-x64
-62 claude-code-win32-x64
+90473024 claude-code-win32-x64
