@@ -218,6 +218,8 @@ const OUT_DIR = 'claude'
 await rm(OUT_DIR, { recursive: true, force: true })
 await mkdir(OUT_DIR)
 
+const OUT_DIR2 = 'claude-formatted'
+
 const moduleCount = modulesPtrSize / COMPILED_MODULE_GRAPH_FILE_SIZE
 const fileNames = new Set<string>()
 for (let i = 0; i < moduleCount; i++) {
@@ -254,6 +256,12 @@ for (let i = 0; i < moduleCount; i++) {
   } else {
     await writeFile(join(OUT_DIR, fileName), contents)
   }
+  if (fileName === 'cli' || /^chunk-\w+\.js$/.test(fileName)) {
+    await writeFile(
+      join(OUT_DIR2, fileName === 'cli' ? 'cli.js' : fileName),
+      decoder.decode(contents).replaceAll('/$bunfs/root', '.')
+    )
+  }
   fileNames.add(fileName)
   // console.log({ loader, name })
 }
@@ -263,4 +271,4 @@ for (const fileName of fileNames) {
   }
 }
 
-console.log(`done. see ${OUT_DIR}/`)
+console.log(`done. see ${OUT_DIR}/, ${OUT_DIR2}/`)

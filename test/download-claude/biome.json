@@ -1,0 +1,10 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.8/schema.json",
+  "files": {
+    "includes": ["claude-formatted-for-real/cli.js"],
+    "maxSize": 34534534534
+  },
+  "formatter": {
+    "enabled": true
+  }
+}
