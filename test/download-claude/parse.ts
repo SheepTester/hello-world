@@ -1,4 +1,5 @@
-import { open } from 'node:fs/promises'
+import { mkdir, open, rm, writeFile } from 'node:fs/promises'
+import { dirname, join } from 'node:path'
 
 const decoder = new TextDecoder()
 
@@ -212,6 +213,10 @@ async function readString (
   return toBytes(await read(bunOffset + offset, bunOffset + offset + length))
 }
 
+const OUT_DIR = 'claude'
+await rm(OUT_DIR, { recursive: true, force: true })
+await mkdir(OUT_DIR)
+
 const moduleCount = modulesPtrSize / COMPILED_MODULE_GRAPH_FILE_SIZE
 for (let i = 0; i < moduleCount; i++) {
   const module = await read(
@@ -228,8 +233,17 @@ for (let i = 0; i < moduleCount; i++) {
   if (!name.startsWith('/$bunfs/root/')) {
     console.error('weird name', name)
   }
-  if (name.replace('/$bunfs/root/', '').includes('/')) {
-    console.error('subdir', name)
+  const fileName = name.replace('/$bunfs/root/', '')
+  if (fileName.includes('..')) {
+    throw new Error(`evil ${fileName}`)
   }
+  if (fileName.includes('/')) {
+    console.error('subdir', name)
+    const dir = dirname(fileName)
+    await mkdir(join(OUT_DIR, dir), { recursive: true })
+  }
+  await writeFile(join(OUT_DIR, fileName), contents)
   // console.log({ loader, name })
 }
+
+console.log(`see ${OUT_DIR}/`)
