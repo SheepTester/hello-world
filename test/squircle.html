@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>squircle</title>
+    <meta
+      name="description"
+      content="testing squircle libraries to compare them to figma"
+    />
+
+    <link rel="stylesheet" type="text/css" href="/sheep3.css" />
+    <script src="/sheep3.js" charset="utf-8"></script>
+
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        background-color: black;
+      }
+      .fixed {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin: 50px;
+        mix-blend-mode: plus-lighter;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import {
+        createElement as h,
+        Fragment,
+        useRef,
+        useEffect,
+        useState
+      } from 'https://esm.sh/react@19.3.1'
+      import { createRoot } from 'https://esm.sh/react-dom@19.3.1/client'
+      import { Squircle } from 'https://esm.sh/@squircle-js/react@1.3.0'
+      import { getSvgPath } from 'https://esm.sh/figma-squircle@1.1.0'
+
+      const SIZE = 200 * 10
+      const RADIUS = 50 * 10
+
+      function App () {
+        const [svg, setSvg] = useState('')
+        const svgRef = useRef()
+
+        useEffect(() => {
+          setSvg(svgRef.current.outerHTML)
+        }, [])
+
+        return h(
+          Fragment,
+          null,
+          h(Squircle, {
+            cornerRadius: RADIUS,
+            cornerSmoothing: 0.6,
+            width: SIZE,
+            height: SIZE,
+            style: { backgroundColor: 'magenta' },
+            className: 'fixed'
+          }),
+          h(
+            'svg',
+            {
+              width: SIZE,
+              height: SIZE,
+              className: 'fixed',
+              fill: 'cyan',
+              ref: svgRef
+            },
+            h('path', {
+              // this one is more precise/rounds less
+              // it also visually matches figma
+              d: getSvgPath({
+                width: SIZE,
+                height: SIZE,
+                cornerRadius: RADIUS,
+                cornerSmoothing: 0.6
+              })
+            })
+          ),
+          h('textarea', {
+            readOnly: true,
+            value: svg,
+            style: {
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              margin: 20,
+              width: 500,
+              fieldSizing: 'content'
+            }
+          })
+        )
+      }
+
+      createRoot(document.getElementById('root')).render(h(App))
+    </script>
+  </body>
+</html>
